@@ -1,0 +1,179 @@
+Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,Source Arrow,Destination Arrow,Status,Text Area 1,Text Area 2,Text Area 3,Comments
+1,Document,,,,,,,,,,Copy of UML Diagram - IS23AM15,,,
+2,Page,,,,,,,,,,Page 1,,,
+3,Class,UML,2,,,,,,,,Game,"​- numberOfPlayers : int
+- winner : Optional<Player>
+- isFirstGame: boolean","​+ Game(numPlayers : int, isFirstGame boolean)
++ Game(savedGame : Game)
++ addPlayer(id: Player) : void
++ startGame() : void
++ nextTurn() : Boolean
++ putTiles(itemTiles : [int, int][], col : int) : Boolean
++ nextTurnAction() : TurnState
++ getWinner() : Optional<Player>
++ calulatePoints()
++ getGameState() : GameState
++ nextGameState() : void
++ sendMessageToAll(message: Message)
++ sendMessageToPlayer(message: Message)
+- shouldRefillBoard() : Boolean",
+4,Text,Standard,2,,76,,,,,,Initial Copy of UML Diagram - IS23AM15,,,
+5,Text,Standard,2,,76,,,,,,"Giuseppe Bocci, Marco Allanda, Giuseppe Bocci, Pietro Ammaturo  |  March 15, 2023",,,
+6,Class,UML,2,,,,,,,,Player,"​- nickname : String
+- fullBookShelf : boolean
+- isPlaying : boolean = true
+- points : Integer = 0
+- firstToFinish : Boolean = false","​+ Player(nickname : String)
++ hasFinished() : boolean
++ getName() : String
++ isPlaying() : boolean
++ addPoints(points : Integer)
++ goToWC()
++ backFromWC()
++ insertTiles(itemTiles : ItemTile[], column : int)
++ getPoints() : Integer
++ getMaxColumnSpace() : int",
+7,Class,UML,2,,,,,,,,Card,​- function : IntToFunction,"​+ Card(function)
++ getFunction() ",
+8,Class,UML,2,,,,,,,,BookShelf,"​- NUM_COLUMNS : Integer = 6
+- NUM_ROWS : Integer = 5
+- currentTiles : Opltional<ItemTile>[ NUM_ROWS ][ NUM_COLUMNS ]","​+ BookShelf()
+- insertTile(itemTile : ItemTile, column : int) : Boolean
++ insertTiles(itemTiles : ItemTile[], column : int) : Boolean
++ getTiles() :  Optional<ItemTile>[][]
++ clearBookShelf() : void
++ getMaxColumnSpace() : int",
+9,Class,UML,2,,,,,,,,PersonalGoalCard,​- pointsToRights : Integer[6][2],"​+ PersonalGoalCard(function: PersonalGoalFunction)
++ getFunction()",
+10,Class,UML,2,,,,,,,,CommonGoalCard,,"​+ CommonGoalCard(function: CommonGoalFunction)
++ getFunction() : ToIntFunction",
+11,Class,UML,2,,,,,,,,"<<enumeration>>
+GameState","​+ INIT
++ PLAYING
++ GAME_OVER",,
+12,Class,UML,2,,,,,,,,"<<enumeration>>
+ItemTile","​+ CAT
++ BOOK
++ GAME
++ FRAME
++ TROPHIE
++ PLANT",,
+13,Class,UML,2,,,,,,,,LivingRoomBoard,"​- numOfPlayer : Integer
+- DIM : Integer = 9
+- board : Optional<ItemTiles>[ DIM ][ DIM ]
+- mask : TileRule[ DIM ][ DIM ]
+- bag : Map<ItemTile, int>","​+ LivingRoomBoard(numberOfPlayers : Integer)
++ isToFill() : Boolean
++ fillBoard() : void
++ pickTiles(itemTiles : [int, int][]) : ItemTiles[]",
+14,Class,UML,2,,,,,,,,Turn,,"​+ Turn(player: Player)
++ pickTiles() : ItemTile[]
++ putTiles(itemTiles : ItemTile[], column : int) : Boolean
++ nextState() : void
++ getTurnState() : TurnState
++ setTurnState() : void",
+15,Class,UML,2,,,,,,,,"<<enumeration>>
+TileRule","​+ BLOCK
++ TWO
++ THREE
++ FOUR",,
+16,Class,UML,2,,,,,,,,"<<enumeration>>
+TurnState","​+ PICK_TILES
++ PUT_TILES
++ END",,
+17,Class,UML,2,,,,,,,,Deck,,"​+ Deck(Enum)
++ getCards() : List<Card>
++ Draw() : Card",
+18,Text,Standard,2,,,,,,,,​- currPlayer,,,
+19,Text,Standard,2,,,,,,,,​- bookShelf,,,
+20,Text,Standard,2,,,,,,,,​- players : Player [],,,
+21,Class,UML,2,,,,,,,,CommonGoalCardManager,"​- unfullfilledCards : Map<Player, List<lCard>>
+- cardToTokens  : Map< Card, List<Token> >
+- playersToTokens  : Map< Player, List<Token> >","​+ CommonCardManager(players:List<Player>, deck:Deck)
++ update()
++ updatePoints()",
+22,Text,Standard,2,,,,,,,,​- currentTurn : Turn,,,
+23,Text,Standard,2,,,,,,,, - cards : Card[],,,
+24,Text,Standard,2,,,,,,,,"​- deckPersonalGoalCards
+- deckCommonGoalCards",,,
+25,Text,Standard,2,,,,,,,,​- pickedTiles : ItemTile [],,,
+26,Text,Standard,2,,,,,,,,,,,
+27,Class,UML,2,,,,,,,,CardsAndPointsManager,,"​+ CardsAndPointsManager(players:List<Player>, deck : Deck)",
+28,Text,Standard,2,,,,,,,,​- turnState ,,,
+29,Text,Standard,2,,,,,,,,​- deck : Deck,,,
+30,Text,Standard,2,,,,,,,,​- pointsManagers : PointsManager [],,,
+31,Text,Standard,2,,,,,,,,​- board: LivingRoomBoard,,,
+32,Text,Standard,2,,,,,,,,​- gameState ,,,
+33,Class,UML,2,,,,,,,,Token,"​- points : Integer
+- number : Integer","​+ Token(points : integer, number : Integer)
++ getPoints() : Integer",
+34,Class,UML,2,,,,,,,,"<<enumeration>>
+CommonGoalFunction","​+ 6_ADJACENT_2
++ 4_ADJACENT_4
++ CORNERS
++ 2_SQUARE_2
++ 3_DIFFERENT_COLUMNS
++ 8_SAME
++ DIAGONAL
++ 4_DIFFERENT_LINES
++ 2_CLOURFUL_COLUMN
++ 2_CLOURFUL_LINES
++ X
++ STAIRS","​- CommonGoalFunction(function)
+",
+35,Class,UML,2,,,,,,,,Chat,"​- MessagesPerPlayer : Map<Player, List<Message>>","​+ Chat(players: List<Player>)
++ Chat(chat Chat)
++ sendMessageToAll(message: Message)
++ sendMessageToPlayer(message: Message)
++ getMessages(player: Player) : List<Message>",
+36,Class,UML,2,,,,,,,, PersonalGoalCardManager,"​- playersToCards  : Map< Player, Card >","​+ PersonalCardManager(players:List<Player>,  deck:Deck )
++ updatePoints()",
+37,Class,UML,2,,,,,,,, AdjacentItemTilesManager,​- pointsToNumberOfAjacent : Integer[4][4],"​+  AdiacentItemTilesManager(players:List<Player>)
++ updatePoints()",
+38,Class,UML,2,,,,,,,,Message,"​+ isPrivate : Boolean
++ receiver : Optional <Player>
++ data : LocalDateTime","​+ Message(Txt : String)
++ Message(Txt : String, receiver : Player)",
+39,Text,Standard,2,,,,,,,,​- Chat,,,
+40,Class,UML,2,,,,,,,,PointsManager,,​+ updatePoints(),
+41,Class,UML,2,,,,,,,,"<<enumeration>>
+PersonalGoalFunction","​+ PERSONAL_1
+...
++ PERSONAL_12",​- PersonalGoalFunction(function),
+42,Class,UML,2,,,,,,,,"<<enumeration>>
+EnumGoalFunction",​- function : IntToFunction,"​- EnumGoalFunction(function)
++ getFunction() : ToIntFunction",
+43,Text,Standard,2,,,,,,,,​- board: LivingRoomBoard,,,
+44,Text,Standard,2,,,,,,,,​- players : List<Player>,,,
+45,Line,,2,,76,4,4,None,None,,,,,
+46,Line,,2,,,3,6,None,None,,2 - 4,,,
+47,Line,,2,,,6,8,None,None,,,,,
+48,Line,,2,,,3,13,None,None,,,,,
+49,Line,,2,,,14,3,None,Composition,,,,,
+50,Line,,2,,,8,12,None,None,,30,,,
+51,Line,,2,,,14,6,None,None,,,,,
+52,Line,,2,,,14,12,None,None,,1-3,,,
+53,Line,,2,,,12,13,None,None,,87,,,
+54,Line,,2,,,16,14,None,None,,,,,
+55,Line,,2,,,10,7,None,Generalization,,,,,
+56,Line,,2,,,9,7,None,Generalization,,,,,
+57,Line,,2,,,15,13,None,None,,81,,,
+58,Line,,2,,,3,17,None,None,,2,,,
+59,Line,,2,,,7,17,None,Composition,,2...*,,,
+60,Line,,2,,,9,41,None,None,,,,,
+61,Line,,2,,,27,40,None,Generalization,,,,,
+62,Line,,2,,,21,27,None,Generalization,,,,,
+63,Line,,2,,,27,17,None,None,,,,,
+64,Line,,2,,,3,40,None,None,,3,,,
+65,Line,,2,,,10,34,None,None,,,,,
+66,Line,,2,,,36,27,None,Generalization,,,,,
+67,Line,,2,,,37,40,None,Generalization,,,,,
+68,Line,,2,,,3,11,None,None,,,,,
+69,Line,,2,,,21,33,None,None,,2-8,,,
+70,Line,,2,,,35,38,None,None,,0..*,,,
+71,Line,,2,,,3,35,None,None,,,,,
+72,Line,,2,,,41,42,None,Generalization,,,,,
+73,Line,,2,,,34,42,None,Generalization,,,,,
+74,Line,,2,,,14,13,None,None,,,,,
+75,Line,,2,,,40,6,None,None,,2 - 4,,,
+76,Group 1,,2,,,,,,,,,,,
