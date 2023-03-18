@@ -6,26 +6,35 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CommonGoalCardManager extends  CardsAndPointsManager{
-    private Map<Card, Stack<Token>> cardsToTokens  = new HashMap<>();;
-    private Map<Player, Set<Token>> playersToTokens  = new HashMap<>();;
+    private Map<Card, Stack<Token>> cardsToTokens  = new HashMap<>();
+    private Map<Player, Set<Token>> playersToTokens  = new HashMap<>();
     private Map<Player, Set<Card>> playersToUnfulfilledCards = new HashMap<>();
 
     public CommonGoalCardManager(List<Player> players, Deck deck) {
         super(players, deck);
         generatePlayersToTokens();
         generateCardsToTokens();
-        generateUnfulfilledCards();
+        generatePlayersToUnfulfilledCards();
     }
+    /**
+     * Initializes playersToTokens
+     */
     private void generatePlayersToTokens() {
-        playersToTokens = players.stream().collect(Collectors.toMap(player -> player, player -> new HashSet()));
+        playersToTokens = players.stream().collect(Collectors.toMap(player -> player, player -> new HashSet<>()));
     }
+    /**
+     * Initializes cardsToTokens
+     */
     private void generateCardsToTokens() {
-        // inizializzo 2 common goal card, forse andrebbe parametrizzato
+        // initializing 2 common goal cards, maybe should be parametrized
         for(int i = 0; i < 2; i++) {
-            Card card = deck.Draw();
+            Card card = deck.draw();
             cardsToTokens.put(card, generateCardTokens());
         }
     }
+    /**
+     * @return the pile of tokens to put on a generic card, based on the number of players
+     */
     // good for now, might want to read these from json and pass it to the constructor
     private Stack<Token> generateCardTokens() {
         Stack<Token> pile = new Stack<>();
@@ -61,21 +70,39 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
         }
         return pile;
     }
-    private void generateUnfulfilledCards() {
+    /**
+     * initializes playersToUnfulfilledCards
+     */
+    private void generatePlayersToUnfulfilledCards() {
         playersToUnfulfilledCards = players.stream().collect(Collectors.toMap(player -> player, player -> cardsToTokens.keySet()));
     }
+    /**
+     * Updates the points of each player
+     */
     public void updatePoints() {
         players.stream().forEach(player -> this.updatePlayerPoints(player));
     }
+    /**
+     * updates the points of the given player
+     * @param player the player to update
+     */
     public void updatePlayerPoints(Player player) {
         player.addPoints(this.playersToTokens.get(player).stream().map(token -> token.getPoints()).reduce(0, Integer::sum));
         // if we update te player point we also need to remove tokens from player, to avoid adding them twice
         this.playersToTokens.put(player, new HashSet<>());
     }
+    /**
+     * updates playersToUnfulfilledCards, playersToTokens, cardsToTokens
+     */
     public void update() {
         // updates every player, even if it is not their turn, more extensible, less efficient
         players.stream().forEach(player -> this.updatePlayer(player));
     }
+    /**
+     * updates playersToUnfulfilledCards, playersToTokens, cardsToTokens,
+     * based on the player's unfulfilled cards fulfilled by the player
+     * @param  player the player to check for cards fulfillment
+     */
     public void updatePlayer(Player player) {
         // partitioning the cards of each player in fulfilled and unfulfilled
         Map<Boolean,Set<Card>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
@@ -84,24 +111,53 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
         //updating unfulfilledCards
         this.playersToUnfulfilledCards.put(player, cardsPartition.get(false));
     }
+    /**
+     * partitions the old unfulfilled cards of the player in two partitions:
+     * one with the cards fulfilled by the player (true)
+     * one with the cards unfulfilled by the player (false)
+     * @param  player the player to check for cards fulfillment
+     * @param  cards the unfulfilled cards of the checked player
+     * @return a map (of type Map<Boolean, Set<Card>>) where
+     * map.get(true) is a Set of cards that have just been fulfilled
+     * map.get(false) is a Set of cards that have not yet been fulfilled
+     */
     private Map<Boolean,Set<Card>> partitionCardsByFulfillment(Player player, Set<Card> cards) {
-
         return cards.stream().collect(Collectors.partitioningBy(hasPlayerFulfilledCard(player), Collectors.toSet()));
     }
+    /**
+     * @param  player the player to check for card fulfillment
+     * @return a predicate that given a card to test returns true if
+     * the player has fulfilled it and false if the player has not
+     */
     private Predicate<Card> hasPlayerFulfilledCard(Player player) {
         return (card) -> (card.getPatternFunction().apply(player.getBookShelf().getState()) > 0);
     }
+    /**
+     * @param  player the player that takes the token
+     * @return a consumer that given a card:
+     * removes the token from that card (editing cardsToTokens)
+     * and gives it to the player (editing playersToTokens)
+     */
     private Consumer<Card> moveTokenFromCardToPlayer(Player player) {
         return (card) -> {playersToTokens.get(player).add(cardsToTokens.get(card).pop());};
     }
 
     // good for now, might want to clone or send a simplified version of these objects for security reasons
+    /**
+     * @return cardsToTokens:
+     */
     public Map<Card, Stack<Token>> getCardsToTokens() {
         return cardsToTokens;
     }
+    /**
+     * @return playersToTokens:
+     */
     public Map<Player, Set<Token>> getPlayersToTokens() {
         return playersToTokens;
     }
+    /**
+     * @return playersToUnfulfilledCards:
+     */
     public Map<Player, Set<Card>> getPlayersToUnfulfilledCards() {
         return playersToUnfulfilledCards;
     }

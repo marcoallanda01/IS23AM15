@@ -1,9 +1,7 @@
 package it.polimi.ingsw.modules;
 
-import java.util.List;
-
 public class Deck {
-    public Card Draw() {
+    public Card draw() {
         return new Card();
     }
 }
