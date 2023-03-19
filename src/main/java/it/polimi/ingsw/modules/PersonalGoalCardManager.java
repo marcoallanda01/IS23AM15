@@ -25,4 +25,11 @@ public class PersonalGoalCardManager extends CardsAndPointsManager{
     public void updatePlayerPoints(Player player) {
         player.addPoints(this.playersToCards.get(player).getPatternFunction().apply(player.getBookShelf().getState()));
     }
+    /**
+     * @param player the player
+     * @return the personal card of the player
+     */
+    public Card getPlayerCard(Player player) {
+        return playersToCards.get(player);
+    }
 }

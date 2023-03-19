@@ -92,9 +92,23 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
         this.playersToTokens.put(player, new HashSet<>());
     }
     /**
+     * just calls update for now
+     */
+    // this might also be used to update the points in real time, but it can't because points are in the player
+    public void updatePointsTurn() {
+        this.update();
+    }
+    /**
+     * just calls updatePlayer for now
+     */
+    // this might also be used to update the points in real time, but it can't because points are in the player
+    public void updatePlayerPointsTurn(Player player) {
+        this.updatePlayer(player);
+    }
+    /**
      * updates playersToUnfulfilledCards, playersToTokens, cardsToTokens
      */
-    public void update() {
+    private void update() {
         // updates every player, even if it is not their turn, more extensible, less efficient
         players.stream().forEach(player -> this.updatePlayer(player));
     }
@@ -103,7 +117,7 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
      * based on the player's unfulfilled cards fulfilled by the player
      * @param  player the player to check for cards fulfillment
      */
-    public void updatePlayer(Player player) {
+    private void updatePlayer(Player player) {
         // partitioning the cards of each player in fulfilled and unfulfilled
         Map<Boolean,Set<Card>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
         //moving the token from fulfilled cards to player
@@ -142,7 +156,7 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
         return (card) -> {playersToTokens.get(player).add(cardsToTokens.get(card).pop());};
     }
 
-    // good for now, might want to clone or send a simplified version of these objects for security reasons
+    // good for now, might want to clone and/or send a simplified version of these objects for security reasons
     /**
      * @return cardsToTokens:
      */
@@ -160,5 +174,30 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
      */
     public Map<Player, Set<Card>> getPlayersToUnfulfilledCards() {
         return playersToUnfulfilledCards;
+    }
+    /**
+     * @param player the player
+     * @return the tokens of the player
+     */
+    public Set<Token> getPlayerTokens(Player player) {
+        return playersToTokens.get(player);
+    }
+    /**
+     * @param player the player
+     * @return the unfulfilled cards of the player
+     */
+    public Set<Card> getPlayerUnfulfilledCards(Player player) {
+        return playersToUnfulfilledCards.get(player);
+    }
+    /**
+     * @param player the player
+     * @return the fulfilled cards of the player
+     */
+    public Set<Card> getPlayerFulfilledCards(Player player) {
+        // new HashSet because we don't want to alter the map
+        Set<Card> playerFulfilledCards = new HashSet<>(cardsToTokens.keySet());
+        // removing the unfulfilled cards
+        playerFulfilledCards.removeAll(this.getPlayerUnfulfilledCards(player));
+        return playerFulfilledCards;
     }
 }
