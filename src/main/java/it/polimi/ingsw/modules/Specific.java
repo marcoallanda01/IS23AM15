@@ -15,10 +15,9 @@ public class Specific extends Pattern{
     private final int groupNum;
 
     /**
-     * @param mask mask that specifies the pattern true block, false void
+     * @param masks mask that specifies the pattern true block, false void
      * @param groupNum number of groups that have to be present
      * @param sgc      true if different groups of tails must have same colour
-     * @param stc      true if same tails in a group must have same colour
      * @param minC min number of different colour that have to be present in a group
      * @param maxC max number of different colour that have to be present in a group
      */
