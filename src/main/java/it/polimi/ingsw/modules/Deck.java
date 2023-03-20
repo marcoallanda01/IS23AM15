@@ -2,8 +2,7 @@ package it.polimi.ingsw.modules;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 
 public class Deck {
     // using List of cards because of indexes (for random drawing), might want to use other structures
