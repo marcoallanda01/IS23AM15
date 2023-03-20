@@ -23,7 +23,7 @@ public class LivingRoomBoard {
      * <p>
      * The first list represents the rows, the second list represents the columns
      */
-    private  Map<Integer, Map<Integer, TileRule>> mask;
+    private Map<Integer, Map<Integer, TileRule>> mask;
     /**
      * The bag is a map of tile types and the number of remaining tiles of that type
      */
@@ -35,20 +35,37 @@ public class LivingRoomBoard {
         this.bag = Arrays.stream(TileType.values()).collect(Collectors.toMap(Function.identity(), TileType::getNumberOfTilesPerType));
         //String maskJSON = Files.readString(Paths.get(getClass().getClassLoader().getResource("data/mask.json").toURI()));
         this.mask = new HashMap<>();
-        mask.put(0, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.THREE, 4, TileRule.FOUR, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
-        mask.put(1, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.FOUR, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
-        mask.put(2, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.THREE, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.THREE, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
-        mask.put(3, Map.of(0, TileRule.BLOCK, 1, TileRule.FOUR, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.THREE));
-        mask.put(4, Map.of(0, TileRule.FOUR, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.FOUR));
-        mask.put(5, Map.of(0, TileRule.THREE, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.FOUR));
-        mask.put(6, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.THREE, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.THREE, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
-        mask.put(7, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
-        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.THREE, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(0, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.THREE, 4, TileRule.FOUR, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(1, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.FOUR, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(2, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.THREE, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.THREE, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(3, Map.of(0, TileRule.BLOCK, 1, TileRule.FOUR, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8,
+                TileRule.THREE));
+        mask.put(4,
+                Map.of(0, TileRule.FOUR, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.FOUR));
+        mask.put(5,
+                Map.of(0, TileRule.THREE, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.FOUR));
+        mask.put(6, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.THREE, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.THREE, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(7, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.THREE, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
     }
 
     public LivingRoomBoard(int numberOfPlayers, Map<Integer, Map<Integer, TileRule>> mask) {
         this(numberOfPlayers);
         this.mask = mask;
+    }
+
+    /**
+     * Returns a copy of the board
+     * @return a copy of the board
+     */
+    public Map<Integer, Map<Integer, Tile>> getBoard() {
+        return Map.copyOf(board);
     }
 
     /**
@@ -61,7 +78,7 @@ public class LivingRoomBoard {
         board.forEach((row, map) -> map.forEach((col, tile) -> {
             if (tile != null) {
                 List<Tile> adjacentTiles = getAdjacentTiles(tile);
-                if(adjacentTiles.stream().anyMatch(Objects::nonNull)) {
+                if (adjacentTiles.stream().anyMatch(Objects::nonNull)) {
                     toFill.set(false);
                 }
             }
@@ -81,6 +98,9 @@ public class LivingRoomBoard {
                 } else {
                     if (tileRule.ordinal() + 1 <= numberOfPlayers) { // if the rule is <= numberOfPlayers, pick a tile from the bag
                         TileType type = pickTileTypeFromBag();
+                        if (type == null) {
+                            throw new IllegalStateException("The bag is empty");
+                        }
                         Tile tile = new Tile(row, col, type);
                         board.get(row).put(col, tile); // add the tile to the board
                     } else {
@@ -93,10 +113,11 @@ public class LivingRoomBoard {
 
     /**
      * Removes the tiles from the board
+     *
      * @param tiles the tiles to remove
      */
     public void removeFromBoard(List<Tile> tiles) {
-        for(Tile tile : tiles) {
+        for (Tile tile : tiles) {
             board.get(tile.getBoardX()).put(tile.getBoardY(), null);
         }
     }
@@ -123,7 +144,7 @@ public class LivingRoomBoard {
             }
             // check if the tiles do not have free sides
             List<Tile> adjacentTiles = getAdjacentTiles(tile);
-            if(!adjacentTiles.contains(null)) {
+            if (!adjacentTiles.contains(null)) {
                 return false;
             }
 
@@ -154,7 +175,7 @@ public class LivingRoomBoard {
      * @return a tile type
      */
     private @Nullable TileType pickTileTypeFromBag() {
-        if (bag.isEmpty()) {
+        if (bag.isEmpty() || bag.values().stream().mapToInt(Integer::intValue).sum() == 0) {
             return null;
         }
         TileType type = TileType.getRandomTileType();
@@ -173,10 +194,10 @@ public class LivingRoomBoard {
      * @return a list of the adjacent tiles
      */
     private List<Tile> getAdjacentTiles(Tile tile) {
-        Tile up = board.get(tile.getBoardX() - 1).get(tile.getBoardY());
-        Tile down = board.get(tile.getBoardX() + 1).get(tile.getBoardY());
-        Tile left = board.get(tile.getBoardX()).get(tile.getBoardY() - 1);
-        Tile right = board.get(tile.getBoardX()).get(tile.getBoardY() + 1);
+        Tile up = board.get(tile.getBoardX() - 1) == null ? null : board.get(tile.getBoardX() - 1).get(tile.getBoardY());
+        Tile down = board.get(tile.getBoardX() + 1) == null ? null : board.get(tile.getBoardX() + 1).get(tile.getBoardY());
+        Tile left = board.get(tile.getBoardX()) == null ? null : board.get(tile.getBoardX()).get(tile.getBoardY() - 1);
+        Tile right = board.get(tile.getBoardX()) == null ? null : board.get(tile.getBoardX()).get(tile.getBoardY() + 1);
         return Arrays.asList(up, down, left, right);
     }
 
@@ -185,6 +206,7 @@ public class LivingRoomBoard {
     public String toString() {
         // print the board
         StringBuilder sb = new StringBuilder();
+        sb.append("Board:\n");
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 Tile tile = board.get(i).get(j);
