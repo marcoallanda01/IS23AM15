@@ -6,9 +6,6 @@ import java.util.function.Function;
 
 public abstract class Pattern {
 
-    /**
-     * @return function that find that type of pattern
-     */
     private final String name;
 
     /**
@@ -19,6 +16,10 @@ public abstract class Pattern {
         this.name = name;
     }
 
+    /**
+     *
+     * @return function to calculate points got from pattern
+     */
     public abstract Function<List<List<Optional<Tile>>>, Integer> getPatternFunction();
 
     public String getName() {

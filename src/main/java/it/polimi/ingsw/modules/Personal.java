@@ -43,7 +43,7 @@ public class Personal extends Pattern{
                     if(corrects > couple[0])
                         break;
                 }
-                return this.checkToPoints.get(i)[1];
+                return this.checkToPoints.get(i-1)[1];
             };
     }
 }
