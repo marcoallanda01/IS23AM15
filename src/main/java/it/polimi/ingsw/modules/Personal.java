@@ -1,10 +1,16 @@
 package it.polimi.ingsw.modules;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Collections;
+import java.util.Collection;
+import java.util.function.Function;
+import java.util.stream.Collectors;;
 public class Personal extends Pattern{
     List<Tile> tiles = null;
 
     public Personal(List<Tile> tiles) {
-        super(false, true, 1, 1);
         this.tiles = new ArrayList<Tile>(tiles);
     }
 
@@ -18,15 +24,12 @@ public class Personal extends Pattern{
             @Override
             public Integer apply(List<List<Optional<Tile>>> board){
 
-                List<Tile> boardList = board.stream()
-                        .flatMap(l -> l.stream())
-                        .map((o) -> {if(o != null){
-                            if(o.isPresent()){return o.get();}
-                        }})
-                        .collect(Collectors.toList());
+                List<Optional<Tile>> boardList = board.stream()
+                        .flatMap(Collection::stream)
+                        .toList();
                 Integer corrects = 0;
-                for(int i = 0; i < tiles.size(); i++){
-                    if(boardList.constains(tiles.get(i)))
+                for (Tile tile : tiles) {
+                    if (boardList.contains(Optional.of(tile)))
                         corrects++;
                 }
                 return corrects;
