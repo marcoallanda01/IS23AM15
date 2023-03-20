@@ -10,4 +10,9 @@ public abstract class PointsManager {
     }
 
     public abstract void updatePoints();
+
+    // this does not need to be implemented from every PointsManager,
+    // some PointsManagers might only want to update points at the end of the game
+    public void updatePointsTurn() {}
+
 }
