@@ -3,27 +3,32 @@ package it.polimi.ingsw.modules;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Collections;
 import java.util.Collection;
 import java.util.function.Function;
-import java.util.stream.Collectors;;
 public class Personal extends Pattern{
-    List<Tile> tiles = null;
+    List<Tile> tiles;
+    List<int[]> checkToPoints;
 
-    public Personal(List<Tile> tiles) {
+    /**
+     *
+     * @param name name of the pattern
+     * @param tiles tiles in the pattern
+     * @param checkToPoints list of couple [num of corrects, points]. List must be in ascending order
+     *                      of "num of corrects"
+     */
+    public Personal(String name, List<Tile> tiles, List<int[]> checkToPoints) {
+        super(name);
         this.tiles = new ArrayList<Tile>(tiles);
+        this.checkToPoints = new ArrayList<int[]>(checkToPoints);
     }
 
     /**
      *
-     * @return function that returns number of tiles in the correct position
+     * @return function that returns points you get from number of tiles in right spots
      */
     @java.lang.Override
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
-        return new Function<List<List<Optional<Tile>>>, Integer>() {
-            @Override
-            public Integer apply(List<List<Optional<Tile>>> board){
-
+        return (board) -> {
                 List<Optional<Tile>> boardList = board.stream()
                         .flatMap(Collection::stream)
                         .toList();
@@ -32,8 +37,13 @@ public class Personal extends Pattern{
                     if (boardList.contains(Optional.of(tile)))
                         corrects++;
                 }
-                return corrects;
-            }
-        };
+                int i;
+                for(i = 0; i < this.checkToPoints.size(); i++){
+                    int[] couple = this.checkToPoints.get(i);
+                    if(corrects > couple[0])
+                        break;
+                }
+                return this.checkToPoints.get(i)[1];
+            };
     }
 }
