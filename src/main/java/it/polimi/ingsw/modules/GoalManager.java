@@ -1,6 +1,12 @@
 package it.polimi.ingsw.modules;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
+
+import com.google.gson.stream.JsonReader;
 
 public class GoalManager {
     private List<Player> players;
@@ -10,11 +16,94 @@ public class GoalManager {
     private PersonalGoalCardManager personalGoalCardManager;
     private EndGamePointsManager endGamePointsManager;
 
-    private String setUpFile;
+    private List<List<Pattern>> patterns;
 
-    public GoalManager(List<Player> players, String setUpFile) {
+    private List<List<Pattern>> readJsonStream(FileReader in) throws IOException {
+        JsonReader reader = new JsonReader(in);
+        List<List<Pattern>> patterns = new ArrayList<>();
+        try {
+            patterns.add(readCommonCards(reader));
+            patterns.add(readEndGame(reader));
+            patterns.add(readPersonalCard(reader));
+        } finally {
+            reader.close();
+        }
+        return patterns;
+    }
+
+    private List<Pattern> readCommonCards(JsonReader reader) throws IOException{
+        List<Pattern> patterns = new ArrayList<>();
+
+        reader.beginArray();
+        try{
+            while (reader.hasNext()) {
+                Pattern pattern = readPattern(reader);
+                if(pattern != null)
+                    patterns.add(pattern);
+            }
+        } catch (IOException e) {
+            System.err.println("qui");
+        }
+        reader.endArray();
+
+        return patterns;
+    }
+
+    private List<Pattern> readEndGame(JsonReader reader) throws IOException{
+        List<Pattern> patterns = new ArrayList<>();
+
+        reader.beginArray();
+        try{
+            while (reader.hasNext()) {
+                Pattern pattern = readPattern(reader);
+                if(pattern != null)
+                    patterns.add(pattern);
+            }
+        } catch (IOException e) {
+            System.err.println("qui");
+        }
+        reader.endArray();
+
+        return patterns;
+    }
+
+    private List<Pattern> readPersonalCard(JsonReader reader) throws IOException{
+        List<Pattern> patterns = new ArrayList<>();
+
+
+        return patterns;
+    }
+
+    private Pattern readPattern(JsonReader reader) throws IOException{
+        Pattern pattern = null;
+
+        reader.beginObject(); // throws IOException
+        try{
+            String name = reader.nextString();
+            String type = reader.nextString();
+            int grup_num = 0;
+            switch (type){
+                case "specific":
+                    while (reader.hasNext()) {
+                        String x = reader.nextName();
+                    }
+                case "line" :
+
+                case "adjacent" :
+
+            }
+        }
+        catch(IllegalStateException e){
+            System.err.println(e.toString());
+        }
+        reader.endObject();
+
+        return pattern;
+    }
+
+
+    public GoalManager(List<Player> players, String setUpFile) throws ArrestGameException {
         this.players = new ArrayList<Player>(players);
-        this.setUpFile = setUpFile;
 
         // I use list and not set because I could choose to have to same card so the probability increase
         List<Pattern> commonGoalCardPatternsToNames = new ArrayList<Pattern>();
@@ -22,6 +111,25 @@ public class GoalManager {
 
         // Just only one pattern for every goal that is in common and all are active at the same time
         Set<Pattern> EndGamePointsManagerPatterns = new HashSet<Pattern>();
+
+        FileReader in;
+        try {
+            in = new FileReader(setUpFile);
+        }
+        catch (FileNotFoundException e){
+            System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
+            System.err.println("More details: " + e.toString());
+            throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
+        }
+
+        try{
+            readJsonStream(in);
+        }catch (IOException e) {
+            System.err.println("Error occurred in Goal Manager: IOException occurred with file " + setUpFile + " bad formatted");
+            System.err.println("More details: " + e.toString());
+            throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
+        }
+
 
         // creating default managers, in future to add another manager add it here
         this.commonGoalCardManager = new CommonGoalCardManager(players, new Deck(commonGoalCardPatternsToNames));
@@ -31,6 +139,7 @@ public class GoalManager {
         this.pointsManagers.add(this.commonGoalCardManager);
         this.pointsManagers.add(this.personalGoalCardManager);
         this.pointsManagers.add(this.endGamePointsManager);
+
     }
 
     public void updatePointsTurn() {
@@ -84,5 +193,9 @@ public class GoalManager {
      */
     public Card getPlayerPersonalCards(Player player) {
         return personalGoalCardManager.getPlayerCard(player);
+    }
+
+    public List<List<Pattern>> getPatterns() {
+        return new ArrayList<>(this.patterns);
     }
 }
