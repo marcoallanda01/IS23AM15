@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Chat {
      private Map<Player, List<Message>> MessagesPerPlayer;
-     public  void Chat(List<Player> players){
+     public Chat(List<Player> players){
          for (Player p : players){
               MessagesPerPlayer.put(p, new ArrayList<>());
          }
@@ -25,13 +25,17 @@ public class Chat {
 
     /**
      * Add a message to the chat
-     * If the message has a receiver, it will be added only to that player
-     * If the message has no receiver, it will be added to all the players
-     * @param m the message
+     * If the receiver of the message is not present, the message is sent to all the players
+     * @param m the message to add
+     * @throws PlayerNotFoundException if the receiver of the message is not in the game
      */
-    public void addMessage(Message m){
+    public void addMessage(Message m) throws PlayerNotFoundException{
          if(m.receiver.isPresent()){
-             MessagesPerPlayer.get(m.receiver).add(m);
+            if(MessagesPerPlayer.containsKey(m.receiver.get())){
+                MessagesPerPlayer.get(m.receiver.get()).add(m);
+            }else{
+                throw new PlayerNotFoundException();
+            }
          }else{
              for (Player p : MessagesPerPlayer.keySet()){
                  MessagesPerPlayer.get(p).add(m);

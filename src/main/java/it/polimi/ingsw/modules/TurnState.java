@@ -1,4 +1,7 @@
 package it.polimi.ingsw.modules;
 
-public class TurnState {
+public enum TurnState {
+    PICK_TILES,
+    PUT_TILES,
+    END
 }
