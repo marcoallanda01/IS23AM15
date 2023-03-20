@@ -32,4 +32,12 @@ public class Tile {
     public String toString() {
         return "Tile{" + "boardX=" + boardX + ", boardY=" + boardY + ", type=" + type + '}';
     }
+
+    public boolean equalsType(Tile t){
+        return this.type == t.type;
+    }
+
+    public boolean equals(Tile t){
+        return this.boardX == t.boardX && this.boardY == t.boardY && this.type == t.type;
+    }
 }
