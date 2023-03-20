@@ -5,12 +5,22 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class Card {
-    Pattern pattern;
-    String name;
+    private final Pattern pattern;
 
-    public Card(Pattern pattern, String name) {
+    /**
+     *
+     * @param pattern pattern that identify card
+     */
+    public Card(Pattern pattern) {
         this.pattern = pattern;
-        this.name = name;
+    }
+
+    /**
+     *
+     * @return name of the card pattern
+     */
+    public String getName() {
+        return this.pattern.getName();
     }
 
     // da definire

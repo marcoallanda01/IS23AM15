@@ -3,18 +3,25 @@ package it.polimi.ingsw.modules;
 import java.util.*;
 
 public class GoalManager {
-    List<Player> players;
-    List<PointsManager> pointsManagers = new ArrayList<>();
+    private List<Player> players;
+    private List<PointsManager> pointsManagers = new ArrayList<>();
 
-    CommonGoalCardManager commonGoalCardManager;
-    PersonalGoalCardManager personalGoalCardManager;
-    EndGamePointsManager endGamePointsManager;
-    public GoalManager(List<Player> players) {
-        this.players = players;
+    private CommonGoalCardManager commonGoalCardManager;
+    private PersonalGoalCardManager personalGoalCardManager;
+    private EndGamePointsManager endGamePointsManager;
 
-        Map<Pattern, String> commonGoalCardPatternsToNames = new HashMap<>();
-        Set<Pattern> personalGoalCardManagerPatterns = new HashSet<>();
-        Set<Pattern> EndGamePointsManagerPatterns = new HashSet<>();
+    private String setUpFile;
+
+    public GoalManager(List<Player> players, String setUpFile) {
+        this.players = new ArrayList<Player>(players);
+        this.setUpFile = setUpFile;
+
+        // I use list and not set because I could choose to have to same card so the probability increase
+        List<Pattern> commonGoalCardPatternsToNames = new ArrayList<Pattern>();
+        List<Pattern> personalGoalCardManagerPatterns = new ArrayList<Pattern>();
+
+        // Just only one pattern for every goal that is in common and all are active at the same time
+        Set<Pattern> EndGamePointsManagerPatterns = new HashSet<Pattern>();
 
         // creating default managers, in future to add another manager add it here
         this.commonGoalCardManager = new CommonGoalCardManager(players, new Deck(commonGoalCardPatternsToNames));
