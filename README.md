@@ -10,9 +10,9 @@
 | Socket                       |  🔴   |
 | CLI                          |  🔴   |
 | GUI                          |  🔴   |
-| Persistence                  |  🔴   |
-| Resilience to disconnections |  🔴   |
-| Chat                         |  🔴   |
+| Persistence                  |  🟡   |
+| Resilience to disconnections |  🟡   |
+| Chat                         |  🟡   |
 | Multiple games               |  🔴   |
 
 #### Legend
