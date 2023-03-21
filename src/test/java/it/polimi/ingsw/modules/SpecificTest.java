@@ -140,5 +140,37 @@ class SpecificTest {
         assertEquals(1, pattern5a.getPatternFunction().apply(myBookshelf));
         Pattern pattern5b = new Specific(name2, Cornermasks, 2, false, 1, 1);
         assertEquals(0, pattern5b.getPatternFunction().apply(myBookshelf));
+
+        List<List<List<Boolean>>> Couplermasks = new ArrayList<>();
+        Couplermasks.add(new ArrayList<>());
+        for (int i = 0; i < 1; i++) {
+            Couplermasks.get(0).add(new ArrayList<>());
+            for (int j = 0; j < 2; j++) {
+                Couplermasks.get(0).get(i).add(false);
+            }
+        }
+        Couplermasks.get(0).get(0).set(0, true);
+        Couplermasks.get(0).get(0).set(1, true);
+        Couplermasks.add(new ArrayList<>());
+        for (int i = 0; i < 2; i++) {
+            Couplermasks.get(1).add(new ArrayList<>());
+            for (int j = 0; j < 1; j++) {
+                Couplermasks.get(1).get(i).add(false);
+            }
+        }
+        Couplermasks.get(1).get(0).set(0, true);
+        Couplermasks.get(1).get(1).set(0, true);
+
+        String name7 = "Couples";
+        Pattern pattern7a = new Specific(name7, Couplermasks, 6, false, 1, 1);
+        assertEquals(1, pattern7a.getPatternFunction().apply(myBookshelf));
+        Pattern pattern7b = new Specific(name7, Couplermasks, 10, false, 1, 2);
+        assertEquals(1, pattern7b.getPatternFunction().apply(myBookshelf));
+        // too many couples takes too much time =(
+        // Pattern pattern7c = new Specific(name7, Couplermasks, 15, false, 1, 1);
+        // assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
+        // 27 should be false
+        // Pattern pattern7d = new Specific(name7, Couplermasks, 27, false, 1, 1);
+        // assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
     }
 }

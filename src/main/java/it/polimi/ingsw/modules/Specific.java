@@ -34,14 +34,16 @@ public class Specific extends Pattern{
         return (bookshelf) -> {
             List<List<Tile>> allGroups = new ArrayList<>(getAllGroups().apply(bookshelf)); // getting all the groups using the private function
             List<List<List<Tile>>> validSequences = new ArrayList<>();
+            /*
             // need to pass it by reference because it is a difficult recursive function which adds the elements while on the leaves
             getPossibleSequencesConsumer().accept(allGroups, validSequences);
+            System.out.println("Sequences done");
             // check if there is a sequence with enough groups and not too many types across groups.
             validSequences = validSequences.stream().filter(isSequenceValid()).collect(Collectors.toList());
             if (validSequences.size() > 0) {
                 return 1;
-            }
-            return 0;
+            } */
+            return findGoodSequenceConsumer().apply(allGroups).compareTo(false);
         };
     }
     private Predicate<List<List<Tile>>> isSequenceValid() {
@@ -60,11 +62,11 @@ public class Specific extends Pattern{
             int maxTypesInGroup = this.maxColor;
             int minTypesInGroup = this.minColor;
             List<List<Tile>> allTheGroups = new ArrayList<>();
-            for (int i = 0; i < bookshelf.size() - masks.get(0).size() + 1; i++) {
-                for (int j = 0; j < bookshelf.get(i).size() - masks.get(0).get(0).size() + 1; j++) {
-                    // if all masks have been checked, go forward
-                    for (int k = 0; k < masks.size(); k++) {
-                        List<List<Boolean>> currentMask = masks.get(k);
+            // if all masks have been checked, go forward
+            for (int k = 0; k < masks.size(); k++) {
+                List<List<Boolean>> currentMask = masks.get(k);
+                for (int i = 0; i < bookshelf.size() - masks.get(k).size() + 1; i++) {
+                    for (int j = 0; j < bookshelf.get(i).size() - masks.get(k).get(0).size() + 1; j++) {
                         Boolean isPatternValid = true;
                         Set<TileType> typesInPattern = new HashSet<>();
                         List<Tile> validGroup = new ArrayList<>();
@@ -122,6 +124,28 @@ public class Specific extends Pattern{
 
         };
     }
+    private Function<List<List<Tile>>, Boolean> findGoodSequenceConsumer() {
+        return (startingGroups) -> {
+            BiFunction<List<List<Tile>>, Integer, Boolean> removeOverlappingFunction = this.getRemoveOverlappingFunction();
+            Boolean sequenceChanged = false;
+            for (Integer i = 0; i < startingGroups.size(); i++) {
+                List<List<Tile>> toBeFilteredGroups = new ArrayList<>(startingGroups);
+                if (removeOverlappingFunction.apply(toBeFilteredGroups, i)) {
+                    if(findGoodSequenceConsumer().apply(toBeFilteredGroups)) {
+                        return true;
+                    }
+                    sequenceChanged = true;
+                }
+            }
+            if (!sequenceChanged) {
+                // if nothing changed return the sequence given as parameter
+                if (isSequenceValid().test(startingGroups)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+    }
     // removes all groups with any tile overlapping the group at index
     private BiFunction<List<List<Tile>>, Integer, Boolean> getRemoveOverlappingFunction() {
         return (groups, index) -> {
@@ -129,7 +153,7 @@ public class Specific extends Pattern{
             Boolean groupsChanged = false;
             for (Integer i = 0; i < mainGroup.size(); i++) {
                 Tile tile = mainGroup.get(i);
-                List<List<Tile>> overlappingGroups = groups.stream().filter(group -> group.contains(tile)).collect(Collectors.toList());
+                List<List<Tile>> overlappingGroups = groups.parallelStream().filter(group -> group.contains(tile)).collect(Collectors.toList());
                 overlappingGroups.remove(mainGroup);
                 Boolean hasRemoved = groups.removeAll(overlappingGroups);
                 groupsChanged = groupsChanged || hasRemoved;
