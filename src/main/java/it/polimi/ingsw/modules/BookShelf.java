@@ -8,7 +8,7 @@ public class BookShelf {
     /**
      * The list of tiles in the bookshelf
      */
-    private List<List<Optional<Tile>>> currentTiles;
+    private final List<List<Optional<Tile>>> currentTiles;
 
     public BookShelf(int numRows, int numColumns) {
         currentTiles = new ArrayList<>();
@@ -37,6 +37,8 @@ public class BookShelf {
         List<Optional<Tile>> currentColumn = currentTiles.get(column);
         for (Optional<Tile> t : currentColumn) {
             if (t.isEmpty()) {
+                tile.setX(column);
+                tile.setY(currentColumn.indexOf(t));
                 currentColumn.set(currentColumn.indexOf(t), Optional.of(tile));
                 return true;
             }
@@ -54,10 +56,10 @@ public class BookShelf {
     public boolean insertTiles(List<Tile> tiles, int column) {
         if (column < 0 || column >= currentTiles.size()) return false;
         int count = 0;
-        for(Optional<Tile> tile: currentTiles.get(column)) {
-            if(tile.isEmpty()) count++;
+        for (Optional<Tile> tile : currentTiles.get(column)) {
+            if (tile.isEmpty()) count++;
         }
-        if(count < tiles.size()) return false;
+        if (count < tiles.size()) return false;
         for (Tile tile : tiles) {
             if (!insertTile(tile, column)) return false;
         }
@@ -72,7 +74,7 @@ public class BookShelf {
      * @return the tile at the specified position
      */
     public Tile getTile(int column, int row) {
-        if(currentTiles.get(column).get(row).isEmpty()) return null;
+        if (currentTiles.get(column).get(row).isEmpty()) return null;
         return currentTiles.get(column).get(row).get();
     }
 
@@ -105,10 +107,14 @@ public class BookShelf {
     /**
      * Gets the state of the bookshelf
      *
-     * @return the state of the bookshelf
+     * @return the clone of the state of the bookshelf
      */
     public List<List<Optional<Tile>>> getState() {
-        return currentTiles;
+        List<List<Optional<Tile>>> returnList = new ArrayList<>();
+        for (List<Optional<Tile>> sublist : currentTiles) {
+            returnList.add(new ArrayList<>(sublist));
+        }
+        return returnList;
     }
 
     @Override

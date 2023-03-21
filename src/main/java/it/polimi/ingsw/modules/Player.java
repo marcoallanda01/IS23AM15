@@ -1,10 +1,7 @@
 package it.polimi.ingsw.modules;
 
-import java.util.List;
-import java.util.Optional;
-
 public class Player {
-    private String userName;
+    private final String userName;
     private Integer points;
     private BookShelf bookShelf;
     private boolean firstToFinish = false;

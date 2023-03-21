@@ -3,6 +3,7 @@ package it.polimi.ingsw.modules;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +17,17 @@ class BookShelfTest {
         assertFalse(bookShelf.insertTiles(List.of(new Tile(-1, -1, TileType.BOOK), new Tile(-1, -1, TileType.BOOK), new Tile(-1, -1, TileType.BOOK)), 2));
         assertNull(bookShelf.getTile(2, 5));
         assertFalse(bookShelf.insertTiles(List.of(new Tile(-1, -1, TileType.BOOK), new Tile(-1, -1, TileType.BOOK), new Tile(-1, -1, TileType.BOOK)), 6));
+        for(int i = 0; i < 5; i++) {
+            assertEquals(2, bookShelf.getTile(2, i).getX());
+            assertEquals(i, bookShelf.getTile(2, i).getY());
+        }
+        for(int i = 0; i < bookShelf.getState().size(); i++) {
+            List<Optional<Tile>> column = bookShelf.getState().get(i);
+            for(int j=0; j < column.size(); j++) {
+                Tile tile = column.get(j).orElse(null);
+                assertEquals(tile, bookShelf.getTile(i, j));
+            }
+        }
         //System.out.println(bookShelf);
     }
 
