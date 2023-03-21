@@ -36,11 +36,9 @@ public class Specific extends Pattern{
             List<List<List<Tile>>> validSequences = new ArrayList<>();
             // need to pass it by reference because it is a difficult recursive function which adds the elements while on the leaves
             getPossibleSequencesConsumer().accept(allGroups, validSequences);
-            Boolean validSequenceFound = false;
-            // we need to check if there is a sequence with enough groups and not too many types across groups.
-            // can be done easily with validSequences
-            validSequences.stream().filter(sequence -> {})
-            if (validSequenceFound) {
+            // check if there is a sequence with enough groups and not too many types across groups.
+            validSequences = validSequences.stream().filter(isSequenceValid()).collect(Collectors.toList());
+            if (validSequences.size() > 0) {
                 return 1;
             }
             return 0;
@@ -52,7 +50,7 @@ public class Specific extends Pattern{
             Boolean sameTypeAcrossGroups = this.sgc;
             Boolean enoughGroups = sequence.size() > groupNumber;
             Boolean sameColor = sequence.stream().flatMap(Collection::stream).map(Tile::getType).collect(Collectors.toSet()).size() == 1;
-            return enoughGroups && sameColor;
+            return enoughGroups && (sameColor || !sameTypeAcrossGroups);
         };
     }
         // gets all the groups, even if overlapping
