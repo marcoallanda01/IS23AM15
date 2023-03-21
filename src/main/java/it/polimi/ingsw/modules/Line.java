@@ -1,8 +1,11 @@
 package it.polimi.ingsw.modules;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Line extends Specific{
     private int tilesNum;
-    private List<Char> directions;
+    private List<Character> directions;
     /**
      * @param tilesNum length of the line
      * @param directions directions of the line, they can be ('O', 'V', 'D')
@@ -12,10 +15,12 @@ public class Line extends Specific{
      * @param minC     min number of different colour that have to be present in a group
      * @param maxC     max number of different colour that have to be present in a group
      */
-    public Line(int tilesNum, List<Char> directions, int groupNum, boolean sgc, boolean stc, int minC, int maxC) {
-        super(groupNum, sgc, stc, minC, maxC);
+    public Line(String name, int tilesNum, List<Character> directions, int groupNum, boolean sgc, int minC, int maxC) {
+        super();
+        List<List<List<Boolean>>> masks = null;
+        //super(name, masks, groupNum, sgc, minC, maxC);
         this.tilesNum = tilesNum;
-        this.directions = new ArrayList<Char>.clone(directions);
+        this.directions = new ArrayList<Character>(directions);
     }
 
     @java.lang.Override

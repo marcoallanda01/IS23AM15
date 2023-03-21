@@ -6,19 +6,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import org.jetbrains.annotations.NotNull;
 
 public class GoalManager {
-    private List<Player> players;
-    private List<PointsManager> pointsManagers = new ArrayList<>();
+    private final List<PointsManager> pointsManagers = new ArrayList<>();
 
-    private CommonGoalCardManager commonGoalCardManager;
-    private PersonalGoalCardManager personalGoalCardManager;
-    private EndGamePointsManager endGamePointsManager;
+    private final CommonGoalCardManager commonGoalCardManager;
+    private final PersonalGoalCardManager personalGoalCardManager;
+    private final EndGamePointsManager endGamePointsManager;
 
     private List<List<Pattern>> patterns;
 
-    private List<List<Pattern>> readJsonStream(FileReader in) throws IOException {
+    private @NotNull List<List<Pattern>> readJsonStream(FileReader in) throws IOException {
         JsonReader reader = new JsonReader(in);
         List<List<Pattern>> patterns = new ArrayList<>();
         try {
@@ -31,9 +34,8 @@ public class GoalManager {
         return patterns;
     }
 
-    private List<Pattern> readCommonCards(JsonReader reader) throws IOException{
+    private List<Pattern> readCommonCards(@NotNull JsonReader reader) throws IOException{
         List<Pattern> patterns = new ArrayList<>();
-
         reader.beginArray();
         try{
             while (reader.hasNext()) {
@@ -49,7 +51,7 @@ public class GoalManager {
         return patterns;
     }
 
-    private List<Pattern> readEndGame(JsonReader reader) throws IOException{
+    private List<Pattern> readEndGame(@NotNull JsonReader reader) throws IOException {
         List<Pattern> patterns = new ArrayList<>();
 
         reader.beginArray();
@@ -70,40 +72,122 @@ public class GoalManager {
     private List<Pattern> readPersonalCard(JsonReader reader) throws IOException{
         List<Pattern> patterns = new ArrayList<>();
 
+        reader.beginArray();
+        try{
+            while (reader.hasNext()) {
+                Pattern pattern = readPattern(reader);
+                if(pattern != null)
+                    patterns.add(pattern);
+            }
+        } catch (IOException e) {
+            System.err.println("qui");
+        }
+        reader.endArray();
 
         return patterns;
     }
 
-    private Pattern readPattern(JsonReader reader) throws IOException{
+    /**
+     *
+     * @param reader JsonReader form witch do the parse
+     * @return pattern to be generated from parsing. Returns null if pattern is invalid
+     * @throws IOException da vedere
+     */
+    private Pattern readPattern(JsonReader reader) throws IOException {
         Pattern pattern = null;
 
-        reader.beginObject(); // throws IOException
         try{
-            String name = reader.nextString();
-            String type = reader.nextString();
-            int grup_num = 0;
+            JsonObject patternJ = JsonParser.parseReader(reader).getAsJsonObject();
+            String name = patternJ.get("name").getAsString();
+            String type = patternJ.get("type").getAsString();
             switch (type){
+
                 case "specific":
-                    while (reader.hasNext()) {
-                        String x = reader.nextName();
+                    /* {"name":"X", "type":"specific", "pattern":{"matrix":[[1,0,1],[0,1,0],[1,0,1]],
+                        "dim_x":3, "dim_y":3} "group_num":1, "sgc":"N", "max":1, "min":1} */
+                    int groupNum = patternJ.get("group_num").getAsInt();
+                    int maxC = patternJ.get("max").getAsInt();
+                    int minC = patternJ.get("min").getAsInt();
+                    boolean sgc = patternJ.get("sgc").getAsString().equals("Y");
+                    JsonArray matrixsJ = patternJ.get("pattern").getAsJsonArray();
+                    List<List<List<Boolean>>> matrixs = new ArrayList<List<List<Boolean>>>();
+                    for(int k = 0; k < matrixsJ.size(); k++) {
+                        List<List<Boolean>> matrix = new ArrayList<List<Boolean>>();
+                        JsonArray matrixJ = matrixsJ.get(k).getAsJsonArray();
+                        for (int i = 0; i < matrixJ.size(); i++) {
+                            JsonArray rowJ = matrixJ.get(i).getAsJsonArray();
+                            List<Boolean> rowList = new ArrayList<Boolean>();
+                            for (int j = 0; j < rowJ.size(); j++) {
+                                int c = rowJ.get(j).getAsInt();
+                                switch (c) {
+                                    case 1 -> rowList.add(true);
+                                    case 0 -> rowList.add(false);
+                                    default -> {
+                                        System.err.println("Wrong format in specific pattern");
+                                        return null; // Return null -> readCommonCards, readEndGame ignores pattern
+                                    }
+                                }
+                            }
+                            matrix.add(rowList);
+                        }
+                        matrixs.add(matrix);
                     }
-                case "line" :
+                    pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC);
+                    break;
 
-                case "adjacent" :
+                case "line":
+                    //{"name":"2_ROWS", "type":"line", "tiles_num":5, "directions":["O"], "sgc":"N", "max":5,"min":5}
+                    int tilesNum = patternJ.get("tiles_num").getAsInt();
+                    int groupNuml = patternJ.get("group_num").getAsInt();
+                    int maxCl = patternJ.get("max").getAsInt();
+                    int minCl = patternJ.get("min").getAsInt();
+                    boolean sgcl = patternJ.get("sgc").getAsString().equals("Y");
+                    JsonArray directionsJ = patternJ.get("directions").getAsJsonArray();
+                    List<Character> directions = new ArrayList<>();
+                    for(int i = 0; i < directionsJ.size(); i++){
+                        String d = directionsJ.get(i).getAsString();
+                        if(d.length() > 1){
+                            System.err.println("Wrong format in line directions");
+                            return null; // Return null -> readCommonCards, readEndGame ignores pattern
+                        }
+                        directions.add(d.charAt(0));
+                    }
+                    pattern = new Line(name, tilesNum, directions, groupNuml, sgcl, minCl, maxCl);
+                    break;
 
+                case "adjacent":
+                    // {"name":"6_ADJACENT", "type":"adjacent", "min_tiles":6, "max_tiles":30, points:"8"}
+                    int minTiles = patternJ.get("min_tiles").getAsInt();
+                    int maxTiles = patternJ.get("max_tiles").getAsInt();
+                    int points = patternJ.get("points").getAsInt();
+                    pattern = new Adjacent(name, minTiles, maxTiles, points);
+                    break;
+
+                case "personal":
+                    // {"name":"pc_1", "type" : "personal",
+                    //	"tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]]
+                    //	"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] }
+                    JsonArray tilesJ = patternJ.get("tiles").getAsJsonArray();
+                    List<Tile> tiles = new ArrayList<Tile>();
+                    for(int i = 0; i < tilesJ.size(); i++){
+                        JsonArray tileJ = tilesJ.get(i).getAsJsonArray();
+                        int x = tileJ.get(0).getAsInt();
+                        int y = tileJ.get(1).getAsInt();
+                        TileType  tileType = null;
+                        Tile t = new Tile(x, y, tileType);
+                    }
             }
         }
         catch(IllegalStateException e){
             System.err.println(e.toString());
         }
-        reader.endObject();
 
         return pattern;
     }
 
 
     public GoalManager(List<Player> players, String setUpFile) throws ArrestGameException {
-        this.players = new ArrayList<Player>(players);
+        List<Player> players1 = new ArrayList<Player>(players);
 
         // I use list and not set because I could choose to have to same card so the probability increase
         List<Pattern> commonGoalCardPatternsToNames = new ArrayList<Pattern>();
