@@ -1,0 +1,214 @@
+Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,Source Arrow,Destination Arrow,Status,Text Area 1,Text Area 2,Text Area 3,Comments
+1,Document,,,,,,,,,Draft,UML Diagram - IS23AM15,,,
+2,Page,,,,,,,,,,Initial Model,,,
+3,Class,UML,2,,,,,,,,Game,"​- winner : Optional<Player>
+- isFirstGame: boolean","​+ Game(numPlayers : int, isFirstGame boolean)
++ Game(savedGame : Game)
++ addPlayer(nickname : String) : Boolen
++ startGame() : void
++ nextTurn() : Boolean
++ pickTiles(tiles : List<Tile>) : Boolean
++ putTiles(tiles : List<Tile>, col : int) : Boolean
++ getTurnState() : TurnState
++ getWinner() : Optional<String>
++ getPlayerPoints(nickname : String) : Integer
++ getGameState() : GameState
+- nextGameState() : void
++ sendMessageToAll(message: Message)
++ sendMessageToPlayer( message: Message)
++ getPlayerMessages(nickname : String) : List<Message>
++ getBookShelf(player : String ) : BookShelf 
++ getCurrentLivingRoom() : LivingRoomBoard
++ getCommonGoalCards() : List<String>
++ getPersonalCard(player : Sting) : List<String>
++ getEndGameGoals() : List<String>
+- shouldRefillBoard() : Boolean
++ getCommonCardsToTokens()  : Map< Card, List<Token> >
++ getPlayerTokens(player : Player) : List<Token>
++ getPlayerCommonFullfilledCards(player : Player) : List<Card>
++ getPlayerCommonUnfullfilledCards(player : Player) : List<Card>","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-10T19:12:06.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""nextTurn() : ritorna true se il gioco è finito e non si va avanti""},{""Timestamp"":""2023-03-10T19:51:31.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""nextTurnAction() : passa alla prossima fase del turno e ritorna il TurnState che ne consegue""}]}]"
+4,Text,Standard,2,,69,,,,,,Model UML Diagram - IS23AM15,,,
+5,Text,Standard,2,,69,,,,,,"Luca Rossi, Marco Allanda, Giuseppe Bocci, Pietro Ammaturo  |  March 21, 2023",,,
+6,Class,UML,2,,,,,,,,Player,"​- nickname : String
+- fullBookShelf : boolean = false
+- isPlaying : boolean = true
+- points : Integer 
+- firstToFinish : boolean = false","​+ Player(nickname : String)
++ Player(nickName : String, points : Integer)
++ hasFinished() : boolean
++ getName() : String
++ isPlaying() : boolean
++ addPoints(points : Integer)
++ getPoints() : Integer
++ setPlaying(playing : boolean)
++ getBookShelf() : BookShelf
++ isFirstToFinish() : boolean
++ setFirstToFinish(firstToFinish : boolean)
++ setFullBookShelf(fullBookShelf : boolean)","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-10T19:02:48.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""goToWC: set isPlaying = false\nbackFromWC(): lo mette a true""}]}]"
+7,Class,UML,2,,,,,,,,Card,​+ name : String,"​+ getPatternFunction() : Function
++ getName() : String",
+8,Class,UML,2,,,,,,,,BookShelf,​- currentTiles : List<List<Tile>>,"​+ BookShelf()
++ BookShelf(numColumns : Integer, numRows : Integer)
+- insertTile(tile : Tile, column : int) : Boolean
++ insertTiles(tiles : List<Tile>, column : int) : Boolean
++ getTile(col : Integer, row : Integer) : Tile
++ clearBookShelf() : void
++ getMaxColumnSpace() : int
++ getState() : List<List<Tile>>",
+9,Class,UML,2,,,,,,,,PersonalGoalCard,,"​+ CommonGoalCard(pattern : Pattern, name : String)
++ CommonGoalCard(stringJSON : String)
++ getPointsToChecks() : List<Integer[2]>",
+10,Class,UML,2,,,,,,,,CommonGoalCard,,"​+ CommonGoalCard(pattern : Pattern, name : String)
++ CommonGoalCard(stringJSON : String)",
+11,Class,UML,2,,,,,,,,"<<enumeration>>
+GameState","​+ INIT
++ PLAYING
++ GAME_OVER",,
+12,Class,UML,2,,,,,,,,"<<enumeration>>
+TileType","​+ CAT
++ BOOK
++ GAME
++ FRAME
++ TROPHY
++ PLANT",,
+13,Class,UML,2,,,,,,,,LivingRoomBoard,"​- numOfPlayer : Integer
+- board :  Map<Integer, Map<Integer, Tile>>
+- mask : Map<Integer, Map<Integer, TileRule>>
+- bag : Map<TileType, Integer>","​+ LivingRoomBoard(numberOfPlayers : Integer)
++ LivingRoomBoard(numberOfPlayers : Integer, mask : Map<Integer, Map<Integer, TileRule>>)
++ isToFill() : Boolean
++ fillBoard() : void
++ removeFromBoard(tiles : List<Tile>) : void
++ checkPick(tiles : List<Tile>) : Boolean
++ getBoard() : Map<Integer, Map<Integer, Tile>>
+- pickTileTypeFromBag() : TileType
+- getAdjacentTiles(tile : Tile) : List<Tile>","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-13T12:25:32.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""bag: tipoTile, tilesRimanti""}]}]"
+14,Class,UML,2,,,,,,,,Turn,​- pickedTiles: List<Tile>,"​+ Turn(player: Player, board : LivingRoomBoard)
++ pickTiles(tiles : List<Tile>) : Boolean
++ putTiles(tiles : List<Tile>, column : int) : Boolean
+- nextState() : void
++ getTurnState() : TurnState
++ setTurnState() : void
++ checkBoardRefill() : Boolean
+- checkPick(tiles : List<Tile>) : Boolean",
+15,Class,UML,2,,,,,,,,"<<enumeration>>
+TileRule","​+ BLOCK
++ TWO
++ THREE
++ FOUR",,
+16,Class,UML,2,,,,,,,,"<<enumeration>>
+TurnState","​+ PICK_TILES
++ PUT_TILES
++ END",,
+17,Class,UML,2,,,,,,,,Deck,,"​+ Deck(List<Pattern>)
++ getCards() : List<Card>
++ Draw() : Card",
+18,Class,UML,2,,,,,,,,CommonGoalCardManager,"​- unfullfilledCards : Map<Player, List<Card>>
+- cardsToTokens  : Map< Card, List<Token> >
+- playersToTokens  : Map< Player, List<Token> >","​+ CommonCardManager(players:List<Player>, deck:Deck)
++ update()
++ updatePoints()
++ getCardsToTokens()  : Map< Card, List<Token> >
++ getPlayersToTokens(player : Player) : List<Token>
++ getFullfilledCards(player : Player) : List<Card>
++ getUnfullfilledCards(player : Player) : List<Card>","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-10T19:55:19.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""updatePoints() usa player.addPoint e rimuove token dalla pila""}]}]"
+19,Text,Standard,2,,,,,,,,,,,
+20,Class,UML,2,,,,,,,,CardsAndPointsManager,​- deck : Deck,"​+ CardsAndPointsManager(players : List<Player>, deck : Deck)",
+21,Class,UML,2,,,,,,,,Token,"​- points : Integer
+- number : Integer","​+ Token(points : integer, number : Integer)
++ getPoints() : Integer",
+22,Class,UML,2,,,,,,,,Chat,"​- MessagesPerPlayer : Map<Player, List<Message>>","​+ Chat(players: List<Player>)
++ Chat(chat: Chat)
++ sendMessage(message: Message)
++ getMessages(player: Player) : List<Message>",
+23,Class,UML,2,,,,,,,, PersonalGoalCardManager,"​- playersToCards  : Map< Player, Card >","​+ PersonalCardManager(players:List<Player>,  deck:Deck )
++ updatePoints()
++ getPlayersToCards() : Map< Player, Card >",
+24,Class,UML,2,,,,,,,, EndGamePointsManager,​- goalPatterns : List <Adjacent>,"​+ AdiacentItemTilesManager(players:List<Player>, goalPatterns List<Pattern>)
++ updatePoints()","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-16T11:27:58.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""controlla pattern dal punteggio maggiore a quello minore""}]}]"
+25,Class,UML,2,,,,,,,,Message,"​+ receiver : Optional <Player>
++ data : LocalDateTime
+- content :  String","​+ Message(Txt : String)
++ Message(Txt : String, receiver : Player)
++ getContent() : String","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-13T22:33:46.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""dato che reciver è un optional toglierei proprio isPrivate, altrimenti non ha senso usare l'optional""}]}]"
+26,Class,UML,2,,,,,,,,PointsManager,​+ players: List<Player>,​+ updatePoints(),
+27,Class,UML,2,,,,,,,,Tile,"​+ boardX : int
++ boardY : int","​+ Tile(boardX : int, boardY : int, type : TileType)
++ getBoardX() : int
++ getBoardY() : int
++ removeFromBoard() : void
++ getType() : ItemTile",
+28,Class,UML,2,,,,,,,,Specific,"​- masks : List <List<List<Boolean>> >
++ grupNum : Integer","​+ Specific(mask : List<List<Boolean>>, grupNum, sgc, stc, minC, maxC)
++ Specific(objJSON : String)
++ getMask() : List <List<List<Boolean>> >
++ getGrupNum() : Integer
++ getPatternFunction() : Function<List<List<Optional<Tile>>>, Integer>",
+29,Class,UML,2,,,,,,,,Line,,"​+ Line(tilesNum : Integer, directions, grupNum, sgc, stc, minC, maxC)
++ Line(objJSON : String)
+- getMask() : List < <List<List<Boolean>> >
++ getPatternFunction() : Function<List<List<Optional<Tile>>>, Integer>",
+30,Class,UML,2,,,,,,,,Personal,,"​+ Personal(tiles : List<Tile>)
++ Personal(objJSON : String)
+- getMask() : List < <List<List<Boolean>> >
+",
+31,Class,UML,2,,,,,,,,Adjacent,"​+ points : Integer
++ minTiles : Integer
++ maxTiles : Integer","​+ Pattern(mask : List<List<Boolean>>, minTiles, maxTiles, Points)
++ Pattern(objJSON : String)
++ getMask() : List<List<Boolean>>
++ getPoints() : Integer
++ getMinTiles() : Integer
++ getMaxTiles() : Integer
++ getPatternFunction() : Function","[{""Resolved"":false,""Comments"":[{""Timestamp"":""2023-03-16T11:17:18.000Z"",""Creator"":""Giuseppe Bocci"",""Content"":""getPatternFunction() mi ritorna i punti che ho fatto e la matrice di tiles che ho messo me la modifica a vuota dove ho trovato le tiles dei pattern""}]}]"
+32,Class,UML,2,,,,,,,,Pattern,"​+ sgc : Boolean = False
++ stc : Boolean = True
++ minColor : Integer = 1
++ maxColor : Integer = 1","​+ Pattern(grupNum, sgc, stc, minC, maxC)
++ Pattern(objJSON : String)
++ getPatternFunction() : Function",
+33,Class,UML,2,,,,,,,,GoalManager,,"​+ GoalManager(players : List<Player>, setUpFile : String)
++ updatePointsTurn() : void
++ updatePointsEnd() : void
++ getCommonCardsToTokens()  : Map< Card, List<Token> >
++ getPersonalCards()  : Map< Player, Card >
++ getPlayerTokens(player : Player) : List<Token>
++ getPlayerCommonFullfilledCards(player : Player) : List<Card>
++ getPlayerCommonUnfullfilledCards(player : Player) : List<Card>",
+34,Line,,2,,69,4,4,None,None,,,,,
+35,Line,,2,,,3,6,None,None,,2 - 4,​- players : List<Player>,,
+36,Line,,2,,,6,8,None,None,,​- bookShelf,,,
+37,Line,,2,,,3,13,None,None,,​- board: LivingRoomBoard,,,
+38,Line,,2,,,14,3,None,Composition,,​- currentTurn : Turn,,,
+39,Line,,2,,,8,27,None,None,,30,,,
+40,Line,,2,,,14,6,None,None,,​- currPlayer,,,
+41,Line,,2,,,14,27,None,None,,1-3,​- pickedTiles : List<Tile>,,
+42,Line,,2,,,27,13,None,None,,87,,,
+43,Line,,2,,,16,14,None,None,,​- turnState ,,,
+44,Line,,2,,,10,7,None,Generalization,,,,,
+45,Line,,2,,,9,7,None,Generalization,,,,,
+46,Line,,2,,,15,13,None,None,,81,,,
+47,Line,,2,,,33,17,None,None,,2,"​- deckPersonalGoalCards
+- deckCommonGoalCards",,
+48,Line,,2,,,7,17,None,Composition,,2...*, - cards : List<Card>,,
+49,Line,,2,,,20,26,None,Generalization,,,,,
+50,Line,,2,,,18,20,None,Generalization,,,,,
+51,Line,,2,,,20,17,None,None,,​- deck : Deck,,,
+52,Line,,2,,,33,26,None,None,,​- pointsManagers : List<PointsManager>,3,,
+53,Line,,2,,,23,20,None,Generalization,,,,,
+54,Line,,2,,,24,26,None,Generalization,,,,,
+55,Line,,2,,,3,11,None,None,,​- gameState ,,,
+56,Line,,2,,,18,21,None,None,,2-8,,,
+57,Line,,2,,,22,25,None,None,,0..*,,,
+58,Line,,2,,,3,22,None,None,,​- Chat,,,
+59,Line,,2,,,14,13,None,None,,​- board: LivingRoomBoard,,,
+60,Line,,2,,,26,6,None,None,,2 - 4,​- players : List<Player>,,
+61,Line,,2,,,12,27,None,None,,​+ type : TileType,,,
+62,Line,,2,,,29,28,None,Generalization,,,,,
+63,Line,,2,,,31,32,None,Generalization,,,,,
+64,Line,,2,,,28,32,None,Generalization,,,,,
+65,Line,,2,,,7,32,None,None,,​+ pattern,,,
+66,Line,,2,,,30,32,None,Generalization,,,,,
+67,Line,,2,,,33,3,None,None,, - goalManager,,,
+68,Line,,2,,,24,31,None,None,,1...*,,,
+69,Group 1,,2,,,,,,,,,,,
