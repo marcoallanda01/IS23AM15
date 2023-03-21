@@ -17,7 +17,7 @@ public class LivingRoomBoard {
      * <p>
      * The first list represents the rows, the second list represents the columns
      */
-    private Map<Integer, Map<Integer, Tile>> board;
+    private final Map<Integer, Map<Integer, Tile>> board;
     /**
      * The mask is a list of lists of TileRules
      * <p>
@@ -27,7 +27,7 @@ public class LivingRoomBoard {
     /**
      * The bag is a map of tile types and the number of remaining tiles of that type
      */
-    private Map<TileType, Integer> bag;
+    private final Map<TileType, Integer> bag;
 
     public LivingRoomBoard(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
@@ -118,7 +118,7 @@ public class LivingRoomBoard {
      */
     public void removeFromBoard(List<Tile> tiles) {
         for (Tile tile : tiles) {
-            board.get(tile.getBoardX()).put(tile.getBoardY(), null);
+            board.get(tile.getX()).put(tile.getY(), null);
         }
     }
 
@@ -139,7 +139,7 @@ public class LivingRoomBoard {
         }
         for (Tile tile : tiles) {
             // check if the tiles are present on the board
-            if (board.get(tile.getBoardX()).get(tile.getBoardY()) != tile) {
+            if (board.get(tile.getX()).get(tile.getY()) != tile) {
                 return false;
             }
             // check if the tiles do not have free sides
@@ -150,12 +150,12 @@ public class LivingRoomBoard {
 
             for (Tile otherTile : tiles) { // check if the tiles are adjacent and form a straight line
                 if (tile != otherTile) {
-                    if (tile.getBoardX() != otherTile.getBoardX() && tile.getBoardY() != otherTile.getBoardY()) { // check if the tiles are not on the same row or column
+                    if (tile.getX() != otherTile.getX() && tile.getY() != otherTile.getY()) { // check if the tiles are not on the same row or column
                         return false;
                     }
-                    if (Math.abs(tile.getBoardX() - otherTile.getBoardX()) > 1 || Math.abs(tile.getBoardY() - otherTile.getBoardY()) > 1) { // check if the tiles are not adjacent
+                    if (Math.abs(tile.getX() - otherTile.getX()) > 1 || Math.abs(tile.getY() - otherTile.getY()) > 1) { // check if the tiles are not adjacent
                         if (tiles.size() == 3) { // if there are 3 tiles, check if the tiles are not at a distance of 2
-                            if (Math.abs(tile.getBoardX() - otherTile.getBoardX()) > 2 || Math.abs(tile.getBoardY() - otherTile.getBoardY()) > 2) {
+                            if (Math.abs(tile.getX() - otherTile.getX()) > 2 || Math.abs(tile.getY() - otherTile.getY()) > 2) {
                                 return false;
                             }
                         } else {
@@ -194,10 +194,10 @@ public class LivingRoomBoard {
      * @return a list of the adjacent tiles
      */
     private List<Tile> getAdjacentTiles(Tile tile) {
-        Tile up = board.get(tile.getBoardX() - 1) == null ? null : board.get(tile.getBoardX() - 1).get(tile.getBoardY());
-        Tile down = board.get(tile.getBoardX() + 1) == null ? null : board.get(tile.getBoardX() + 1).get(tile.getBoardY());
-        Tile left = board.get(tile.getBoardX()) == null ? null : board.get(tile.getBoardX()).get(tile.getBoardY() - 1);
-        Tile right = board.get(tile.getBoardX()) == null ? null : board.get(tile.getBoardX()).get(tile.getBoardY() + 1);
+        Tile up = board.get(tile.getX() - 1) == null ? null : board.get(tile.getX() - 1).get(tile.getY());
+        Tile down = board.get(tile.getX() + 1) == null ? null : board.get(tile.getX() + 1).get(tile.getY());
+        Tile left = board.get(tile.getX()) == null ? null : board.get(tile.getX()).get(tile.getY() - 1);
+        Tile right = board.get(tile.getX()) == null ? null : board.get(tile.getX()).get(tile.getY() + 1);
         return Arrays.asList(up, down, left, right);
     }
 

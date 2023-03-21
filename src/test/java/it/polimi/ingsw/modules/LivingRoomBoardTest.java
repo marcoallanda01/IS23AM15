@@ -66,8 +66,8 @@ class LivingRoomBoardTest {
                     assertNull(tile, "tile at " + row + ", " + col + " is not null");
                 } else if (mask.get(row).get(col).ordinal() + 1 <= finalI) {
                     assertNotEquals(tile, null, "tile at " + row + ", " + col + " is null");
-                    assertEquals(tile.getBoardX(), row, "tile at " + row + ", " + col + " has wrong x");
-                    assertEquals(tile.getBoardY(), col, "tile at " + row + ", " + col + " has wrong y");
+                    assertEquals(tile.getX(), row, "tile at " + row + ", " + col + " has wrong x");
+                    assertEquals(tile.getY(), col, "tile at " + row + ", " + col + " has wrong y");
                 }
             }));
         }
@@ -100,7 +100,7 @@ class LivingRoomBoardTest {
             }));
             board.removeFromBoard(tiles);
             //System.out.println("board = " + board);
-            tiles.forEach(tile -> assertNull(board.getBoard().get(tile.getBoardX()).get(tile.getBoardY()), "tile at " + tile.getBoardX() + ", " + tile.getBoardY() + " is not null"));
+            tiles.forEach(tile -> assertNull(board.getBoard().get(tile.getX()).get(tile.getY()), "tile at " + tile.getX() + ", " + tile.getY() + " is not null"));
         }
     }
 

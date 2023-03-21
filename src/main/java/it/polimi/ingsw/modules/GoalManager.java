@@ -100,9 +100,8 @@ public class GoalManager {
             JsonObject patternJ = JsonParser.parseReader(reader).getAsJsonObject();
             String name = patternJ.get("name").getAsString();
             String type = patternJ.get("type").getAsString();
-            switch (type){
-
-                case "specific":
+            switch (type) {
+                case "specific" -> {
                     /* {"name":"X", "type":"specific", "pattern":{"matrix":[[1,0,1],[0,1,0],[1,0,1]],
                         "dim_x":3, "dim_y":3} "group_num":1, "sgc":"N", "max":1, "min":1} */
                     int groupNum = patternJ.get("group_num").getAsInt();
@@ -111,7 +110,7 @@ public class GoalManager {
                     boolean sgc = patternJ.get("sgc").getAsString().equals("Y");
                     JsonArray matrixsJ = patternJ.get("pattern").getAsJsonArray();
                     List<List<List<Boolean>>> matrixs = new ArrayList<List<List<Boolean>>>();
-                    for(int k = 0; k < matrixsJ.size(); k++) {
+                    for (int k = 0; k < matrixsJ.size(); k++) {
                         List<List<Boolean>> matrix = new ArrayList<List<Boolean>>();
                         JsonArray matrixJ = matrixsJ.get(k).getAsJsonArray();
                         for (int i = 0; i < matrixJ.size(); i++) {
@@ -133,9 +132,8 @@ public class GoalManager {
                         matrixs.add(matrix);
                     }
                     pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC);
-                    break;
-
-                case "line":
+                }
+                case "line" -> {
                     //{"name":"2_ROWS", "type":"line", "tiles_num":5, "directions":["O"], "sgc":"N", "max":5,"min":5}
                     int tilesNum = patternJ.get("tiles_num").getAsInt();
                     int groupNuml = patternJ.get("group_num").getAsInt();
@@ -144,38 +142,51 @@ public class GoalManager {
                     boolean sgcl = patternJ.get("sgc").getAsString().equals("Y");
                     JsonArray directionsJ = patternJ.get("directions").getAsJsonArray();
                     List<Character> directions = new ArrayList<>();
-                    for(int i = 0; i < directionsJ.size(); i++){
+                    for (int i = 0; i < directionsJ.size(); i++) {
                         String d = directionsJ.get(i).getAsString();
-                        if(d.length() > 1){
+                        if (d.length() > 1) {
                             System.err.println("Wrong format in line directions");
                             return null; // Return null -> readCommonCards, readEndGame ignores pattern
                         }
                         directions.add(d.charAt(0));
                     }
                     pattern = new Line(name, tilesNum, directions, groupNuml, sgcl, minCl, maxCl);
-                    break;
-
-                case "adjacent":
+                }
+                case "adjacent" -> {
                     // {"name":"6_ADJACENT", "type":"adjacent", "min_tiles":6, "max_tiles":30, points:"8"}
                     int minTiles = patternJ.get("min_tiles").getAsInt();
                     int maxTiles = patternJ.get("max_tiles").getAsInt();
                     int points = patternJ.get("points").getAsInt();
                     pattern = new Adjacent(name, minTiles, maxTiles, points);
-                    break;
-
-                case "personal":
+                }
+                case "personal" -> {
                     // {"name":"pc_1", "type" : "personal",
                     //	"tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]]
                     //	"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] }
                     JsonArray tilesJ = patternJ.get("tiles").getAsJsonArray();
                     List<Tile> tiles = new ArrayList<Tile>();
-                    for(int i = 0; i < tilesJ.size(); i++){
+                    for (int i = 0; i < tilesJ.size(); i++) {
                         JsonArray tileJ = tilesJ.get(i).getAsJsonArray();
                         int x = tileJ.get(0).getAsInt();
                         int y = tileJ.get(1).getAsInt();
-                        TileType  tileType = null;
-                        Tile t = new Tile(x, y, tileType);
+                        String tileTypeName = tileJ.get(1).getAsString();
+                        if (tileTypeName == null) {
+                            return null;
+                        }
+                        Tile t = new Tile(x, y, TileType.tileTypeFromName(tileTypeName));
+                        tiles.add(t);
                     }
+                    JsonArray checkToPointsJ = patternJ.get("check_to_points").getAsJsonArray();
+                    List<int[]> checkToPoints = new ArrayList<int[]>();
+                    for (int i = 0; i < checkToPointsJ.size(); i++) {
+                        JsonArray coupleJ = checkToPointsJ.get(i).getAsJsonArray();
+                        int check = coupleJ.get(0).getAsInt();
+                        int p = coupleJ.get(1).getAsInt();
+                        checkToPoints.add(new int[]{check, p});
+                    }
+                    // Check to points must be already ordered in the json file
+                    pattern = new Personal(name, tiles, checkToPoints);
+                }
             }
         }
         catch(IllegalStateException e){
@@ -207,7 +218,18 @@ public class GoalManager {
         }
 
         try{
-            readJsonStream(in);
+            JsonReader reader = new JsonReader(in);
+            List<Pattern> patternsCommonGoals = new ArrayList<>();
+            List<Pattern> patternsPersonalGoals = new ArrayList<>();
+            List<Pattern> patternsEndGoals = new ArrayList<>();
+            try {
+
+                patternsCommonGoals = readCommonCards(reader);
+                patternsPersonalGoals = readEndGame(reader);
+                patternsEndGoals = readPersonalCard(reader);
+            } finally {
+                reader.close();
+            }
         }catch (IOException e) {
             System.err.println("Error occurred in Goal Manager: IOException occurred with file " + setUpFile + " bad formatted");
             System.err.println("More details: " + e.toString());

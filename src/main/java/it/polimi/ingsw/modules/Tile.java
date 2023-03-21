@@ -1,27 +1,35 @@
 package it.polimi.ingsw.modules;
 
 public class Tile {
-    private int boardX;
-    private int boardY;
+    private int x;
+    private int y;
     private final TileType type;
 
-    public Tile(int boardX, int boardY, TileType type) {
-        this.boardX = boardX;
-        this.boardY = boardY;
+    public Tile(int x, int y, TileType type) {
+        this.x = x;
+        this.y = y;
         this.type = type;
     }
 
-    public int getBoardX() {
-        return boardX;
+    public int getX() {
+        return x;
     }
 
-    public int getBoardY() {
-        return boardY;
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public void removeFromBoard() {
-        this.boardX = -1;
-        this.boardY = -1;
+        this.x = -1;
+        this.y = -1;
     }
 
     public TileType getType() {
@@ -30,7 +38,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        return "Tile{" + "boardX=" + boardX + ", boardY=" + boardY + ", type=" + type + '}';
+        return "Tile{" + "boardX=" + x + ", boardY=" + y + ", type=" + type + '}';
     }
 
     public boolean equalsType(Tile t){
@@ -38,6 +46,6 @@ public class Tile {
     }
 
     public boolean equals(Tile t){
-        return this.boardX == t.boardX && this.boardY == t.boardY && this.type == t.type;
+        return this.x == t.x && this.y == t.y && this.type == t.type;
     }
 }
