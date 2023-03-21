@@ -218,7 +218,18 @@ public class GoalManager {
         }
 
         try{
-            readJsonStream(in);
+            JsonReader reader = new JsonReader(in);
+            List<Pattern> patternsCommonGoals = new ArrayList<>();
+            List<Pattern> patternsPersonalGoals = new ArrayList<>();
+            List<Pattern> patternsEndGoals = new ArrayList<>();
+            try {
+
+                patternsCommonGoals = readCommonCards(reader);
+                patternsPersonalGoals = readEndGame(reader);
+                patternsEndGoals = readPersonalCard(reader);
+            } finally {
+                reader.close();
+            }
         }catch (IOException e) {
             System.err.println("Error occurred in Goal Manager: IOException occurred with file " + setUpFile + " bad formatted");
             System.err.println("More details: " + e.toString());
