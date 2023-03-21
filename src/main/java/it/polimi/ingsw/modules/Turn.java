@@ -16,6 +16,7 @@ public class Turn {
     public Turn(Player player, LivingRoomBoard board) {
         this.currentPlayer = player;
         this.board = board;
+        this.turnState = TurnState.PICK_TILES;
     }
 
     /**
@@ -36,6 +37,7 @@ public class Turn {
         if (this.board.checkPick(tiles)) {
             this.pickedTiles = tiles;
             this.board.removeFromBoard(tiles);
+            setTurnState(TurnState.PUT_TILES);
             return true;
         }
         return false;
@@ -49,6 +51,7 @@ public class Turn {
      */
     public boolean putTiles(List<Tile> tiles, int column){
         if(checkPick(this.pickedTiles)){
+            setTurnState(TurnState.END);
             return this.currentPlayer.getBookShelf().insertTiles(tiles,column);
         }
         return false;
