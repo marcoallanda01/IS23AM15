@@ -6,63 +6,64 @@ public class Turn {
     private List<Tile> pickedTiles;
     private final Player currentPlayer;
     private final LivingRoomBoard board;
-    private TurnState turnState;
+    private  State state;
+
 
     /**
-     * Create a new turn
-     * @param player the player that is playing
-     * @param board the board of the game
+     * Creates a new turn for the given player and board and sets the initial state to PickTilesState
+     * @param player the player who is playing the turn
+     * @param board the board where the player is playing
      */
     public Turn(Player player, LivingRoomBoard board) {
         this.currentPlayer = player;
         this.board = board;
-        this.turnState = TurnState.PICK_TILES;
+        this.state = new PickTilesState(this);
     }
 
     /**
-     * Check if the player can pick the tiles
-     * @param tiles the tiles to pick
-     * @return true if the player can pick the tiles, false otherwise
+     * Changes the state of the turn
+     * @param state the new state of the turn
      */
-    private boolean checkPick(List<Tile> tiles) {
-        return tiles.size() <= this.currentPlayer.getBookShelf().getMaxColumnSpace();
+    public void changeState(State state) {
+        this.state = state;
     }
 
     /**
-     * Pick the tiles from the board
+     * Picks the given tiles from the board
      * @param tiles the tiles to pick
-     * @return true if the tiles are picked, false otherwise
+     * @return true if the tiles were picked, false otherwise
      */
     public boolean pickTiles(List<Tile> tiles) {
-        if (this.board.checkPick(tiles)) {
-            this.pickedTiles = tiles;
-            this.board.removeFromBoard(tiles);
-            setTurnState(TurnState.PUT_TILES);
-            return true;
-        }
-        return false;
+        return this.state.pickTiles(tiles);
     }
 
     /**
-     * Put the tiles in the bookshelf
+     * Puts the given tiles in the given column of the player's bookshelf
      * @param tiles the tiles to put
      * @param column the column where to put the tiles
-     * @return true if the tiles are put, false otherwise
+     * @return true if the tiles were put, false otherwise
      */
     public boolean putTiles(List<Tile> tiles, int column){
-        if(checkPick(this.pickedTiles)){
-            setTurnState(TurnState.END);
-            return this.currentPlayer.getBookShelf().insertTiles(tiles,column);
-        }
-        return false;
+        return this.state.putTiles(tiles, column);
     }
+
+    /**
+     * Checks if the board needs to be refilled
+     * @return true if the board needs to be refilled, false otherwise
+     */
     public boolean checkBoardRefill(){
         return this.board.isToFill();
     }
-    public TurnState getTurnState() {
-        return this.turnState;
+
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
     }
-    public void setTurnState(TurnState turnState) {
-        this.turnState = turnState;
+
+    public LivingRoomBoard getBoard() {
+        return this.board;
+    }
+
+    public void setPickedTiles(List<Tile> pickedTiles) {
+        this.pickedTiles = pickedTiles;
     }
 }
