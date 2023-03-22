@@ -111,15 +111,15 @@ class SpecificTest {
         Xmasks.get(0).get(2).set(2, true);
 
         String name3 = "2X";
-        Pattern pattern3a = new Specific(name2, Xmasks, 2, false, 1, 1);
+        Pattern pattern3a = new Specific(name3, Xmasks, 2, false, 1, 1);
         assertEquals(1, pattern3a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern3b = new Specific(name2, Xmasks, 4, false, 1, 1);
+        Pattern pattern3b = new Specific(name3, Xmasks, 4, false, 1, 1);
         assertEquals(0, pattern3b.getPatternFunction().apply(myBookshelf));
         String name4 = "4With2Types";
-        Pattern pattern4a = new Specific(name2, Xmasks, 4, false, 1, 2);
-        assertEquals(1, pattern3a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern4b = new Specific(name2, Xmasks, 5, false, 1, 2);
-        assertEquals(0, pattern3b.getPatternFunction().apply(myBookshelf));
+        Pattern pattern4a = new Specific(name4, Xmasks, 4, false, 1, 2);
+        assertEquals(1, pattern4a.getPatternFunction().apply(myBookshelf));
+        Pattern pattern4b = new Specific(name4, Xmasks, 5, false, 1, 2);
+        assertEquals(0, pattern4b.getPatternFunction().apply(myBookshelf));
 
         List<List<List<Boolean>>> Cornermasks = new ArrayList<>();
         Cornermasks.add(new ArrayList<>());
@@ -162,15 +162,14 @@ class SpecificTest {
         Couplermasks.get(1).get(1).set(0, true);
 
         String name7 = "Couples";
-        Pattern pattern7a = new Specific(name7, Couplermasks, 6, false, 1, 1);
+        Pattern pattern7a = new Specific(name7, Couplermasks, 14, false, 1, 1);
         assertEquals(1, pattern7a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern7b = new Specific(name7, Couplermasks, 10, false, 1, 2);
-        assertEquals(1, pattern7b.getPatternFunction().apply(myBookshelf));
-        // too many couples takes too much time =(
-        // Pattern pattern7c = new Specific(name7, Couplermasks, 15, false, 1, 1);
-        // assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
-        // 27 should be false
-        // Pattern pattern7d = new Specific(name7, Couplermasks, 27, false, 1, 1);
-        // assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
+        Pattern pattern7b = new Specific(name7, Couplermasks, 15, false, 1, 1);
+        assertEquals(0, pattern7b.getPatternFunction().apply(myBookshelf));
+        // you can divide the bookshelf in 15 groups of 2 (any color)
+        Pattern pattern7c = new Specific(name7, Couplermasks, 15, false, 1, 6);
+        assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
+        Pattern pattern7d = new Specific(name7, Couplermasks, 16, false, 1, 6);
+        assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
     }
 }

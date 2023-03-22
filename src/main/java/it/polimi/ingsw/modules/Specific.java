@@ -1,7 +1,6 @@
 package it.polimi.ingsw.modules;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -33,25 +32,15 @@ public class Specific extends Pattern{
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
         return (bookshelf) -> {
             List<List<Tile>> allGroups = new ArrayList<>(getAllGroups().apply(bookshelf)); // getting all the groups using the private function
-            List<List<List<Tile>>> validSequences = new ArrayList<>();
-            /*
-            // need to pass it by reference because it is a difficult recursive function which adds the elements while on the leaves
-            getPossibleSequencesConsumer().accept(allGroups, validSequences);
-            System.out.println("Sequences done");
-            // check if there is a sequence with enough groups and not too many types across groups.
-            validSequences = validSequences.stream().filter(isSequenceValid()).collect(Collectors.toList());
-            if (validSequences.size() > 0) {
-                return 1;
-            } */
-            return findGoodSequenceConsumer().apply(allGroups).compareTo(false);
+            return Boolean.compare(findGoodSequencePredicate().test(allGroups), false);
         };
     }
     private Predicate<List<List<Tile>>> isSequenceValid() {
         return (sequence) -> {
-            Integer groupNumber = groupNum;
-            Boolean sameTypeAcrossGroups = this.sgc;
-            Boolean enoughGroups = sequence.size() >= groupNumber;
-            Boolean sameColor = sequence.stream().flatMap(Collection::stream).map(Tile::getType).collect(Collectors.toSet()).size() == 1;
+            int groupNumber = groupNum;
+            boolean sameTypeAcrossGroups = this.sgc;
+            boolean enoughGroups = sequence.size() >= groupNumber;
+            boolean sameColor = sequence.stream().flatMap(Collection::stream).map(Tile::getType).collect(Collectors.toSet()).size() == 1;
             return enoughGroups && (sameColor || !sameTypeAcrossGroups);
         };
     }
@@ -67,7 +56,7 @@ public class Specific extends Pattern{
                 List<List<Boolean>> currentMask = masks.get(k);
                 for (int i = 0; i < bookshelf.size() - masks.get(k).size() + 1; i++) {
                     for (int j = 0; j < bookshelf.get(i).size() - masks.get(k).get(0).size() + 1; j++) {
-                        Boolean isPatternValid = true;
+                        boolean isPatternValid = true;
                         Set<TileType> typesInPattern = new HashSet<>();
                         List<Tile> validGroup = new ArrayList<>();
                         for (int l = i; l < (currentMask.size() + i) && isPatternValid; l++) {
@@ -105,61 +94,43 @@ public class Specific extends Pattern{
     }
     // allTheGroups = [[T1, T2, ], [...]] = [Group1, Group2,...]
     // notOverlappingSequences = [[[T1, T4, T5] ...], [...]] = [[Group1, Group4, ...], [...]] = [Sequence1, Sequence2, ...]
-    // returns (by reference) a list lists which contain non overlapping groups
-    private BiConsumer<List<List<Tile>>, List<List<List<Tile>>>> getPossibleSequencesConsumer() {
-        return (startingGroups, notOverlappingSequences) -> {
-            BiFunction<List<List<Tile>>, Integer, Boolean> removeOverlappingFunction = this.getRemoveOverlappingFunction();
-            Boolean sequenceChanged = false;
-            for (Integer i = 0; i < startingGroups.size(); i++) {
-                List<List<Tile>> toBeFilteredGroups = new ArrayList<>(startingGroups);
-                if (removeOverlappingFunction.apply(toBeFilteredGroups, i)) {
-                    getPossibleSequencesConsumer().accept(toBeFilteredGroups, notOverlappingSequences);
-                    sequenceChanged = true;
-                }
-            }
-            if (!sequenceChanged) {
-                // if nothing changed return the sequence given as parameter
-                notOverlappingSequences.add(startingGroups);
-            }
-
-        };
-    }
-    private Function<List<List<Tile>>, Boolean> findGoodSequenceConsumer() {
-        return (startingGroups) -> {
-            BiFunction<List<List<Tile>>, Integer, Boolean> removeOverlappingFunction = this.getRemoveOverlappingFunction();
-            Boolean sequenceChanged = false;
-            for (Integer i = 0; i < startingGroups.size(); i++) {
-                List<List<Tile>> toBeFilteredGroups = new ArrayList<>(startingGroups);
-                if (removeOverlappingFunction.apply(toBeFilteredGroups, i)) {
-                    if(findGoodSequenceConsumer().apply(toBeFilteredGroups)) {
+    private Predicate<List<List<Tile>>> findGoodSequencePredicate() {
+        List<List<Tile>> toBeFilteredGroups = new ArrayList<>();
+        return startingGroups -> {
+            BiFunction<List<List<Tile>>, List<Tile>, Boolean> removeOverlappingFunction = this.getRemoveOverlappingFunction();
+            boolean sequenceChanged = false;
+            for (List<Tile> mainGroup : startingGroups) {
+                toBeFilteredGroups.clear();
+                toBeFilteredGroups.addAll(startingGroups);
+                if (removeOverlappingFunction.apply(toBeFilteredGroups, mainGroup)) {
+                    if (findGoodSequencePredicate().test(toBeFilteredGroups)) {
                         return true;
                     }
                     sequenceChanged = true;
                 }
             }
-            if (!sequenceChanged) {
-                // if nothing changed return the sequence given as parameter
-                if (isSequenceValid().test(startingGroups)) {
-                    return true;
-                }
+            // if !sequenceChanged, we have a non overlapping sequence
+            if (!sequenceChanged && isSequenceValid().test(startingGroups)) {
+                return true;
             }
             return false;
         };
     }
-    // removes all groups with any tile overlapping the group at index
-    private BiFunction<List<List<Tile>>, Integer, Boolean> getRemoveOverlappingFunction() {
-        return (groups, index) -> {
-            List<Tile> mainGroup = new ArrayList<>(groups.get(index));
-            Boolean groupsChanged = false;
-            for (Integer i = 0; i < mainGroup.size(); i++) {
-                Tile tile = mainGroup.get(i);
-                List<List<Tile>> overlappingGroups = groups.parallelStream().filter(group -> group.contains(tile)).collect(Collectors.toList());
-                overlappingGroups.remove(mainGroup);
-                Boolean hasRemoved = groups.removeAll(overlappingGroups);
-                groupsChanged = groupsChanged || hasRemoved;
+
+    private BiFunction<List<List<Tile>>, List<Tile>, Boolean> getRemoveOverlappingFunction() {
+        Set<List<Tile>> overlappingGroups = new HashSet<>();
+        return (groups, mainGroup) -> {
+            for (List<Tile> group : groups) {
+                if (group.stream().anyMatch(mainGroup::contains)) {
+                    overlappingGroups.add(group);
+                }
             }
-            // returning if any groups have been removed
-            return groupsChanged;
+            overlappingGroups.remove(mainGroup);
+            if (!overlappingGroups.isEmpty()) {
+                groups.removeAll(overlappingGroups);
+                return true;
+            }
+            return false;
         };
     }
 }
