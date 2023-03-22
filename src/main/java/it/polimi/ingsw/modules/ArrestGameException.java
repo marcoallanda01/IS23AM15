@@ -1,9 +1,13 @@
 package it.polimi.ingsw.modules;
 
-public class ArrestGameException extends Exception{
+/**
+ * This exception is used when there is an error in the setting files or in the state of the game that doesn't allow
+ * to continue the playing. It extends RuntimeException for avoiding bad practise allowing the game to go on.
+ * Bad practise example: catch(Exception e){}
+ */
+public class ArrestGameException extends RuntimeException{
 
-
-    public ArrestGameException() {
+    public ArrestGameException(){
         System.err.println("ArrestGameException occurred");
     }
 
