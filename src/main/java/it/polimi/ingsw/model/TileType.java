@@ -28,7 +28,6 @@ public enum TileType {
     }
 
     /**
-     *
      * @param name name of the tile type you want to create
      * @return null if there is not a tile type with that name, else a tile type with that name
      */

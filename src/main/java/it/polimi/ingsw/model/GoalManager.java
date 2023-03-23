@@ -1,12 +1,10 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.modules;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.util.function.Predicate;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -14,14 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class GoalManager {
     private final List<PointsManager> pointsManagers = new ArrayList<>();
+
     private final CommonGoalCardManager commonGoalCardManager;
     private final PersonalGoalCardManager personalGoalCardManager;
     private final EndGamePointsManager endGamePointsManager;
-    /**
-     * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
-     * if set to true only pointsManagers with updateRule set to END_GAME will NOT be updated every turn
-     */
-    private Boolean frequentUpdates = Boolean.TRUE;
+
+    private List<List<Pattern>> patterns;
+
     /**
      *
      * @param reader reader from witch read the json
@@ -176,14 +173,12 @@ public class GoalManager {
 
         FileReader in;
         try {
-            in = new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile());
+            in = new FileReader(setUpFile);
         }
         catch (FileNotFoundException e){
             System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
             System.err.println("More details: " + e.toString());
             throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
 
         try{
@@ -225,25 +220,25 @@ public class GoalManager {
         this.pointsManagers.add(this.commonGoalCardManager);
         this.pointsManagers.add(this.personalGoalCardManager);
         this.pointsManagers.add(this.endGamePointsManager);
+
     }
-    /**
-     * @param player the player
-     * updates the points of the player relative to every pointsManager that should be updated every turn
-     */
-    public void updatePointsTurn(Player player) {
-        Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) : pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_TURN);
-        pointsManagers.stream().filter(toUpdate).forEach(pointsManager -> pointsManager.updatePoints(player));
+
+    public void updatePointsTurn() {
+        // NB: updatePointsTurn() can't actually update the points for each PointsManager
+        // this issue is caused from the fact that points are stored in the player and
+        // therefore are supposed to be updated just once (at the end of the game)
+        // this function actually just updates the CommonGoalCardManager (which needs to be updated every turn)
+        // (but does not update the points relative to the CommonGoalCardManager!, just its state)
+        // a updatePointsTurn will be added to every manager, if points will be moved
+        // to the manager itself this will allow to display updated player points every turn
+        // and not just at the end of the game
+        pointsManagers.forEach(PointsManager::updatePointsTurn);
     }
-    /**
-     * @param player the player
-     * updates the points of the player relative to every pointsManager
-     */
-    public void updatePointsEnd(Player player) {
-        pointsManagers.forEach(PointsManager -> PointsManager.updatePoints(player));
+
+    public void updatePointsEnd() {
+        pointsManagers.forEach(PointsManager::updatePoints);
     }
-    public int getPoints(Player player) {
-        return pointsManagers.stream().map(pointsManager -> pointsManager.getPoints(player)).mapToInt(Integer::intValue).sum();
-    }
+
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
     /**
      * @return a map associating cards to tokens
@@ -257,32 +252,29 @@ public class GoalManager {
      * @param player the player
      * @return the tokens of the player:
      */
-    public Set<Token> getTokens(Player player) {
-        return commonGoalCardManager.getTokens(player);
+    public Set<Token> getPlayerTokens(Player player) {
+        return commonGoalCardManager.getPlayerTokens(player);
     }
 
     /**
      * @param player the player
      * @return the unfulfilled cards of the player
      */
-    public Set<Card> getUnfulfilledCommonCards(Player player) {
-        return commonGoalCardManager.getUnfulfilledCards(player);
+    public Set<Card> getPlayerCommonUnfulfilledCards(Player player) {
+        return commonGoalCardManager.getPlayerUnfulfilledCards(player);
     }
     /**
      * @param player the player
      * @return the fulfilled cards of the player
      */
-    public Set<Card> getFulfilledCommonCards(Player player) {
-        return commonGoalCardManager.getFulfilledCards(player);
+    public Set<Card> getPlayerCommonFulfilledCards(Player player) {
+        return commonGoalCardManager.getPlayerFulfilledCards(player);
     }
     /**
      * @param player the player
      * @return the personal card of the player
      */
-    public Card getPersonalCard(Player player) {
-        return personalGoalCardManager.getCard(player);
-    }
-    public Set<Pattern> getEndGameGoals() {
-        return endGamePointsManager.getPatterns();
+    public Card getPlayerPersonalCards(Player player) {
+        return personalGoalCardManager.getPlayerCard(player);
     }
 }
