@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,5 +145,67 @@ class SpecificTest {
         assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
         Pattern pattern7d = new Specific(name7, Couplermasks, 16, false, 1, 6);
         assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
+    }
+
+    @Test
+    void getTransposedMasks() {
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<List<Boolean>>> results = new ArrayList<>();
+        List<List<Boolean>> m1 = new ArrayList<>();
+        List<List<Boolean>> m2 = new ArrayList<>();
+        List<List<Boolean>> m3 = new ArrayList<>();
+        List<Boolean> row1 = new ArrayList<>();
+        List<Boolean> row2 = new ArrayList<>();
+        List<Boolean> row3 = new ArrayList<>();
+
+        // Construction masks for Specific
+        row1.add(false); row1.add(true); row1.add(false);
+        row2.add(true);  row2.add(true); row2.add(true);
+        row3.add(false); row3.add(true); row3.add(true);
+        m1.add(row1); m1.add(row2); m1.add(row3);
+        row1.clear(); row2.clear(); row3.clear();
+        masks.add(m1);
+
+        row1.add(false); row1.add(true);  row1.add(false);
+        row2.add(true);  row2.add(true);
+        row3.add(false); row3.add(false); row3.add(false);
+        m2.add(row1); m2.add(row2); m2.add(row3);
+        row1.clear(); row2.clear(); row3.clear();
+        masks.add(m2);
+
+        row1.add(false); row1.add(true);  row1.add(false);
+        row2.add(true);  row2.add(false); row2.add(true);
+        row3.add(false); row3.add(true);  row3.add(false);
+        m3.add(row1); m3.add(row2); m3.add(row3);
+        row1.clear(); row2.clear(); row3.clear();
+        masks.add(m3);
+
+        // Construction expected result
+        m1.clear();
+        row1.add(false); row1.add(true); row1.add(false);
+        row2.add(true);  row2.add(true); row2.add(true);
+        row3.add(false); row3.add(true); row3.add(true);
+        m1.add(row1); m1.add(row2); m1.add(row3);
+        row1.clear(); row2.clear(); row3.clear();
+        results.add(m1);
+
+        m2.clear();
+        row1.add(false); row1.add(true);  row1.add(false);
+        row2.add(true);  row2.add(true);  row2.add(false);
+        row3.add(false); row3.add(false); row3.add(false);
+        m2.add(row1); m2.add(row2); m2.add(row3);
+        row1.clear(); row2.clear(); row3.clear();
+        results.add(m2);
+
+        m3.clear();
+        row1.add(false); row1.add(true);  row1.add(false);
+        row2.add(true);  row2.add(false); row2.add(true);
+        row3.add(false); row3.add(true);  row3.add(false);
+        m3.add(row1); m3.add(row2); m3.add(row3);
+        row1.clear(); row2.clear(); row3.clear();
+        results.add(m3);
+
+        Specific pattern = new Specific("test", masks, 1, false, 1, 1);
+        assertEquals(results, pattern.getTransposedMasks());
     }
 }
