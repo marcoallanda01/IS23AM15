@@ -7,10 +7,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Specific extends Pattern{
-    private List<List<List<Boolean>>> masks;
-    private boolean sgc;
-    private int minColor;
-    private int maxColor;
+    private final List<List<List<Boolean>>> masks;
+    private final boolean sgc;
+    private final int minColor;
+    private final int maxColor;
     private final int groupNum;
 
     /**
@@ -37,26 +37,63 @@ public class Specific extends Pattern{
     }
     private Predicate<List<List<Tile>>> isSequenceValid() {
         return (sequence) -> {
-            int groupNumber = groupNum;
-            boolean sameTypeAcrossGroups = this.sgc;
-            boolean enoughGroups = sequence.size() >= groupNumber;
+            boolean enoughGroups = sequence.size() >= this.groupNum;
             boolean sameColor = sequence.stream().flatMap(Collection::stream).map(Tile::getType).collect(Collectors.toSet()).size() == 1;
-            return enoughGroups && (sameColor || !sameTypeAcrossGroups);
+            return enoughGroups && (sameColor || !this.sgc);
         };
     }
+
+    /**
+     * @return Transposed masks: a list of "matrix" columns x rows
+     */
+    private List<List<List<Boolean>>> transposeMasks(){
+        List<List<List<Boolean>>> tMasks = new ArrayList<List<List<Boolean>>>();
+
+        for(List<List<Boolean>> m : this.masks) {
+            List<Integer> sizes = new ArrayList<>();
+            for (List<Boolean> r : m) {
+                sizes.add(r.size());
+            }
+            int maxNumCol = Collections.max(sizes);
+            List<List<Boolean>> tm = new ArrayList<>();
+            for (int j = 0; j < maxNumCol; j++) {
+                List<Boolean> col = new ArrayList<>();
+                for (List<Boolean> r : m) {
+                    try {
+                        col.add(r.get(j));
+                    }catch (IndexOutOfBoundsException ignored){
+                        col.add(false);
+                    }
+                }
+                tm.add(col);
+            }
+            tMasks.add(tm);
+        }
+
+        return tMasks;
+    }
+
+    /**
+     *
+     * @return Transposed masks: a list of "matrix" columns x rows
+     */
+    public List<List<List<Boolean>>> getTransposedMasks(){
+        System.out.println(transposeMasks().toString());
+        return transposeMasks();
+    }
+
     // gets all the groups, even if overlapping
     private Function<List<List<Optional<Tile>>>, List<List<Tile>>> getAllGroups() {
         return (bookshelf) -> {
-            List<List<List<Boolean>>> masks = this.masks; // this.masks
-            int maxTypesInGroup = this.maxColor;
-            int minTypesInGroup = this.minColor;
+            List<List<List<Boolean>>> masks = transposeMasks();
             List<List<Tile>> allTheGroups = new ArrayList<>();
             // if all masks have been checked, go forward
             for (int k = 0; k < masks.size(); k++) {
                 List<List<Boolean>> currentMask = masks.get(k);
                 for (int i = 0; i < bookshelf.size() - masks.get(k).size() + 1; i++) {
+                    boolean isPatternValid;
                     for (int j = 0; j < bookshelf.get(i).size() - masks.get(k).get(0).size() + 1; j++) {
-                        boolean isPatternValid = true;
+                         isPatternValid = true;
                         Set<TileType> typesInPattern = new HashSet<>();
                         List<Tile> validGroup = new ArrayList<>();
                         for (int l = i; l < (currentMask.size() + i) && isPatternValid; l++) {
@@ -69,7 +106,7 @@ public class Specific extends Pattern{
                                         // if the tile is valid store its type
                                         typesInPattern.add(bookshelf.get(l).get(m).get().getType());
                                         // too many types in group
-                                        if (typesInPattern.size() > maxTypesInGroup) {
+                                        if (typesInPattern.size() > this.maxColor) {
                                             isPatternValid = false;
                                         } else {
                                             // store the tile in the group (down here to avoid useless storing)
@@ -80,7 +117,7 @@ public class Specific extends Pattern{
                             }
                         }
                         // too few types in group
-                        if (typesInPattern.size() < minTypesInGroup) {
+                        if (typesInPattern.size() < this.minColor) {
                             isPatternValid = true;
                         }
                         if (isPatternValid) {
