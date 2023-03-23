@@ -28,15 +28,21 @@ class SpecificTest {
         masks.get(0).get(1).set(1, true);
 
         BookShelf bookShelf = new BookShelf();
-
-        Tile cat = new Tile(-1, -1, TileType.CAT);
-        Tile trophy = new Tile(-1, -1, TileType.TROPHY);
-
-        bookShelf.insertTiles(List.of(trophy, cat, cat, cat, cat, trophy), 0);
-        bookShelf.insertTiles(List.of(trophy, cat, cat, cat, cat, cat), 1);
-        bookShelf.insertTiles(List.of(trophy, trophy, cat, cat, cat, cat), 2);
-        bookShelf.insertTiles(List.of(trophy, cat, cat, cat, cat, trophy), 3);
-        bookShelf.insertTiles(List.of(trophy, cat, cat, trophy, trophy, trophy), 4);
+        List<Tile> one = List.of(new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT),
+                new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.TROPHY));
+        bookShelf.insertTiles(one, 0);
+        List<Tile> two = List.of(new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT),
+                new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT));
+        bookShelf.insertTiles(two, 1);
+        List<Tile> three = List.of(new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT),
+                new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT));
+        bookShelf.insertTiles(three, 2);
+        List<Tile> four = List.of(new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT),
+                new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.TROPHY));
+        bookShelf.insertTiles(four, 3);
+        List<Tile> five = List.of(new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.CAT), new Tile(-1, -1, TileType.TROPHY),
+                new Tile(-1, -1, TileType.TROPHY), new Tile(-1, -1, TileType.TROPHY));
+        bookShelf.insertTiles(five, 4);
 
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
@@ -90,7 +96,7 @@ class SpecificTest {
 //        myBookshelf.get(3).set(5, Optional.of((new Tile(3, 5, TileType.TROPHY))));
 //        myBookshelf.get(4).set(5, Optional.of((new Tile(4, 5, TileType.TROPHY))));
 
-        System.out.println(bookShelf);
+        //System.out.println(bookShelf);
 
         String name = "4squares";
         Pattern pattern1a = new Specific(name, masks, 4, false, 1, 1);

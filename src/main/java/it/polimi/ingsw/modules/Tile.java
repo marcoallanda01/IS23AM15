@@ -38,7 +38,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        return "Tile{" + "boardX=" + x + ", boardY=" + y + ", type=" + type + '}';
+        return "Tile{" + "x=" + x + ", y=" + y + ", type=" + type + '}';
     }
 
     public boolean equalsType(Tile t){
