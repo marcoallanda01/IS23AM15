@@ -2,7 +2,6 @@ package it.polimi.ingsw.modules;
 
 import org.junit.jupiter.api.Test;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +27,26 @@ class SpecificTest {
         masks.get(0).get(1).set(0, true);
         masks.get(0).get(1).set(1, true);
 
-        List<List<Optional<Tile>>> myBookshelf = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            myBookshelf.add(new ArrayList<>());
-            for (int j = 0; j < 6; j++) {
-                myBookshelf.get(i).add(Optional.empty());
-            }
-        }
+        BookShelf bookShelf = new BookShelf();
+
+        Tile cat = new Tile(-1, -1, TileType.CAT);
+        Tile trophy = new Tile(-1, -1, TileType.TROPHY);
+
+        bookShelf.insertTiles(List.of(trophy, cat, cat, cat, cat, trophy), 0);
+        bookShelf.insertTiles(List.of(trophy, cat, cat, cat, cat, cat), 1);
+        bookShelf.insertTiles(List.of(trophy, trophy, cat, cat, cat, cat), 2);
+        bookShelf.insertTiles(List.of(trophy, cat, cat, cat, cat, trophy), 3);
+        bookShelf.insertTiles(List.of(trophy, cat, cat, trophy, trophy, trophy), 4);
+
+        List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
+
+//        List<List<Optional<Tile>>> myBookshelf = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            myBookshelf.add(new ArrayList<>());
+//            for (int j = 0; j < 6; j++) {
+//                myBookshelf.get(i).add(Optional.empty());
+//            }
+//        }
         // TCCTT
         // CCCCT
         // CCCCT
@@ -42,41 +54,43 @@ class SpecificTest {
         // CCTCC
         // TTTTT
         // one of six
-        myBookshelf.get(0).set(0, Optional.of((new Tile(0, 0, TileType.TROPHY))));
-        myBookshelf.get(1).set(0, Optional.of((new Tile(1, 0, TileType.CAT))));
-        myBookshelf.get(2).set(0, Optional.of((new Tile(2, 0, TileType.CAT))));
-        myBookshelf.get(3).set(0, Optional.of((new Tile(3, 0, TileType.TROPHY))));
-        myBookshelf.get(4).set(0, Optional.of((new Tile(4, 0, TileType.TROPHY))));
-        // two of six
-        myBookshelf.get(0).set(1, Optional.of((new Tile(0, 1, TileType.CAT))));
-        myBookshelf.get(1).set(1, Optional.of((new Tile(1, 1, TileType.CAT))));
-        myBookshelf.get(2).set(1, Optional.of((new Tile(2, 1, TileType.CAT))));
-        myBookshelf.get(3).set(1, Optional.of((new Tile(3, 1, TileType.CAT))));
-        myBookshelf.get(4).set(1, Optional.of((new Tile(4, 1, TileType.TROPHY))));
-        // three of six
-        myBookshelf.get(0).set(2, Optional.of((new Tile(0, 2, TileType.CAT))));
-        myBookshelf.get(1).set(2, Optional.of((new Tile(1, 2, TileType.CAT))));
-        myBookshelf.get(2).set(2, Optional.of((new Tile(2, 2, TileType.CAT))));
-        myBookshelf.get(3).set(2, Optional.of((new Tile(3, 2, TileType.CAT))));
-        myBookshelf.get(4).set(2, Optional.of((new Tile(4, 2, TileType.TROPHY))));
-        // four of six
-        myBookshelf.get(0).set(3, Optional.of((new Tile(0, 3, TileType.CAT))));
-        myBookshelf.get(1).set(3, Optional.of((new Tile(1, 3, TileType.CAT))));
-        myBookshelf.get(2).set(3, Optional.of((new Tile(2, 3, TileType.CAT))));
-        myBookshelf.get(3).set(3, Optional.of((new Tile(3, 3, TileType.CAT))));
-        myBookshelf.get(4).set(3, Optional.of((new Tile(4, 3, TileType.CAT))));
-        // five of six
-        myBookshelf.get(0).set(4, Optional.of((new Tile(0, 4, TileType.CAT))));
-        myBookshelf.get(1).set(4, Optional.of((new Tile(1, 4, TileType.CAT))));
-        myBookshelf.get(2).set(4, Optional.of((new Tile(2, 4, TileType.TROPHY))));
-        myBookshelf.get(3).set(4, Optional.of((new Tile(3, 4, TileType.CAT))));
-        myBookshelf.get(4).set(4, Optional.of((new Tile(4, 4, TileType.CAT))));
-        // six of six
-        myBookshelf.get(0).set(5, Optional.of((new Tile(0, 5, TileType.TROPHY))));
-        myBookshelf.get(1).set(5, Optional.of((new Tile(1, 5, TileType.TROPHY))));
-        myBookshelf.get(2).set(5, Optional.of((new Tile(2, 5, TileType.TROPHY))));
-        myBookshelf.get(3).set(5, Optional.of((new Tile(3, 5, TileType.TROPHY))));
-        myBookshelf.get(4).set(5, Optional.of((new Tile(4, 5, TileType.TROPHY))));
+//        myBookshelf.get(0).set(0, Optional.of((new Tile(0, 0, TileType.TROPHY))));
+//        myBookshelf.get(1).set(0, Optional.of((new Tile(1, 0, TileType.CAT))));
+//        myBookshelf.get(2).set(0, Optional.of((new Tile(2, 0, TileType.CAT))));
+//        myBookshelf.get(3).set(0, Optional.of((new Tile(3, 0, TileType.TROPHY))));
+//        myBookshelf.get(4).set(0, Optional.of((new Tile(4, 0, TileType.TROPHY))));
+//        // two of six
+//        myBookshelf.get(0).set(1, Optional.of((new Tile(0, 1, TileType.CAT))));
+//        myBookshelf.get(1).set(1, Optional.of((new Tile(1, 1, TileType.CAT))));
+//        myBookshelf.get(2).set(1, Optional.of((new Tile(2, 1, TileType.CAT))));
+//        myBookshelf.get(3).set(1, Optional.of((new Tile(3, 1, TileType.CAT))));
+//        myBookshelf.get(4).set(1, Optional.of((new Tile(4, 1, TileType.TROPHY))));
+//        // three of six
+//        myBookshelf.get(0).set(2, Optional.of((new Tile(0, 2, TileType.CAT))));
+//        myBookshelf.get(1).set(2, Optional.of((new Tile(1, 2, TileType.CAT))));
+//        myBookshelf.get(2).set(2, Optional.of((new Tile(2, 2, TileType.CAT))));
+//        myBookshelf.get(3).set(2, Optional.of((new Tile(3, 2, TileType.CAT))));
+//        myBookshelf.get(4).set(2, Optional.of((new Tile(4, 2, TileType.TROPHY))));
+//        // four of six
+//        myBookshelf.get(0).set(3, Optional.of((new Tile(0, 3, TileType.CAT))));
+//        myBookshelf.get(1).set(3, Optional.of((new Tile(1, 3, TileType.CAT))));
+//        myBookshelf.get(2).set(3, Optional.of((new Tile(2, 3, TileType.CAT))));
+//        myBookshelf.get(3).set(3, Optional.of((new Tile(3, 3, TileType.CAT))));
+//        myBookshelf.get(4).set(3, Optional.of((new Tile(4, 3, TileType.CAT))));
+//        // five of six
+//        myBookshelf.get(0).set(4, Optional.of((new Tile(0, 4, TileType.CAT))));
+//        myBookshelf.get(1).set(4, Optional.of((new Tile(1, 4, TileType.CAT))));
+//        myBookshelf.get(2).set(4, Optional.of((new Tile(2, 4, TileType.TROPHY))));
+//        myBookshelf.get(3).set(4, Optional.of((new Tile(3, 4, TileType.CAT))));
+//        myBookshelf.get(4).set(4, Optional.of((new Tile(4, 4, TileType.CAT))));
+//        // six of six
+//        myBookshelf.get(0).set(5, Optional.of((new Tile(0, 5, TileType.TROPHY))));
+//        myBookshelf.get(1).set(5, Optional.of((new Tile(1, 5, TileType.TROPHY))));
+//        myBookshelf.get(2).set(5, Optional.of((new Tile(2, 5, TileType.TROPHY))));
+//        myBookshelf.get(3).set(5, Optional.of((new Tile(3, 5, TileType.TROPHY))));
+//        myBookshelf.get(4).set(5, Optional.of((new Tile(4, 5, TileType.TROPHY))));
+
+        System.out.println(bookShelf);
 
         String name = "4squares";
         Pattern pattern1a = new Specific(name, masks, 4, false, 1, 1);
