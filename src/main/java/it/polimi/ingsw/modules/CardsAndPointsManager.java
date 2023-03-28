@@ -12,4 +12,5 @@ public  abstract class CardsAndPointsManager extends PointsManager {
     }
 
     public abstract void updatePoints();
+    public abstract void updatePoints(Player player);
 }

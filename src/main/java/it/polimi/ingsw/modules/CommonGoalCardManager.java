@@ -80,44 +80,27 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
      * Updates the points of each player
      */
     public void updatePoints() {
-        players.stream().forEach(player -> this.updatePlayerPoints(player));
+        players.stream().forEach(player -> this.updatePoints(player));
     }
     /**
      * updates the points of the given player
      * @param player the player to update
      */
-    public void updatePlayerPoints(Player player) {
-        player.addPoints(this.playersToTokens.get(player).stream().map(token -> token.getPoints()).reduce(0, Integer::sum));
-        // if we update te player point we also need to remove tokens from player, to avoid adding them twice
-        this.playersToTokens.put(player, new HashSet<>());
-    }
-    /**
-     * just calls update for now
-     */
-    // this might also be used to update the points in real time, but it can't because points are in the player
-    public void updatePointsTurn() {
-        this.update();
-    }
-    /**
-     * just calls updatePlayer for now
-     */
-    // this might also be used to update the points in real time, but it can't because points are in the player
-    public void updatePlayerPointsTurn(Player player) {
-        this.updatePlayer(player);
-    }
-    /**
-     * updates playersToUnfulfilledCards, playersToTokens, cardsToTokens
-     */
-    private void update() {
-        // updates every player, even if it is not their turn, more extensible, less efficient
-        players.stream().forEach(player -> this.updatePlayer(player));
+    public void updatePoints(Player player) {
+        Integer oldPoints = this.playersToPoints.get(player);
+        update(player);
+        Integer newPoints = this.getPlayersToTokens().get(player).stream().map(Token::getPoints).reduce(0, Integer::sum);
+        // update the points internal to the manager
+        this.playersToPoints.put(player, newPoints);
+        // update the points in the player
+        player.addPoints(newPoints - oldPoints);
     }
     /**
      * updates playersToUnfulfilledCards, playersToTokens, cardsToTokens,
      * based on the player's unfulfilled cards fulfilled by the player
      * @param  player the player to check for cards fulfillment
      */
-    private void updatePlayer(Player player) {
+    private void update(Player player) {
         // partitioning the cards of each player in fulfilled and unfulfilled
         Map<Boolean,Set<Card>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
         //moving the token from fulfilled cards to player

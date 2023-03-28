@@ -3,7 +3,6 @@ package it.polimi.ingsw.modules;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 import com.google.gson.*;
@@ -12,12 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class GoalManager {
     private final List<PointsManager> pointsManagers = new ArrayList<>();
-
     private final CommonGoalCardManager commonGoalCardManager;
     private final PersonalGoalCardManager personalGoalCardManager;
     private final EndGamePointsManager endGamePointsManager;
-
-    private List<List<Pattern>> patterns;
 
     /**
      *
@@ -220,23 +216,23 @@ public class GoalManager {
         this.pointsManagers.add(this.commonGoalCardManager);
         this.pointsManagers.add(this.personalGoalCardManager);
         this.pointsManagers.add(this.endGamePointsManager);
-
     }
 
     public void updatePointsTurn() {
-        // NB: updatePointsTurn() can't actually update the points for each PointsManager
-        // this issue is caused from the fact that points are stored in the player and
-        // therefore are supposed to be updated just once (at the end of the game)
-        // this function actually just updates the CommonGoalCardManager (which needs to be updated every turn)
-        // (but does not update the points relative to the CommonGoalCardManager!, just its state)
-        // a updatePointsTurn will be added to every manager, if points will be moved
-        // to the manager itself this will allow to display updated player points every turn
-        // and not just at the end of the game
-        pointsManagers.forEach(PointsManager::updatePointsTurn);
+        // just the commonGoalCardManager needs to be updated every turn
+        // every manager should be able to updatePoints every turn without breaking
+        commonGoalCardManager.updatePoints();
     }
-
+    public void updatePointsTurn(Player player) {
+        // just the commonGoalCardManager needs to be updated every turn
+        // every manager should be able to updatePoints every turn without breaking
+        commonGoalCardManager.updatePoints(player);
+    }
     public void updatePointsEnd() {
         pointsManagers.forEach(PointsManager::updatePoints);
+    }
+    public void updatePointsEnd(Player player) {
+        pointsManagers.forEach(PointsManager -> PointsManager.updatePoints(player));
     }
 
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)

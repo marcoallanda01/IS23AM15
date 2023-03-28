@@ -16,14 +16,19 @@ public class PersonalGoalCardManager extends CardsAndPointsManager{
      * Updates the points of each player
      */
     public void updatePoints() {
-        players.stream().forEach(player -> updatePlayerPoints(player));
+        players.stream().forEach(player -> updatePoints(player));
     }
     /**
      * updates the points of the given player
      * @param player the player to update
      */
-    public void updatePlayerPoints(Player player) {
-        player.addPoints(this.playersToCards.get(player).getPatternFunction().apply(player.getBookShelf().getState()));
+    public void updatePoints(Player player) {
+        Integer oldPoints = this.playersToPoints.get(player);
+        Integer newPoints = this.playersToCards.get(player).getPatternFunction().apply(player.getBookShelf().getState());
+        // update the points internal to the manager
+        this.playersToPoints.put(player, newPoints);
+        // update the points in the player
+        player.addPoints(newPoints - oldPoints);
     }
     /**
      * @param player the player

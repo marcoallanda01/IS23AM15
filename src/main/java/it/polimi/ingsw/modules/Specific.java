@@ -32,7 +32,7 @@ public class Specific extends Pattern{
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
         return (bookshelf) -> {
             List<List<Tile>> allGroups = new ArrayList<>(getAllGroups().apply(bookshelf)); // getting all the groups using the private function
-            return Boolean.compare(findGoodSequencePredicate().test(allGroups), false);
+            return Boolean.compare(findGoodSequence().test(allGroups), false);
         };
     }
     private Predicate<List<List<Tile>>> isSequenceValid() {
@@ -94,16 +94,16 @@ public class Specific extends Pattern{
     }
     // allTheGroups = [[T1, T2, ], [...]] = [Group1, Group2,...]
     // notOverlappingSequences = [[[T1, T4, T5] ...], [...]] = [[Group1, Group4, ...], [...]] = [Sequence1, Sequence2, ...]
-    private Predicate<List<List<Tile>>> findGoodSequencePredicate() {
+    private Predicate<List<List<Tile>>> findGoodSequence() {
         List<List<Tile>> toBeFilteredGroups = new ArrayList<>();
         return startingGroups -> {
-            BiFunction<List<List<Tile>>, List<Tile>, Boolean> removeOverlappingFunction = this.getRemoveOverlappingFunction();
+            BiFunction<List<List<Tile>>, List<Tile>, Boolean> removeOverlappingFunction = this.removeOverlapping();
             boolean sequenceChanged = false;
             for (List<Tile> mainGroup : startingGroups) {
                 toBeFilteredGroups.clear();
                 toBeFilteredGroups.addAll(startingGroups);
                 if (removeOverlappingFunction.apply(toBeFilteredGroups, mainGroup)) {
-                    if (findGoodSequencePredicate().test(toBeFilteredGroups)) {
+                    if (findGoodSequence().test(toBeFilteredGroups)) {
                         return true;
                     }
                     sequenceChanged = true;
@@ -117,7 +117,7 @@ public class Specific extends Pattern{
         };
     }
 
-    private BiFunction<List<List<Tile>>, List<Tile>, Boolean> getRemoveOverlappingFunction() {
+    private BiFunction<List<List<Tile>>, List<Tile>, Boolean> removeOverlapping() {
         Set<List<Tile>> overlappingGroups = new HashSet<>();
         return (groups, mainGroup) -> {
             for (List<Tile> group : groups) {

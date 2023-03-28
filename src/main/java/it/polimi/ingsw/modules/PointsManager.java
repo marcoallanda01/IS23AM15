@@ -1,18 +1,17 @@
 package it.polimi.ingsw.modules;
-
 import java.util.List;
+import java.util.Map;
 
 public abstract class PointsManager {
     protected List<Player> players;
+    protected Map<Player, Integer> playersToPoints;
 
     public PointsManager(List<Player> players) {
         this.players = players;
+        players.forEach(player -> this.playersToPoints.put(player, 0));
     }
 
     public abstract void updatePoints();
-
-    // this does not need to be implemented from every PointsManager,
-    // some PointsManagers might only want to update points at the end of the game
-    public void updatePointsTurn() {}
+    public abstract void updatePoints(Player player);
 
 }

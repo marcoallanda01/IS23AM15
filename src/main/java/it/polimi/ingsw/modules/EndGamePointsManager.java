@@ -8,7 +8,8 @@ public class EndGamePointsManager extends PointsManager{
         super(players);
     }
 
-    public void updatePoints() {
+    public void updatePoints() {}
 
-    }
+    public void updatePoints(Player player){}
+
 }
