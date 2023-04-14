@@ -13,5 +13,8 @@ public abstract class PointsManager {
 
     public abstract void updatePoints();
     public abstract void updatePoints(Player player);
+    public Integer getPlayerPoints(Player player) {
+        return playersToPoints.get(player);
+    }
 
 }

@@ -234,7 +234,9 @@ public class GoalManager {
     public void updatePointsEnd(Player player) {
         pointsManagers.forEach(PointsManager -> PointsManager.updatePoints(player));
     }
-
+    public int getPlayerPoints(Player player) {
+        return pointsManagers.stream().map(pointsManager -> pointsManager.getPlayerPoints(player)).mapToInt(Integer::intValue).sum();
+    }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
     /**
      * @return a map associating cards to tokens
