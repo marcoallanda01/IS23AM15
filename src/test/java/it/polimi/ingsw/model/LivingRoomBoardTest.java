@@ -81,7 +81,7 @@ class LivingRoomBoardTest {
                     }
                 });
             } catch (Exception e) {
-                assertTrue(e instanceof IllegalStateException);
+                assertTrue(e instanceof ArrestGameException);
                 break;
             }
             if(i > 2){

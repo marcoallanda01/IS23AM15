@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.PlayController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import org.junit.jupiter.api.Test;

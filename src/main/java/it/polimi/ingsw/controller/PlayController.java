@@ -25,7 +25,6 @@ public class PlayController {
     public boolean saveGame() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter()).create();
         String json = gson.toJson(game);
-        System.out.println("json = " + json);
         File saves = new File("saves");
         if (!saves.exists()) {
             saves.mkdir();
