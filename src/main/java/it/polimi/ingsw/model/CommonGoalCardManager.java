@@ -12,6 +12,7 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
 
     public CommonGoalCardManager(List<Player> players, Deck deck) {
         super(players, deck);
+        this.updateRule = UpdateRule.END_TURN;
         generatePlayersToTokens();
         generateCardsToTokens();
         generatePlayersToUnfulfilledCards();
@@ -77,23 +78,13 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
         playersToUnfulfilledCards = players.stream().collect(Collectors.toMap(player -> player, player -> cardsToTokens.keySet()));
     }
     /**
-     * Updates the points of each player
-     */
-    public void updatePoints() {
-        players.stream().forEach(player -> this.updatePoints(player));
-    }
-    /**
      * updates the points of the given player
      * @param player the player to update
      */
     public void updatePoints(Player player) {
-        Integer oldPoints = this.playersToPoints.get(player);
         update(player);
         Integer newPoints = this.getPlayersToTokens().get(player).stream().map(Token::getPoints).reduce(0, Integer::sum);
-        // update the points internal to the manager
         this.playersToPoints.put(player, newPoints);
-        // update the points in the player
-        player.addPoints(newPoints - oldPoints);
     }
     /**
      * updates playersToUnfulfilledCards, playersToTokens, cardsToTokens,
@@ -104,7 +95,7 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
         // partitioning the cards of each player in fulfilled and unfulfilled
         Map<Boolean,Set<Card>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
         //moving the token from fulfilled cards to player
-        cardsPartition.get(true).stream().forEach((moveTokenFromCardToPlayer(player)));
+        cardsPartition.get(true).forEach((moveTokenFromCardToPlayer(player)));
         //updating unfulfilledCards
         this.playersToUnfulfilledCards.put(player, cardsPartition.get(false));
     }
@@ -136,7 +127,7 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
      * and gives it to the player (editing playersToTokens)
      */
     private Consumer<Card> moveTokenFromCardToPlayer(Player player) {
-        return (card) -> {playersToTokens.get(player).add(cardsToTokens.get(card).pop());};
+        return (card) -> playersToTokens.get(player).add(cardsToTokens.get(card).pop());
     }
 
     // good for now, might want to clone and/or send a simplified version of these objects for security reasons
@@ -162,25 +153,25 @@ public class CommonGoalCardManager extends  CardsAndPointsManager{
      * @param player the player
      * @return the tokens of the player
      */
-    public Set<Token> getPlayerTokens(Player player) {
+    public Set<Token> getTokens(Player player) {
         return playersToTokens.get(player);
     }
     /**
      * @param player the player
      * @return the unfulfilled cards of the player
      */
-    public Set<Card> getPlayerUnfulfilledCards(Player player) {
+    public Set<Card> getUnfulfilledCards(Player player) {
         return playersToUnfulfilledCards.get(player);
     }
     /**
      * @param player the player
      * @return the fulfilled cards of the player
      */
-    public Set<Card> getPlayerFulfilledCards(Player player) {
+    public Set<Card> getFulfilledCards(Player player) {
         // new HashSet because we don't want to alter the map
         Set<Card> playerFulfilledCards = new HashSet<>(cardsToTokens.keySet());
         // removing the unfulfilled cards
-        playerFulfilledCards.removeAll(this.getPlayerUnfulfilledCards(player));
+        playerFulfilledCards.removeAll(this.getUnfulfilledCards(player));
         return playerFulfilledCards;
     }
 }

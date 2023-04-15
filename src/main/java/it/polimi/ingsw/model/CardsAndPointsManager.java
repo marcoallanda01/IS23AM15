@@ -10,7 +10,9 @@ public  abstract class CardsAndPointsManager extends PointsManager {
         super(players);
         this.deck = deck;
     }
-
-    public abstract void updatePoints();
+    /**
+     * updates the points of the given player
+     * @param player the player to update
+     */
     public abstract void updatePoints(Player player);
 }

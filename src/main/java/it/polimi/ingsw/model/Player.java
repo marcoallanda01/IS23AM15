@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 public class Player {
     private final String userName;
-    private Integer points;
     private BookShelf bookShelf;
     private boolean firstToFinish = false;
     private boolean isPlaying = true;
@@ -13,36 +12,8 @@ public class Player {
      */
     public Player(String userName) {
         this.userName = userName;
-        this.points = 0;
         this.bookShelf = new BookShelf();
     }
-    /**
-     * Create a new player
-     * @param userName the username of the player
-     * @param points the points of the player
-     */
-    public Player(String userName, Integer points) {
-        this.userName = userName;
-        this.points = points;
-    }
-    /**
-     * Get the points of the player
-     * @return the points of the player
-     */
-    public Integer getPoints() {
-        return this.points;
-    }
-    /**
-     * Add points to the player
-     * @param points the points to add
-     */
-    public void addPoints(Integer points) {
-        this.points += points;
-    }
-    /**
-     * Get the bookshelf of the player
-     * @return the bookshelf of the player
-     */
     public BookShelf getBookShelf() {
         return this.bookShelf;
     }

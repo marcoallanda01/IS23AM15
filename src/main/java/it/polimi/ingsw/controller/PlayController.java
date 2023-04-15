@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerNotFoundException;
+import it.polimi.ingsw.model.Token;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
 
 public class PlayController {
     private final Game game;
@@ -46,7 +47,27 @@ public class PlayController {
         return true;
     }
 
-    public Integer getPlayerPoints(String nickname) throws PlayerNotFoundException {
-        return game.getPlayerPoints(nickname);
+    public Integer getPoints(String nickname) throws PlayerNotFoundException {
+        return game.getPoints(nickname);
     }
+    public Map<String, Stack<Token>> getCommonGoalCardsToTokens() {
+        return game.getCommonGoalCardsToTokens();
+    }
+    public List<String> getEndGameGoals() {
+        return game.getEndGameGoals();
+    }
+    public List<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
+        return game.getUnfulfilledCommonGoalCards(nickname);
+    }
+    public List<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
+        return game.getFulfilledCommonGoalCards(nickname);
+    }
+    public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException{
+        return game.getPersonalGoalCard(nickname);
+    }
+    public Set<Token> getTokens(String nickname) throws PlayerNotFoundException {
+        return game.getTokens(nickname);
+    }
+
+
 }
