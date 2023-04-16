@@ -3,7 +3,6 @@ package it.polimi.ingsw.modules;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 import com.google.gson.*;
@@ -163,6 +162,12 @@ public class GoalManager {
     }
 
 
+    /**
+     *
+     * @param players players playing the game
+     * @param setUpFile file json where there are the patterns associated with card type
+     * @throws ArrestGameException if occurred very bad errors in parsing or json stream
+     */
     public GoalManager(List<Player> players, String setUpFile) throws ArrestGameException {
 
         // I use list and not set because I could choose to have to same card so the probability increase
