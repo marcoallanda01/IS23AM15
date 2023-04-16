@@ -67,8 +67,8 @@ public class Lobby {
         return this.uniquePlayers.size() == this.numPlayerGame;
     }
 
-    public ControllerProvaider startGame(){
-        return new ControllerProvaider( new Game(new ArrayList<>(this.uniquePlayers), easyRules) );
+    public ControllerProvider startGame(){
+        return new ControllerProvider( new Game(new ArrayList<>(this.uniquePlayers), easyRules) );
     }
 
     public Set<String> getSavedGames(){

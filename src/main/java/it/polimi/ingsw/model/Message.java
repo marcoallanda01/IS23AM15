@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class Message {
+    public final Player sender;
     public Optional<Player> receiver;
     public LocalDateTime date;
     private final String content;
@@ -13,8 +14,9 @@ public class Message {
      * @param content the content of the message
      * @param receiver the receiver of the message
      */
-    public Message(String content, Player receiver){
+    public Message(Player sender, Player receiver, String content){
         this.content = content;
+        this.sender = sender;
         this.receiver = Optional.of(receiver);
         this.date = LocalDateTime.now();
     }
@@ -22,8 +24,9 @@ public class Message {
      * Create a new message
      * @param content the content of the message
      */
-    public Message(String content){
+    public Message(Player sender, String content){
         this.content = content;
+        this.sender = sender;
         this.receiver = Optional.empty();
         this.date = LocalDateTime.now();
     }

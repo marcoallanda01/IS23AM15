@@ -78,4 +78,20 @@ public class Game{
         return players.stream().map(Player::getUserName).collect(Collectors.toSet());
     }
 
+    public void sendMessage(Player sender, Player receiver, String message) {
+        Message m = new Message(sender, receiver, message);
+        try {
+            this.chat.addMessage(m);
+        } catch (PlayerNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void sendMessage(Player sender, String message) {
+        Message m = new Message(sender, message);
+        try {
+            this.chat.addMessage(m);
+        } catch (PlayerNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
