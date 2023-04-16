@@ -12,13 +12,13 @@ public class Game{
     private final Chat chat;
     private GoalManager goalManager;
 
-    public Game(List<Player> players, boolean isFirstGame) {
-        this.players = players;
+    public Game(List<String> players, boolean isFirstGame) {
+        this.players = players.stream().map(Player::new).collect(Collectors.toList());
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
         this.board = new LivingRoomBoard(numberOfPlayers);
-        this.chat = new Chat(players);
-        this.currentTurn = new Turn(players.get(0), board);
+        this.chat = new Chat(this.players);
+        this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() *(this.players.size() + 1))), board);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         //this.goalManager = new GoalManager(players, goalPath);
     }
@@ -60,6 +60,22 @@ public class Game{
         }
     }
 
+    private boolean nextTurn(){
+        if(this.currentTurn.getState() instanceof  EndState){ //TODO: è giusto?
+            this.currentTurn = new Turn(
+                    this.players.get(
+                            this.players.indexOf(
+                                    this.currentTurn.getCurrentPlayer()
+                            ) + 1
+                    ), this.board
+            );
+            return true;
+        }
+        return false;
+    }
 
+    public Set<String> getPlayers() {
+        return players.stream().map(Player::getUserName).collect(Collectors.toSet());
+    }
 
 }

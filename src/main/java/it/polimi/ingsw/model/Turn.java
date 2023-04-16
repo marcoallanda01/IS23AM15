@@ -66,4 +66,8 @@ public class Turn {
     public void setPickedTiles(List<Tile> pickedTiles) {
         this.pickedTiles = pickedTiles;
     }
+
+    public State getState() {
+        return state;
+    }
 }

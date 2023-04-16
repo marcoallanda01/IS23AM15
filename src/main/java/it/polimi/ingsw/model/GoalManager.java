@@ -8,6 +8,7 @@ import java.util.*;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import it.polimi.ingsw.model.ArrestGameException;
 import org.jetbrains.annotations.NotNull;
 
 public class GoalManager {

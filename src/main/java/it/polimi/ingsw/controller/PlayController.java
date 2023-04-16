@@ -26,16 +26,16 @@ public class PlayController {
     public boolean saveGame() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter()).create();
         String json = gson.toJson(game);
-        File saves = new File("saves");
+        File saves = new File(this.directory);
         if (!saves.exists()) {
-            saves.mkdir();
+            throw new IOException("Can not find "+saves.toString());
         }
         File[] savesList = saves.listFiles();
         int n = 0;
         if (savesList != null) {
             n = savesList.length;
         }
-        String save = "saves/save" + n + ".json";
+        String save = this.directory + n + ".json";
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(save));
             writer.write(json);
