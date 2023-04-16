@@ -89,7 +89,7 @@ public class Lobby {
     /**
      * Load saved game
      * @param name the name of the saved game
-     * @return the list of players' nickname
+     * @return the list of loaded game players' nickname
      */
     public List<String> loadGame(String name) throws GameLoadException, GameNameException {
         if( !getSavedGames().contains(name)) {
