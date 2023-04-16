@@ -10,7 +10,8 @@ public class Lobby {
     private final Set<String> uniquePlayers;
     private String firstPlayer;
     private int numPlayerGame;
-
+    private final int maxNumPlayers = 4;
+    private final int minNumPlayers = 2;
     private final String directory;
     private Optional<Game> loadingGame;
     private boolean easyRules;
@@ -26,7 +27,7 @@ public class Lobby {
     }
 
     public boolean addFirstPlayer(String player, int numPlayersGame){
-        if(this.firstPlayer == null){
+        if(this.firstPlayer == null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers){
             this.firstPlayer = new String(player);
             this.numPlayerGame = numPlayersGame;
             this.uniquePlayers.add(this.firstPlayer);
@@ -34,7 +35,7 @@ public class Lobby {
         return false;
     }
 
-    public void addPlayer(String player) throws GameIsFullException, NicknameException, NicknameTakenException {
+    public boolean addPlayer(String player) throws GameIsFullException, NicknameException, NicknameTakenException {
         if(this.uniquePlayers.size() == this.numPlayerGame){
             throw new GameIsFullException(player);
         }
@@ -47,6 +48,7 @@ public class Lobby {
             }
         }
         uniquePlayers.add(player);
+        return true;
     }
 
     public boolean removePlayer(String player){

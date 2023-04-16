@@ -15,10 +15,10 @@ class PlayControllerTest {
 
     @Test
     void saveGame() throws IOException, URISyntaxException {
-        List<Player> players = new ArrayList<>();
-        players.add(new Player("player1"));
-        players.add(new Player("player2"));
-        players.add(new Player("player3"));
+        List<String> players = new ArrayList<>();
+        players.add("player1");
+        players.add("player2");
+        players.add("player3");
         Game game = new Game(players, false);
         PlayController playController = new PlayController(game, "saves");
         assertTrue(playController.saveGame());
