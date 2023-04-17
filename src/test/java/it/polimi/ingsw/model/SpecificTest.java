@@ -97,16 +97,16 @@ class SpecificTest {
 
         List<List<List<Boolean>>> Cornermasks = new ArrayList<>();
         Cornermasks.add(new ArrayList<>());
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             Cornermasks.get(0).add(new ArrayList<>());
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 5; j++) {
                 Cornermasks.get(0).get(i).add(false);
             }
         }
         Cornermasks.get(0).get(0).set(0, true);
-        Cornermasks.get(0).get(0).set(5, true);
-        Cornermasks.get(0).get(4).set(0, true);
-        Cornermasks.get(0).get(4).set(5, true);
+        Cornermasks.get(0).get(0).set(4, true);
+        Cornermasks.get(0).get(5).set(0, true);
+        Cornermasks.get(0).get(5).set(4, true);
 
 
         String name5 = "Corners";
@@ -145,6 +145,74 @@ class SpecificTest {
         assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
         Pattern pattern7d = new Specific(name7, Couplermasks, 16, false, 1, 6);
         assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
+    }
+
+    @Test
+    void test6Couples() {
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        masks.add(new ArrayList<>());
+        for (int i = 0; i < 2; i++) {
+            masks.get(0).add(new ArrayList<>());
+            for (int j = 0; j < 2; j++) {
+                masks.get(0).get(i).add(false);
+            }
+        }
+        // one of two
+        masks.get(0).get(0).set(0, true);
+        masks.get(0).get(0).set(1, true);
+        // two of two
+        masks.get(0).get(1).set(0, true);
+        masks.get(0).get(1).set(1, true);
+
+        BookShelf bookShelf = new BookShelf();
+        // -C---
+        // -C---
+        // -CC--
+        // CBCC-
+        // CCTC-
+        // TTBTT
+        List<Tile> one =
+                List.of(new Tile(TileType.TROPHY), new Tile(TileType.CAT), new Tile(TileType.CAT));
+        bookShelf.insertTiles(one, 0);
+        List<Tile> two = List.of(new Tile(TileType.TROPHY), new Tile(TileType.CAT), new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.CAT));
+        bookShelf.insertTiles(two, 1);
+        List<Tile> three =
+                List.of(new Tile(TileType.BOOK), new Tile(TileType.TROPHY), new Tile(TileType.CAT), new Tile(TileType.CAT));
+        bookShelf.insertTiles(three, 2);
+        List<Tile> four =
+                List.of(new Tile(TileType.TROPHY), new Tile(TileType.CAT), new Tile(TileType.CAT));
+        bookShelf.insertTiles(four, 3);
+        List<Tile> five =
+                List.of(new Tile(TileType.TROPHY));
+        bookShelf.insertTiles(five, 4);
+
+        List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
+
+        List<List<List<Boolean>>> Couplermasks = new ArrayList<>();
+        Couplermasks.add(new ArrayList<>());
+        for (int i = 0; i < 1; i++) {
+            Couplermasks.get(0).add(new ArrayList<>());
+            for (int j = 0; j < 2; j++) {
+                Couplermasks.get(0).get(i).add(false);
+            }
+        }
+        Couplermasks.get(0).get(0).set(0, true);
+        Couplermasks.get(0).get(0).set(1, true);
+        Couplermasks.add(new ArrayList<>());
+        for (int i = 0; i < 2; i++) {
+            Couplermasks.get(1).add(new ArrayList<>());
+            for (int j = 0; j < 1; j++) {
+                Couplermasks.get(1).get(i).add(false);
+            }
+        }
+        Couplermasks.get(1).get(0).set(0, true);
+        Couplermasks.get(1).get(1).set(0, true);
+
+        String name = "Couples";
+        Pattern achievablePattern = new Specific(name, Couplermasks, 6, false, 1, 1);
+        assertEquals(1, achievablePattern.getPatternFunction().apply(myBookshelf));
+        Pattern unachievablePattern = new Specific(name, Couplermasks, 7, false, 1, 1);
+        assertEquals(0, unachievablePattern.getPatternFunction().apply(myBookshelf));
     }
 
     @Test

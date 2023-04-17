@@ -93,13 +93,14 @@ public class Specific extends Pattern{
                 for (int i = 0; i < bookshelf.size() - masks.get(k).size() + 1; i++) {
                     boolean isPatternValid;
                     for (int j = 0; j < bookshelf.get(i).size() - masks.get(k).get(0).size() + 1; j++) {
-                         isPatternValid = true;
+                        isPatternValid = true;
                         Set<TileType> typesInPattern = new HashSet<>();
                         List<Tile> validGroup = new ArrayList<>();
                         for (int l = i; l < (currentMask.size() + i) && isPatternValid; l++) {
                             for (int m = j; m < (currentMask.get(l - i).size() + j) && isPatternValid; m++) {
-                                // if there should be a tile but there isn't the pattern is not valid, change mask
+                                // if the mask is false skip checks
                                 if (currentMask.get(l - i).get(m - j)) {
+                                    // if there should be a tile but there isn't go forward
                                     if (bookshelf.get(l).get(m).isEmpty()) {
                                         isPatternValid = false;
                                     } else {
@@ -118,7 +119,7 @@ public class Specific extends Pattern{
                         }
                         // too few types in group
                         if (typesInPattern.size() < this.minColor) {
-                            isPatternValid = true;
+                            isPatternValid = false;
                         }
                         if (isPatternValid) {
                             allTheGroups.add(new ArrayList<>(validGroup));
@@ -126,6 +127,7 @@ public class Specific extends Pattern{
                     }
                 }
             }
+            System.out.println(allTheGroups);
             return allTheGroups;
         };
     }
