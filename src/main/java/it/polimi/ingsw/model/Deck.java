@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class Deck {
@@ -12,7 +13,7 @@ public class Deck {
      *
      * @param patterns create a card for every pattern passed
      */
-    public Deck(List<Pattern> patterns) {
+    public Deck(Set<Pattern> patterns) {
         patterns.forEach(pattern -> cards.add(new Card(pattern)));
     }
 

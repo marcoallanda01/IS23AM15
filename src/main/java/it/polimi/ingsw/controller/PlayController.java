@@ -53,13 +53,13 @@ public class PlayController {
     public Map<String, Stack<Token>> getCommonGoalCardsToTokens() {
         return game.getCommonGoalCardsToTokens();
     }
-    public List<String> getEndGameGoals() {
+    public Set<String> getEndGameGoals() {
         return game.getEndGameGoals();
     }
-    public List<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
+    public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
         return game.getUnfulfilledCommonGoalCards(nickname);
     }
-    public List<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
+    public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
         return game.getFulfilledCommonGoalCards(nickname);
     }
     public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException{

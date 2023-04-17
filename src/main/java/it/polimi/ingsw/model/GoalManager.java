@@ -173,8 +173,8 @@ public class GoalManager {
     public GoalManager(List<Player> players, String setUpFile) throws ArrestGameException {
 
         // I use list and not set because I could choose to have to same card so the probability increase
-        List<Pattern> patternsCommonGoals = new ArrayList<Pattern>();
-        List<Pattern> patternsPersonalGoals = new ArrayList<Pattern>();
+        Set<Pattern> patternsCommonGoals = new HashSet<Pattern>();
+        Set<Pattern> patternsPersonalGoals = new HashSet<Pattern>();
 
         // Just only one pattern for every goal that is in common and all are active at the same time
         Set<Pattern> patternsEndGoals = new HashSet<Pattern>();

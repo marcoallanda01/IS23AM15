@@ -27,19 +27,16 @@ public class Game{
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPoints(player) + (player.isFirstToFinish() ? 1 : 0);
     }
-    // IMPORTANT: cards with the same name are lost!, maybe resort back to having unique names!
     public Map<String, Stack<Token>> getCommonGoalCardsToTokens() {
         return goalManager.getCommonCardsToTokens().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getName(), Map.Entry::getValue));
     }
-    // returning List<String> because there can be more than 1 card with the same name and pattern
-    // IMPORTANT: cards with the same name can cause confusion on the view side, maybe resort back to set!
-    public List<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
+    public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
-        return goalManager.getFulfilledCommonCards(player).stream().map(Card::getName).collect(Collectors.toList());
+        return goalManager.getFulfilledCommonCards(player).stream().map(Card::getName).collect(Collectors.toSet());
     }
-    public List<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
+    public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
-        return goalManager.getFulfilledCommonCards(player).stream().map(Card::getName).collect(Collectors.toList());
+        return goalManager.getFulfilledCommonCards(player).stream().map(Card::getName).collect(Collectors.toSet());
     }
     public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
@@ -49,8 +46,8 @@ public class Game{
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getTokens(player);
     }
-    public List<String> getEndGameGoals() {
-        return goalManager.getEndGameGoals().stream().map(Pattern::getName).collect(Collectors.toList());
+    public Set<String> getEndGameGoals() {
+        return goalManager.getEndGameGoals().stream().map(Pattern::getName).collect(Collectors.toSet());
     }
     private Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
         try {
