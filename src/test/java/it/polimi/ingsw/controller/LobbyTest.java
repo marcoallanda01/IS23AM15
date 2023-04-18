@@ -1,9 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,6 +24,17 @@ class LobbyTest {
     void addPlayer() {
         Lobby lobby = new Lobby("test");
         assertTrue(lobby.addFirstPlayer("p1", 4));
+        try {
+            assertTrue(lobby.addPlayer("p2"));
+        }
+        catch (Exception e){
+            fail();
+        }
+        assertThrows(NicknameTakenException.class, lobby.addPlayer("p2"));
+        assertThrows(NicknameTakenException.class, lobby.addPlayer("p1"));
+        assertTrue(lobby.addPlayer("p3"));
+        assertTrue(lobby.addPlayer("p4"));
+        assertThrows(FullGameException.class, lobby.addPlayer("p5"));
     }
 
     @Test
