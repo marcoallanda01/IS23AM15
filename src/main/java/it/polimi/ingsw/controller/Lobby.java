@@ -119,8 +119,9 @@ public class Lobby {
         return false;
     }
 
-    public String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
-        Set<String> uniquePlayers = (Set<String>) this.players.values();
+    public boolean addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
+        // Set<String> uniquePlayers = (Set<String>) this.players.values();
+        Set<String> uniquePlayers = this.players;
         if(uniquePlayers.size() == this.numPlayersGame){
             throw new FullGameException(player);
         }
@@ -132,13 +133,14 @@ public class Lobby {
                 throw new NicknameException(player);
             }
         }
-
+        /*
         String id;
         do {
             id = UUID.randomUUID().toString();
         }while ( this.players.putIfAbsent(id, player) != null);
+         */
 
-        return id;
+        return true;
     }
 
     /*
