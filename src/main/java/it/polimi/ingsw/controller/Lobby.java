@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.communication.IllegalLobbyException;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.communication.WaitLobbyException;
 
 import java.io.File;
 import java.util.*;
@@ -35,7 +37,7 @@ public class Lobby {
      *          can be called
      * @throws WaitLobbyException if the there is already a first player and the game is in creation
      */
-    public Optional<String> join() throws WaitLobbyException{
+    public Optional<String> join() throws WaitLobbyException {
         Optional<String> uniqueID = Optional.empty();
         if(this.firstPlayerToken.isEmpty()) {
             this.firstPlayerToken = Optional.of(UUID.randomUUID().toString());
