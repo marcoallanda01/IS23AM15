@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
