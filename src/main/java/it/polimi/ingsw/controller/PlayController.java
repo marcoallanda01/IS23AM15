@@ -2,9 +2,8 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.PlayerNotFoundException;
-import it.polimi.ingsw.model.Token;
+import com.google.gson.JsonElement;
+import it.polimi.ingsw.model.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PlayController {
@@ -24,18 +24,22 @@ public class PlayController {
     }
 
     public boolean saveGame() throws IOException {
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter()).create();
-        String json = gson.toJson(game);
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
+                .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
+        String json = gson.toJson(this.game);
+        JsonElement jsonElement = gson.fromJson(json, JsonElement.class);
+        jsonElement.getAsJsonObject().addProperty("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        json = gson.toJson(jsonElement);
         File saves = new File(this.directory);
         if (!saves.exists()) {
-            throw new IOException("Can not find "+saves.toString());
+            throw new IOException("Can not find " + saves);
         }
         File[] savesList = saves.listFiles();
         int n = 0;
         if (savesList != null) {
             n = savesList.length;
         }
-        String save = this.directory + n + ".json";
+        String save = this.directory + "/" + n + ".json";
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(save));
             writer.write(json);
@@ -50,21 +54,27 @@ public class PlayController {
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
         return game.getPoints(nickname);
     }
+
     public Map<String, Stack<Token>> getCommonGoalCardsToTokens() {
         return game.getCommonGoalCardsToTokens();
     }
+
     public Set<String> getEndGameGoals() {
         return game.getEndGameGoals();
     }
-    public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
+
+    public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         return game.getUnfulfilledCommonGoalCards(nickname);
     }
-    public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException{
+
+    public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         return game.getFulfilledCommonGoalCards(nickname);
     }
-    public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException{
+
+    public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         return game.getPersonalGoalCard(nickname);
     }
+
     public Set<Token> getTokens(String nickname) throws PlayerNotFoundException {
         return game.getTokens(nickname);
     }

@@ -6,15 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Chat {
-     private Map<Player, List<Message>> MessagesPerPlayer;
+     private final Map<String, List<Message>> MessagesPerPlayer;
      public Chat(List<Player> players){
          MessagesPerPlayer = new HashMap<>();
          for (Player p : players){
-              MessagesPerPlayer.put(p, new ArrayList<>());
+              MessagesPerPlayer.put(p.getUserName(), new ArrayList<>());
          }
      }
-
-     //IMPORTANTE: va implementata la persistenza della chat
 
     /**
      * Get all the messages sent to the player p
@@ -22,7 +20,7 @@ public class Chat {
      * @return a list of messages
      */
      public List<Message> getMessages(Player p){
-         return MessagesPerPlayer.get(p);
+         return MessagesPerPlayer.get(p.getUserName());
      }
 
     /**
@@ -33,13 +31,13 @@ public class Chat {
      */
     public void addMessage(Message m) throws PlayerNotFoundException{
          if(m.receiver.isPresent()){
-            if(MessagesPerPlayer.containsKey(m.receiver.get())){
-                MessagesPerPlayer.get(m.receiver.get()).add(m);
+            if(MessagesPerPlayer.containsKey(m.receiver.get().getUserName())){
+                MessagesPerPlayer.get(m.receiver.get().getUserName()).add(m);
             }else{
                 throw new PlayerNotFoundException();
             }
          }else{
-             for (Player p : MessagesPerPlayer.keySet()){
+             for (String p : MessagesPerPlayer.keySet()){
                  MessagesPerPlayer.get(p).add(m);
              }
          }

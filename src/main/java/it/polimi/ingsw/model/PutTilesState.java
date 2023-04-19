@@ -22,4 +22,9 @@ public class PutTilesState extends State{
     public boolean putTiles(List<Tile> tiles, int column) {
         return this.turn.getCurrentPlayer().getBookShelf().insertTiles(tiles, column);
     }
+
+    @Override
+    public String toString() {
+        return "PutTilesState";
+    }
 }

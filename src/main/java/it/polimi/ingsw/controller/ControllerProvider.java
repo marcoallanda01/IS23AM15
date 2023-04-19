@@ -7,7 +7,7 @@ public class ControllerProvider {
     private final PlayController playController;
     public ControllerProvider(Game game) {
         this.chatController = new ChatController(game);
-        this.playController = new PlayController(game, "saves/");
+        this.playController = new PlayController(game, "saves");
     }
     public ChatController getChatController() {
         return chatController;

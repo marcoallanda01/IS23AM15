@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class Game{
     private final List<Player> players;
-    private Player winner;
+    private String winner;
     private final boolean isFirstGame;
     private final LivingRoomBoard board;
     private Turn currentTurn;
@@ -19,10 +19,19 @@ public class Game{
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
         this.board = new LivingRoomBoard(numberOfPlayers);
+        this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() *(this.players.size()))), board);
         this.chat = new Chat(this.players);
-        this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() *(this.players.size() + 1))), board);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         //this.goalManager = new GoalManager(players, goalPath);
+    }
+
+    public Game(List<Player> players, String winner, boolean isFirstGame, LivingRoomBoard board, Turn currentTurn, Chat chat){
+        this.players = players;
+        this.winner = winner;
+        this.isFirstGame = isFirstGame;
+        this.board = board;
+        this.currentTurn = currentTurn;
+        this.chat = chat;
     }
 
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
@@ -92,5 +101,29 @@ public class Game{
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Player> getPlayersList(){
+        return this.players;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public boolean isFirstGame() {
+        return isFirstGame;
+    }
+
+    public LivingRoomBoard getBoard() {
+        return board;
+    }
+
+    public Turn getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public Chat getChat() {
+        return chat;
     }
 }

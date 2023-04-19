@@ -5,7 +5,7 @@ import java.util.List;
 public class Turn {
     private List<Tile> pickedTiles;
     private final Player currentPlayer;
-    private final transient LivingRoomBoard board;
+    private final LivingRoomBoard board;
     private State state;
 
 
@@ -69,5 +69,9 @@ public class Turn {
 
     public State getState() {
         return state;
+    }
+
+    public List<Tile> getPickedTiles() {
+        return pickedTiles;
     }
 }

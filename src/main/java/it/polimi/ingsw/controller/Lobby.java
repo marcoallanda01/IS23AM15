@@ -1,10 +1,15 @@
 package it.polimi.ingsw.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.communication.IllegalLobbyException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.communication.WaitLobbyException;
+import it.polimi.ingsw.model.Turn;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,22 +39,21 @@ public class Lobby {
 
     /**
      * @return an Optional containing a unique id to the first player to connect, else an empty Optional and addPlayer
-     *          can be called
+     * can be called
      * @throws WaitLobbyException if the there is already a first player and the game is in creation
      */
     public Optional<String> join() throws WaitLobbyException {
-        Optional<String> uniqueID = Optional.empty();
-        if(this.firstPlayerToken.isEmpty()) {
-            this.firstPlayerToken = Optional.of(UUID.randomUUID().toString());
+        Optional<String> uniqueID = Optional.of(UUID.randomUUID().toString());
+        if (this.firstPlayerToken.isEmpty()) {
+            this.firstPlayerToken = uniqueID;
             this.isCreating = true;
-        }
-        else if (this.isCreating){
-           throw new WaitLobbyException();
+        } else if (this.isCreating) {
+            throw new WaitLobbyException();
         }
         return uniqueID;
     }
 
-    public Set<String> getSavedGames(){
+    public Set<String> getSavedGames() {
         Set<String> games = new HashSet<String>();
         File saves = new File(this.directory);
         if (!saves.exists() || saves.isFile()) {
@@ -57,19 +61,16 @@ public class Lobby {
         }
         // saves for sure is not a file
         File[] savesList = saves.listFiles();
-        games = Arrays.stream(savesList).sequential()
-                .filter(File::isFile)
-                .map(File::getName)                                                       //    9 - 5 - 1  = 3
-                .map((name) -> (name.substring(0, name.length() - ".json".length() - 1))) // "ciao.json" -> "ciao"
+        games = Arrays.stream(savesList).sequential().filter(File::isFile).map(File::getName)                                                       //    9 - 5 - 1  = 3
+                .map((name) -> (name.substring(0, name.length() - ".json".length()))) // "ciao.json" -> "ciao"
                 .collect(Collectors.toSet());
         return games;
     }
 
 
-    public boolean joinFirstPlayer(String name, int numPlayersGame, String token){
-        if(this.isCreating && this.loadingGame.isEmpty()
-                && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers
-                && this.firstPlayerToken.get().equals(token)){ // this.isCreating can be true only when fistPlayer.isPresent()
+    public boolean joinFirstPlayer(String name, int numPlayersGame, String token) {
+        if (this.isCreating && this.loadingGame.isEmpty() && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
+                this.firstPlayerToken.get().equals(token)) { // this.isCreating can be true only when fistPlayer.isPresent()
             this.isCreating = false;
             //this.players.put(this.firstPlayerToken.get(), name);
             this.players.add(name);
@@ -81,6 +82,7 @@ public class Lobby {
 
     /**
      * Load saved game
+     *
      * @param name the name of the saved game
      * @return the list of loaded game players' nickname
      */
@@ -90,16 +92,16 @@ public class Lobby {
                 throw new GameNameException(name);
             }
             try {
-                // TODO: parsing file
-                //Game game = new Game(...);
-
-                //return new ArrayList<String>(game.getPlayers());
-                return null;
+                Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
+                        .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
+                BufferedReader reader = new BufferedReader(new java.io.FileReader(this.directory + "/" + name + ".json"));
+                Game game = gson.fromJson(reader, Game.class);
+                this.loadingGame = Optional.of(game);
+                return new ArrayList<String>(game.getPlayers());
             } catch (Exception e) {
                 throw new GameLoadException(name, e);
             }
-        }
-        else {
+        } else {
             throw new IllegalLobbyException();
         }
     }
@@ -107,9 +109,10 @@ public class Lobby {
     public boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
         return joinLoadedGameFirstPlayer(name, id, true);
     }
+
     public boolean joinLoadedGameFirstPlayer(String name, String id, boolean easyRules) throws NicknameException {
-        if(this.isCreating && this.loadingGame.isPresent() && this.firstPlayerToken.get().equals(id)) {
-            if(!this.loadingGame.get().getPlayers().contains(name)){
+        if (this.isCreating && this.loadingGame.isPresent() && this.firstPlayerToken.get().equals(id)) {
+            if (!this.loadingGame.get().getPlayers().contains(name)) {
                 throw new NicknameException(name);
             }
             this.easyRules = easyRules;
@@ -124,14 +127,14 @@ public class Lobby {
     public boolean addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
         // Set<String> uniquePlayers = (Set<String>) this.players.values();
         Set<String> uniquePlayers = this.players;
-        if(uniquePlayers.size() == this.numPlayersGame){
+        if (uniquePlayers.size() == this.numPlayersGame) {
             throw new FullGameException(player);
         }
-        if(uniquePlayers.contains(player)){
+        if (uniquePlayers.contains(player)) {
             throw new NicknameTakenException(player);
         }
-        if(this.loadingGame.isPresent()){
-            if(!this.loadingGame.get().getPlayers().contains(player)){
+        if (this.loadingGame.isPresent()) {
+            if (!this.loadingGame.get().getPlayers().contains(player)) {
                 throw new NicknameException(player);
             }
         }
@@ -155,23 +158,25 @@ public class Lobby {
                 .orElse(null);
     }
     */
-    public boolean removePlayer(String player){
+    public boolean removePlayer(String player) {
         //return this.players.remove(getIdFromName(player), player);
         return this.players.remove(player);
     }
 
-    public boolean isFistPlayerPresent(){ return this.firstPlayerToken.isPresent(); }
+    public boolean isFistPlayerPresent() {
+        return this.firstPlayerToken.isPresent();
+    }
 
-    public boolean isReadyToPlay(){
+    public boolean isReadyToPlay() {
         return this.players.size() == this.numPlayersGame;
     }
 
-    public ControllerProvider startGame() throws EmptyLobbyException{
-        if(! isReadyToPlay()){
+    public ControllerProvider startGame() throws EmptyLobbyException {
+        if (!isReadyToPlay()) {
             throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }
         //return new ControllerProvider( new Game(new ArrayList<>(this.players.values()), this.easyRules) );
-        return new ControllerProvider( new Game(new ArrayList<>(this.players), this.easyRules) );
+        return new ControllerProvider(new Game(new ArrayList<>(this.players), this.easyRules));
     }
 
 }

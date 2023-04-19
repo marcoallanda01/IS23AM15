@@ -16,4 +16,9 @@ public class EndState extends State{
     public boolean putTiles(List<Tile> tiles, int column) {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "EndState";
+    }
 }
