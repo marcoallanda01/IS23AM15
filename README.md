@@ -6,8 +6,8 @@
 |:-----------------------------|:-----:|
 | Basic rules                  |  🟡   |
 | Complete rules               |  🟡   |
-| RMI                          |  🔴   |
-| Socket                       |  🔴   |
+| RMI                          |  🟡   |
+| Socket                       |  🟡   |
 | CLI                          |  🔴   |
 | GUI                          |  🔴   |
 | Persistence                  |  🟡   |
