@@ -8,10 +8,12 @@ import java.util.Objects;
 public class JsonString {
     protected String json;
 
-    public JsonString(@NotNull String json){
-        /*try {
-            /*this.json = JsonParser.parseString(json).j;
-        }*/
+    public JsonString(@NotNull String json) throws Exception{
+        try {
+            JsonParser.parseString(json);
+        }catch (JsonSyntaxException e){
+            throw new Exception("JsonSyntaxException was thrown");
+        }
 
         this.json = json;
     }
@@ -32,8 +34,10 @@ public class JsonString {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JsonParser parser = new JsonParser();
-        JsonElement thatJE = parser.parse(((JsonString) o).json);
-        JsonElement thisJE = parser.parse(this.json);
+        JsonElement thatJE;
+        JsonElement thisJE;
+        thatJE = parser.parse(((JsonString) o).json);
+        thisJE = parser.parse(this.json);
         return thisJE.equals(thatJE);
     }
 }

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MsgTest {
 
     @Test
-    void toJson() {
+    void toJson() throws Exception {
         BooleanResponse br = new BooleanResponse(true);
         JsonString json1 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":true}");
         assertEquals(json1, new JsonString(br.toJson()));

@@ -9,17 +9,23 @@ class JsonStringTest {
 
     @Test
     void JsonStringConstruction(){
-        assertThrows(JsonParseException.class , ()->{new JsonString("{}sda");});
+        assertThrows(Exception.class , ()->{new JsonString("{}sda");});
     }
 
     @Test
-    void getJsonTest(){
+    void getJsonTest() throws Exception {
         assertEquals("{\"casa\":true}", new JsonString("{\"casa\":true}").getJson());
     }
 
     @Test
-    void toStringTest(){
+    void toStringTest() throws Exception {
         assertEquals("{\"casa\":true}",""+new JsonString("{\"casa\":true}")+"");
+    }
+
+    @Test
+    void equalsTest() throws Exception {
+        assertFalse(new JsonString("{}").equals("ciao"));
+        assertTrue(new JsonString("{\"ciao\":false}").equals(new JsonString("{\"ciao\": false}")));
     }
 
 }

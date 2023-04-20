@@ -1,8 +1,11 @@
 package it.polimi.ingsw.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public class SavedGames extends Msg {
@@ -15,7 +18,7 @@ public class SavedGames extends Msg {
 
     public String toJson() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{ \"name\": \"StringBuilder\", ");
+        sb.append("{ \"name\": \"SavedGames\", ");
         sb.append("\"names\": [");
 
         for (String name : names) {
@@ -31,9 +34,23 @@ public class SavedGames extends Msg {
         return sb.toString();
     }
 
-    public SavedGames fromJson(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, SavedGames.class);
+    /**
+     * Generator of SavedGames from a json string
+     * @param json json string from which generate returned object
+     * @return Optional of SavedGames, empty if json string was not coherent
+     */
+    public static Optional<SavedGames> fromJson(String json) {
+        SavedGames sg;
+        try {
+            Gson gson = new Gson();
+            sg = gson.fromJson(json, SavedGames.class);
+        }catch (JsonSyntaxException e){
+            return Optional.empty();
+        }
+        if(!"SavedGames".equals(sg.name) || sg.names == null){
+            return Optional.empty();
+        }
+        return Optional.of(sg);
     }
 
     @Override
@@ -44,8 +61,4 @@ public class SavedGames extends Msg {
         return names.equals(that.names);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(names);
-    }
 }

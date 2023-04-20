@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BooleanResponseTest {
 
     @Test
-    void fromJson() {
+    void fromJson() throws Exception {
         JsonString json1 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":true}");
         JsonString json2 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":false}");
         assertEquals(Optional.of(new BooleanResponse(true)), BooleanResponse.fromJson(json1.getJson()));
