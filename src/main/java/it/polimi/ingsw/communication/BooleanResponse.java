@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
+import javax.annotation.processing.Generated;
+import java.util.Optional;
+
 public class BooleanResponse extends Msg {
     public boolean result;
 
@@ -12,24 +15,24 @@ public class BooleanResponse extends Msg {
         this.result = result;
     }
 
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
-
-    public static BooleanResponse fromJson(String json) {
+    /**
+     * Generator of BooleanResponse from a json string
+     * @param json json string from which generate BooleanResponse
+     * @return Optional of BooleanResponse, empty if json string was not coherent
+     */
+    public static Optional<BooleanResponse> fromJson(String json) {
         BooleanResponse br;
         try{
             Gson gson = new Gson();
             br = gson.fromJson(json, BooleanResponse.class);
         }
         catch (JsonSyntaxException e){
-            return null;
+            return Optional.empty();
         }
-        if(br.name == null || !br.name.equals("BooleanResponse")){
-            br = null;
+        if(!"BooleanResponse".equals(br.name)){
+            return Optional.empty();
         }
-        return br;
+        return Optional.of(br);
     }
 
     @Override

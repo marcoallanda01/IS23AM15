@@ -10,7 +10,7 @@ public class JsonString {
 
     public JsonString(@NotNull String json){
         /*try {
-            this.json = JsonParser.parseString(json).j;
+            /*this.json = JsonParser.parseString(json).j;
         }*/
 
         this.json = json;
