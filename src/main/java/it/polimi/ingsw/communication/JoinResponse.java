@@ -2,34 +2,39 @@ package it.polimi.ingsw.communication;
 
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.controller.FullGameException;
+import it.polimi.ingsw.controller.NicknameException;
+import it.polimi.ingsw.controller.NicknameTakenException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
-// TODO: question - è giusto che ho JoinResponse e LoadGameResponse separate? Devo fare un enum per i tipi di errori possibili?
 public class JoinResponse extends Msg{
     public boolean result;
-    public Optional<String> error;
+    public String id;
+    public String error;
 
-
-    public JoinResponse(boolean result, @NotNull String error) {
+    public JoinResponse(@NotNull FullGameException error) {
         super("JoinResponse");
-        this.result = result;
-        this.error = Optional.of(error);
+        this.result = false;
+        this.error = error.getClass().getName();
+        this.id = null;
     }
-    public JoinResponse(boolean result) {
+    public JoinResponse(@NotNull NicknameTakenException error) {
         super("JoinResponse");
-        this.result = result;
-        this.error = Optional.empty();
+        this.result = false;
+        this.error = error.getClass().getName();
+        this.id = null;
     }
-
-    public String toJson() {
-        String json = "{\"result\": " + result;
-        if (error.isPresent()) {
-            json += ", \"error\": \"" + error.get() + "\"";
-        }
-        json += "}";
-        return toMsgJson(json);
+    public JoinResponse(@NotNull NicknameException error) {
+        super("JoinResponse");
+        this.result = false;
+        this.error = error.getClass().getName();
+        this.id = null;
+    }
+    public JoinResponse(@NotNull String id) {
+        super("JoinResponse");
+        this.result = true;
+        this.id = id;
+        this.error = null;
     }
 
     public JoinResponse fromJson(String json) {

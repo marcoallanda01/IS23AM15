@@ -12,22 +12,6 @@ public class LoadedGamePlayers extends Msg{
         this.names = names;
     }
 
-    @Override
-    public String toJson() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append("\"names\":[");
-        for (String name : this.names) {
-            sb.append("\"").append(name).append("\",");
-        }
-        if (!this.names.isEmpty()) {
-            sb.deleteCharAt(sb.length() - 1);
-        }
-        sb.append("]");
-        sb.append("}");
-        return toMsgJson(sb.toString());
-    }
-
     public LoadedGamePlayers fromJson(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, LoadedGamePlayers.class);

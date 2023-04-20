@@ -1,7 +1,4 @@
 package it.polimi.ingsw.controller;
-
-import it.polimi.ingsw.communication.IllegalLobbyException;
-import it.polimi.ingsw.communication.WaitLobbyException;
 import it.polimi.ingsw.model.Game;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +46,7 @@ class LobbyTest {
     }
 
     @Test
-    void loadGame() throws IllegalLobbyException, GameLoadException, GameNameException, WaitLobbyException, IOException {
+    void loadGame() throws GameLoadException, GameNameException, IOException, IllegalLobbyException, WaitLobbyException {
         List<String> players = new ArrayList<>();
         players.add("player1");
         players.add("player2");
@@ -59,7 +56,7 @@ class LobbyTest {
         assertTrue(playController.saveGame());
 
         Lobby lobby = new Lobby("saves");
-        String uniqueID = lobby.join().get();
+        String uniqueID = String.valueOf(lobby.join());
         File saves = new File("saves");
         if (!saves.exists()) {
             throw new IOException("Can not find " + saves);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.communication;
 
 import com.google.gson.Gson;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class SavedGames extends Msg {
@@ -14,7 +15,7 @@ public class SavedGames extends Msg {
 
     public String toJson() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{");
+        sb.append("{ \"name\": \"StringBuilder\", ");
         sb.append("\"names\": [");
 
         for (String name : names) {
@@ -33,5 +34,18 @@ public class SavedGames extends Msg {
     public SavedGames fromJson(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, SavedGames.class);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SavedGames that = (SavedGames) o;
+        return names.equals(that.names);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(names);
     }
 }
