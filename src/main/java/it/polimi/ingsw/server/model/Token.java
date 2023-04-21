@@ -1,27 +1,27 @@
 package it.polimi.ingsw.server.model;
 
 public class Token {
-    private Integer points;
-    private Integer number;
+    private int points;
+    private int number;
 
-    public Token(Integer points, Integer number) {
+    public Token(int points, int number) {
         this.points = points;
         this.number = number;
     }
 
-    public Integer getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(Integer points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
-    public Integer getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 }

@@ -5,7 +5,13 @@ import it.polimi.ingsw.server.model.Tile;
 import java.util.List;
 
 public interface ServerCommunication {
+
+    // send one GameSetUp object to every player
+    public void gameSetUp();
+
+
     // notifications methods
+
     /**
      * Send notification of the winner to all players
      * @return true if there is a winner and the notification is sent, false otherwise
@@ -20,6 +26,8 @@ public interface ServerCommunication {
 
     public void notifyChangeBoard(List<Tile> tiles);
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles);
+    public void updatePlayerPoints(String playerName, int points);
 
+    public void notifyTurn(String playerName);
 
 }
