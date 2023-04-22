@@ -1,4 +1,5 @@
 package it.polimi.ingsw.server.communication;
+import it.polimi.ingsw.comunication.RMIClient;
 import it.polimi.ingsw.server.controller.WaitLobbyException;
 import it.polimi.ingsw.server.controller.*;
 
