@@ -7,10 +7,11 @@ import it.polimi.ingsw.server.controller.PlayController;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RMIServerApp implements RMIServer{
+public class RMIServerApp extends UnicastRemoteObject implements RMIServer{
     private List<RMIClient> rmiClients;
     private ChatController chatController;
     private PlayController playController;
@@ -34,19 +35,20 @@ public class RMIServerApp implements RMIServer{
 
     public void login(RMIClient c) throws RemoteException {
         this.rmiClients.add(c);
+        System.out.println("client logged in");
     }
 
-    @Override
-    public void setLobby(Lobby lobby) {
+
+    public void setLobby(Lobby lobby)  throws RemoteException {
         this.lobby = lobby;
     }
 
-    @Override
+
     public void setPlayController(PlayController playController) {
         this.playController = playController;
     }
 
-    @Override
+
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
     }
@@ -55,8 +57,8 @@ public class RMIServerApp implements RMIServer{
         // call putTiles on the model controller
     }
 
-    @Override
-    public List<RMIClient> getClients() {
+
+    public List<RMIClient> getClients()  throws RemoteException {
         return this.rmiClients;
     }
 }

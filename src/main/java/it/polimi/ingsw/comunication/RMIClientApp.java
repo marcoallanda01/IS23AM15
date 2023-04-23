@@ -7,9 +7,10 @@ import it.polimi.ingsw.server.model.Tile;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class RMIClientApp implements RMIClient {
+public class RMIClientApp extends UnicastRemoteObject implements RMIClient {
     private ViewController viewController;
     private RMIServer rmiServer;
 
@@ -26,45 +27,44 @@ public class RMIClientApp implements RMIClient {
         registry = LocateRegistry.getRegistry(Settings.SERVER_NAME, Settings.PORT);
 
         // Looking up the registry for the remote object
-        this.rmiServer = (RMIServer) registry.lookup("ChatService");
+        this.rmiServer = (RMIServer) registry.lookup("ServerService");
         this.rmiServer.login(this);
     }
     @Override
-    public void gameSetUp(GameSetUp gameSetUp) {
+    public void gameSetUp(GameSetUp gameSetUp)  throws RemoteException {
         viewController.showGame(gameSetUp);
     }
 
     @Override
-    public void notifyWinner(String nickname) {
+    public void notifyWinner(String nickname)  throws RemoteException {
         viewController.showWinner(nickname);
     }
 
     @Override
-    public void notifyChangePlayers(List<String> nicknames) {
+    public void notifyChangePlayers(List<String> nicknames)  throws RemoteException {
 
     }
 
     @Override
-    public void notifyChangeBoard(List<Tile> tiles) {
+    public void notifyChangeBoard(List<Tile> tiles)  throws RemoteException {
 
     }
 
     @Override
-    public void notifyChangeBookShelf(String nickname, List<Tile> tiles) {
+    public void notifyChangeBookShelf(String nickname, List<Tile> tiles)  throws RemoteException {
 
     }
 
     @Override
-    public void updatePlayerPoints(String nickname, int points) {
+    public void updatePlayerPoints(String nickname, int points) throws RemoteException {
 
     }
 
     @Override
-    public void notifyTurn(String nickname) {
+    public void notifyTurn(String nickname) throws RemoteException {
 
     }
 
-    @Override
     public RMIServer getServer() {
         return this.rmiServer;
     }

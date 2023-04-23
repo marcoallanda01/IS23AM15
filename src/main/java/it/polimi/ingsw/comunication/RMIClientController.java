@@ -12,44 +12,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RMIClientController implements ClientController, Remote {
-    private RMIServer rmiServer;
+    private RMIServerApp rmiServerApp;
 
-    public RMIClientController(RMIServer rmiServer) {
-        this.rmiServer = rmiServer;
+    public RMIClientController(RMIServerApp rmiServerApp) {
+        this.rmiServerApp = rmiServerApp;
     }
 
     @Override
-    public void gameSetUp(GameSetUp gameSetUp) {
-        rmiServer.getClients().forEach(c -> c.gameSetUp(gameSetUp));
+    public void gameSetUp(GameSetUp gameSetUp) throws RemoteException{
+        List<RMIClient> clients = rmiServerApp.getClients();
+        for(RMIClient client : clients) {
+            client.gameSetUp(gameSetUp);
+        }
     }
 
     @Override
-    public void notifyWinner(String nickname) {
-        rmiServer.getClients().forEach(c -> c.notifyWinner(nickname));
+    public void notifyWinner(String nickname) throws RemoteException{
+        List<RMIClient> clients = rmiServerApp.getClients();
+        for(RMIClient client : clients) {
+            client.notifyWinner(nickname);
+        }
     }
 
     @Override
-    public void notifyChangePlayers(List<String> nicknames) {
-
-    }
-
-    @Override
-    public void notifyChangeBoard(List<Tile> tiles) {
-
-    }
-
-    @Override
-    public void notifyChangeBookShelf(String nickname, List<Tile> tiles) {
+    public void notifyChangePlayers(List<String> nicknames) throws RemoteException{
 
     }
 
     @Override
-    public void updatePlayerPoints(String nickname, int points) {
+    public void notifyChangeBoard(List<Tile> tiles) throws RemoteException{
 
     }
 
     @Override
-    public void notifyTurn(String nickname) {
+    public void notifyChangeBookShelf(String nickname, List<Tile> tiles) throws RemoteException{
+
+    }
+
+    @Override
+    public void updatePlayerPoints(String nickname, int points) throws RemoteException{
+
+    }
+
+    @Override
+    public void notifyTurn(String nickname) throws RemoteException{
 
     }
 }

@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.Game;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServerApp {
     private ClientController clientController;
@@ -16,27 +17,35 @@ public class ServerApp {
     public  ServerApp(String settings) {
         if (settings == "RMI CLI") {
             try {
-                RMIServer rmiServer = new RMIServerApp();
-                this.clientController = new RMIClientController(rmiServer);
+                RMIServerApp rmiServerApp = new RMIServerApp();
+                this.clientController = new RMIClientController(rmiServerApp);
 
                 //TODO: THIS PART NEEDS FIXING (read comments)
                 this.lobby = new Lobby("");
                 // in truth the lobby needs a reference to the clientController
                 // further logic
-                this.controllerProvider = new ControllerProvider(new Game(new ArrayList<>(), Boolean.TRUE));
+                List<String> nicknames = new ArrayList<>();
+                nicknames.add("aaa");
+                this.controllerProvider = new ControllerProvider(new Game(nicknames, Boolean.TRUE));
                 // in truth both the controllers (and thus the controllerProvider NEED a reference to the clientController)
 
                 // server needs a reference to the lobby to call its methods
-                rmiServer.setLobby(this.lobby);
+                rmiServerApp.setLobby(this.lobby);
                 // server needs a reference to the play controller to call its methods
-                rmiServer.setPlayController(this.controllerProvider.getPlayController());
+                rmiServerApp.setPlayController(this.controllerProvider.getPlayController());
                 // server needs a reference to the chat controller to call its methods
-                rmiServer.setChatController(this.controllerProvider.getChatController());
+                rmiServerApp.setChatController(this.controllerProvider.getChatController());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else {
             this.clientController = new TCPClientController(new TCPServer(), new NotificationHandler());
         }
+    }
+
+    public static void main(String args[])  //static method
+    {
+        System.out.println("Starting client app");
+        new ServerApp("RMI CLI");
     }
 }
