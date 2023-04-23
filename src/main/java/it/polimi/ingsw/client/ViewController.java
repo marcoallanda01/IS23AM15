@@ -11,6 +11,9 @@ public class ViewController {
         this.serverController = serverController;
     }
 
-    public void showGame(GameSetUp gameSetUp) {}
-    public void showWinner(String nickname) {}
+    public void showGame(GameSetUp gameSetUp) {
+    }
+    public void showWinner(String nickname) {
+        System.out.println("winner is: " + nickname);
+    }
 }

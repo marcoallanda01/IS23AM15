@@ -43,6 +43,9 @@ public class ServerApp {
         }
     }
 
+    public ClientController getClientController() {
+        return this.clientController;
+    }
     public static void main(String args[])  //static method
     {
         System.out.println("Starting client app");
