@@ -1,6 +1,10 @@
 package it.polimi.ingsw.client;
 
-public class ViewController {
+import it.polimi.ingsw.comunication.ServerController;
+import it.polimi.ingsw.server.communication.GameSetUp;
 
-    public void printPoints() {}
+public class ViewController {
+    private ServerController serverController;
+    public void showGame(GameSetUp gameSetUp) {}
+    public void showWinner(String nickname) {}
 }
