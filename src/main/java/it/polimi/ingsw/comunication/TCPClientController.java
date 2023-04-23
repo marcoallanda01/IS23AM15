@@ -6,6 +6,9 @@ import it.polimi.ingsw.server.model.Tile;
 import java.util.List;
 
 public class TCPClientController implements ClientController{
+    public TCPClientController(TCPServer tcpServer, NotificationHandler notificationHandler) {
+    }
+
     @Override
     public void gameSetUp(GameSetUp gameSetUp) {
 

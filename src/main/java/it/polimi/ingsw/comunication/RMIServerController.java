@@ -4,14 +4,13 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class RMIServerController implements ServerController {
-    private RMIServer rmiServer;
 
-    public RMIServerController() {
-
+    private RMIClient rmiClient;
+    public RMIServerController(RMIClient rmiClient) {
+        this.rmiClient = rmiClient;
     }
-
     @Override
     public void putTiles() {
-        rmiServer.putTiles();
+        rmiClient.getServer().putTiles();
     }
 }

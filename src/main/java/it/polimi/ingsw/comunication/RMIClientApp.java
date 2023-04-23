@@ -13,11 +13,12 @@ public class RMIClientApp implements RMIClient {
     private ViewController viewController;
     private RMIServer rmiServer;
 
-    public RMIClientApp(ViewController viewController) throws Exception {
-        this.viewController = viewController;
+    public RMIClientApp() throws Exception {
         this.start();
     }
-
+    public void setViewController(ViewController viewController) {
+        this.viewController = viewController;
+    }
     private void start() throws Exception {
         // Getting the registry
         Registry registry;
@@ -61,5 +62,10 @@ public class RMIClientApp implements RMIClient {
     @Override
     public void notifyTurn(String nickname) {
 
+    }
+
+    @Override
+    public RMIServer getServer() {
+        return this.rmiServer;
     }
 }

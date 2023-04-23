@@ -1,5 +1,6 @@
 package it.polimi.ingsw.comunication;
 
+import it.polimi.ingsw.client.ViewController;
 import it.polimi.ingsw.server.communication.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -16,4 +17,6 @@ public interface RMIClient extends Remote {
     public void notifyChangeBookShelf(String nickname, List<Tile> tiles);
     public void updatePlayerPoints(String nickname, int points);
     public void notifyTurn(String nickname);
+    public RMIServer getServer();
+    public void setViewController(ViewController viewController);
 }

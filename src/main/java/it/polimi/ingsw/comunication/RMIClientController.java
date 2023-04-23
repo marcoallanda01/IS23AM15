@@ -13,6 +13,11 @@ import java.util.List;
 
 public class RMIClientController implements ClientController, Remote {
     private RMIServer rmiServer;
+
+    public RMIClientController(RMIServer rmiServer) {
+        this.rmiServer = rmiServer;
+    }
+
     public RMIClientController() throws RemoteException {
         this.rmiServer = new RMIServerApp();
     }
