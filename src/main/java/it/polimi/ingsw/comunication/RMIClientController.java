@@ -18,11 +18,6 @@ public class RMIClientController implements ClientController, Remote {
         this.rmiServer = rmiServer;
     }
 
-    public RMIClientController() throws RemoteException {
-        this.rmiServer = new RMIServerApp();
-    }
-
-
     @Override
     public void gameSetUp(GameSetUp gameSetUp) {
         rmiServer.getClients().forEach(c -> c.gameSetUp(gameSetUp));

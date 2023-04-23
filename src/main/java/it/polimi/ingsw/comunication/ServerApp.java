@@ -17,7 +17,7 @@ public class ServerApp {
         if (settings == "RMI CLI") {
             try {
                 RMIServer rmiServer = new RMIServerApp();
-                this.clientController = new RMIClientController();
+                this.clientController = new RMIClientController(rmiServer);
 
                 //TODO: THIS PART NEEDS FIXING (read comments)
                 this.lobby = new Lobby("");
