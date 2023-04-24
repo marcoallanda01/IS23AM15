@@ -9,18 +9,19 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class RMIClientApp extends UnicastRemoteObject implements RMIClient {
+public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, Connection{
     private ViewController viewController;
     private RMIServer rmiServer;
 
-    public RMIClientApp() throws Exception {
-        this.start();
+    public RMIClientConnection() throws Exception {
     }
     public void setViewController(ViewController viewController) {
         this.viewController = viewController;
     }
-    private void start() throws Exception {
+    public void openConnection() throws Exception {
         // Getting the registry
         Registry registry;
 
@@ -29,6 +30,16 @@ public class RMIClientApp extends UnicastRemoteObject implements RMIClient {
         // Looking up the registry for the remote object
         this.rmiServer = (RMIServer) registry.lookup("ServerService");
         this.rmiServer.login(this);
+    }
+    // Method to close RMI connection
+    public void closeConnection() {
+        try {
+            // Unexport the remote object
+            UnicastRemoteObject.unexportObject(this, true);
+            System.out.println("RMI client connection closed.");
+        } catch (RemoteException e) {
+            System.err.println("Error closing RMI connection: " + e.getMessage());
+        }
     }
     @Override
     public void gameSetUp(GameSetUp gameSetUp)  throws RemoteException {
@@ -42,27 +53,42 @@ public class RMIClientApp extends UnicastRemoteObject implements RMIClient {
 
     @Override
     public void notifyChangePlayers(List<String> nicknames)  throws RemoteException {
-
+        viewController.showPlayers(nicknames);
     }
 
     @Override
     public void notifyChangeBoard(List<Tile> tiles)  throws RemoteException {
-
+        viewController.showBoard(tiles);
     }
 
     @Override
     public void notifyChangeBookShelf(String nickname, List<Tile> tiles)  throws RemoteException {
-
+        viewController.showBookshelf(nickname, tiles);
     }
 
     @Override
-    public void updatePlayerPoints(String nickname, int points) throws RemoteException {
-
+    public void notifyChangePlayerPoints(String nickname, int points) throws RemoteException {
+        viewController.showPoints(nickname, points);
     }
 
     @Override
-    public void notifyTurn(String nickname) throws RemoteException {
+    public void notifyChangeTurn(String nickname) throws RemoteException {
+        viewController.showTurn(nickname);
+    }
 
+    @Override
+    public void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException {
+        viewController.showPersonalGoalCard(nickname, card);
+    }
+
+    @Override
+    public void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException {
+        viewController.showCommonGoalCards(cardsToTokens);
+    }
+
+    @Override
+    public void notifyChangeCommonGoals(Set<String> goals) throws RemoteException {
+        viewController.showCommonGoals(goals);
     }
 
     public RMIServer getServer() {

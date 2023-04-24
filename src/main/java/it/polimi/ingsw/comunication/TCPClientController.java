@@ -3,7 +3,10 @@ package it.polimi.ingsw.comunication;
 import it.polimi.ingsw.server.communication.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
+import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TCPClientController implements ClientController{
     public TCPClientController(TCPServer tcpServer, NotificationHandler notificationHandler) {
@@ -35,12 +38,27 @@ public class TCPClientController implements ClientController{
     }
 
     @Override
-    public void updatePlayerPoints(String nickname, int points) {
+    public void notifyChangePlayerPoints(String nickname, int points) {
 
     }
 
     @Override
-    public void notifyTurn(String nickname) {
+    public void notifyChangeTurn(String nickname) {
+
+    }
+
+    @Override
+    public void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyChangeCommonGoals(Set<String> goals) throws RemoteException {
 
     }
 }

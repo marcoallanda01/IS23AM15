@@ -11,16 +11,15 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RMIServerApp extends UnicastRemoteObject implements RMIServer{
+public class RMIServerConnection extends UnicastRemoteObject implements RMIServer, Connection{
     private List<RMIClient> rmiClients;
     private ChatController chatController;
     private PlayController playController;
     private Lobby lobby;
-    public RMIServerApp() throws RemoteException {
+    public RMIServerConnection() throws RemoteException {
         this.rmiClients = new ArrayList<>();
-        this.start();
     }
-    private void start() throws RemoteException {
+    public void openConnection() throws RemoteException {
         // Bind the remote object's stub in the registry
         //DO NOT CALL Registry registry = LocateRegistry.getRegistry();
         Registry registry = LocateRegistry.createRegistry(Settings.PORT);
@@ -38,12 +37,19 @@ public class RMIServerApp extends UnicastRemoteObject implements RMIServer{
         System.out.println("client logged in");
     }
 
-
+    // Method to close RMI connection
+    public void closeConnection() {
+        try {
+            // Unexport the remote object
+            UnicastRemoteObject.unexportObject(this, true);
+            System.out.println("RMI server connection closed.");
+        } catch (RemoteException e) {
+            System.err.println("Error closing RMI connection: " + e.getMessage());
+        }
+    }
     public void setLobby(Lobby lobby)  throws RemoteException {
         this.lobby = lobby;
     }
-
-
     public void setPlayController(PlayController playController) {
         this.playController = playController;
     }

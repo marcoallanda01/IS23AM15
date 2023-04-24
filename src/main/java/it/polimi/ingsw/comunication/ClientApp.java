@@ -8,16 +8,18 @@ public class ClientApp {
     private ServerController serverController;
     private ViewController viewController;
     private View view;
+    private Connection connection;
     public  ClientApp(String settings) {
         if (settings == "RMI CLI") {
             try {
-                RMIClientApp rmiClientApp = new RMIClientApp();
+                RMIClientConnection rmiClientConnection = new RMIClientConnection();
+                this.connection = rmiClientConnection;
                 this.view = new CLIView();
-                this.serverController = new RMIServerController(rmiClientApp);
+                this.serverController = new RMIServerController(rmiClientConnection);
                 // controller needs a reference to the serverController to send messages
                 this.viewController = new ViewController(this.view, this.serverController);
                 // client needs a reference to the viewController to call its methods
-                rmiClientApp.setViewController(this.viewController);
+                rmiClientConnection.setViewController(this.viewController);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -26,6 +28,13 @@ public class ClientApp {
         }
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public ViewController getViewController() {
+        return this.viewController;
+    }
     public static void main(String args[])  //static method
     {
         System.out.println("Starting client app");
