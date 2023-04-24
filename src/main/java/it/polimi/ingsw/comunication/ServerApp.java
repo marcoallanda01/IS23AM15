@@ -38,7 +38,7 @@ public class ServerApp {
                 throw new RuntimeException(e);
             }
         } else {
-            this.clientController = new TCPClientController(new TCPServer(), new NotificationHandler());
+            this.clientController = new TCPClientController(new TCPServer());
         }
     }
 
