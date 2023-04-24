@@ -20,7 +20,7 @@ public class GoalManager {
      * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
      * if set to true only pointsManagers with updateRule set to END_GAME will NOT be updated every turn
      */
-    private Boolean frequentUpdates = Boolean.TRUE;
+    private final Boolean frequentUpdates = Boolean.TRUE;
     /**
      *
      * @param reader reader from witch read the json
@@ -185,7 +185,7 @@ public class GoalManager {
         }
         catch (FileNotFoundException e){
             System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
-            System.err.println("More details: " + e.toString());
+            System.err.println("More details: " + e);
             throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
         }
 
@@ -214,7 +214,7 @@ public class GoalManager {
         }catch (IOException e) {
             System.err.println("Error occurred in Goal Manager: IOException occurred with file " +
                     setUpFile + " at the closing of the reader");
-            System.err.println("More details: " + e.toString());
+            System.err.println("More details: " + e);
             throw new ArrestGameException("ArrestGameException:" +
                     "Error occurred in GoalManager at the closing of the JsonReader", e);
         }

@@ -2,27 +2,46 @@ package it.polimi.ingsw.server.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.server.controller.NicknameException;
-import it.polimi.ingsw.server.controller.NicknameTakenException;
-import it.polimi.ingsw.server.controller.OptionalTypeAdapter;
-import it.polimi.ingsw.server.controller.WaitLobbyException;
 import it.polimi.ingsw.server.model.Game;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the lobby of the game. It is used to manage the players that are waiting to play.
+ * It is also used to load and save games.
+ */
 public class Lobby {
-    private final Map<String, String> players; // Map Id to Name
+    /**
+     * Maps the id of the player to the name of the player
+     */
+    private final Map<String, String> players;
     private String firstPlayerId;
+    /**
+     * The number of players that will play the game
+     */
     private int numPlayersGame;
     private final int maxNumPlayers = 4;
     private final int minNumPlayers = 2;
+    /**
+     * The directory where the games are saved
+     */
     private final String directory;
+    /**
+     * The game that is being loaded
+     */
     private Game loadingGame;
+    /**
+     * True if the game is using the easy rules, false otherwise
+     */
     private boolean easyRules;
+    /**
+     * True if the game is in creation, false otherwise
+     */
     private boolean isCreating;
 
 
@@ -32,48 +51,48 @@ public class Lobby {
         this.numPlayersGame = -1;
         this.loadingGame = null;
         this.easyRules = false;
-        this.players = new HashMap<String, String>();
+        this.players = new HashMap<>();
         this.isCreating = false;
     }
 
     /**
      * @return an Optional containing a unique id to the first player to connect, else an empty Optional and addPlayer
-     *          can be called
+     * can be called
      * @throws WaitLobbyException if the there is already a first player and the game is in creation
      */
-    public Optional<String> join() throws it.polimi.ingsw.server.controller.WaitLobbyException {
+    public Optional<String> join() throws WaitLobbyException {
         Optional<String> uniqueID = Optional.empty();
-        if(this.firstPlayerId.isEmpty()) {
+        if (this.firstPlayerId == null) {
             this.firstPlayerId = UUID.randomUUID().toString();
+            uniqueID = Optional.of(this.firstPlayerId);
             this.isCreating = true;
-        }
-        else if (this.isCreating){
-           throw new it.polimi.ingsw.server.controller.WaitLobbyException();
+        } else if (this.isCreating) {
+            throw new WaitLobbyException();
         }
         return uniqueID;
     }
 
-    public Set<String> getSavedGames(){
-        Set<String> games = new HashSet<String>();
+    /**
+     * @return a Set of the saved games names
+     */
+    public Set<String> getSavedGames() {
+        Set<String> games = new HashSet<>();
         File saves = new File(this.directory);
         if (!saves.exists() || saves.isFile()) {
             return games;
         }
         // saves for sure is not a file
         File[] savesList = saves.listFiles();
-        games = Arrays.stream(savesList).sequential()
-                .filter(File::isFile)
-                .map(File::getName)                                                       //    9 - 5 - 1  = 3
-                .map((name) -> (name.substring(0, name.length() - ".json".length() - 1))) // "ciao.json" -> "ciao"
+        games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().filter(File::isFile).map(File::getName)
+                .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
                 .collect(Collectors.toSet());
         return games;
     }
 
 
-    public boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id){
-        if(this.isCreating && this.loadingGame != null
-                && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers
-                && this.firstPlayerId.equals(id)){ // this.isCreating can be true only when fistPlayer.isPresent()
+    public boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
+        if (this.isCreating && this.loadingGame != null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
+                this.firstPlayerId.equals(id)) { // this.isCreating can be true only when fistPlayer.isPresent()
             this.isCreating = false;
             this.easyRules = easyRules;
             this.players.put(this.firstPlayerId, name);
@@ -85,33 +104,35 @@ public class Lobby {
 
     /**
      * Load saved game
+     *
      * @param name the name of the saved game
-     * @return the list of loaded game players' nickname
+     * @param idFirstPlayer the id of the first player to connect
+     * @return the list of loaded game players nicknames
      */
-    public List<String> loadGame(String name, String idFirstPlayer) throws it.polimi.ingsw.server.controller.GameLoadException, it.polimi.ingsw.server.controller.GameNameException, it.polimi.ingsw.server.controller.IllegalLobbyException {
+    public List<String> loadGame(String name, String idFirstPlayer) throws GameLoadException, GameNameException, IllegalLobbyException {
         if (this.isCreating && this.firstPlayerId.equals(idFirstPlayer)) {
             if (!getSavedGames().contains(name)) {
-                throw new it.polimi.ingsw.server.controller.GameNameException(name);
+                throw new GameNameException(name);
             }
             try {
-                Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new it.polimi.ingsw.server.controller.DateTimeTypeAdapter())
-                        .registerTypeAdapter(Game.class, new it.polimi.ingsw.server.controller.GameTypeAdapter()).create();
-                BufferedReader reader = new BufferedReader(new java.io.FileReader(this.directory + "/" + name + ".json"));
+                Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
+                        .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
+                BufferedReader reader = new BufferedReader(new FileReader(this.directory + "/" + name + ".json"));
                 Game game = gson.fromJson(reader, Game.class);
                 this.loadingGame = game;
-                return new ArrayList<String>(game.getPlayers());
+                return new ArrayList<>(game.getPlayers());
             } catch (Exception e) {
-                throw new it.polimi.ingsw.server.controller.GameLoadException(name, e);
+                throw new GameLoadException(name, e);
             }
         } else {
-            throw new it.polimi.ingsw.server.controller.IllegalLobbyException();
+            throw new IllegalLobbyException();
         }
     }
 
     public boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
-        if(this.isCreating && this.loadingGame != null && this.firstPlayerId.equals(id)) {
-            if(!this.loadingGame.getPlayers().contains(name)){
-                throw new it.polimi.ingsw.server.controller.NicknameException(name);
+        if (this.isCreating && this.loadingGame != null && this.firstPlayerId.equals(id)) {
+            if (!this.loadingGame.getPlayers().contains(name)) {
+                throw new NicknameException(name);
             }
             this.isCreating = false;
             this.players.put(this.firstPlayerId, name);
@@ -120,52 +141,49 @@ public class Lobby {
         return false;
     }
 
-    public String addPlayer(String player) throws it.polimi.ingsw.server.controller.FullGameException, NicknameTakenException, it.polimi.ingsw.server.controller.NicknameException {
+    public String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
         Set<String> uniquePlayers = (Set<String>) this.players.values();
-        if(uniquePlayers.size() == this.numPlayersGame){
-            throw new it.polimi.ingsw.server.controller.FullGameException(player);
+        if (uniquePlayers.size() == this.numPlayersGame) {
+            throw new FullGameException(player);
         }
-        if(uniquePlayers.contains(player)){
-            throw new it.polimi.ingsw.server.controller.NicknameTakenException(player);
+        if (uniquePlayers.contains(player)) {
+            throw new NicknameTakenException(player);
         }
-        if(this.loadingGame != null){
-            if(!this.loadingGame.getPlayers().contains(player)){
-                throw new it.polimi.ingsw.server.controller.NicknameException(player);
+        if (this.loadingGame != null) {
+            if (!this.loadingGame.getPlayers().contains(player)) {
+                throw new NicknameException(player);
             }
         }
         String id;
         do {
             id = UUID.randomUUID().toString();
-        }while ( this.players.putIfAbsent(id, player) != null);
+        } while (this.players.putIfAbsent(id, player) != null);
 
         return id;
     }
 
 
     private String getIdFromName(String name) {
-        return this.players.entrySet()
-                .stream()
-                .filter(entry -> Objects.equals(entry.getValue(), name))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElse(null);
+        return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
-    public boolean removePlayer(String player){
+    public boolean removePlayer(String player) {
         return this.players.remove(getIdFromName(player), player);
     }
 
-    public boolean isFistPlayerPresent(){ return this.firstPlayerId != null; }
+    public boolean isFistPlayerPresent() {
+        return this.firstPlayerId != null;
+    }
 
-    public boolean isReadyToPlay(){
+    public boolean isReadyToPlay() {
         return this.players.size() == this.numPlayersGame;
     }
 
-    public it.polimi.ingsw.server.controller.ControllerProvider startGame() throws it.polimi.ingsw.server.controller.EmptyLobbyException {
-        if(! isReadyToPlay()){
-            throw new it.polimi.ingsw.server.controller.EmptyLobbyException(this.players.size(), this.numPlayersGame);
+    public ControllerProvider startGame() throws EmptyLobbyException {
+        if (!isReadyToPlay()) {
+            throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }
-        return new it.polimi.ingsw.server.controller.ControllerProvider( new Game(new ArrayList<>(this.players.values()), this.easyRules) );
+        return new ControllerProvider(new Game(new ArrayList<>(this.players.values()), this.easyRules));
     }
 
 }

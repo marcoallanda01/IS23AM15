@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Line extends Specific{
-    private int tilesNum;
-    private List<Character> directions;
+    private final int tilesNum;
+    private final List<Character> directions;
     /**
      * @param tilesNum length of the line
      * @param directions directions of the line, they can be ('O', 'V', 'D')

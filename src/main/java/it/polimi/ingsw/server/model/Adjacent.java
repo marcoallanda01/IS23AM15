@@ -4,9 +4,9 @@ import java.util.*;
 import java.util.function.Function;
 
 public class Adjacent extends Pattern{
-    private Integer points;
-    private Integer minGroups;
-    private Integer minTiles;
+    private final Integer points;
+    private final Integer minGroups;
+    private final Integer minTiles;
     public Adjacent(String name, int minTiles, int points){
         super(name);
         this.points = points;

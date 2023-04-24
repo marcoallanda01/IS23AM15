@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.Collection;
 import java.util.function.Function;
 public class Personal extends Pattern{
-    private List<Tile> tiles;
-    private List<int[]> checkToPoints;
+    private final List<Tile> tiles;
+    private final List<int[]> checkToPoints;
 
     /**
      *

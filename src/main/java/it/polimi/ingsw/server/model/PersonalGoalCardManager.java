@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PersonalGoalCardManager extends CardsAndPointsManager{
-    private Map<Player, Card> playersToCards = new HashMap<>();
+    private final Map<Player, Card> playersToCards = new HashMap<>();
 
     public PersonalGoalCardManager(List<Player> players, Deck deck) {
         super(players, deck);

@@ -78,7 +78,7 @@ public class Specific extends Pattern{
      * @return Transposed masks: a list of "matrix" columns x rows
      */
     public List<List<List<Boolean>>> getTransposedMasks(){
-        System.out.println(transposeMasks().toString());
+        System.out.println(transposeMasks());
         return transposeMasks();
     }
 
@@ -149,10 +149,7 @@ public class Specific extends Pattern{
                 }
             }
             // if !sequenceChanged, we have a non overlapping sequence
-            if (!sequenceChanged && isSequenceValid().test(startingGroups)) {
-                return true;
-            }
-            return false;
+            return !sequenceChanged && isSequenceValid().test(startingGroups);
         };
     }
 

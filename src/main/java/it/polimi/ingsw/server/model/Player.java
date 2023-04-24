@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 public class Player {
     private final String userName;
-    private BookShelf bookShelf;
+    private final BookShelf bookShelf;
     private boolean firstToFinish = false;
     private boolean isPlaying = true;
     private boolean fullBookShelf = false;

@@ -19,13 +19,13 @@ class JsonStringTest {
 
     @Test
     void toStringTest() throws Exception {
-        assertEquals("{\"casa\":true}",""+new JsonString("{\"casa\":true}")+"");
+        assertEquals("{\"casa\":true}", String.valueOf(new JsonString("{\"casa\":true}")));
     }
 
     @Test
     void equalsTest() throws Exception {
-        assertFalse(new JsonString("{}").equals("ciao"));
-        assertTrue(new JsonString("{\"ciao\":false}").equals(new JsonString("{\"ciao\": false}")));
+        assertNotEquals("ciao", new JsonString("{}").toString());
+        assertEquals(new JsonString("{\"ciao\":false}"), new JsonString("{\"ciao\": false}"));
     }
 
 }
