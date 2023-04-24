@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.server.communication.responses.LoadedGamePlayers;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -17,14 +18,14 @@ class LoadedGamePlayersTest {
         n.add("Come");
         n.add("Stai");
 
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.LoadedGamePlayers(n)), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("{\"name\":\"LoadedGamePlayers\"," +
+        assertEquals(Optional.of(new LoadedGamePlayers(n)), LoadedGamePlayers.fromJson("{\"name\":\"LoadedGamePlayers\"," +
                 "\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"));
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.LoadedGamePlayers(new HashSet<String>())), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("{\"name\":\"LoadedGamePlayers\"," +
+        assertEquals(Optional.of(new LoadedGamePlayers(new HashSet<String>())), LoadedGamePlayers.fromJson("{\"name\":\"LoadedGamePlayers\"," +
                 "\"names\":[]}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("{\"name\":\"LoadedGamePlayers\"}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("kjdsvaskd"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("{\"answer\":true}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("{\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadedGamePlayers.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
+        assertEquals(Optional.empty(), LoadedGamePlayers.fromJson("{\"name\":\"LoadedGamePlayers\"}"));
+        assertEquals(Optional.empty(), LoadedGamePlayers.fromJson("kjdsvaskd"));
+        assertEquals(Optional.empty(), LoadedGamePlayers.fromJson("{\"answer\":true}"));
+        assertEquals(Optional.empty(), LoadedGamePlayers.fromJson("{\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"));
+        assertEquals(Optional.empty(), LoadedGamePlayers.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
     }
 }

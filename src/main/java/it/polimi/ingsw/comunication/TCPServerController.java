@@ -1,5 +1,5 @@
 package it.polimi.ingsw.comunication;
-
+/*
 public class TCPServerController implements ServerController {
     private NotificationHandler notificationHandler;
     private TCPServer tcpServer;
@@ -19,3 +19,4 @@ public class TCPServerController implements ServerController {
         // notificationHandler.handle(command);
     }
 }
+*/

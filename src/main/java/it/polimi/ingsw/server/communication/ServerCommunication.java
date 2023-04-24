@@ -7,7 +7,7 @@ import java.util.List;
 public interface ServerCommunication {
 
     // send one GameSetUp object to every player
-    public void gameSetUp();
+    public void gameSetUp(/*...*/);
 
 
     // notifications methods
@@ -22,12 +22,15 @@ public interface ServerCommunication {
      * If in game, function notifies the disconnection of a player to all the others
      * @param playerId player that disconnecter
      */
+    // TODO: notify change players
     public void notifyDisconnection(String playerId);
 
     public void notifyChangeBoard(List<Tile> tiles);
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles);
-    public void updatePlayerPoints(String playerName, int points);
+    public void notifyChangePlayerPoints(String playerName, int points);
+    public void notifyChangeTurn(String playerName);
 
-    public void notifyTurn(String playerName);
+
+    public void ping(String player);
 
 }

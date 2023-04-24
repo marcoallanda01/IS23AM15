@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.server.communication.BooleanResponse;
-import it.polimi.ingsw.server.communication.Hello;
-import it.polimi.ingsw.server.communication.JsonString;
+import it.polimi.ingsw.server.communication.responses.BooleanResponse;
+import it.polimi.ingsw.server.communication.responses.Hello;
+import it.polimi.ingsw.server.communication.responses.JsonString;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +22,6 @@ class MsgTest {
     @Test
     void getName() {
         Hello h = new Hello("test");
-        assertEquals("Hello", h.name);
+        assertEquals("Hello", h.getName());
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.comunication;
 
-import it.polimi.ingsw.server.communication.Disconnection;
+import it.polimi.ingsw.server.communication.responses.Disconnection;
 
 public class NotificationHandler {
     private TCPClient tcpClient;

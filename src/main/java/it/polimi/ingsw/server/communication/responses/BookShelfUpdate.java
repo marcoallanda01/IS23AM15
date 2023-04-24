@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.communication;
+package it.polimi.ingsw.server.communication.responses;
 
 import it.polimi.ingsw.server.model.Tile;
 import org.jetbrains.annotations.NotNull;

@@ -24,7 +24,7 @@ public class ClientApp {
                 throw new RuntimeException(e);
             }
         } else {
-            this.serverController = new TCPServerController(new TCPServer(), new NotificationHandler());
+            //this.serverController = new TCPServerController(new TCPServer(), new NotificationHandler());
         }
     }
 

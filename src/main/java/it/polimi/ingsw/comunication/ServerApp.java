@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ServerApp {
     private ClientController clientController;
@@ -13,7 +14,7 @@ public class ServerApp {
     private ControllerProvider controllerProvider;
     private Connection connection;
     public  ServerApp(String settings) {
-        if (settings == "RMI CLI") {
+        if ("RMI CLI".equals(settings)) {
             try {
                 RMIServerConnection rmiServerConnection = new RMIServerConnection();
                 this.connection = rmiServerConnection;
@@ -37,8 +38,11 @@ public class ServerApp {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else {
-            this.clientController = new TCPClientController(new TCPServer());
+        } else if ("TCP CLI".equals(settings)) {
+            //this.clientController = new TCPClientController(new TCPServer());
+        }
+        else {
+            throw new RuntimeException("Communication protocol not supported!");
         }
     }
 

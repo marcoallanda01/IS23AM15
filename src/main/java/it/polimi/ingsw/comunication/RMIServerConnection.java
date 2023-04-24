@@ -22,7 +22,7 @@ public class RMIServerConnection extends UnicastRemoteObject implements RMIServe
     public void openConnection() throws RemoteException {
         // Bind the remote object's stub in the registry
         //DO NOT CALL Registry registry = LocateRegistry.getRegistry();
-        Registry registry = LocateRegistry.createRegistry(Settings.PORT);
+        Registry registry = LocateRegistry.createRegistry(TCPClient.Settings.PORT);
         try {
             registry.bind("ServerService", this);
         }

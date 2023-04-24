@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.communication;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.server.communication.responses.SavedGames;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -17,11 +18,11 @@ class SavedGamesTest {
         n.add("Ciao");
         n.add("Come");
         n.add("Stai");
-        it.polimi.ingsw.server.communication.SavedGames sg = new it.polimi.ingsw.server.communication.SavedGames(n);
+        SavedGames sg = new SavedGames(n);
         Gson gson = new Gson();
         System.out.println(sg.toJson());
         System.out.println(gson.toJson(sg));
-        assertEquals(gson.fromJson(sg.toJson(), it.polimi.ingsw.server.communication.SavedGames.class), gson.fromJson((gson.toJson(sg)), it.polimi.ingsw.server.communication.SavedGames.class));
+        assertEquals(gson.fromJson(sg.toJson(), SavedGames.class), gson.fromJson((gson.toJson(sg)), SavedGames.class));
     }
 
     @Test
@@ -31,15 +32,15 @@ class SavedGamesTest {
         n.add("Come");
         n.add("Stai");
 
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.SavedGames(n)), it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"name\":\"SavedGames\"," +
+        assertEquals(Optional.of(new SavedGames(n)), SavedGames.fromJson("{\"name\":\"SavedGames\"," +
                 "\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"));
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.SavedGames(new HashSet<String>())), it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"name\":\"SavedGames\"," +
+        assertEquals(Optional.of(new SavedGames(new HashSet<String>())), SavedGames.fromJson("{\"name\":\"SavedGames\"," +
                 "\"names\":[]}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"name\":\"SavedGames\"}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.SavedGames.fromJson("kjdsvaskd"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"answer\":true}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
+        assertEquals(Optional.empty(), SavedGames.fromJson("{\"name\":\"SavedGames\"}"));
+        assertEquals(Optional.empty(), SavedGames.fromJson("kjdsvaskd"));
+        assertEquals(Optional.empty(), SavedGames.fromJson("{\"answer\":true}"));
+        assertEquals(Optional.empty(), SavedGames.fromJson("{\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"));
+        assertEquals(Optional.empty(), SavedGames.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
     }
 
     @Test
@@ -48,8 +49,8 @@ class SavedGamesTest {
         n.add("Ciao");
         n.add("Come");
         n.add("Stai");
-        System.out.println("toJson: "+ new it.polimi.ingsw.server.communication.SavedGames(n).toJson());
-        assertEquals(it.polimi.ingsw.server.communication.SavedGames.fromJson("{\"name\":\"SavedGames\"," +
-                "\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"), it.polimi.ingsw.server.communication.SavedGames.fromJson(new it.polimi.ingsw.server.communication.SavedGames(n).toJson()));
+        System.out.println("toJson: "+ new SavedGames(n).toJson());
+        assertEquals(SavedGames.fromJson("{\"name\":\"SavedGames\"," +
+                "\"names\":[\"Come\",\"Ciao\",\"Stai\"]}"), SavedGames.fromJson(new SavedGames(n).toJson()));
     }
 }

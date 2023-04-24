@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.server.communication.responses.LoadGameResponse;
 import it.polimi.ingsw.server.controller.GameLoadException;
 import it.polimi.ingsw.server.controller.GameNameException;
 import it.polimi.ingsw.server.controller.IllegalLobbyException;
@@ -13,26 +14,26 @@ class LoadGameResponseTest {
 
     @Test
     void fromJson() {
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.LoadGameResponse()), it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\"," +
+        assertEquals(Optional.of(new LoadGameResponse()), LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\"," +
                 "\"result\":true}"));
-        it.polimi.ingsw.server.communication.LoadGameResponse jgre = new it.polimi.ingsw.server.communication.LoadGameResponse(new GameLoadException());
-        it.polimi.ingsw.server.communication.LoadGameResponse jgra = it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false," +
+        LoadGameResponse jgre = new LoadGameResponse(new GameLoadException());
+        LoadGameResponse jgra = LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false," +
                 "\"error\":\"GameLoadException\"}").get();
         assertEquals(jgre , jgra);
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.LoadGameResponse(new GameNameException())),
-                it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false, \"error\":\"GameNameException\"}"));
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.LoadGameResponse(new IllegalLobbyException())),
-                it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false, \"error\":\"IllegalLobbyException\"}"));
+        assertEquals(Optional.of(new LoadGameResponse(new GameNameException())),
+                LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false, \"error\":\"GameNameException\"}"));
+        assertEquals(Optional.of(new LoadGameResponse(new IllegalLobbyException())),
+                LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false, \"error\":\"IllegalLobbyException\"}"));
 
-        assertNotEquals(Optional.of(new it.polimi.ingsw.server.communication.LoadGameResponse(new IllegalLobbyException())),
-                it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false, \"error\":\"GameNameException\"}"));
+        assertNotEquals(Optional.of(new LoadGameResponse(new IllegalLobbyException())),
+                LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":false, \"error\":\"GameNameException\"}"));
 
 
         assertEquals(Optional.empty(),
-                it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":true, \"error\":\"IllegalLobbyException\"}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\"," +
+                LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\",\"result\":true, \"error\":\"IllegalLobbyException\"}"));
+        assertEquals(Optional.empty(), LoadGameResponse.fromJson("{\"name\":\"LoadGameResponse\"," +
                 "\"result\":false}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("kjdsvaskd"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.LoadGameResponse.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
+        assertEquals(Optional.empty(), LoadGameResponse.fromJson("kjdsvaskd"));
+        assertEquals(Optional.empty(), LoadGameResponse.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
     }
 }

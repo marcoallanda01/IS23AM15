@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.communication;
+package it.polimi.ingsw.server.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

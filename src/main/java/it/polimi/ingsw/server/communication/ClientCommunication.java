@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.server.communication.responses.*;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.List;
@@ -40,7 +41,6 @@ public interface ClientCommunication {
     public BooleanResponse putTiles(List<Tile> tiles, int column);
 
 
-    // TODO: methods not needed because the game MUST start as soon as the full capacity is reached
-    // public BooleanResponse isReadyToPlay();
-    // public BooleanResponse startGame() throws EmptyLobbyException;
+    public void pong();
+
 }

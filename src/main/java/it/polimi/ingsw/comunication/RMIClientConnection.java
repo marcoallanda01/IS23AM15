@@ -25,7 +25,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
         // Getting the registry
         Registry registry;
 
-        registry = LocateRegistry.getRegistry(Settings.SERVER_NAME, Settings.PORT);
+        registry = LocateRegistry.getRegistry(TCPClient.Settings.SERVER_NAME, TCPClient.Settings.PORT);
 
         // Looking up the registry for the remote object
         this.rmiServer = (RMIServer) registry.lookup("ServerService");

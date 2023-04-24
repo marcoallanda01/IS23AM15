@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.server.communication.responses.BooleanResponse;
+import it.polimi.ingsw.server.communication.responses.JsonString;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -10,13 +12,13 @@ class BooleanResponseTest {
 
     @Test
     void fromJson() throws Exception {
-        it.polimi.ingsw.server.communication.JsonString json1 = new it.polimi.ingsw.server.communication.JsonString("{\"name\":\"BooleanResponse\", \"result\":true}");
-        it.polimi.ingsw.server.communication.JsonString json2 = new it.polimi.ingsw.server.communication.JsonString("{\"name\":\"BooleanResponse\", \"result\":false}");
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.BooleanResponse(true)), it.polimi.ingsw.server.communication.BooleanResponse.fromJson(json1.getJson()));
-        assertEquals(Optional.of(new it.polimi.ingsw.server.communication.BooleanResponse(false)), it.polimi.ingsw.server.communication.BooleanResponse.fromJson(json2.getJson()));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.BooleanResponse.fromJson("kjdsvaskd"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.BooleanResponse.fromJson("{\"answer\":true}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.BooleanResponse.fromJson("{\"result\":true}"));
-        assertEquals(Optional.empty(), it.polimi.ingsw.server.communication.BooleanResponse.fromJson("{\"name\":\"Response\", \"answer\":true}"));
+        JsonString json1 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":true}");
+        JsonString json2 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":false}");
+        assertEquals(Optional.of(new BooleanResponse(true)), BooleanResponse.fromJson(json1.getJson()));
+        assertEquals(Optional.of(new BooleanResponse(false)), BooleanResponse.fromJson(json2.getJson()));
+        assertEquals(Optional.empty(), BooleanResponse.fromJson("kjdsvaskd"));
+        assertEquals(Optional.empty(), BooleanResponse.fromJson("{\"answer\":true}"));
+        assertEquals(Optional.empty(), BooleanResponse.fromJson("{\"result\":true}"));
+        assertEquals(Optional.empty(), BooleanResponse.fromJson("{\"name\":\"Response\", \"answer\":true}"));
     }
 }

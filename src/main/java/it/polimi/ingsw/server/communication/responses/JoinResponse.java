@@ -1,9 +1,8 @@
-package it.polimi.ingsw.server.communication;
+package it.polimi.ingsw.server.communication.responses;
 
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.server.communication.Msg;
 import it.polimi.ingsw.server.controller.NicknameException;
 import it.polimi.ingsw.server.controller.NicknameTakenException;
 import it.polimi.ingsw.server.controller.FullGameException;

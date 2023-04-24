@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.communication;
+package it.polimi.ingsw.server.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -6,7 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Optional;
 import java.util.Set;
 
-public class SavedGames extends it.polimi.ingsw.server.communication.Msg {
+public class SavedGames extends Msg {
     public Set<String> names;
 
     public SavedGames(Set<String> names) {
