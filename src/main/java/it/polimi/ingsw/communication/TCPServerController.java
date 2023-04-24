@@ -1,4 +1,4 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 /*
 public class TCPServerController implements ServerController {
     private NotificationHandler notificationHandler;

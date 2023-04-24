@@ -1,16 +1,14 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 
-import it.polimi.ingsw.client.ViewController;
 import it.polimi.ingsw.server.communication.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface RMIClient extends Remote {
+public interface ClientController {
     // send one GameSetUp object to every player
     public void gameSetUp(GameSetUp gameSetUp) throws RemoteException;
     // notifications methods
@@ -20,7 +18,9 @@ public interface RMIClient extends Remote {
     public void notifyChangeBookShelf(String nickname, List<Tile> tiles) throws RemoteException;
     public void notifyChangePlayerPoints(String nickname, int points) throws RemoteException;
     public void notifyChangeTurn(String nickname) throws RemoteException;
-    void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException;
-    void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException;
-    void notifyChangeCommonGoals(Set<String> goals) throws RemoteException;
+    public void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException;
+    public void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException;
+    public void notifyChangeCommonGoals(Set<String> goals) throws RemoteException;
+
+
 }

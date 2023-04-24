@@ -1,13 +1,5 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 
-import it.polimi.ingsw.server.communication.GameSetUp;
-import it.polimi.ingsw.server.communication.TCPServer;
-import it.polimi.ingsw.server.model.Tile;
-
-import java.rmi.RemoteException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 /*
 public class TCPClientController implements ClientController {
     TCPServer tcpServer;

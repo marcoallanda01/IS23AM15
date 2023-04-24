@@ -1,4 +1,4 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 
 import it.polimi.ingsw.server.controller.ChatController;
 import it.polimi.ingsw.server.controller.Lobby;
@@ -16,6 +16,7 @@ public class RMIServerConnection extends UnicastRemoteObject implements RMIServe
     private ChatController chatController;
     private PlayController playController;
     private Lobby lobby;
+
     public RMIServerConnection() throws RemoteException {
         this.rmiClients = new ArrayList<>();
     }
@@ -34,6 +35,7 @@ public class RMIServerConnection extends UnicastRemoteObject implements RMIServe
 
     public void login(RMIClient c) throws RemoteException {
         this.rmiClients.add(c);
+        this.playController.addServerCommunication(new RMIServerCommunication(c));
         System.out.println("client logged in");
     }
 

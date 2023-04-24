@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import it.polimi.ingsw.communication.ServerCommunication;
 import it.polimi.ingsw.server.model.*;
 
 import java.io.BufferedWriter;
@@ -17,10 +18,11 @@ import java.util.*;
 public class PlayController {
     private final Game game;
     private final String directory;
-
+    private List<ServerCommunication> serverCommunications;
     public PlayController(Game game, String directory) {
         this.game = game;
         this.directory = directory;
+        this.serverCommunications = new ArrayList<>();
     }
 
     public boolean saveGame() throws IOException {
@@ -79,5 +81,15 @@ public class PlayController {
         return game.getTokens(nickname);
     }
 
+    public void setServerCommunications(List<ServerCommunication> serverCommunications) {
+        this.serverCommunications = serverCommunications;
+    }
 
+    public List<ServerCommunication> getServerCommunications() {
+        return serverCommunications;
+    }
+
+    public void addServerCommunication(ServerCommunication serverCommunication) {
+        this.serverCommunications.add(serverCommunication);
+    }
 }

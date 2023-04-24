@@ -1,4 +1,4 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 
 import it.polimi.ingsw.client.ViewController;
 import it.polimi.ingsw.server.communication.GameSetUp;

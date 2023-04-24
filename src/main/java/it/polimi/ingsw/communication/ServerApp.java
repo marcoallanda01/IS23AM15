@@ -1,4 +1,4 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 
 import it.polimi.ingsw.server.controller.ControllerProvider;
 import it.polimi.ingsw.server.controller.Lobby;
@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ServerApp {
     private ClientController clientController;
@@ -48,6 +47,9 @@ public class ServerApp {
 
     public Connection getConnection() {
         return connection;
+    }
+    public ControllerProvider getControllerProvider() {
+        return this.controllerProvider;
     }
 
     public ClientController getClientController() {

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.comunication;
+package it.polimi.ingsw.communication;
 
 import it.polimi.ingsw.server.communication.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ClientController {
+public interface ServerCommunication {
     // send one GameSetUp object to every player
     public void gameSetUp(GameSetUp gameSetUp) throws RemoteException;
     // notifications methods
@@ -21,6 +21,5 @@ public interface ClientController {
     public void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException;
     public void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException;
     public void notifyChangeCommonGoals(Set<String> goals) throws RemoteException;
-
 
 }

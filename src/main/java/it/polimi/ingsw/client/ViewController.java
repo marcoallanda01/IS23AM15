@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.comunication.ServerController;
+import it.polimi.ingsw.communication.ServerController;
 import it.polimi.ingsw.server.communication.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
