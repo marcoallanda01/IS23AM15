@@ -11,6 +11,15 @@ public abstract class PointsManager {
         this.players = players;
         players.forEach(player -> this.playersToPoints.put(player, 0));
     }
+
+    /**
+     * Used for deserialization
+     */
+    public PointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule) {
+        this.players = players;
+        this.playersToPoints = playersToPoints;
+        this.updateRule = updateRule;
+    }
     /**
      * updates the points of the given player
      * @param player the player to update
@@ -27,4 +36,14 @@ public abstract class PointsManager {
      * @return the frequency to which the PointsManager MUST be updated
      */
     public UpdateRule getUpdateRule() { return updateRule; }
+
+
+
+    /**
+     * Used for serialization
+     */
+    public Map<Player, Integer> getPlayersToPoints() {
+        return playersToPoints;
+    }
+
 }

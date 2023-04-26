@@ -21,6 +21,15 @@ public class Turn {
     }
 
     /**
+     * Used for deserialization
+     */
+    public Turn(List<Tile> pickedTiles, Player currentPlayer, LivingRoomBoard board) {
+        this.pickedTiles = pickedTiles;
+        this.currentPlayer = currentPlayer;
+        this.board = board;
+    }
+
+    /**
      * Changes the state of the turn
      * @param state the new state of the turn
      */

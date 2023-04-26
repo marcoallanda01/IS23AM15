@@ -17,19 +17,23 @@ public class Game{
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
         this.board = new LivingRoomBoard(numberOfPlayers);
-        this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() *(this.players.size()))), board);
+        this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() * (this.players.size()))), board);
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
-        //this.goalManager = new GoalManager(players, goalPath);
+        //this.goalManager = new GoalManager(this.players, goalPath);
     }
 
-    public Game(List<Player> players, String winner, boolean isFirstGame, LivingRoomBoard board, Turn currentTurn, Chat chat){
+    /**
+     * Used for deserialization
+     */
+    public Game(List<Player> players, String winner, boolean isFirstGame, LivingRoomBoard board, Turn currentTurn, Chat chat, GoalManager goalManager){
         this.players = players;
         this.winner = winner;
         this.isFirstGame = isFirstGame;
         this.board = board;
         this.currentTurn = currentTurn;
         this.chat = chat;
+        this.goalManager = goalManager;
     }
 
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
@@ -123,5 +127,9 @@ public class Game{
 
     public Chat getChat() {
         return chat;
+    }
+
+    public GoalManager getGoalManager() {
+        return goalManager;
     }
 }
