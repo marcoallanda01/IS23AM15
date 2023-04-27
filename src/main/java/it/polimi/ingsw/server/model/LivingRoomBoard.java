@@ -212,6 +212,10 @@ public class LivingRoomBoard {
         // print the board
         StringBuilder sb = new StringBuilder();
         sb.append("Board:\n");
+        if(board.isEmpty()) {
+            sb.append("Empty");
+            return sb.toString();
+        }
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 Tile tile = board.get(i).get(j);

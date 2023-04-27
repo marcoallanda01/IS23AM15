@@ -4,7 +4,6 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import it.polimi.ingsw.server.controller.OptionalTypeAdapter;
 import it.polimi.ingsw.server.model.*;
 
 import java.io.IOException;
@@ -17,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class GameTypeAdapter extends TypeAdapter<Game> {
 
-    private final Gson gson =
-            new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter()).create();
+    private final Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
+            .registerTypeAdapter(Pattern.class, new PatternTypeAdapter()).enableComplexMapKeySerialization().create();
 
     @Override
     public void write(JsonWriter jsonWriter, Game game) throws IOException {
@@ -38,14 +37,16 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
         gson.toJson(game.getBoard(), LivingRoomBoard.class, jsonWriter);
 
         jsonWriter.name("currentTurn");
-        jsonWriter.beginObject();
-        jsonWriter.name("pickedTiles");
-        gson.toJson(game.getCurrentTurn().getPickedTiles(), new TypeToken<List<Tile>>() {
-        }.getType(), jsonWriter);
-        jsonWriter.name("currentPlayer");
-        jsonWriter.value(game.getCurrentTurn().getCurrentPlayer().getUserName());
-        jsonWriter.name("state");
-        jsonWriter.value(game.getCurrentTurn().getState().toString());
+        {
+            jsonWriter.beginObject();
+            jsonWriter.name("pickedTiles");
+            gson.toJson(game.getCurrentTurn().getPickedTiles(), new TypeToken<List<Tile>>() {
+            }.getType(), jsonWriter);
+            jsonWriter.name("currentPlayer");
+            jsonWriter.value(game.getCurrentTurn().getCurrentPlayer().getUserName());
+            jsonWriter.name("state");
+            jsonWriter.value(game.getCurrentTurn().getState().toString());
+        }
         jsonWriter.endObject();
 
         jsonWriter.name("chat");
@@ -53,7 +54,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
 
 
         GoalManager goalManager = game.getGoalManager();
-        if(goalManager != null) {
+        if (goalManager != null) {
             jsonWriter.name("goalManager");
             jsonWriter.beginObject();
             {
@@ -66,7 +67,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     gson.toJson(playerToPoints, new TypeToken<Map<String, Integer>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("updateRule");
-                    gson.toJson(goalManager.getCommonGoalCardManager().getUpdateRule());
+                    gson.toJson(goalManager.getCommonGoalCardManager().getUpdateRule(), UpdateRule.class, jsonWriter);
                     jsonWriter.name("deck");
                     gson.toJson(goalManager.getCommonGoalCardManager().getDeck(), new TypeToken<Deck>() {
                     }.getType(), jsonWriter);
@@ -95,7 +96,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     gson.toJson(playerToPoints, new TypeToken<Map<String, Integer>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("updateRule");
-                    gson.toJson(goalManager.getPersonalGoalCardManager().getUpdateRule());
+                    gson.toJson(goalManager.getPersonalGoalCardManager().getUpdateRule(), UpdateRule.class, jsonWriter);
                     jsonWriter.name("deck");
                     gson.toJson(goalManager.getPersonalGoalCardManager().getDeck(), new TypeToken<Deck>() {
                     }.getType(), jsonWriter);
@@ -115,7 +116,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     gson.toJson(playerToPoints, new TypeToken<Map<String, Integer>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("updateRule");
-                    gson.toJson(goalManager.getEndGamePointsManager().getUpdateRule());
+                    gson.toJson(goalManager.getEndGamePointsManager().getUpdateRule(), UpdateRule.class, jsonWriter);
                     jsonWriter.name("patterns");
                     gson.toJson(goalManager.getEndGamePointsManager().getPatterns(), new TypeToken<Set<Pattern>>() {
                     }.getType(), jsonWriter);
@@ -309,7 +310,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                 personalGoalCardManager = new PersonalGoalCardManager(players, playerToPoints2, updateRule2, deck2, playerToCards);
                                 in.endObject();
                             }
-                            case "EndGamePointsManager" -> {
+                            case "endGamePointsManager" -> {
                                 in.beginObject();
                                 while (in.hasNext()) {
                                     String endGamePointsManagerField = in.nextName();
@@ -343,6 +344,10 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     if (commonGoalCardManager == null || personalGoalCardManager == null || endGamePointsManager == null)
                         throw new JsonParseException("At least one of the goal managers is null");
                     goalManager = new GoalManager(commonGoalCardManager, personalGoalCardManager, endGamePointsManager, frequentUpdates);
+                    in.endObject();
+                }
+                case "timestamp" -> {
+                    System.out.println("Timestamp = " +in.nextString());
                 }
                 // Ignore unknown fields
                 default -> in.skipValue();

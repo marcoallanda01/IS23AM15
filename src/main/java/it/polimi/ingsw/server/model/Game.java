@@ -10,14 +10,14 @@ public class Game{
     private final LivingRoomBoard board;
     private Turn currentTurn;
     private final Chat chat;
-    private GoalManager goalManager;
+    private final GoalManager goalManager;
 
     public Game(List<String> players, boolean isFirstGame) {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
         this.board = new LivingRoomBoard(numberOfPlayers);
-        this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() * (this.players.size()))), board);
+        this.currentTurn = new Turn(this.players.get(new Random().nextInt(this.players.size())), board);
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         this.goalManager = new GoalManager(this.players, goalPath);

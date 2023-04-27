@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.model.Game;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -84,8 +83,7 @@ public class Lobby {
         // saves for sure is not a file
         File[] savesList = saves.listFiles();
         games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().filter(File::isFile).map(File::getName)
-                .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
-                .collect(Collectors.toSet());
+                .map((name) -> (name.substring(0, name.lastIndexOf('.')))).collect(Collectors.toSet());
         return games;
     }
 
@@ -105,7 +103,7 @@ public class Lobby {
     /**
      * Load saved game
      *
-     * @param name the name of the saved game
+     * @param name          the name of the saved game
      * @param idFirstPlayer the id of the first player to connect
      * @return the list of loaded game players nicknames
      */
@@ -115,8 +113,7 @@ public class Lobby {
                 throw new GameNameException(name);
             }
             try {
-                Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
-                        .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
                 BufferedReader reader = new BufferedReader(new FileReader(this.directory + "/" + name + ".json"));
                 Game game = gson.fromJson(reader, Game.class);
                 this.loadingGame = game;
