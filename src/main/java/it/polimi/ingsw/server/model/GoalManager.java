@@ -106,25 +106,6 @@ public class GoalManager {
                 }
                 pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC);
             }
-            case "line" -> {
-                //{"name":"2_ROWS", "type":"line", "tiles_num":5, "directions":["O"], "sgc":"N", "max":5,"min":5}
-                int tilesNum = patternJ.get("tiles_num").getAsInt();
-                int groupNum = patternJ.get("group_num").getAsInt();
-                int maxCl = patternJ.get("max").getAsInt();
-                int minCl = patternJ.get("min").getAsInt();
-                boolean sgcl = patternJ.get("sgc").getAsString().equals("Y");
-                JsonArray directionsJ = patternJ.get("directions").getAsJsonArray();
-                List<Character> directions = new ArrayList<>();
-                for (int i = 0; i < directionsJ.size(); i++) {
-                    String d = directionsJ.get(i).getAsString();
-                    if (d.length() > 1) {
-                        System.err.println("Wrong format in line directions");
-                        throw new IllegalStateException("Wrong format in line directions");
-                    }
-                    directions.add(d.charAt(0));
-                }
-                pattern = new Line(name, tilesNum, directions, groupNum, sgcl, minCl, maxCl);
-            }
             case "adjacent" -> {
                 // {"name":"6_ADJACENT", "type":"adjacent", "min_tiles":6, "max_tiles":30, points:"8"}
                 int minTiles = patternJ.get("min_tiles").getAsInt();
