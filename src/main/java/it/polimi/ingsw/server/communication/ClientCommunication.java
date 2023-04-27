@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.server.communication.responses.*;
+import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileRule;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ClientCommunication {
 
@@ -32,13 +35,13 @@ public interface ClientCommunication {
      * @param playerId id of the player
      */
     public BooleanResponse disconnect(String playerId);
+    public BooleanResponse reconnect(String playerId);
     public BooleanResponse isFistPlayerPresent();
 
     // Methods for the play of the turn
-    public BooleanResponse pickTiles(List<Tile> tiles);
+    public BooleanResponse pickTiles(Set<Tile> tiles);
 
-    //TODO: to be discussed "param: tiles"
-    public BooleanResponse putTiles(List<Tile> tiles, int column);
+    public BooleanResponse putTiles(List<TileType> tiles, int column);
 
 
     public void pong();

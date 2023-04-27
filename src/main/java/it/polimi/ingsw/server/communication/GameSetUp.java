@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.server.communication.responses.Msg;
+import it.polimi.ingsw.communication.responses.Msg;
 
 import java.util.Set;
 

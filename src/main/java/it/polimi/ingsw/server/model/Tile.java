@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-public class Tile implements Serializable {
+public class Tile {
     private int x;
     private int y;
     private final TileType type;
@@ -51,7 +52,17 @@ public class Tile implements Serializable {
         return this.type == t.type;
     }
 
-    public boolean equals(Tile t){
-        return this.x == t.x && this.y == t.y && this.type == t.type;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return x == tile.x && y == tile.y && type == tile.type;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, type);
+    }
+
 }

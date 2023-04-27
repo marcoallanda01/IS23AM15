@@ -73,6 +73,7 @@ public class GoalManager {
         JsonObject patternJ = cardJson.getAsJsonObject();
         String name = patternJ.get("name").getAsString();
         String type = patternJ.get("type").getAsString();
+        // TODO: funzioni separate
         switch (type) {
             case "specific" -> {
                 /* {"name":"X", "type":"specific", "pattern":{"matrix":[[1,0,1],[0,1,0],[1,0,1]]}

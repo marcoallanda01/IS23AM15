@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.communication.ServerController;
 import it.polimi.ingsw.server.communication.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -9,13 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class ViewController {
-    private ServerController serverController;
+   // private ServerController serverController;
     private View view;
 
     private String lastShowed;
-    public ViewController(View view, ServerController serverController) {
-        this.serverController = serverController;
-    }
+    //public ViewController(View view, ServerController serverController) {
+    //    this.serverController = serverController;
+    //}
 
     public void showGame(GameSetUp gameSetUp) {
         this.lastShowed = "game is: " + gameSetUp;

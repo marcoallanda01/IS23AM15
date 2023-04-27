@@ -1,16 +1,23 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.communication.commands.Command;
+import it.polimi.ingsw.communication.commands.Disconnect;
+import it.polimi.ingsw.server.model.Tile;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TCPServer {
+public class TCPServer implements ServerCommunication{
     private List<Socket> clients;
+    private Map<Socket, String> playersIds;
     private int port;
 
     private ServerSocket serverSocket;
@@ -29,14 +36,14 @@ public class TCPServer {
             try {
                 Socket clientSocket = serverSocket.accept();
                 clients.add(clientSocket);
-                executorService.submit(()->{requestHandler(clientSocket);});
+                executorService.submit(()->{clientHandler(clientSocket);});
             } catch(IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void requestHandler(Socket client){
+    public void clientHandler(Socket client){
         Scanner in;
         PrintWriter out;
         try {
@@ -45,88 +52,143 @@ public class TCPServer {
         }
         catch (IOException e){
             e.printStackTrace();
-
-            this.clients.remove(client);
-            try {
-                client.close();
-            }catch (IOException b){
-                b.printStackTrace();
-            }
-
+            closeClient(client);
             return;
         }
-        // Leggo e scrivo nella connessione finche' non ricevo "quit"
         String json;
         do {
             json = in.nextLine();
             out.println("Received: " + json);
             out.flush();
 
-        } while (NotificationHandler.respond(client, json));
+        } while (respond(client, json));
 
-        System.out.println("Closing sockets");
+        System.out.println("Closing sockets of "+client.getLocalSocketAddress().toString());
         in.close();
         out.close();
+        closeClient(client);
     }
 
-/*
-    public void openConnection() {
-
-
+    private void closeClient(Socket client){
+        this.clients.remove(client);
         try {
-            // Create a server socket
-            serverSocket = new ServerSocket(port);
-            System.out.println("Server is listening on port " + port);
-        } catch (IOException e) {
-            e.printStackTrace();
+            client.close();
+        }catch (IOException b){
+            b.printStackTrace();
         }
     }
 
-    public void closeConnection() {
-        try {
-            if (serverSocket != null) {
-                serverSocket.close();
-                System.out.println("Server socket closed.");
+    /**
+     *
+     * @param client client to witch respond
+     * @param json json string that client sent
+     * @return true if client still connected
+     */
+    public boolean respond(Socket client, String json){
+        String commandName;
+        Optional<String> oName = Command.nameFromJson(json);
+        if(oName.isPresent()) {
+            commandName = oName.get();
+            boolean wrongFormatted = false;
+            switch (commandName) {
+                case "Disconnect":
+                    Optional <Disconnect> d = Disconnect.fromJson(json);
+                    if(d.isPresent()) {
+                        disconnect(client);
+                        return false;
+                    }else{
+                        wrongFormatted = true;
+                    }
+                case "PutTileCommand":
+                    break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void acceptConnections() {
-        while (true) {
-            // Accept incoming client connections
-            Socket clientSocket;
-            try{
-                clientSocket = serverSocket.accept();
-            }catch (IOException e) {
-                e.printStackTrace();
-                break;
+            if(wrongFormatted){
+                System.out.println("Command from "+client.getLocalSocketAddress().toString()+
+                        " cannot be understood because wrong formatted");
             }
-            System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
-            clientSockets.add(clientSocket);
+        }else{
+            System.out.println("Command from "+client.getLocalSocketAddress().toString()+" empty");
         }
+        return true;
     }
 
-    public void sendMsgToAll(Msg msg) {
-        try {
-            for (Socket clientSocket : clientSockets) {
-                // Create output stream for communication with the client
-                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-
-                // Send serialized object to the client
-                out.writeObject(msg.toJson());
-                out.flush();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void disconnect(Socket client){
+        notifyDisconnection(playersIds.get(client));
+        closeClient(client);
     }
 
-    // used to send response objects
-    public void sendMsgToClient(String clientId, Msg msg) {
-
+    /*
+    private void putTiles(Socket client, PutTilesCommand dc){
+        boolean ok = playcontroller.putTiles();
+        BooleanResponse br = new BooleanResponse(ok);
+        PrintWriter out = new PrintWriter(client.getOutputStream());
+        out.println(br.toJson());
     }
     */
+
+    /**
+     *
+     */
+    @Override
+    public void gameSetUp() {
+
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean sendWinner() {
+        return false;
+    }
+
+    /**
+     * @param playerId player that disconnecter
+     */
+    @Override
+    public void notifyDisconnection(String playerId) {
+
+    }
+
+    /**
+     * @param playerId
+     */
+    @Override
+    public void notifyReconnection(String playerId) {
+
+    }
+
+    /**
+     * @param tiles
+     */
+    @Override
+    public void notifyChangeBoard(List<Tile> tiles) {
+
+    }
+
+    /**
+     * @param playerName
+     * @param tiles
+     */
+    @Override
+    public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
+
+    }
+
+    /**
+     * @param playerName
+     * @param points
+     */
+    @Override
+    public void updatePlayerPoints(String playerName, int points) {
+
+    }
+
+    /**
+     * @param playerName
+     */
+    @Override
+    public void notifyTurn(String playerName) {
+
+    }
 }
