@@ -29,7 +29,7 @@
 	},
 	{"name":"2_ROWS_COLOURFUL",
 		"type":"specific", "masks": [{"matrix":[[1,1,1,1,1]]}],
-		"grup_num":1, "sgc":"N","max":5,"min":5
+		"grup_num":2, "sgc":"N","max":5,"min":5
 	},
 	{"name":"3_COLUMNS_3_COLOR",
 		"type":"specific", "masks": [{"matrix":[[1],[1],[1],[1],[1],[1]]}],
