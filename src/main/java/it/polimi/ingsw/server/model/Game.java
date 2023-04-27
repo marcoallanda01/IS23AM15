@@ -20,7 +20,7 @@ public class Game{
         this.currentTurn = new Turn(this.players.get((int) Math.floor(Math.random() * (this.players.size()))), board);
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
-        //this.goalManager = new GoalManager(this.players, goalPath);
+        this.goalManager = new GoalManager(this.players, goalPath);
     }
 
     /**

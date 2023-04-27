@@ -76,13 +76,17 @@ public class GoalManager {
         // TODO: funzioni separate
         switch (type) {
             case "specific" -> {
-                /* {"name":"X", "type":"specific", "pattern":{"matrix":[[1,0,1],[0,1,0],[1,0,1]]}
-                "group_num":1, "sgc":"N", "max":1, "min":1} */
+                /*
+                {"name":"DIAGONAL",
+                        "type":"specific", "masks": [{"matrix":[[1,0,0,0,1],[0,1,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,0,0,0,1]]}, {"matrix":[[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0]]}],
+                    "grup_num":1, "sgc":"N","max":1,"min":1
+                },
+                */
                 int groupNum = patternJ.get("group_num").getAsInt();
                 int maxC = patternJ.get("max").getAsInt();
                 int minC = patternJ.get("min").getAsInt();
                 boolean sgc = patternJ.get("sgc").getAsString().equals("Y");
-                JsonArray matrixsJ = patternJ.get("pattern").getAsJsonArray();
+                JsonArray matrixsJ = patternJ.get("masks").getAsJsonArray();
                 List<List<List<Boolean>>> matrixs = new ArrayList<>();
                 for (int k = 0; k < matrixsJ.size(); k++) {
                     List<List<Boolean>> matrix = new ArrayList<>();
@@ -108,16 +112,20 @@ public class GoalManager {
                 pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC);
             }
             case "adjacent" -> {
-                // {"name":"6_ADJACENT", "type":"adjacent", "min_tiles":6, "max_tiles":30, points:"8"}
+                /*
+                {"name":"3_ADJACENT",
+                        "type":"adjacent", "min_tiles":3, "min_groups":1, "points":"2"
+                },
+                 */
                 int minTiles = patternJ.get("min_tiles").getAsInt();
-                int maxTiles = patternJ.get("max_tiles").getAsInt();
+                int maxTiles = patternJ.get("min_groups").getAsInt();
                 int points = patternJ.get("points").getAsInt();
                 pattern = new Adjacent(name, minTiles, maxTiles, points);
             }
             case "personal" -> {
-                // {"name":"pc_1", "type" : "personal",
-                //	"tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]]
-                //	"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] }
+                /*
+                {"name":"pc_1", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+                */
                 JsonArray tilesJ = patternJ.get("tiles").getAsJsonArray();
                 List<Tile> tiles = new ArrayList<>();
                 for (int i = 0; i < tilesJ.size(); i++) {
@@ -177,8 +185,8 @@ public class GoalManager {
         try {
             try (JsonReader reader = new JsonReader(in)) {
                 patternsCommonGoals.addAll(readCards(reader, "common_cards"));
-                patternsPersonalGoals.addAll(readCards(reader, "end_game"));
-                patternsEndGoals.addAll(readCards(reader, "personal_cards"));
+                patternsEndGoals.addAll(readCards(reader, "end_game"));
+                patternsPersonalGoals.addAll(readCards(reader, "personal_cards"));
             } catch (JsonIOException e) {
                 System.err.println("Error occurred in Goal Manager: JsonIOException occurred with file " + setUpFile +
                         ". This exception is raised when Gson was unable to read an input stream or" + " write to one.");
