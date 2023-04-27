@@ -1,4 +1,5 @@
 package it.polimi.ingsw.server.model;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ public abstract class PointsManager {
 
     public PointsManager(List<Player> players) {
         this.players = players;
+        playersToPoints = new HashMap<>();
         players.forEach(player -> this.playersToPoints.put(player, 0));
     }
 

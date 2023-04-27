@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import com.google.gson.*;
@@ -183,24 +184,51 @@ public class GoalManager {
         }
 
         try {
-            try (JsonReader reader = new JsonReader(in)) {
-                patternsCommonGoals.addAll(readCards(reader, "common_cards"));
-                patternsEndGoals.addAll(readCards(reader, "end_game"));
-                patternsPersonalGoals.addAll(readCards(reader, "personal_cards"));
-            } catch (JsonIOException e) {
-                System.err.println("Error occurred in Goal Manager: JsonIOException occurred with file " + setUpFile +
-                        ". This exception is raised when Gson was unable to read an input stream or" + " write to one.");
-                throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the reading of the JsonReader", e);
-            } catch (JsonParseException e) {
-                System.err.println("Error occurred in Goal Manager: JsonIOException occurred with file " + setUpFile +
-                        ". This exception is raised if there is a serious issue that occurs during parsing" + "of a Json string");
-                throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the reading of the JsonReader", e);
+
+            JsonReader reader1 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
+            patternsCommonGoals.addAll(readCards(reader1, "common_cards"));
+            reader1.close();
+
+            JsonReader reader2 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
+            patternsEndGoals.addAll(readCards(reader2, "end_game"));
+            reader2.close();
+
+
+
+            for(Pattern p : patternsEndGoals){
+                System.out.println("Pattern: "+p.toString());
             }
-        } catch (IOException e) {
+
+
+            for(Pattern p : patternsCommonGoals){
+                System.out.println("Pattern: "+p.toString());
+            }
+
+            JsonReader reader3 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
+            patternsPersonalGoals.addAll(readCards(reader3, "personal_cards"));
+            reader3.close();
+
+        } catch (JsonIOException e) {
+            System.err.println("Error occurred in Goal Manager: JsonIOException occurred with file " + setUpFile +
+                    ". This exception is raised when Gson was unable to read an input stream or" + " write to one.");
+            throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the reading of the JsonReader", e);
+        } catch (JsonParseException e) {
+            System.err.println("Error occurred in Goal Manager: JsonIOException occurred with file " + setUpFile +
+                    ". This exception is raised if there is a serious issue that occurs during parsing" + "of a Json string");
+            throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the reading of the JsonReader", e);
+        }
+        catch (IOException e) {
             System.err.println("Error occurred in Goal Manager: IOException occurred with file " + setUpFile + " at the closing of the reader");
             System.err.println("More details: " + e);
             throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the closing of the JsonReader", e);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+        /*catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }*/
 
 
         // creating default managers, in future to add another manager add it here

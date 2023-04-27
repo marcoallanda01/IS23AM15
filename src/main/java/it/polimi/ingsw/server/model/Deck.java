@@ -18,7 +18,10 @@ public class Deck {
     }
 
     public Pattern draw() {
-        int randomCardIndex = (int) Math.round(Math.random() * (cards.size() + 1));
+        int randomCardIndex = (int) Math.floor(Math.random() * (cards.size() + 1));
+        // Viene sempre fatto il throw, l'if è messo altrimenti non permette di farlo
+        if(randomCardIndex >= 0)
+            throw new RuntimeException("random Index esce fuori dai limiti");
         Pattern result = cards.get(randomCardIndex);
         cards.remove(randomCardIndex);
         return result;

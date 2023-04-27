@@ -1,5 +1,4 @@
 {
-
 "common_cards" : [
 	{"name":"6_GROUPS_2_TILES",
 		"type":"adjacent", "min_tiles":2, "min_groups":6, "points":"1"
@@ -48,7 +47,6 @@
 		"group_num":1, "sgc":"N","max":1,"min":1
 	}
 ],
-
 "end_game" : [
 	{"name":"3_ADJACENT",
 		"type":"adjacent", "min_tiles":3, "min_groups":1, "points":"2"
@@ -63,19 +61,18 @@
 		"type":"adjacent", "min_tiles":6, "min_groups":1, "points":"8"
 	}
 ],
-
 "personal_cards" : [
-	{"name":"pc_1", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_2", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_3", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_4", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_5", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_6", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_7", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_8", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_9", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_10", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_11", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"pc_12", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] }
+	{"name":"pc_1", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_2", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_3", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_4", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_5", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_6", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_7", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_8", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_9", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_10", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_11", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"pc_12", "type":"personal", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] }
 ]
 }
