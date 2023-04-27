@@ -72,7 +72,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     }.getType(), jsonWriter);
 
                     jsonWriter.name("cardsToTokens");
-                    gson.toJson(goalManager.getCommonGoalCardManager().getCardsToTokens(), new TypeToken<Map<Card, Stack<Integer>>>() {
+                    gson.toJson(goalManager.getCommonGoalCardManager().getCardsToTokens(), new TypeToken<Map<Pattern, Stack<Integer>>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToTokens");
                     Map<String, List<Integer>> playerToToken = goalManager.getCommonGoalCardManager().getPlayersToTokens().entrySet().stream()
@@ -80,9 +80,9 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     gson.toJson(playerToToken, new TypeToken<Map<String, List<Integer>>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToUnfulfilledCards");
-                    Map<String, Set<Card>> playerToUnfulfilledCards = goalManager.getCommonGoalCardManager().getPlayersToUnfulfilledCards().entrySet().stream()
+                    Map<String, Set<Pattern>> playerToUnfulfilledCards = goalManager.getCommonGoalCardManager().getPlayersToUnfulfilledCards().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
-                    gson.toJson(playerToUnfulfilledCards, new TypeToken<Map<String, Set<Card>>>() {
+                    gson.toJson(playerToUnfulfilledCards, new TypeToken<Map<String, Set<Pattern>>>() {
                     }.getType(), jsonWriter);
                 }
                 jsonWriter.endObject();
@@ -100,9 +100,9 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     gson.toJson(goalManager.getPersonalGoalCardManager().getDeck(), new TypeToken<Deck>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToCards");
-                    Map<String, Card> playerToCard = goalManager.getPersonalGoalCardManager().getPlayersToCards().entrySet().stream()
+                    Map<String, Pattern> playerToCard = goalManager.getPersonalGoalCardManager().getPlayersToCards().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
-                    gson.toJson(playerToCard, new TypeToken<Map<String, Card>>() {
+                    gson.toJson(playerToCard, new TypeToken<Map<String, Pattern>>() {
                     }.getType(), jsonWriter);
                 }
                 jsonWriter.endObject();
@@ -144,17 +144,17 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
 
         GoalManager goalManager = null;
         CommonGoalCardManager commonGoalCardManager = null;
-        Map<Card, Stack<Integer>> cardsToTokens = null;
+        Map<Pattern, Stack<Integer>> cardsToTokens = null;
         Map<Player, Integer> playerToPoints = null;
         UpdateRule updateRule = null;
         Deck deck = null;
         Map<Player, List<Integer>> playerToTokens = null;
-        Map<Player, Set<Card>> playerToUnfulfilledCards = null;
+        Map<Player, Set<Pattern>> playerToUnfulfilledCards = null;
         PersonalGoalCardManager personalGoalCardManager = null;
         Map<Player, Integer> playerToPoints2 = null;
         UpdateRule updateRule2 = null;
         Deck deck2 = null;
-        Map<Player, Card> playerToCards = null;
+        Map<Player, Pattern> playerToCards = null;
         EndGamePointsManager endGamePointsManager = null;
         Map<Player, Integer> playerToPoints3 = null;
         UpdateRule updateRule3 = null;
@@ -251,7 +251,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                             deck = gson.fromJson(in, Deck.class);
                                         }
                                         case "cardsToTokens" -> {
-                                            cardsToTokens = gson.fromJson(in, new TypeToken<Map<Card, Stack<Integer>>>() {
+                                            cardsToTokens = gson.fromJson(in, new TypeToken<Map<Pattern, Stack<Integer>>>() {
                                             }.getType());
                                         }
                                         case "playersToTokens" -> {
@@ -262,7 +262,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                                             Map.Entry::getValue));
                                         }
                                         case "playersToUnfulfilledCards" -> {
-                                            Map<String, Set<Card>> playerToUnfulfilledCardsNames = gson.fromJson(in, new TypeToken<Map<String, Set<Card>>>() {
+                                            Map<String, Set<Pattern>> playerToUnfulfilledCardsNames = gson.fromJson(in, new TypeToken<Map<String, Set<Pattern>>>() {
                                             }.getType());
                                             playerToUnfulfilledCards = playerToUnfulfilledCardsNames.entrySet().stream().collect(
                                                     Collectors.toMap(entry -> finalPlayers.stream().filter(p -> p.getUserName().equals(entry.getKey())).findFirst().orElse(null),
@@ -297,7 +297,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                             deck2 = gson.fromJson(in, Deck.class);
                                         }
                                         case "playersToCards" -> {
-                                            Map<String, Card> playerToCardsNames = gson.fromJson(in, new TypeToken<Map<String, Card>>() {
+                                            Map<String, Pattern> playerToCardsNames = gson.fromJson(in, new TypeToken<Map<String, Pattern>>() {
                                             }.getType());
                                             playerToCards = playerToCardsNames.entrySet().stream().collect(
                                                     Collectors.toMap(entry -> finalPlayers.stream().filter(p -> p.getUserName().equals(entry.getKey())).findFirst().orElse(null),

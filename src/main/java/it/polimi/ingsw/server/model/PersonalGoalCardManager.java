@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PersonalGoalCardManager extends CardsAndPointsManager {
-    private final Map<Player, Card> playersToCards = new HashMap<>();
+    private final Map<Player, Pattern> playersToCards = new HashMap<>();
 
     public PersonalGoalCardManager(List<Player> players, Deck deck) {
         super(players, deck);
@@ -16,7 +16,7 @@ public class PersonalGoalCardManager extends CardsAndPointsManager {
     /**
      * Used for deserialization
      */
-    public PersonalGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Player, Card> playersToCards) {
+    public PersonalGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Player, Pattern> playersToCards) {
         super(players, playersToPoints, updateRule, deck);
         this.playersToCards.putAll(playersToCards);
     }
@@ -35,14 +35,14 @@ public class PersonalGoalCardManager extends CardsAndPointsManager {
      * @param player the player
      * @return the personal card of the player
      */
-    public Card getCard(Player player) {
+    public Pattern getCard(Player player) {
         return playersToCards.get(player);
     }
 
     /**
      * Used for serialization
      */
-    public Map<Player, Card> getPlayersToCards() {
+    public Map<Player, Pattern> getPlayersToCards() {
         return playersToCards;
     }
 

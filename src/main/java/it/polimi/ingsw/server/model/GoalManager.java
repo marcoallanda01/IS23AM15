@@ -261,7 +261,7 @@ public class GoalManager {
      * @return a map associating cards to tokens
      */
     // this method does not take a card as input because cards are handled exclusively  by CardsManagers
-    public Map<Card, Stack<Integer>> getCommonCardsToTokens() {
+    public Map<Pattern, Stack<Integer>> getCommonCardsToTokens() {
         return commonGoalCardManager.getCardsToTokens();
     }
 
@@ -277,7 +277,7 @@ public class GoalManager {
      * @param player the player
      * @return the unfulfilled cards of the player
      */
-    public Set<Card> getUnfulfilledCommonCards(Player player) {
+    public Set<Pattern> getUnfulfilledCommonCards(Player player) {
         return commonGoalCardManager.getUnfulfilledCards(player);
     }
 
@@ -285,7 +285,7 @@ public class GoalManager {
      * @param player the player
      * @return the fulfilled cards of the player
      */
-    public Set<Card> getFulfilledCommonCards(Player player) {
+    public Set<Pattern> getFulfilledCommonCards(Player player) {
         return commonGoalCardManager.getFulfilledCards(player);
     }
 
@@ -293,7 +293,7 @@ public class GoalManager {
      * @param player the player
      * @return the personal card of the player
      */
-    public Card getPersonalCard(Player player) {
+    public Pattern getPersonalCard(Player player) {
         return personalGoalCardManager.getCard(player);
     }
 

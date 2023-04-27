@@ -7,19 +7,19 @@ import java.util.Set;
 
 public class Deck {
     // using List of cards because of indexes (for random drawing), might want to use other structures
-    List<Card> cards = new ArrayList<Card>();
+    List<Pattern> cards = new ArrayList<Pattern>();
 
     /**
      *
      * @param patterns create a card for every pattern passed
      */
     public Deck(Set<Pattern> patterns) {
-        patterns.forEach(pattern -> cards.add(new Card(pattern)));
+        patterns.forEach(pattern -> cards.add(pattern));
     }
 
-    public Card draw() {
+    public Pattern draw() {
         int randomCardIndex = (int) Math.round(Math.random() * (cards.size() + 1));
-        Card result = cards.get(randomCardIndex);
+        Pattern result = cards.get(randomCardIndex);
         cards.remove(randomCardIndex);
         return result;
     }

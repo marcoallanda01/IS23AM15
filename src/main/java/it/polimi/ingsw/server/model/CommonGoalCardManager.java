@@ -6,9 +6,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CommonGoalCardManager extends CardsAndPointsManager {
-    private final Map<Card, Stack<Integer>> cardsToTokens = new HashMap<>();
+    private final Map<Pattern, Stack<Integer>> cardsToTokens = new HashMap<>();
     private Map<Player, List<Integer>> playersToTokens = new HashMap<>();
-    private Map<Player, Set<Card>> playersToUnfulfilledCards = new HashMap<>();
+    private Map<Player, Set<Pattern>> playersToUnfulfilledCards = new HashMap<>();
 
     public CommonGoalCardManager(List<Player> players, Deck deck) {
         super(players, deck);
@@ -21,8 +21,8 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     /**
      * Used for deserialization
      */
-    public CommonGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Card, Stack<Integer>> cardsToTokens,
-                                 Map<Player, List<Integer>> playersToTokens, Map<Player, Set<Card>> playersToUnfulfilledCards) {
+    public CommonGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Pattern, Stack<Integer>> cardsToTokens,
+                                 Map<Player, List<Integer>> playersToTokens, Map<Player, Set<Pattern>> playersToUnfulfilledCards) {
         super(players, playersToPoints, updateRule, deck);
         this.cardsToTokens.putAll(cardsToTokens);
         this.playersToTokens.putAll(playersToTokens);
@@ -42,7 +42,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     private void generateCardsToTokens() {
         // initializing 2 common goal cards, maybe should be parametrized
         for (int i = 0; i < 2; i++) {
-            Card card = deck.draw();
+            Pattern card = deck.draw();
             cardsToTokens.put(card, generateCardTokens());
         }
     }
@@ -108,7 +108,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      */
     private void update(Player player) {
         // partitioning the cards of each player in fulfilled and unfulfilled
-        Map<Boolean, Set<Card>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
+        Map<Boolean, Set<Pattern>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
         //moving the token from fulfilled cards to player
         cardsPartition.get(true).forEach((moveTokenFromCardToPlayer(player)));
         //updating unfulfilledCards
@@ -122,11 +122,11 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      *
      * @param player the player to check for cards fulfillment
      * @param cards  the unfulfilled cards of the checked player
-     * @return a map (of type Map<Boolean, Set<Card>>) where
+     * @return a map (of type Map<Boolean, Set<Pattern>>) where
      * map.get(true) is a Set of cards that have just been fulfilled
      * map.get(false) is a Set of cards that have not yet been fulfilled
      */
-    private Map<Boolean, Set<Card>> partitionCardsByFulfillment(Player player, Set<Card> cards) {
+    private Map<Boolean, Set<Pattern>> partitionCardsByFulfillment(Player player, Set<Pattern> cards) {
         return cards.stream().collect(Collectors.partitioningBy(hasPlayerFulfilledCard(player), Collectors.toSet()));
     }
 
@@ -135,7 +135,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * @return a predicate that given a card to test returns true if
      * the player has fulfilled it and false if the player has not
      */
-    private Predicate<Card> hasPlayerFulfilledCard(Player player) {
+    private Predicate<Pattern> hasPlayerFulfilledCard(Player player) {
         return (card) -> (card.getPatternFunction().apply(player.getBookShelf().getState()) > 0);
     }
 
@@ -145,7 +145,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * removes the token from that card (editing cardsToTokens)
      * and gives it to the player (editing playersToTokens)
      */
-    private Consumer<Card> moveTokenFromCardToPlayer(Player player) {
+    private Consumer<Pattern> moveTokenFromCardToPlayer(Player player) {
         return (card) -> playersToTokens.get(player).add(cardsToTokens.get(card).pop());
     }
 
@@ -154,7 +154,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     /**
      * @return cardsToTokens:
      */
-    public Map<Card, Stack<Integer>> getCardsToTokens() {
+    public Map<Pattern, Stack<Integer>> getCardsToTokens() {
         return cardsToTokens;
     }
 
@@ -168,7 +168,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     /**
      * @return playersToUnfulfilledCards:
      */
-    public Map<Player, Set<Card>> getPlayersToUnfulfilledCards() {
+    public Map<Player, Set<Pattern>> getPlayersToUnfulfilledCards() {
         return playersToUnfulfilledCards;
     }
 
@@ -184,7 +184,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * @param player the player
      * @return the unfulfilled cards of the player
      */
-    public Set<Card> getUnfulfilledCards(Player player) {
+    public Set<Pattern> getUnfulfilledCards(Player player) {
         return playersToUnfulfilledCards.get(player);
     }
 
@@ -192,9 +192,9 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * @param player the player
      * @return the fulfilled cards of the player
      */
-    public Set<Card> getFulfilledCards(Player player) {
+    public Set<Pattern> getFulfilledCards(Player player) {
         // new HashSet because we don't want to alter the map
-        Set<Card> playerFulfilledCards = new HashSet<>(cardsToTokens.keySet());
+        Set<Pattern> playerFulfilledCards = new HashSet<>(cardsToTokens.keySet());
         // removing the unfulfilled cards
         playerFulfilledCards.removeAll(this.getUnfulfilledCards(player));
         return playerFulfilledCards;

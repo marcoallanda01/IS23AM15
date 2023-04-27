@@ -45,11 +45,11 @@ public class Game{
     }
     public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
-        return goalManager.getFulfilledCommonCards(player).stream().map(Card::getName).collect(Collectors.toSet());
+        return goalManager.getFulfilledCommonCards(player).stream().map(Pattern::getName).collect(Collectors.toSet());
     }
     public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
-        return goalManager.getFulfilledCommonCards(player).stream().map(Card::getName).collect(Collectors.toSet());
+        return goalManager.getFulfilledCommonCards(player).stream().map(Pattern::getName).collect(Collectors.toSet());
     }
     public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
