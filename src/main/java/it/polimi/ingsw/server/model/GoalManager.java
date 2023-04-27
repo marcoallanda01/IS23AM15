@@ -184,8 +184,8 @@ public class GoalManager {
         try {
             try (JsonReader reader = new JsonReader(in)) {
                 patternsCommonGoals.addAll(readCards(reader, "common_cards"));
-                patternsPersonalGoals.addAll(readCards(reader, "end_game"));
-                patternsEndGoals.addAll(readCards(reader, "personal_cards"));
+                patternsEndGoals.addAll(readCards(reader, "end_game"));
+                patternsPersonalGoals.addAll(readCards(reader, "personal_cards"));
             } catch (JsonIOException e) {
                 System.err.println("Error occurred in Goal Manager: JsonIOException occurred with file " + setUpFile +
                         ". This exception is raised when Gson was unable to read an input stream or" + " write to one.");
