@@ -107,7 +107,6 @@ class SpecificTest {
         Cornermasks.get(0).get(5).set(0, true);
         Cornermasks.get(0).get(5).set(4, true);
 
-
         String name5 = "Corners";
         Pattern pattern5a = new Specific(name2, Cornermasks, 1, false, 1, 1);
         assertEquals(1, pattern5a.getPatternFunction().apply(myBookshelf));
