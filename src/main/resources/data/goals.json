@@ -5,47 +5,47 @@
 		"type":"adjacent", "min_tiles":2, "min_groups":6, "points":"1"
 	},
 	{"name":"DIAGONAL",
-		"type":"specific", "masks": [{"matrix":[[1,0,0,0,1],[0,1,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,0,0,0,1]]}, {"matrix":[[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0]]}],
-		"grup_num":1, "sgc":"N","max":1,"min":1
+		"type":"specific", "masks": [[[1,0,0,0,1],[0,1,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,0,0,0,1]], [[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0]]],
+		"group_num":1, "sgc":"N","max":1,"min":1
 	},
 	{"name":"4_GROUPS_4_TILES",
 		"type":"adjacent", "min_tiles":4, "min_groups":4, "points":"1"
 	},
 	{"name":"4_ROWS_3_COLOR",
-		"type":"specific", "masks": [{"matrix":[[1,1,1,1,1]]}],
-		"grup_num":4, "sgc":"N","max":3,"min":1
+		"type":"specific", "masks": [[[1,1,1,1,1]]],
+		"group_num":4, "sgc":"N","max":3,"min":1
 	},
 	{"name":"CORNERS",
-		"type":"specific", "masks":[{"matrix":[[1,0,0,0,1],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[1,0,0,0,1]]}],
-		"grup_num":1, "sgc":"N","max":1,"min":1
+		"type":"specific", "masks":[[[1,0,0,0,1],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[1,0,0,0,1]]],
+		"group_num":1, "sgc":"N","max":1,"min":1
 	},
 	{"name":"2_COLUMNS_COLOURFUL",
-		"type":"specific", "masks": [{"matrix":[[1],[1],[1],[1],[1],[1]]}],
-		"grup_num":2, "sgc":"N","max":6,"min":6
+		"type":"specific", "masks": [[[1],[1],[1],[1],[1],[1]]],
+		"group_num":2, "sgc":"N","max":6,"min":6
 	},
 	{"name":"SQUARE",
-		"type":"specific", "masks":[{"matrix":[[1,1],[1,1]]}],
-		"grup_num":2, "sgc":"N","max":1,"min":1
+		"type":"specific", "masks":[[[1,1],[1,1]]],
+		"group_num":2, "sgc":"N","max":1,"min":1
 	},
 	{"name":"2_ROWS_COLOURFUL",
-		"type":"specific", "masks": [{"matrix":[[1,1,1,1,1]]}],
-		"grup_num":2, "sgc":"N","max":5,"min":5
+		"type":"specific", "masks": [[[1,1,1,1,1]]],
+		"group_num":2, "sgc":"N","max":5,"min":5
 	},
 	{"name":"3_COLUMNS_3_COLOR",
-		"type":"specific", "masks": [{"matrix":[[1],[1],[1],[1],[1],[1]]}],
-		"grup_num":3, "sgc":"N","max":3,"min":1
+		"type":"specific", "masks": [[[1],[1],[1],[1],[1],[1]]],
+		"group_num":3, "sgc":"N","max":3,"min":1
 	},
 	{"name":"X",
-		"type":"specific", "masks": [{"matrix":[[1,0,1],[0,1,0],[1,0,1]]}],
-		"grup_num":1, "sgc":"N","max":1,"min":1
+		"type":"specific", "masks": [[[1,0,1],[0,1,0],[1,0,1]]],
+		"group_num":1, "sgc":"N","max":1,"min":1
 	},
 	{"name":"8_SAME",
-		"type":"specific", "masks": [{"matrix":[[1]]}],
-		"grup_num":1, "sgc":"Y","max":1,"min":1
+		"type":"specific", "masks": [[[1]]],
+		"group_num":1, "sgc":"Y","max":1,"min":1
 	},
 	{"name":"STAIRS",
-		"type":"specific", "masks":[{"matrix":[[1,0,0,0,0],[1,1,0,0,0],[1,1,1,0,0],[1,1,1,1,0],[1,1,1,1,1]]}],
-		"grup_num":1, "sgc":"N","max":1,"min":1
+		"type":"specific", "masks":[[[1,0,0,0,0],[1,1,0,0,0],[1,1,1,0,0],[1,1,1,1,0],[1,1,1,1,1]]],
+		"group_num":1, "sgc":"N","max":1,"min":1
 	}
 ],
 

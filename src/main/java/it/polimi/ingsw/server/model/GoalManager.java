@@ -117,7 +117,7 @@ public class GoalManager {
                 },
                  */
                 int minTiles = patternJ.get("min_tiles").getAsInt();
-                int maxTiles = patternJ.get("max_tiles").getAsInt();
+                int maxTiles = patternJ.get("min_groups").getAsInt();
                 int points = patternJ.get("points").getAsInt();
                 pattern = new Adjacent(name, minTiles, maxTiles, points);
             }
