@@ -57,7 +57,7 @@ public class PlayController {
         return game.getPoints(nickname);
     }
 
-    public Map<String, Stack<Token>> getCommonGoalCardsToTokens() {
+    public Map<String, List<Integer>> getCommonGoalCardsToTokens() {
         return game.getCommonGoalCardsToTokens();
     }
 
@@ -77,7 +77,7 @@ public class PlayController {
         return game.getPersonalGoalCard(nickname);
     }
 
-    public Set<Token> getTokens(String nickname) throws PlayerNotFoundException {
+    public List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
         return game.getTokens(nickname);
     }
 

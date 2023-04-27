@@ -261,7 +261,7 @@ public class GoalManager {
      * @return a map associating cards to tokens
      */
     // this method does not take a card as input because cards are handled exclusively  by CardsManagers
-    public Map<Card, Stack<Token>> getCommonCardsToTokens() {
+    public Map<Card, Stack<Integer>> getCommonCardsToTokens() {
         return commonGoalCardManager.getCardsToTokens();
     }
 
@@ -269,7 +269,7 @@ public class GoalManager {
      * @param player the player
      * @return the tokens of the player:
      */
-    public Set<Token> getTokens(Player player) {
+    public List<Integer> getTokens(Player player) {
         return commonGoalCardManager.getTokens(player);
     }
 

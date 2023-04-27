@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CommonGoalCardManager extends CardsAndPointsManager {
-    private final Map<Card, Stack<Token>> cardsToTokens = new HashMap<>();
-    private Map<Player, Set<Token>> playersToTokens = new HashMap<>();
+    private final Map<Card, Stack<Integer>> cardsToTokens = new HashMap<>();
+    private Map<Player, List<Integer>> playersToTokens = new HashMap<>();
     private Map<Player, Set<Card>> playersToUnfulfilledCards = new HashMap<>();
 
     public CommonGoalCardManager(List<Player> players, Deck deck) {
@@ -21,8 +21,8 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     /**
      * Used for deserialization
      */
-    public CommonGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Card, Stack<Token>> cardsToTokens,
-                                 Map<Player, Set<Token>> playersToTokens, Map<Player, Set<Card>> playersToUnfulfilledCards) {
+    public CommonGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Card, Stack<Integer>> cardsToTokens,
+                                 Map<Player, List<Integer>> playersToTokens, Map<Player, Set<Card>> playersToUnfulfilledCards) {
         super(players, playersToPoints, updateRule, deck);
         this.cardsToTokens.putAll(cardsToTokens);
         this.playersToTokens.putAll(playersToTokens);
@@ -33,7 +33,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * Initializes playersToTokens
      */
     private void generatePlayersToTokens() {
-        playersToTokens = players.stream().collect(Collectors.toMap(player -> player, player -> new HashSet<>()));
+        playersToTokens = players.stream().collect(Collectors.toMap(player -> player, player -> new ArrayList<>()));
     }
 
     /**
@@ -51,32 +51,32 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * @return the pile of tokens to put on a generic card, based on the number of players
      */
     // good for now, might want to read these from json and pass it to the constructor
-    private Stack<Token> generateCardTokens() {
-        Stack<Token> pile = new Stack<>();
+    private Stack<Integer> generateCardTokens() {
+        Stack<Integer> pile = new Stack<>();
         switch (this.players.size()) {
             case 2: {
-                pile.push(new Token(4, 4));
-                pile.push(new Token(8, 8));
+                pile.push(Integer.valueOf(4));
+                pile.push(Integer.valueOf(8));
                 break;
             }
             case 3: {
-                pile.push(new Token(4, 4));
-                pile.push(new Token(6, 6));
-                pile.push(new Token(8, 8));
+                pile.push(Integer.valueOf(4));
+                pile.push(Integer.valueOf( 6));
+                pile.push(Integer.valueOf( 8));
                 break;
             }
             case 4: {
-                pile.push(new Token(2, 2));
-                pile.push(new Token(4, 4));
-                pile.push(new Token(6, 6));
-                pile.push(new Token(8, 8));
+                pile.push(Integer.valueOf( 2));
+                pile.push(Integer.valueOf( 4));
+                pile.push(Integer.valueOf( 6));
+                pile.push(Integer.valueOf( 8));
                 break;
             }
             default: {
-                pile.push(new Token(2, 2));
-                pile.push(new Token(4, 4));
-                pile.push(new Token(6, 6));
-                pile.push(new Token(8, 8));
+                pile.push(Integer.valueOf( 2));
+                pile.push(Integer.valueOf( 4));
+                pile.push(Integer.valueOf( 6));
+                pile.push(Integer.valueOf( 8));
             }
         }
         return pile;
@@ -96,7 +96,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      */
     public void updatePoints(Player player) {
         update(player);
-        Integer newPoints = this.getPlayersToTokens().get(player).stream().map(Token::getPoints).reduce(0, Integer::sum);
+        Integer newPoints = this.getPlayersToTokens().get(player).stream().reduce(0, Integer::sum);
         this.playersToPoints.put(player, newPoints);
     }
 
@@ -154,14 +154,14 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     /**
      * @return cardsToTokens:
      */
-    public Map<Card, Stack<Token>> getCardsToTokens() {
+    public Map<Card, Stack<Integer>> getCardsToTokens() {
         return cardsToTokens;
     }
 
     /**
      * @return playersToTokens:
      */
-    public Map<Player, Set<Token>> getPlayersToTokens() {
+    public Map<Player, List<Integer>> getPlayersToTokens() {
         return playersToTokens;
     }
 
@@ -176,7 +176,7 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
      * @param player the player
      * @return the tokens of the player
      */
-    public Set<Token> getTokens(Player player) {
+    public List<Integer> getTokens(Player player) {
         return playersToTokens.get(player);
     }
 

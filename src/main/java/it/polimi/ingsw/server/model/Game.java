@@ -40,7 +40,7 @@ public class Game{
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPoints(player) + (player.isFirstToFinish() ? 1 : 0);
     }
-    public Map<String, Stack<Token>> getCommonGoalCardsToTokens() {
+    public Map<String, List<Integer>> getCommonGoalCardsToTokens() {
         return goalManager.getCommonCardsToTokens().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getName(), Map.Entry::getValue));
     }
     public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
@@ -55,7 +55,7 @@ public class Game{
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPersonalCard(player).getName();
     }
-    public Set<Token> getTokens(String nickname) throws PlayerNotFoundException{
+    public List<Integer> getTokens(String nickname) throws PlayerNotFoundException{
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getTokens(player);
     }

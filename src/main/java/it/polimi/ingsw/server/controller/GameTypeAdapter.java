@@ -72,12 +72,12 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     }.getType(), jsonWriter);
 
                     jsonWriter.name("cardsToTokens");
-                    gson.toJson(goalManager.getCommonGoalCardManager().getCardsToTokens(), new TypeToken<Map<Card, Stack<Token>>>() {
+                    gson.toJson(goalManager.getCommonGoalCardManager().getCardsToTokens(), new TypeToken<Map<Card, Stack<Integer>>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToTokens");
-                    Map<String, Set<Token>> playerToToken = goalManager.getCommonGoalCardManager().getPlayersToTokens().entrySet().stream()
+                    Map<String, List<Integer>> playerToToken = goalManager.getCommonGoalCardManager().getPlayersToTokens().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
-                    gson.toJson(playerToToken, new TypeToken<Map<String, Set<Token>>>() {
+                    gson.toJson(playerToToken, new TypeToken<Map<String, List<Integer>>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToUnfulfilledCards");
                     Map<String, Set<Card>> playerToUnfulfilledCards = goalManager.getCommonGoalCardManager().getPlayersToUnfulfilledCards().entrySet().stream()
@@ -144,11 +144,11 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
 
         GoalManager goalManager = null;
         CommonGoalCardManager commonGoalCardManager = null;
-        Map<Card, Stack<Token>> cardsToTokens = null;
+        Map<Card, Stack<Integer>> cardsToTokens = null;
         Map<Player, Integer> playerToPoints = null;
         UpdateRule updateRule = null;
         Deck deck = null;
-        Map<Player, Set<Token>> playerToTokens = null;
+        Map<Player, List<Integer>> playerToTokens = null;
         Map<Player, Set<Card>> playerToUnfulfilledCards = null;
         PersonalGoalCardManager personalGoalCardManager = null;
         Map<Player, Integer> playerToPoints2 = null;
@@ -251,11 +251,11 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                             deck = gson.fromJson(in, Deck.class);
                                         }
                                         case "cardsToTokens" -> {
-                                            cardsToTokens = gson.fromJson(in, new TypeToken<Map<Card, Stack<Token>>>() {
+                                            cardsToTokens = gson.fromJson(in, new TypeToken<Map<Card, Stack<Integer>>>() {
                                             }.getType());
                                         }
                                         case "playersToTokens" -> {
-                                            Map<String, Set<Token>> playerToTokensNames = gson.fromJson(in, new TypeToken<Map<String, Set<Token>>>() {
+                                            Map<String, List<Integer>> playerToTokensNames = gson.fromJson(in, new TypeToken<Map<String, List<Integer>>>() {
                                             }.getType());
                                             playerToTokens = playerToTokensNames.entrySet().stream().collect(
                                                     Collectors.toMap(entry -> finalPlayers.stream().filter(p -> p.getUserName().equals(entry.getKey())).findFirst().orElse(null),
