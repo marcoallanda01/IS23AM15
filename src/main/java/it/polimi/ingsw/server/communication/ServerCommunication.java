@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ServerCommunication {
 
@@ -30,7 +31,11 @@ public interface ServerCommunication {
     public void notifyChangeBoard(List<Tile> tiles);
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles);
     public void updatePlayerPoints(String playerName, int points);
-
     public void notifyTurn(String playerName);
+
+    // TODO here
+    public void sendCommonGoals(List<String> commonGoals);
+    public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens);
+    public void notifyChangeToken(String card, List<Integer> tokens);
 
 }

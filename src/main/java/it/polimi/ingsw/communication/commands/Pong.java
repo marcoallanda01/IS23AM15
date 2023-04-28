@@ -14,7 +14,7 @@ public class Pong extends GameCommand {
 
     /**
      * Generator of Pong from a json string
-     * @param json json string from which generate Disconnect
+     * @param json json string from which generate Pong
      * @return Optional of Pong, empty if json string was not coherent
      */
     public static Optional<Pong> fromJson(String json) {

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -13,7 +14,7 @@ public class LoadedGamePlayers extends Msg {
 
     public LoadedGamePlayers(@NotNull Set<String> names) {
         super("LoadedGamePlayers");
-        this.names = names;
+        this.names = new HashSet<>(names);
     }
 
     /**

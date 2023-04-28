@@ -191,4 +191,29 @@ public class TCPServer implements ServerCommunication{
     public void notifyTurn(String playerName) {
 
     }
+
+    /**
+     * @param commonGoals
+     */
+    @Override
+    public void sendCommonGoals(List<String> commonGoals) {
+
+    }
+
+    /**
+     * @param cardsAndTokens
+     */
+    @Override
+    public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
+
+    }
+
+    /**
+     * @param card
+     * @param tokens
+     */
+    @Override
+    public void notifyChangeToken(String card, List<Integer> tokens) {
+
+    }
 }
