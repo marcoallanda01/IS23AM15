@@ -60,7 +60,7 @@ public class Game {
             if (player.getBookShelf().getMaxColumnSpace() == 0) {
                 if (isLastRound) {
                     if (this.players.indexOf(player) == this.players.size() - 1) {
-                        //get winner and finish game
+                        //TODO: get winner and finish game
                     }
                 } else {
                     player.setFirstToFinish(true);
@@ -128,8 +128,8 @@ public class Game {
         return false;
     }
 
-    public Set<String> getPlayers() {
-        return players.stream().map(Player::getUserName).collect(Collectors.toSet());
+    public List<String> getPlayers() {
+        return players.stream().map(Player::getUserName).collect(Collectors.toList());
     }
 
     public void sendMessage(String sender, String receiver, String message) throws PlayerNotFoundException {
