@@ -64,6 +64,10 @@ public class Turn {
         return this.board.isToFill();
     }
 
+    public void refillBoard() {
+        this.board.fillBoard();
+    }
+
     public Player getCurrentPlayer() {
         return this.currentPlayer;
     }

@@ -22,6 +22,14 @@ public class PlayController {
         this.directory = directory;
     }
 
+    public boolean pickTiles(List<Tile> tiles) {
+        return game.pickTiles(tiles);
+    }
+
+    public boolean putTiles(List<Tile> tiles, int column) {
+        return game.putTiles(tiles, column);
+    }
+
     public boolean saveGame() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
                 .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
