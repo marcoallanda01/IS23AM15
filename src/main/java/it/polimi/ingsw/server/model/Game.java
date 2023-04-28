@@ -17,7 +17,11 @@ public class Game{
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
         this.board = new LivingRoomBoard(numberOfPlayers);
-        this.currentTurn = new Turn(this.players.get(new Random().nextInt(this.players.size())), board);
+
+        //choosing first player
+        Collections.shuffle(this.players);
+        this.currentTurn = new Turn(this.players.get(0), board);
+
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         this.goalManager = new GoalManager(this.players, goalPath);
@@ -71,13 +75,12 @@ public class Game{
     }
 
     private boolean nextTurn(){
-        if(this.currentTurn.getState() instanceof  EndState){ //TODO: è giusto?
+        if(this.currentTurn.getState() instanceof  EndState){
             this.currentTurn = new Turn(
                     this.players.get(
-                            this.players.indexOf(
-                                    this.currentTurn.getCurrentPlayer()
-                            ) + 1
-                    ), this.board
+                            (this.players.indexOf(this.currentTurn.getCurrentPlayer()) + 1) % this.players.size()
+                    ),
+                    this.board
             );
             return true;
         }
