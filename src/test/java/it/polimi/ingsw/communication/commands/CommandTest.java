@@ -1,9 +1,6 @@
 package it.polimi.ingsw.communication.commands;
 
 import it.polimi.ingsw.communication.JsonString;
-import it.polimi.ingsw.communication.responses.BooleanResponse;
-import it.polimi.ingsw.communication.responses.Disconnection;
-import it.polimi.ingsw.communication.responses.Hello;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -14,22 +11,17 @@ class CommandTest {
 
     @Test
     void toJson() throws Exception {
-        Disconnect d = new Disconnect("test");
-        JsonString json1 = new JsonString("{\"name\":\"Disconnect\", \"id\":\"test\"}");
-        assertEquals(json1, new JsonString(d.toJson()));
+        GetLoadedPlayers glp = new GetLoadedPlayers();
+        JsonString json1 = new JsonString("{\"name\":\"GetLoadedPlayers\"}");
+        System.out.println(glp.toJson());
+        assertEquals(json1, new JsonString(glp.toJson()));
     }
 
     @Test
     void getName() {
         String id = "test";
-        Disconnect d = new Disconnect(id);
-        assertEquals("Disconnect", d.getName());
-    }
-
-    void getId() {
-        String id = "test";
-        Disconnect d = new Disconnect(id);
-        assertEquals("test", d.getId());
+        GetLoadedPlayers glp = new GetLoadedPlayers();
+        assertEquals("GetLoadedPlayers", glp.getName());
     }
 
     @Test

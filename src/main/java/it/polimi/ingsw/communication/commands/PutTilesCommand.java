@@ -2,7 +2,6 @@ package it.polimi.ingsw.communication.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class PutTilesCommand extends Command{
+public class PutTilesCommand extends GameCommand {
 
     public List<TileType> tiles;
     public int column;

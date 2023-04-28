@@ -23,6 +23,8 @@ class HelloTest {
         idFirstPlayer = "NoFirst";
         json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"," + "\"firstPlayerId\":\""+idFirstPlayer+"\"}";
         assertEquals(Optional.of(new Hello(lobbyReady)), Hello.fromJson(json));
+        json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"}";
+        assertNotEquals(Optional.of(new Hello(lobbyReady)), Hello.fromJson(json));
 
 
         json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"," + "\"firstPlayerId\":\""+idFirstPlayer+"\"}";

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.communication.commands.Command;
+import it.polimi.ingsw.communication.commands.GameCommand;
 import it.polimi.ingsw.communication.commands.Disconnect;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -86,7 +86,7 @@ public class TCPServer implements ServerCommunication{
      */
     public boolean respond(Socket client, String json){
         String commandName;
-        Optional<String> oName = Command.nameFromJson(json);
+        Optional<String> oName = GameCommand.nameFromJson(json);
         if(oName.isPresent()) {
             commandName = oName.get();
             boolean wrongFormatted = false;
@@ -103,11 +103,11 @@ public class TCPServer implements ServerCommunication{
                     break;
             }
             if(wrongFormatted){
-                System.out.println("Command from "+client.getLocalSocketAddress().toString()+
+                System.out.println("GameCommand from "+client.getLocalSocketAddress().toString()+
                         " cannot be understood because wrong formatted");
             }
         }else{
-            System.out.println("Command from "+client.getLocalSocketAddress().toString()+" empty");
+            System.out.println("GameCommand from "+client.getLocalSocketAddress().toString()+" empty");
         }
         return true;
     }

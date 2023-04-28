@@ -2,12 +2,13 @@ package it.polimi.ingsw.server.communication;
 
 import it.polimi.ingsw.server.model.Tile;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 public interface ServerCommunication {
 
-    // send one GameSetUp object to every player
+    /**
+     * Send one GameSetUp object to every player
+     */
     public void gameSetUp();
 
 

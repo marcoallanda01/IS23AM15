@@ -1,8 +1,5 @@
 package it.polimi.ingsw.communication.responses;
 
-import it.polimi.ingsw.communication.commands.Command;
-import it.polimi.ingsw.communication.responses.BooleanResponse;
-import it.polimi.ingsw.communication.responses.Hello;
 import it.polimi.ingsw.communication.JsonString;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +27,10 @@ class MsgTest {
 
     @Test
     void nameFromJson() {
-        assertEquals("test", Command.nameFromJson("{\"name\":\"test\"}").get());
-        assertEquals("test", Command.nameFromJson("{\"name\":\"test\", \"num\":1}").get());
-        assertNotEquals("test", Command.nameFromJson("{\"name\":\"boh\", \"num\":1}").get());
-        assertEquals(Optional.empty(), Command.nameFromJson("{\"num\":1}"));
-        assertEquals(Optional.empty(), Command.nameFromJson("{wqeeq"));
+        assertEquals("test", Msg.nameFromJson("{\"name\":\"test\"}").get());
+        assertEquals("test", Msg.nameFromJson("{\"name\":\"test\", \"num\":1}").get());
+        assertNotEquals("test", Msg.nameFromJson("{\"name\":\"boh\", \"num\":1}").get());
+        assertEquals(Optional.empty(), Msg.nameFromJson("{\"num\":1}"));
+        assertEquals(Optional.empty(), Msg.nameFromJson("{wqeeq"));
     }
 }

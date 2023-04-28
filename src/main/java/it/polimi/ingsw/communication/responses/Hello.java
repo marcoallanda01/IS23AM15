@@ -60,9 +60,6 @@ public class Hello extends Msg {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hello hello = (Hello) o;
-        if(this.firstPlayerId == null || hello.firstPlayerId == null){
-            return false;
-        }
         return firstPlayerId.equals(hello.firstPlayerId) && (lobbyReady == hello.lobbyReady);
     }
 }

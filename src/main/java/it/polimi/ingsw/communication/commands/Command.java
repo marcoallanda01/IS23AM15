@@ -8,11 +8,8 @@ import java.util.Optional;
 
 public abstract class Command {
     protected String name;
-    protected String id;
-
-    public Command(String name, String id){
+    public Command(String name){
         this.name = name;
-        this.id = id;
     }
 
     /**
@@ -52,12 +49,5 @@ public abstract class Command {
      */
     public String getName(){
         return this.name;
-    }
-
-    /**
-     * @return id of the player that requested the command
-     */
-    public String getId(){
-        return this.id;
     }
 }

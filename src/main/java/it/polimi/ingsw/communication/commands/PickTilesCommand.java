@@ -2,7 +2,6 @@ package it.polimi.ingsw.communication.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.communication.responses.BookShelfUpdate;
 import it.polimi.ingsw.server.model.Tile;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-public class PickTilesCommand extends Command{
+public class PickTilesCommand extends GameCommand {
 
     public Set<Tile> tiles;
 

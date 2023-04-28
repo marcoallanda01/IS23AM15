@@ -6,37 +6,36 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Disconnect extends GameCommand {
-
-    public Disconnect(String id) {
-        super("Disconnect", id);
+public class Reconnect extends GameCommand {
+    public Reconnect(String id) {
+        super("Reconnect", id);
     }
 
     /**
-     * Generator of Disconnect from a json string
-     * @param json json string from which generate Disconnect
-     * @return Optional of Disconnect, empty if json string was not coherent
+     * Generator of Reconnect from a json string
+     * @param json json string from which generate object
+     * @return Optional of Reconnect, empty if json string was not coherent
      */
-    public static Optional<Disconnect> fromJson(String json) {
-        Disconnect d;
+    public static Optional<Reconnect> fromJson(String json) {
+        Reconnect r;
         try{
             Gson gson = new Gson();
-            d = gson.fromJson(json, Disconnect.class);
+            r = gson.fromJson(json, Reconnect.class);
         }
         catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"Disconnect".equals(d.name) || d.id == null){
+        if(!"Reconnect".equals(r.name) || r.id == null){
             return Optional.empty();
         }
-        return Optional.of(d);
+        return Optional.of(r);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Disconnect that = (Disconnect) o;
+        Reconnect that = (Reconnect) o;
         return Objects.equals(this.id, that.id);
     }
 }
