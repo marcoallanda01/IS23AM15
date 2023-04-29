@@ -85,4 +85,13 @@ public class PlayController {
     public synchronized List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
         return game.getTokens(nickname);
     }
+
+    /**
+     * Method to make leave the game a player
+     * @param player player name (can be passed also a player name that doesn't exist)
+     * @return true if the disconnection ended well. false if the player doesn't exist
+     */
+    public boolean leave(String player) {
+        return true;
+    }
 }

@@ -87,6 +87,14 @@ public class Lobby {
         return games;
     }
 
+    public synchronized List<String> getLoadedPlayersNames(){
+        List<String> players = new ArrayList<>();
+        if(loadingGame != null){
+            players.addAll(loadingGame.getPlayers());
+        }
+        return players;
+    }
+
 
     public synchronized boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
         if (this.isCreating && this.loadingGame != null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
@@ -168,11 +176,11 @@ public class Lobby {
         return this.players.remove(getIdFromName(player), player);
     }
 
-    public synchronized boolean isFistPlayerPresent() {
+    private boolean isFistPlayerPresent() {
         return this.firstPlayerId != null;
     }
 
-    public synchronized boolean isReadyToPlay() {
+    private boolean isReadyToPlay() {
         return this.players.size() == this.numPlayersGame;
     }
 

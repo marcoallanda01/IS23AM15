@@ -3,29 +3,36 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.commands.Command;
 import it.polimi.ingsw.communication.commands.Disconnect;
 import it.polimi.ingsw.communication.commands.GetLoadedPlayers;
+import it.polimi.ingsw.communication.responses.BooleanResponse;
+import it.polimi.ingsw.communication.responses.LoadedGamePlayers;
+import it.polimi.ingsw.server.controller.ChatController;
 import it.polimi.ingsw.server.controller.Lobby;
+import it.polimi.ingsw.server.controller.PlayController;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TCPServer implements ServerCommunication{
     private List<Socket> clients;
     private Map<Socket, String> playersIds;
+
+    private Lobby lobby;
+    private PlayController playController;
+    private ChatController chatController = null;
     private int port;
 
     private ServerSocket serverSocket;
 
     public TCPServer(int port, Lobby lobby){
         this.port = port;
+        this.lobby = lobby;
+        this.playController = null;
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -60,10 +67,9 @@ public class TCPServer implements ServerCommunication{
         String json;
         do {
             json = in.nextLine();
-            out.println("Received: " + json);
-            out.flush();
+            System.out.println("Received from "+client.getLocalSocketAddress().toString()+": " + json);
 
-        } while (respond(client, json));
+        } while (respond(client, out, json));
 
         System.out.println("Closing sockets of "+client.getLocalSocketAddress().toString());
         in.close();
@@ -86,42 +92,92 @@ public class TCPServer implements ServerCommunication{
      * @param json json string that client sent
      * @return true if client still connected
      */
-    public boolean respond(Socket client, String json){
+    private boolean respond(Socket client, PrintWriter out, String json){
         String commandName;
         Optional<String> oName = Command.nameFromJson(json);
         if(oName.isPresent()) {
             commandName = oName.get();
             boolean wrongFormatted = false;
-            switch (commandName) {
-                case "Disconnect":
-                    Optional <Disconnect> d = Disconnect.fromJson(json);
-                    if(d.isPresent()) {
-                        //if(){
-                            notifyDisconnection(playersIds.get(client));
 
-                        //}
+            switch (commandName) {
+
+                case ("Disconnect"):
+                    Optional<Disconnect> d = Disconnect.fromJson(json);
+                    if (d.isPresent()) {
+                        BooleanResponse br;
+                        boolean playControllerActive;
+                        synchronized (playController){
+                            playControllerActive = (playController != null);
+                        }
+                        if(playControllerActive){
+                            boolean res = playController.leave(playersIds.get(client));
+                            if(res) {
+                                notifyDisconnection(playersIds.get(client));
+                            }
+                            br = new BooleanResponse(res);
+                        }
+                        else {
+                            br = new BooleanResponse(true);
+                        }
+                        out.println(br.toJson());
                         closeClient(client);
                         return false;
-                    }else{
+                    } else {
                         wrongFormatted = true;
+                        break;
                     }
+
                 case "GetLoadedPlayers":
-                    Optional <GetLoadedPlayers> o = GetLoadedPlayers.fromJson(json);
-                    if(o.isPresent()) {
-                        //sendLoadedPlayers(client);
+                    //TODO: recheck protocol
+                    Optional<GetLoadedPlayers> o = GetLoadedPlayers.fromJson(json);
+                    if (o.isPresent()) {
+                        boolean playControllerActive;
+                        synchronized (playController){
+                            playControllerActive = (playController != null);
+                        }
+                        if(!playControllerActive) {
+                            Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
+                            out.println(new LoadedGamePlayers(pns).toJson());
+                        }
+                        else {
+                            out.println(new LoadedGamePlayers(new HashSet<>()).toJson());
+                        }
                         return true;
-                    }else{
+                    } else {
                         wrongFormatted = true;
+                        break;
                     }
-                case "PutTileCommand":
+
+                case "GetSavedGames":
                     break;
+                case "HelloCommand":
+                    break;
+                case "Join":
+                    break;
+                case "JoinLoadedAsFirst":
+                    break;
+                case "JoinNewAsFirst":
+                    break;
+                case "LoadGame":
+                    break;
+                case "PickTilesCommand":
+                    break;
+                case "Pong":
+                    break;
+                case "PutTilesCommand":
+                    break;
+                case "Reconnect":
+                    break;
+                default:
+                    System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+
+                            " with name: "+commandName+" can not be found");
             }
             if(wrongFormatted){
-                System.out.println("GameCommand from "+client.getLocalSocketAddress().toString()+
+                System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+
                         " cannot be understood because wrong formatted");
             }
         }else{
-            System.out.println("GameCommand from "+client.getLocalSocketAddress().toString()+" empty");
+            System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+" empty");
         }
         return true;
     }
