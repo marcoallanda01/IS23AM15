@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.communication.commands.GameCommand;
+import it.polimi.ingsw.communication.commands.Command;
 import it.polimi.ingsw.communication.commands.Disconnect;
+import it.polimi.ingsw.communication.commands.GetLoadedPlayers;
+import it.polimi.ingsw.server.controller.Lobby;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class TCPServer implements ServerCommunication{
 
     private ServerSocket serverSocket;
 
-    public TCPServer(int port){
+    public TCPServer(int port, Lobby lobby){
         this.port = port;
         try {
             serverSocket = new ServerSocket(port);
@@ -86,7 +88,7 @@ public class TCPServer implements ServerCommunication{
      */
     public boolean respond(Socket client, String json){
         String commandName;
-        Optional<String> oName = GameCommand.nameFromJson(json);
+        Optional<String> oName = Command.nameFromJson(json);
         if(oName.isPresent()) {
             commandName = oName.get();
             boolean wrongFormatted = false;
@@ -94,8 +96,20 @@ public class TCPServer implements ServerCommunication{
                 case "Disconnect":
                     Optional <Disconnect> d = Disconnect.fromJson(json);
                     if(d.isPresent()) {
-                        disconnect(client);
+                        //if(){
+                            notifyDisconnection(playersIds.get(client));
+
+                        //}
+                        closeClient(client);
                         return false;
+                    }else{
+                        wrongFormatted = true;
+                    }
+                case "GetLoadedPlayers":
+                    Optional <GetLoadedPlayers> o = GetLoadedPlayers.fromJson(json);
+                    if(o.isPresent()) {
+                        //sendLoadedPlayers(client);
+                        return true;
                     }else{
                         wrongFormatted = true;
                     }
@@ -110,11 +124,6 @@ public class TCPServer implements ServerCommunication{
             System.out.println("GameCommand from "+client.getLocalSocketAddress().toString()+" empty");
         }
         return true;
-    }
-
-    private void disconnect(Socket client){
-        notifyDisconnection(playersIds.get(client));
-        closeClient(client);
     }
 
     /*

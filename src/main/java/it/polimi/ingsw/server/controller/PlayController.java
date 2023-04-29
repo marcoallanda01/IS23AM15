@@ -22,15 +22,15 @@ public class PlayController {
         this.directory = directory;
     }
 
-    public boolean pickTiles(List<Tile> tiles) {
+    public synchronized boolean pickTiles(List<Tile> tiles) {
         return game.pickTiles(tiles);
     }
 
-    public boolean putTiles(List<Tile> tiles, int column) {
+    public synchronized boolean putTiles(List<Tile> tiles, int column) {
         return game.putTiles(tiles, column);
     }
 
-    public boolean saveGame() throws IOException {
+    public synchronized boolean saveGame() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
                 .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
         String json = gson.toJson(this.game);
@@ -58,31 +58,31 @@ public class PlayController {
         return true;
     }
 
-    public Integer getPoints(String nickname) throws PlayerNotFoundException {
+    public synchronized Integer getPoints(String nickname) throws PlayerNotFoundException {
         return game.getPoints(nickname);
     }
 
-    public Map<String, List<Integer>> getCommonGoalCardsToTokens() {
+    public synchronized Map<String, List<Integer>> getCommonGoalCardsToTokens() {
         return game.getCommonGoalCardsToTokens();
     }
 
-    public Set<String> getEndGameGoals() {
+    public synchronized Set<String> getEndGameGoals() {
         return game.getEndGameGoals();
     }
 
-    public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
+    public synchronized Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         return game.getUnfulfilledCommonGoalCards(nickname);
     }
 
-    public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
+    public synchronized Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         return game.getFulfilledCommonGoalCards(nickname);
     }
 
-    public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
+    public synchronized String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         return game.getPersonalGoalCard(nickname);
     }
 
-    public List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
+    public synchronized List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
         return game.getTokens(nickname);
     }
 }

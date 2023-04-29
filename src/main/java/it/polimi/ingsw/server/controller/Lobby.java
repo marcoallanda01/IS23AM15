@@ -59,7 +59,7 @@ public class Lobby {
      * can be called
      * @throws WaitLobbyException if the there is already a first player and the game is in creation
      */
-    public Optional<String> join() throws WaitLobbyException {
+    public synchronized Optional<String> join() throws WaitLobbyException {
         Optional<String> uniqueID = Optional.empty();
         if (this.firstPlayerId == null) {
             this.firstPlayerId = UUID.randomUUID().toString();
@@ -88,7 +88,7 @@ public class Lobby {
     }
 
 
-    public boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
+    public synchronized boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
         if (this.isCreating && this.loadingGame != null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
                 this.firstPlayerId.equals(id)) { // this.isCreating can be true only when fistPlayer.isPresent()
             this.isCreating = false;
@@ -107,7 +107,7 @@ public class Lobby {
      * @param idFirstPlayer the id of the first player to connect
      * @return the list of loaded game players nicknames
      */
-    public List<String> loadGame(String name, String idFirstPlayer) throws GameLoadException, GameNameException, IllegalLobbyException {
+    public synchronized List<String> loadGame(String name, String idFirstPlayer) throws GameLoadException, GameNameException, IllegalLobbyException {
         if (this.isCreating && this.firstPlayerId.equals(idFirstPlayer)) {
             if (!getSavedGames().contains(name)) {
                 throw new GameNameException(name);
@@ -126,7 +126,7 @@ public class Lobby {
         }
     }
 
-    public boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
+    public synchronized boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
         if (this.isCreating && this.loadingGame != null && this.firstPlayerId.equals(id)) {
             if (!this.loadingGame.getPlayers().contains(name)) {
                 throw new NicknameException(name);
@@ -138,7 +138,7 @@ public class Lobby {
         return false;
     }
 
-    public String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
+    public synchronized String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
         Set<String> uniquePlayers = (Set<String>) this.players.values();
         if (uniquePlayers.size() == this.numPlayersGame) {
             throw new FullGameException(player);
@@ -164,19 +164,19 @@ public class Lobby {
         return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
-    public boolean removePlayer(String player) {
+    public synchronized boolean removePlayer(String player) {
         return this.players.remove(getIdFromName(player), player);
     }
 
-    public boolean isFistPlayerPresent() {
+    public synchronized boolean isFistPlayerPresent() {
         return this.firstPlayerId != null;
     }
 
-    public boolean isReadyToPlay() {
+    public synchronized boolean isReadyToPlay() {
         return this.players.size() == this.numPlayersGame;
     }
 
-    public ControllerProvider startGame() throws EmptyLobbyException {
+    public synchronized ControllerProvider startGame() throws EmptyLobbyException {
         if (!isReadyToPlay()) {
             throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }
