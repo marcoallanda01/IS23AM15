@@ -4,19 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-/**
- * Deprecated. Class not used. It's here to revaluate in the future
- */
-public class CommonGoals extends Msg{
-    public List<String> goals;
-
-    public @Deprecated CommonGoals(@NotNull List<String> goals) {
-        super("CommonGoals");
-        this.goals = new ArrayList<>(goals);
+public class CommonCards extends Msg{
+    public Map<String, List<Integer>> cardsAndTokens;
+    public CommonCards(@NotNull Map<String, List<Integer>> cardsAndTokens) {
+        super("CommonCards");
+        this.cardsAndTokens = new HashMap<>(cardsAndTokens);
     }
 
     /**
@@ -24,25 +18,25 @@ public class CommonGoals extends Msg{
      * @param json json string from which generate returned object
      * @return Optional of CommonGoals, empty if json string was not coherent
      */
-    public static Optional<CommonGoals> fromJson(String json) {
-        CommonGoals cg;
+    public static Optional<CommonCards> fromJson(String json) {
+        CommonCards cc;
         try {
             Gson gson = new Gson();
-            cg = gson.fromJson(json, CommonGoals.class);
+            cc = gson.fromJson(json, CommonCards.class);
         }catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"CommonGoals".equals(cg.name) || cg.goals == null){
+        if(!"CommonCards".equals(cc.name) || cc.cardsAndTokens == null){
             return Optional.empty();
         }
-        return Optional.of(cg);
+        return Optional.of(cc);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CommonGoals that = (CommonGoals) o;
-        return goals.equals(that.goals);
+        CommonCards that = (CommonCards) o;
+        return Objects.equals(cardsAndTokens, that.cardsAndTokens);
     }
 }

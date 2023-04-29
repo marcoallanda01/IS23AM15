@@ -193,14 +193,6 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
-     * @param commonGoals
-     */
-    @Override
-    public void sendCommonGoals(List<String> commonGoals) {
-
-    }
-
-    /**
      * @param cardsAndTokens
      */
     @Override

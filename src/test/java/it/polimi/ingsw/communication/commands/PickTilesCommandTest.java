@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -31,6 +32,8 @@ class PickTilesCommandTest {
                         "{\"x\":3,\"y\":1,\"type\":\"TROPHY\"}" +
                         "]}").get().toJson()
         );
+        assertEquals(ptc, ptc);
+        assertFalse(ptc.equals(new PutTilesCommand("dds", new ArrayList<TileType>(), 3)));
         assertEquals(Optional.of(ptc), PickTilesCommand.fromJson("{\"name\":\"PickTilesCommand\"," +
                 "\"id\":\"test\"," +
                 "\"tiles\":[" +
@@ -57,12 +60,20 @@ class PickTilesCommandTest {
 
 
         assertEquals(Optional.empty(), PickTilesCommand.fromJson("{\"name\":\"PickTilesCommand\"}"));
+        assertEquals(Optional.empty(), PickTilesCommand.fromJson("{\"name\":\"PickTilesCommand\"," +
+                        "\"tiles\":[" +
+                        "{\"x\":3,\"y\":4,\"type\":\"BOOK\"}," +
+                        "{\"x\":4,\"y\":1,\"type\":\"CAT\"}," +
+                        "{\"x\":3,\"y\":0,\"type\":\"TROPHY\"}" +
+                        "]}"));
+        assertEquals(Optional.empty(), PickTilesCommand.fromJson("{\"name\":\"PickTilesCommand\"," +
+                "\"id\":\"test\"}"));
         assertEquals(Optional.empty(), PickTilesCommand.fromJson("kjdsvaskd"));
         assertEquals(Optional.empty(), PickTilesCommand.fromJson("{\"answer\":true}"));
-        assertEquals(Optional.empty(), PickTilesCommand.fromJson("\"id\":\"test\"" +
-                "{\"tiles\":[\"Come\",\"Ciao\",\"Stai\"]}"));
-        assertEquals(Optional.empty(), PickTilesCommand.fromJson("\"id\":\"test\"," +
-                "{\"tiles\":[{\"x\":3,\"y\":4,\"type\":\"BOOK\"}," +
+        assertEquals(Optional.empty(), PickTilesCommand.fromJson("{\"id\":\"test\"," +
+                "\"tiles\":[\"Come\",\"Ciao\",\"Stai\"]}"));
+        assertEquals(Optional.empty(), PickTilesCommand.fromJson("{\"id\":\"test\"," +
+                "\"tiles\":[{\"x\":3,\"y\":4,\"type\":\"BOOK\"}," +
                 "{\"x\":4,\"y\":1,\"type\":\"CAT\"}," +
                 "{\"x\":3,\"y\":0,\"type\":\"TROPHY\"}" +
                 "]}"));

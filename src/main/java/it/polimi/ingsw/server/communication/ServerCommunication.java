@@ -34,7 +34,8 @@ public interface ServerCommunication {
     public void notifyTurn(String playerName);
 
     // TODO here
-    public void sendCommonGoals(List<String> commonGoals);
+    //Non serve, inviati in GameSeUp perché sono unici e non cambiano
+    //public void sendCommonGoals(List<String> commonGoals);
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens);
     public void notifyChangeToken(String card, List<Integer> tokens);
 

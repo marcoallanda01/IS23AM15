@@ -1,12 +1,45 @@
 package it.polimi.ingsw.communication.responses;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class GameSetUp extends Msg{
     public List<String> players;
-    
+    public List<String> goals;
 
-    public GameSetUp(){
+
+    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals){
         super("GameSetUp");
+        this.players = new ArrayList<>(players);
+        this.goals = new ArrayList<>(goals);
+    }
+
+
+    public static Optional<GameSetUp> fromJson(String json) {
+        GameSetUp gsu;
+        try {
+            Gson gson = new Gson();
+            gsu = gson.fromJson(json, GameSetUp.class);
+        }catch (JsonSyntaxException e){
+            return Optional.empty();
+        }
+        if(!"GameSetUp".equals(gsu.name) || gsu.players == null || gsu.goals == null){
+            return Optional.empty();
+        }
+        return Optional.of(gsu);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameSetUp gameSetUp = (GameSetUp) o;
+        return Objects.equals(players, gameSetUp.players) && Objects.equals(goals, gameSetUp.goals);
     }
 }
