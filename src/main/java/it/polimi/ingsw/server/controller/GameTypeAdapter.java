@@ -172,6 +172,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     // Read the list of players
                     players = gson.fromJson(in, new TypeToken<List<Player>>() {
                     }.getType());
+                    players.forEach(player -> player.setPlaying(true));
                     if (players == null || players.isEmpty()) throw new JsonParseException("Player list is null or empty");
                 }
                 case "winner" -> {

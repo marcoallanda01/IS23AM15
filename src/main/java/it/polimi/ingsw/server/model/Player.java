@@ -4,7 +4,7 @@ public class Player {
     private final String userName;
     private final BookShelf bookShelf;
     private boolean firstToFinish = false;
-    private boolean isPlaying = true;
+    private transient boolean isPlaying = true;
     private boolean fullBookShelf = false;
     /**
      * Create a new player
