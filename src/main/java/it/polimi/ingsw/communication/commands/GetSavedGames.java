@@ -8,10 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class GetSavedGames extends Command{
-    protected String idFirstPlayer;
-    public GetSavedGames(@NotNull String idFistPlayer){
+    public GetSavedGames(){
         super("GetSavedGames");
-        this.idFirstPlayer = new String(idFistPlayer);
     }
 
     /**
@@ -28,7 +26,7 @@ public class GetSavedGames extends Command{
         catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"GetSavedGames".equals(gsg.name) || gsg.idFirstPlayer == null){
+        if(!"GetSavedGames".equals(gsg.name)){
             return Optional.empty();
         }
         return Optional.of(gsg);
@@ -37,8 +35,6 @@ public class GetSavedGames extends Command{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(! (o != null && getClass() == o.getClass()) ) return false;
-        GetSavedGames that = (GetSavedGames) o;
-        return Objects.equals(this.idFirstPlayer, that.idFirstPlayer);
+        return o != null && getClass() == o.getClass();
     }
 }

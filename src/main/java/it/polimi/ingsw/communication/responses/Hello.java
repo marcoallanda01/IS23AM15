@@ -9,6 +9,7 @@ import java.util.Optional;
 public class Hello extends Msg {
     public boolean lobbyReady;
     public String firstPlayerId;
+    public boolean loadedGame;
 
     /**
      * Message Used to answer the hello of the client
@@ -18,14 +19,17 @@ public class Hello extends Msg {
         super("Hello");
         this.lobbyReady = false;
         this.firstPlayerId = firstPlayerId;
+        this.loadedGame = false;
     }
 
     /**
      * @param lobbyReady true other players can join the lobby
+     * @param loadedGame true if the game is loaded from a save
      */
-    public Hello(boolean lobbyReady) {
+    public Hello(boolean lobbyReady, boolean loadedGame) {
         super("hello");
         this.lobbyReady = lobbyReady;
+        this.loadedGame = loadedGame;
         this.firstPlayerId = "NoFirst";
     }
 

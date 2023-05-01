@@ -22,7 +22,7 @@ public class Player {
      * @return the username of the player
      */
     public String getUserName() {
-        return this.userName;
+        return new String(this.userName);
     }
 
     /**

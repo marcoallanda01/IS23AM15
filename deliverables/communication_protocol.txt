@@ -1,0 +1,317 @@
+LEGEND:
+() in json = choices
+*** in json = placeholder
+
+
+
+##############                                                                                            ##############
+#   Client   #                                                                                            #   Server   #
+##############                                                                                            ##############
+
+                            Start of the conversation, the client say hello to the server
+
+{"name":"HelloCommand"}            ----------------------------------------------->
+
+The server say hello to the client. Saying if the lobby is ready to accept players or not, so if the client can
+try to join.
+If the lobby isn't ready and there is not a first player the server send the id of the first player otherwise the id is
+set to "NoFirst".
+loadedGame is set true if the game is already created, and it's loaded from a save.
+
+                                                                                     {"name":"Hello",
+                        <------------------------------------------------            "lobbyReady":(true,false),
+                                                                                     "loadedGame":(true, false),
+                                                                                     "firstPlayerId":("NoFirst", "***")}
+
+################
+# First player #
+################
+
+First player (the one who received back the id) tries to join as a first player
+
+Case 1 - "NEW GAME":
+
+First player must specify his name (player), the number of players, his id and the rules (easyRules)
+
+{
+"name":"JoinNewAsFirst",
+"player":"***",
+"numOfPlayers":(2, 3 , 4),         -------------------------------------------------->
+"idFirstPlayer":"***",
+"easyRule":(false, true)
+}
+
+The server respond with a BooleanResponse set to true if the game was created or to false if the game was not.
+If the game was not created this meas that another client joined as first player before him, and he has to try to join
+as a normal player.
+Note: if is chosen a numOfPlayer different the BooleanResponse will set to false. Because here is supposed a client
+who follow the protocol.
+If the result was true the first player must wait until all the players join and the game start.
+
+          <--------------------------------------------------         {"name":"BooleanResponse", "result":(true, false)}
+
+
+################
+# Other player #
+################
+
+                                    The client tries to join saying his name
+
+{"name":"Join", "player":"***"}    --------------------------------------------------->
+
+The server respond with the result of the try to join and if failed why.
+If the result is positive it adds the client id.
+Failing reasons:
+FullGameException = the game is full/playing. The connection is closed.
+NickNameException = this nickname can not be taken try with one of the available with GetLoadedPlayers.
+NickNameTakenException = this nickname is already taken, try another one.
+
+                                                                                             {"name":"JoinResponse",
+                            <--------------------------------------------------               "result":(true, false),
+                                                                                              "id":"***", "error":"***"}
+
+
+Case 2 - "GAME LOADED":
+
+################
+# First player #
+################
+
+First player get all the saved games (any player can do it)
+
+{"name":"GetSavedGames"}          -------------------------------------------------->
+
+The server respond with a set of strings
+
+                 <--------------------------------------------------                {"name":"SavedGames", "names":[***]}
+
+First player choose name of a game (game):
+
+{"name":"LoadGame",
+"game":"***",                     -------------------------------------------------->
+"idFirstPlayer":"***"}
+
+The server respond with a boolean result and an error in case of fail:
+Possible errors:
+GameLoadException = Internal server error in loading game
+GameNameException = The name given doesn't exist
+IllegalLobbyException = A game is already loaded or wrong d
+
+                                                                                             {"name":"LoadGameResponse",
+                            <--------------------------------------------------                  "result":(true, false),
+                                                                                                          "error":"***"}
+
+First player asks for the available players names
+
+{"name":"GetLoadedPlayers"}       -------------------------------------------------->
+
+The server answer with a set strings of names
+
+                     <--------------------------------------------------     {"name":"LoadedGamePlayers", "names":[***]}
+
+First player join indicating a name(player)
+
+{"name":"JoinLoadedAsFirst",
+"player":"***",                 -------------------------------------------------->
+"idFirstPlayer":"***"}
+
+The server respond with a Boolean response.
+                                <--------------------------------------------------                      BooleanResponse
+
+Now other players can join:
+
+################
+# Other player #
+################
+
+Hello                            -------------------------------------------------->
+                                 <--------------------------------------------------                     "loadGame":true
+Join                             -------------------------------------------------->
+                                 <--------------------------------------------------                     BooleanResponse
+
+
+When full capacity is reached the game starts.
+
+
+DISCONNECTIONS:
+
+Player tries to disconnect sending his own id.
+
+{"name":"Disconnect", "id":"***"}   -------------------------------------------------->
+                                    <--------------------------------------------------                  BooleanResponse
+
+Notes:
+- if the first player disconnect during lobby creation then the lobby is reset.
+- if a player disconnect during joining than he is just disconnected and his place is now available.
+- if a player disconnect during game he can join again during the same game
+- when a game is saved the player is saved as non-disconnected
+
+
+RECONNECTION:
+
+A player can reconnect passing his id
+
+{"name":"Reconnect", "id":""}       -------------------------------------------------->
+                                    <--------------------------------------------------                  BooleanResponse
+
+
+PING PONG:
+The ping pong is necessary to keep a client alive and make sure he didn't disconnect without notify it.
+The disconnection works as mentioned before.
+
+Every 20 seconds the server send a ping and the client must respond in 10 seconds with a pong.
+
+##############                                                                                            ##############
+#   Client   #                                                                                            #   Server   #
+##############                                                                                            ##############
+
+                                   <--------------------------------------------------                   {"name":"Ping"}
+{"name":"Pong", "id":"***"}        -------------------------------------------------->
+
+
+IN GAME:
+
+Client can do three actions:
+1) Pick Tiles
+2) Put Tiles
+3) Save Game and make all leave
+
+##############                                                                                            ##############
+#   Client   #                                                                                            #   Server   #
+##############                                                                                            ##############
+
+1) Pick Tiles
+
+{"name":"PickTilesCommand",
+"id":"***",
+"tiles":[                            -------------------------------------------------->
+{"x":***, "y":***, "type":"***"},
+***
+]}
+                                     <--------------------------------------------------                 BooleanResponse
+
+
+2) Put Tiles
+
+{"name":"PutTilesCommand",
+"id":"***",
+"column":***                         -------------------------------------------------->
+"tiles":[
+"BOOK", ***
+]}
+                                     <--------------------------------------------------                 BooleanResponse
+
+
+3) Save Game and make all leave
+
+{"name":"SaveGame", "id":***}        -------------------------------------------------->
+
+No answer from the server. If the game is saved, it sends a notification to everybody and the game is stopped.
+
+
+CHAT:
+
+Every message pass through the server, that then send them as push notification
+
+##############                                                                                            ##############
+#   Client   #                                                                                            #   Server   #
+##############                                                                                            ##############
+
+player = receiver, if it is null than the message is sent to all the players
+id = sender id
+
+{"name":"SendMessage",
+"id":"***",                   -------------------------------------------------->
+"message":"***"
+"player":"***"}
+
+
+PUSH NOTIFICATIONS:
+
+Client does not respond to notifications. The right delivery of it relies on the network layer.
+
+##############                                                                                            ##############
+#   Server   #                                                                                            #   Client   #
+##############                                                                                            ##############
+
+- Sending a message to a client or all of them
+
+{"name":"ChatMessage",
+"message":"***",                       -------------------------------------------------->
+"sender":"***",
+"date":"***"}
+
+- Sending game set up.
+players = list of strings of players' names ordered by turn
+goals = list of strings of common goals' name
+Other setting as boards, and considering loaded game settings as bookshelf and points, are sent using the others
+notifications
+
+{"name":"GameSetUp",
+"players":["***", ***]                  -------------------------------------------------->
+"goals":["***", ***]
+}
+
+
+- Changing in the board
+
+{"name":"BoardUpdate",
+"tiles":[                               -------------------------------------------------->
+{"x":***,"y":***,"type":"***"}, ***
+]}
+
+
+- Changing in a bookshelf
+player = player name of which the bookshelf is
+
+{"name":"BookShelfUpdate",
+"player":"***",
+"tiles":[                               -------------------------------------------------->
+{"x":***,"y":***,"type":"***"}, ***
+]}
+
+
+- Sending common goals cards
+cardsAndTokens = map<String, List<Integer>> , so map from name to ordered tokens.
+
+{"name":"CommonCards",
+"cardsAndTokens":{"c2":[5,3,1], "***":[***]}     -------------------------------------------------->
+}
+
+- Disconnection of a player in game
+
+{"name":"Disconnection"                 -------------------------------------------------->
+"player":"***"}
+
+
+- Reconnection of a player in game
+
+{"name":"Reconnected"                   -------------------------------------------------->
+"player":"***"}
+
+
+- Changing in player points
+
+{"name":"PlayerPoints"
+"player":"***"                           -------------------------------------------------->
+"points":***}
+
+
+- Notification of player turn
+It's the client turn if he reads his name
+
+{"name":"TurnNotify"                   -------------------------------------------------->
+"player":"***"}
+
+
+- Saved game notification
+The connection is closed
+
+{"name":"GameSaved"}                   -------------------------------------------------->
+
+
+- Winner notification
+The connection is closed
+
+{"name":"Winner"                       -------------------------------------------------->
+"player":"***"}

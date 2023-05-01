@@ -1,10 +1,9 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.communication.commands.Command;
-import it.polimi.ingsw.communication.commands.Disconnect;
-import it.polimi.ingsw.communication.commands.GetLoadedPlayers;
+import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.BooleanResponse;
 import it.polimi.ingsw.communication.responses.LoadedGamePlayers;
+import it.polimi.ingsw.communication.responses.SavedGames;
 import it.polimi.ingsw.server.controller.ChatController;
 import it.polimi.ingsw.server.controller.Lobby;
 import it.polimi.ingsw.server.controller.PlayController;
@@ -105,11 +104,7 @@ public class TCPServer implements ServerCommunication{
                     Optional<Disconnect> d = Disconnect.fromJson(json);
                     if (d.isPresent()) {
                         BooleanResponse br;
-                        boolean playControllerActive;
-                        synchronized (playController){
-                            playControllerActive = (playController != null);
-                        }
-                        if(playControllerActive){
+                        if(isGameActive()){
                             boolean res = playController.leave(playersIds.get(client));
                             if(res) {
                                 notifyDisconnection(playersIds.get(client));
@@ -129,13 +124,9 @@ public class TCPServer implements ServerCommunication{
 
                 case "GetLoadedPlayers":
                     //TODO: recheck protocol
-                    Optional<GetLoadedPlayers> o = GetLoadedPlayers.fromJson(json);
-                    if (o.isPresent()) {
-                        boolean playControllerActive;
-                        synchronized (playController){
-                            playControllerActive = (playController != null);
-                        }
-                        if(!playControllerActive) {
+                    Optional<GetLoadedPlayers> glp = GetLoadedPlayers.fromJson(json);
+                    if (glp.isPresent()) {
+                        if(!isGameActive()) {
                             Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
                             out.println(new LoadedGamePlayers(pns).toJson());
                         }
@@ -149,8 +140,25 @@ public class TCPServer implements ServerCommunication{
                     }
 
                 case "GetSavedGames":
+                    Optional<GetSavedGames> gsg = GetSavedGames.fromJson(json);
+                    if(gsg.isPresent()){
+                        out.println(new SavedGames(lobby.getSavedGames()).toJson());
+                    }else {
+                        wrongFormatted = true;
+                        break;
+                    }
                     break;
                 case "HelloCommand":
+                    Optional<HelloCommand> hc = HelloCommand.fromJson(json);
+                    if(hc.isPresent()){
+                        if(isGameActive()){
+
+                        }
+                    }
+                    else{
+                        wrongFormatted = true;
+                        break;
+                    }
                     break;
                 case "Join":
                     break;
@@ -180,6 +188,18 @@ public class TCPServer implements ServerCommunication{
             System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+" empty");
         }
         return true;
+    }
+
+    /**
+     * Check if we are in the playing phase of the game
+     * @return true if we are
+     */
+    private boolean isGameActive(){
+        boolean playControllerActive;
+        synchronized (playController){
+            playControllerActive = (playController != null);
+        }
+        return playControllerActive;
     }
 
     /*

@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class Message {
-    public final Player sender;
-    public Optional<Player> receiver;
-    public LocalDateTime date;
-    private final String content;
+    protected final Player sender;
+    protected Optional<Player> receiver;
+    protected LocalDateTime date;
+    protected final String content;
 
     /**
      * Create a new message
@@ -36,6 +36,23 @@ public class Message {
      * @return the content of the message
      */
     public String getContent(){
-        return content;
+        return new String(content);
     }
+
+    /**
+     * Get the sender username
+     * @return sender username
+     */
+    public String getSenderName(){
+        return this.sender.getUserName();
+    }
+
+    /**
+     * Get the date on which the message was sent
+     * @return date as a string
+     */
+    public String getDate(){
+        return this.date.toString();
+    }
+
 }

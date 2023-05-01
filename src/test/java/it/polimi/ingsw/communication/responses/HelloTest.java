@@ -19,16 +19,17 @@ class HelloTest {
 
         lobbyReady = true;
         json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"," + "\"firstPlayerId\":\""+idFirstPlayer+"\"}";
-        assertNotEquals(Optional.of(new Hello(lobbyReady)), Hello.fromJson(json));
+        assertNotEquals(Optional.of(new Hello(lobbyReady, false)), Hello.fromJson(json));
         idFirstPlayer = "NoFirst";
         json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"," + "\"firstPlayerId\":\""+idFirstPlayer+"\"}";
-        assertEquals(Optional.of(new Hello(lobbyReady)), Hello.fromJson(json));
+        assertEquals(Optional.of(new Hello(lobbyReady, false)), Hello.fromJson(json));
         json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"}";
-        assertNotEquals(Optional.of(new Hello(lobbyReady)), Hello.fromJson(json));
+        assertNotEquals(Optional.of(new Hello(lobbyReady, false)), Hello.fromJson(json));
 
 
         json = "{\"name\":\"Hello\", \"lobbyReady\":"+lobbyReady+"," + "\"firstPlayerId\":\""+idFirstPlayer+"\"}";
-        assertNotEquals(Optional.of(new Hello(false)), Hello.fromJson(json));
+        assertNotEquals(Optional.of(new Hello(false, false)), Hello.fromJson(json));
+        assertNotEquals(Optional.of(new Hello(false, true)), Hello.fromJson(json));
 
         assertEquals(Optional.empty(),Hello.fromJson("kjdsvaskd"));
         assertEquals(Optional.empty(),Hello.fromJson("{\"answer\":true}"));

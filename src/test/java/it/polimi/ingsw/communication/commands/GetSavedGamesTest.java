@@ -12,20 +12,15 @@ class GetSavedGamesTest {
 
     @Test
     void fromJson() {
-        String idFirstPlayer = "test";
 
-        String json = "{\"name\":\"GetSavedGames\",\"idFirstPlayer\":\""+idFirstPlayer+"\"}";
+        String json = "{\"name\":\"GetSavedGames\"}";
         System.out.println(json);
-        System.out.println(new GetSavedGames(idFirstPlayer).toJson());
-        assertEquals(Optional.of(new GetSavedGames(idFirstPlayer)), GetSavedGames.fromJson(json));
-        json = "{\"name\":\"GetSavedGames\",\"idFirstPlayer\":\""+idFirstPlayer+"\"}";
-        assertNotEquals(Optional.of(new GetSavedGames("boh")), GetSavedGames.fromJson(json));
+        System.out.println(new GetSavedGames().toJson());
+        assertEquals(Optional.of(new GetSavedGames()), GetSavedGames.fromJson(json));
 
+        assertFalse(new GetSavedGames().equals(3));
 
         assertEquals(Optional.empty(),GetSavedGames.fromJson("kjdsvaskd"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"answer\":true}"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"idFirstPlayer\":\"test\"}"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"name\":\"GetSavedGames\"}"));
         assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
     }
 }

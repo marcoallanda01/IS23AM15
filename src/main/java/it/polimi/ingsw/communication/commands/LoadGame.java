@@ -9,9 +9,12 @@ import java.util.Optional;
 
 public class LoadGame extends Command{
     protected String idFirstPlayer;
-    public LoadGame(@NotNull String idFistPlayer){
+    public String game;
+
+    public LoadGame(@NotNull String idFistPlayer, @NotNull String game){
         super("GetSavedGames");
         this.idFirstPlayer = new String(idFistPlayer);
+        this.game = game;
     }
 
     /**
@@ -28,7 +31,7 @@ public class LoadGame extends Command{
         catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"LoadGame".equals(lg.name) || lg.idFirstPlayer == null){
+        if(!"LoadGame".equals(lg.name) || lg.idFirstPlayer == null || lg.game == null){
             return Optional.empty();
         }
         return Optional.of(lg);
@@ -39,6 +42,7 @@ public class LoadGame extends Command{
         if (this == o) return true;
         if(! (o != null && getClass() == o.getClass()) ) return false;
         LoadGame that = (LoadGame) o;
-        return Objects.equals(this.idFirstPlayer, that.idFirstPlayer);
+        return Objects.equals(this.idFirstPlayer, that.idFirstPlayer) &&
+                Objects.equals(this.game, that.game);
     }
 }

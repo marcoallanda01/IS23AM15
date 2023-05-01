@@ -43,6 +43,8 @@ public class Lobby {
      */
     private boolean isCreating;
 
+    private Set<String> games;
+
 
     public Lobby(String directory) {
         this.directory = directory;
@@ -52,6 +54,18 @@ public class Lobby {
         this.easyRules = false;
         this.players = new HashMap<>();
         this.isCreating = false;
+
+        this. games = new HashSet<>();
+        File saves = new File(this.directory);
+        if (! (!saves.exists() || saves.isFile()) ) {
+            // saves for sure is not a file
+            File[] savesList = saves.listFiles();
+            games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().
+                    filter(File::isFile)
+                    .map(File::getName)
+                    .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
+                    .collect(Collectors.toSet());
+        }
     }
 
     /**
@@ -75,16 +89,7 @@ public class Lobby {
      * @return a Set of the saved games names
      */
     public Set<String> getSavedGames() {
-        Set<String> games = new HashSet<>();
-        File saves = new File(this.directory);
-        if (!saves.exists() || saves.isFile()) {
-            return games;
-        }
-        // saves for sure is not a file
-        File[] savesList = saves.listFiles();
-        games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().filter(File::isFile).map(File::getName)
-                .map((name) -> (name.substring(0, name.lastIndexOf('.')))).collect(Collectors.toSet());
-        return games;
+        return this.games;
     }
 
     public synchronized List<String> getLoadedPlayersNames(){
