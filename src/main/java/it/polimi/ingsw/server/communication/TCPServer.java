@@ -288,8 +288,9 @@ public class TCPServer implements ServerCommunication{
                         if(isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
                             boolean res;
                             try {
-                                res = playController.saveGame();
-                            } catch (IOException e) {
+                                // TODO: maybe allow the user to choose the name of the save?
+                                res = playController.saveGame(sg.getId());
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 res = false;
                             }

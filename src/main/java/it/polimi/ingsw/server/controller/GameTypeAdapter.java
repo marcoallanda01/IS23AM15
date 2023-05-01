@@ -347,9 +347,6 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     goalManager = new GoalManager(commonGoalCardManager, personalGoalCardManager, endGamePointsManager, frequentUpdates);
                     in.endObject();
                 }
-                case "timestamp" -> {
-                    System.out.println("Timestamp = " +in.nextString());
-                }
                 // Ignore unknown fields
                 default -> in.skipValue();
             }

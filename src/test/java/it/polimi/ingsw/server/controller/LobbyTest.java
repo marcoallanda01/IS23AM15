@@ -53,24 +53,17 @@ class LobbyTest {
 
     @Test
     void loadGame() throws GameLoadException, GameNameException, IOException, IllegalLobbyException, WaitLobbyException {
-        Lobby lobby = new Lobby(".\\src\\main\\resources\\saves");
+        Lobby lobby = new Lobby("saves");
         Optional<String> uniqueID = lobby.join();
         if(uniqueID.isEmpty()){
             fail();
         }
-        File saves = new File(".\\src\\main\\resources\\saves");
-
+        File saves = new File("saves");
         if (!saves.exists()) {
             System.err.println(saves.getAbsolutePath());
             throw new IOException("Can not find " + saves);
         }
-        File[] savesList = saves.listFiles();
-        int n = 0;
-        if (savesList != null) {
-            n = savesList.length;
-        }
-        List<String> playersLoaded =  lobby.loadGame(String.valueOf(n-1), uniqueID.get());
+        List<String> playersLoaded =  lobby.loadGame("SaveGameTest", uniqueID.get());
         assertNotEquals(0, playersLoaded.size());
-
     }
 }

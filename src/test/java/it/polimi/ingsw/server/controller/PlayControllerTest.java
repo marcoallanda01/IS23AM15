@@ -13,25 +13,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayControllerTest {
 
     @Test
-    void saveGame() throws IOException {
+    void saveGame() throws IOException, SaveException {
         List<String> players = new ArrayList<>();
         players.add("player1");
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
         PlayController playController = new PlayController(game, "saves");
-        assertTrue(playController.saveGame());
+        assertTrue(playController.saveGame("SaveGameTest", true));
     }
 
     @Test
-    void saveGameExceptions() {
+    void saveGameExceptions() throws SaveException, IOException {
         List<String> players = new ArrayList<>();
         players.add("player1");
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "a_caso");
-        assertThrows(IOException.class, playController::saveGame);
+        PlayController playController = new PlayController(game, "/");
+        assertThrows(IOException.class, () -> playController.saveGame("SaveGameTest"));
     }
 
     @Test

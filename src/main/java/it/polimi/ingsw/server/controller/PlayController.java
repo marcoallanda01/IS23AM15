@@ -36,7 +36,11 @@ public class PlayController {
             return false;
     }
 
-    public synchronized boolean saveGame(String name) throws IOException {
+    public synchronized boolean saveGame(String name) throws SaveException, IOException {
+        return saveGame(name, false);
+    }
+
+    public synchronized boolean saveGame(String name, boolean overwrite) throws IOException, SaveException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
                 .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
         String json = gson.toJson(this.game);
@@ -45,12 +49,19 @@ public class PlayController {
         json = gson.toJson(jsonElement);
         File saves = new File(this.directory);
         if (!saves.exists()) {
-            throw new IOException("Can not find " + saves);
+            try {
+                Files.createDirectories(Paths.get(this.directory));
+            } catch (Exception e) {
+                throw new IOException("Cannot create save folder:" + saves);
+            }
         }
         File[] savesList = saves.listFiles();
-        int n = 0;
-        if (savesList != null) {
-            n = savesList.length;
+        if(savesList != null && !overwrite) {
+            for (File f : savesList) {
+                if (f.getName().equals(name + ".json")) {
+                    throw new SaveException("A save with this name already exists");
+                }
+            }
         }
         String save = this.directory + "/" + name + ".json";
         try {
@@ -58,37 +69,7 @@ public class PlayController {
             writer.write(json);
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    // TODO: to be deleted look other savegame (up) (sistemare quello di su)
-    public synchronized boolean saveGame() throws IOException {
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
-                .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
-        String json = gson.toJson(this.game);
-        JsonElement jsonElement = gson.fromJson(json, JsonElement.class);
-        jsonElement.getAsJsonObject().addProperty("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
-        json = gson.toJson(jsonElement);
-        File saves = new File(this.directory);
-        if (!saves.exists()) {
-            throw new IOException("Can not find " + saves);
-        }
-        File[] savesList = saves.listFiles();
-        int n = 0;
-        if (savesList != null) {
-            n = savesList.length;
-        }
-        String save = this.directory + "/" + n + ".json";
-        try {
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get(save));
-            writer.write(json);
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new IOException("Cannot save game");
         }
         return true;
     }
