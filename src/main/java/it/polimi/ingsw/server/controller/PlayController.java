@@ -22,14 +22,49 @@ public class PlayController {
         this.directory = directory;
     }
 
-    public synchronized boolean pickTiles(List<Tile> tiles) {
-        return game.pickTiles(tiles);
+    public synchronized boolean pickTiles(List<Tile> tiles, String player) {
+        if(game.getCurrentPlayer().equals(player))
+            return game.pickTiles(tiles);
+        else
+            return false;
     }
 
-    public synchronized boolean putTiles(List<Tile> tiles, int column) {
-        return game.putTiles(tiles, column);
+    public synchronized boolean putTiles(List<Tile> tiles, int column, String player) {
+        if(game.getCurrentPlayer().equals(player))
+            return game.putTiles(tiles, column);
+        else
+            return false;
     }
 
+    public synchronized boolean saveGame(String name) throws IOException {
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
+                .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
+        String json = gson.toJson(this.game);
+        JsonElement jsonElement = gson.fromJson(json, JsonElement.class);
+        jsonElement.getAsJsonObject().addProperty("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        json = gson.toJson(jsonElement);
+        File saves = new File(this.directory);
+        if (!saves.exists()) {
+            throw new IOException("Can not find " + saves);
+        }
+        File[] savesList = saves.listFiles();
+        int n = 0;
+        if (savesList != null) {
+            n = savesList.length;
+        }
+        String save = this.directory + "/" + name + ".json";
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(save));
+            writer.write(json);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    // TODO: to be deleted look other savegame (up) (sistemare quello di su)
     public synchronized boolean saveGame() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
                 .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
@@ -92,6 +127,15 @@ public class PlayController {
      * @return true if the disconnection ended well. false if the player doesn't exist
      */
     public boolean leave(String player) {
+        return true;
+    }
+
+    /**
+     * Method to make reconnect a player to the game
+     * @param player player name (can be passed also a player name that doesn't exist)
+     * @return true if the reconnection ended well. false if the player doesn't exist
+     */
+    public boolean reconnect(String player) {
         return true;
     }
 }

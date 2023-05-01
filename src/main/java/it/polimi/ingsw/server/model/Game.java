@@ -177,4 +177,12 @@ public class Game {
     public GoalManager getGoalManager() {
         return goalManager;
     }
+
+    /**
+     * Get the player's name whom turn is
+     * @return name of current player
+     */
+    public String getCurrentPlayer(){
+        return currentTurn.getCurrenPlayer().getUserName();
+    }
 }

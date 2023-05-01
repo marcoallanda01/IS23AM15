@@ -217,7 +217,7 @@ Every message pass through the server, that then send them as push notification
 #   Client   #                                                                                            #   Server   #
 ##############                                                                                            ##############
 
-player = receiver, if it is null than the message is sent to all the players
+player = receiver, if it is null than the message is sent to all players.
 id = sender id
 
 {"name":"SendMessage",

@@ -15,6 +15,8 @@ class BookShelfTest {
         BookShelf bookShelf = new BookShelf();
         assertTrue(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 2));
         assertTrue(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), 2));
+        assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), -2));
+        assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), 40));
         assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK)), 2));
         assertNull(bookShelf.getTile(2, 5));
         assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK)), 6));

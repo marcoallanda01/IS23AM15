@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.model.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class TCPServer implements ServerCommunication{
     private List<Socket> clients;
@@ -214,7 +216,7 @@ public class TCPServer implements ServerCommunication{
                         if(isGameActive()){
                             boolean res = playController.leave(playersIds.get(client));
                             if(res) {
-                                //TODO: to finish
+                                // TODO: to finish
                                 notifyDisconnection(playersIds.get(client));
                             }
                             br = new BooleanResponse(res);
@@ -235,8 +237,11 @@ public class TCPServer implements ServerCommunication{
                         String id = ro.get().getId();
                         BooleanResponse br;
                         if(isGameActive()){
-                            //play controller
-                            br = new BooleanResponse(true);
+                            String name = lobby.getNameFromId(id);
+                            if(name != null)
+                                br = new BooleanResponse(playController.reconnect(name));
+                            else
+                                br = new BooleanResponse(false);
                         }
                         else{
                             br = new BooleanResponse(false);
@@ -244,6 +249,77 @@ public class TCPServer implements ServerCommunication{
                         out.println(br.toJson());
                         return true;
                     }else { wrongFormatted = true; }
+                    break;
+                case "PickTilesCommand":
+                    Optional<PickTilesCommand> ptco = PickTilesCommand.fromJson(json);
+                    if(ptco.isPresent()){
+                        PickTilesCommand ptc = ptco.get();
+                        BooleanResponse br;
+                        String namep = lobby.getNameFromId(ptc.getId());
+                        if(isGameActive() && namep != null){
+                            br = new BooleanResponse(playController.pickTiles(new ArrayList<>(ptc.tiles),namep));
+                        }else{
+                            br = new BooleanResponse(false);
+                        }
+                        out.println(br.toJson());
+                        return true;
+                    }else { wrongFormatted = true; }
+                    break;
+                case "PutTilesCommand":
+                    Optional<PutTilesCommand> putco = PutTilesCommand.fromJson(json);
+                    if(putco.isPresent()){
+                        PutTilesCommand ptc = putco.get();
+                        BooleanResponse br;
+                        String namep = lobby.getNameFromId(ptc.getId());
+                        if(isGameActive() && namep != null){
+                            List<Tile> tilesPut = ptc.tiles.stream().map(Tile::new).toList();
+                            br = new BooleanResponse(playController.putTiles(tilesPut, ptc.column, namep));
+                        }else{
+                            br = new BooleanResponse(false);
+                        }
+                        out.println(br.toJson());
+                        return true;
+                    }else { wrongFormatted = true; }
+                    break;
+                case "SaveGame":
+                    Optional<SaveGame> sgo = SaveGame.fromJson(json);
+                    if (sgo.isPresent()) {
+                        SaveGame sg = sgo.get();
+                        if(isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
+                            boolean res;
+                            try {
+                                res = playController.saveGame();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                res = false;
+                            }
+                            if(res){
+                                // TODO: notify all players
+                            }
+                        }
+                        return true;
+                    } else {
+                        wrongFormatted = true;
+                    }
+                    break;
+                case "SendMessage":
+                    Optional<SendMessage> smo = SendMessage.fromJson(json);
+                    if (smo.isPresent()) {
+                        SendMessage sm = smo.get();
+                        String sender = lobby.getNameFromId(sm.getId());
+                        if(isGameActive() && sender != null) {
+                            if(sm.player != null) {
+                                try {
+                                    chatController.sendMessage(sender, sm.player, sm.message);
+                                } catch (PlayerNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        return true;
+                    } else {
+                        wrongFormatted = true;
+                    }
                     break;
                 default:
                     System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+

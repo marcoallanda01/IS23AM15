@@ -1,6 +1,7 @@
 package it.polimi.ingsw.communication.responses;
 
 import it.polimi.ingsw.server.model.Message;
+import it.polimi.ingsw.server.model.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,6 +12,8 @@ class ChatMessageTest {
 
     @Test
     void fromJson() {
+        ChatMessage cm = new ChatMessage(new Message(new Player("test"), "ciao"));
+        assertEquals(cm, cm);
         String json1 = "{\"name\":\"ChatMessage\", \"message\":\"ciao\"," +
                 "\"sender\":\"test\",\"date\":\"2023-05-01T11:32:45.246152\"}";
         String json2 = "{\"name\":\"ChatMessage\", \"message\":\"ciao\"," +

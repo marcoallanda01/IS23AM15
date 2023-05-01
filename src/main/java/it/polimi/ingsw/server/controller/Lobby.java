@@ -209,4 +209,8 @@ public class Lobby {
         return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
+    public synchronized String getNameFromId(String id){
+        return this.players.get(id);
+    }
+
 }

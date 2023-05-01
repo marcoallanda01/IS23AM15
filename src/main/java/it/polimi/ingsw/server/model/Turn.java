@@ -87,4 +87,10 @@ public class Turn {
     public List<Tile> getPickedTiles() {
         return pickedTiles;
     }
+
+    /**
+     * Get current player name
+     * @return player
+     */
+    public Player getCurrenPlayer(){return currentPlayer;}
 }
