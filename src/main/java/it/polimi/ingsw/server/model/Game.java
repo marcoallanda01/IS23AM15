@@ -116,6 +116,12 @@ public class Game {
         }
     }
 
+    /**
+     * Advances the turn to the next player
+     *
+     * @param currentPlayer the player who just finished his turn
+     * @return true if the turn has been advanced, false if not
+     */
     private boolean nextTurn(Player currentPlayer) {
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
         if (!nextPlayer.isPlaying()) {
@@ -180,9 +186,56 @@ public class Game {
 
     /**
      * Get the player's name whom turn is
+     *
      * @return name of current player
      */
-    public String getCurrentPlayer(){
+    public String getCurrentPlayer() {
         return currentTurn.getCurrenPlayer().getUserName();
+    }
+
+    /**
+     * Disconnect a player from the game
+     *
+     * @param player player to disconnect
+     * @return true if the player is disconnected, false if the player is not found or is not playing
+     */
+    public boolean disconnectPlayer(String player) {
+        try {
+            if (this.getPlayerFromNickname(player).isPlaying()) {
+                this.getPlayerFromNickname(player).setPlaying(false);
+            } else {
+                return false;
+            }
+        } catch (PlayerNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (players.stream().filter(p -> !p.isPlaying()).count() == players.size()) {
+            //TODO: handle disconnection of last player
+        }
+        if (this.getCurrentPlayer().equals(player)) {
+            this.nextTurn(this.currentTurn.getCurrentPlayer());
+        }
+        return true;
+    }
+
+    /**
+     * Reconnect a player to the game
+     *
+     * @param player player to reconnect
+     * @return true if the player is reconnected, false if the player is not found or is already playing
+     */
+    public boolean reconnectPlayer(String player) {
+        try {
+             if (!this.getPlayerFromNickname(player).isPlaying()) {
+                this.getPlayerFromNickname(player).setPlaying(true);
+            } else {
+                return false;
+            }
+        } catch (PlayerNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

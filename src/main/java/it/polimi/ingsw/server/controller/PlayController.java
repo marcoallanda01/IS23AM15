@@ -107,8 +107,8 @@ public class PlayController {
      * @param player player name (can be passed also a player name that doesn't exist)
      * @return true if the disconnection ended well. false if the player doesn't exist
      */
-    public boolean leave(String player) {
-        return true;
+    public synchronized boolean leave(String player) {
+        return game.disconnectPlayer(player);
     }
 
     /**
@@ -116,7 +116,7 @@ public class PlayController {
      * @param player player name (can be passed also a player name that doesn't exist)
      * @return true if the reconnection ended well. false if the player doesn't exist
      */
-    public boolean reconnect(String player) {
-        return true;
+    public synchronized boolean reconnect(String player) {
+        return game.reconnectPlayer(player);
     }
 }
