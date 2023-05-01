@@ -85,6 +85,14 @@ public class Lobby {
         return uniqueID;
     }
 
+    public synchronized boolean getIsCreating(){
+        return this.isCreating;
+    }
+
+    public synchronized boolean isGameLoaded(){
+        return loadingGame != null;
+    }
+
     /**
      * @return a Set of the saved games names
      */
@@ -173,15 +181,15 @@ public class Lobby {
     }
 
 
-    private String getIdFromName(String name) {
+    private String getIdFromNameNotSync(String name) {
         return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
     public synchronized boolean removePlayer(String player) {
-        return this.players.remove(getIdFromName(player), player);
+        return this.players.remove(getIdFromNameNotSync(player), player);
     }
 
-    private boolean isFistPlayerPresent() {
+    public synchronized boolean isFistPlayerPresent() {
         return this.firstPlayerId != null;
     }
 
@@ -194,6 +202,11 @@ public class Lobby {
             throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }
         return new ControllerProvider(new Game(new ArrayList<>(this.players.values()), this.easyRules));
+    }
+
+
+    public synchronized String getIdFromName(String name) {
+        return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
 }

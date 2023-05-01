@@ -42,8 +42,6 @@ First player must specify his name (player), the number of players, his id and t
 }
 
 The server respond with a BooleanResponse set to true if the game was created or to false if the game was not.
-If the game was not created this meas that another client joined as first player before him, and he has to try to join
-as a normal player.
 Note: if is chosen a numOfPlayer different the BooleanResponse will set to false. Because here is supposed a client
 who follow the protocol.
 If the result was true the first player must wait until all the players join and the game start.
@@ -95,7 +93,7 @@ The server respond with a boolean result and an error in case of fail:
 Possible errors:
 GameLoadException = Internal server error in loading game
 GameNameException = The name given doesn't exist
-IllegalLobbyException = A game is already loaded or wrong d
+IllegalLobbyException = A game is already loaded or wrong id
 
                                                                                              {"name":"LoadGameResponse",
                             <--------------------------------------------------                  "result":(true, false),
@@ -105,7 +103,7 @@ First player asks for the available players names
 
 {"name":"GetLoadedPlayers"}       -------------------------------------------------->
 
-The server answer with a set strings of names
+The server answer with a set strings of names. If game is not loaded an empty set is sent.
 
                      <--------------------------------------------------     {"name":"LoadedGamePlayers", "names":[***]}
 
@@ -151,7 +149,9 @@ RECONNECTION:
 
 A player can reconnect passing his id
 
-{"name":"Reconnect", "id":""}       -------------------------------------------------->
+HelloCommand                        -------------------------------------------------->
+                                    <--------------------------------------------------                            Hello
+{"name":"Reconnect", "id":"***"}    -------------------------------------------------->
                                     <--------------------------------------------------                  BooleanResponse
 
 
@@ -306,8 +306,10 @@ It's the client turn if he reads his name
 
 - Saved game notification
 The connection is closed
+game = name of the save
 
-{"name":"GameSaved"}                   -------------------------------------------------->
+{"name":"GameSaved"
+"game":"***"}                         -------------------------------------------------->
 
 
 - Winner notification

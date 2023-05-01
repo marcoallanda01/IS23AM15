@@ -1,12 +1,8 @@
 package it.polimi.ingsw.server.communication;
 
 import it.polimi.ingsw.communication.commands.*;
-import it.polimi.ingsw.communication.responses.BooleanResponse;
-import it.polimi.ingsw.communication.responses.LoadedGamePlayers;
-import it.polimi.ingsw.communication.responses.SavedGames;
-import it.polimi.ingsw.server.controller.ChatController;
-import it.polimi.ingsw.server.controller.Lobby;
-import it.polimi.ingsw.server.controller.PlayController;
+import it.polimi.ingsw.communication.responses.*;
+import it.polimi.ingsw.server.controller.*;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
@@ -99,31 +95,90 @@ public class TCPServer implements ServerCommunication{
             boolean wrongFormatted = false;
 
             switch (commandName) {
+                case ("HelloCommand"):
+                    Optional<HelloCommand> hc = HelloCommand.fromJson(json);
+                    if (hc.isPresent()) {
+                        Hello hello;
+                        if(!isGameActive()){
+                            try{
+                                Optional<String> idfp = lobby.join();
+                                if(idfp.isEmpty()){
+                                    hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
+                                }
+                                else {
+                                    hello = new Hello(idfp.get());
+                                }
 
-                case ("Disconnect"):
-                    Optional<Disconnect> d = Disconnect.fromJson(json);
-                    if (d.isPresent()) {
-                        BooleanResponse br;
-                        if(isGameActive()){
-                            boolean res = playController.leave(playersIds.get(client));
-                            if(res) {
-                                notifyDisconnection(playersIds.get(client));
+                            }catch (WaitLobbyException e){
+                                hello = new Hello(false, false);
                             }
-                            br = new BooleanResponse(res);
+
                         }
                         else {
-                            br = new BooleanResponse(true);
+                            hello = new Hello(true, false);
                         }
-                        out.println(br.toJson());
-                        closeClient(client);
-                        return false;
+                        out.println(hello.toJson());
+                        return true;
                     } else {
                         wrongFormatted = true;
-                        break;
                     }
-
+                    break;
+                case ("JoinNewAsFirst"):
+                    Optional<JoinNewAsFirst> ojnf = JoinNewAsFirst.fromJson(json);
+                    if(ojnf.isPresent()){
+                        JoinNewAsFirst jnf = ojnf.get();
+                        boolean res=lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
+                        out.println(new BooleanResponse(res));
+                        return true;
+                    }
+                    else {wrongFormatted = true;}
+                    break;
+                case ("Join"):
+                    Optional<Join> oj = Join.fromJson(json);
+                    if(oj.isPresent()) {
+                        Join j = oj.get();
+                        JoinResponse joinResponse;
+                        try {
+                            joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+                        } catch (NicknameTakenException e) {
+                            joinResponse = new JoinResponse(e);
+                        } catch (NicknameException e) {
+                            joinResponse = new JoinResponse(e);
+                        } catch (FullGameException e) {
+                            joinResponse = new JoinResponse(e);
+                        }
+                        out.println(joinResponse.toJson());
+                        return true;
+                    }
+                    else {wrongFormatted = true;}
+                    break;
+                case "GetSavedGames":
+                    Optional<GetSavedGames> gsg = GetSavedGames.fromJson(json);
+                    if(gsg.isPresent()){
+                        out.println(new SavedGames(lobby.getSavedGames()).toJson());
+                        return true;
+                    }else { wrongFormatted = true; }
+                    break;
+                case "LoadGame":
+                    Optional<LoadGame> lgo = LoadGame.fromJson(json);
+                    if(lgo.isPresent()){
+                        LoadGame lg = lgo.get();
+                        LoadGameResponse loadGameResponse;
+                        try {
+                            lobby.loadGame(lg.game, lg.idFirstPlayer);
+                            loadGameResponse = new LoadGameResponse();
+                        } catch (GameLoadException e) {
+                            loadGameResponse = new LoadGameResponse(e);
+                        } catch (GameNameException e) {
+                            loadGameResponse = new LoadGameResponse(e);
+                        } catch (IllegalLobbyException e) {
+                            loadGameResponse = new LoadGameResponse(e);
+                        }
+                        out.println(loadGameResponse.toJson());
+                        return true;
+                    }else { wrongFormatted = true; }
+                    break;
                 case "GetLoadedPlayers":
-                    //TODO: recheck protocol
                     Optional<GetLoadedPlayers> glp = GetLoadedPlayers.fromJson(json);
                     if (glp.isPresent()) {
                         if(!isGameActive()) {
@@ -136,45 +191,59 @@ public class TCPServer implements ServerCommunication{
                         return true;
                     } else {
                         wrongFormatted = true;
-                        break;
-                    }
-
-                case "GetSavedGames":
-                    Optional<GetSavedGames> gsg = GetSavedGames.fromJson(json);
-                    if(gsg.isPresent()){
-                        out.println(new SavedGames(lobby.getSavedGames()).toJson());
-                    }else {
-                        wrongFormatted = true;
-                        break;
                     }
                     break;
-                case "HelloCommand":
-                    Optional<HelloCommand> hc = HelloCommand.fromJson(json);
-                    if(hc.isPresent()){
-                        if(isGameActive()){
-
+                case ("JoinLoadedAsFirst"):
+                    Optional<JoinLoadedAsFirst> jlfo = JoinLoadedAsFirst.fromJson(json);
+                    if(jlfo.isPresent()){
+                        JoinLoadedAsFirst jlf = jlfo.get();
+                        BooleanResponse br;
+                        try {
+                            br = new BooleanResponse(lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer));
+                        } catch (NicknameException e) {
+                            br = new BooleanResponse(false);
                         }
-                    }
-                    else{
+                        out.println(br.toJson());
+                        return true;
+                    }else { wrongFormatted = true; }
+                    break;
+                case ("Disconnect"):
+                    Optional<Disconnect> d = Disconnect.fromJson(json);
+                    if (d.isPresent()) {
+                        BooleanResponse br;
+                        if(isGameActive()){
+                            boolean res = playController.leave(playersIds.get(client));
+                            if(res) {
+                                //TODO: to finish
+                                notifyDisconnection(playersIds.get(client));
+                            }
+                            br = new BooleanResponse(res);
+                        }
+                        else {
+                            br = new BooleanResponse(true);
+                        }
+                        out.println(br.toJson());
+                        closeClient(client);
+                        return false;
+                    } else {
                         wrongFormatted = true;
-                        break;
                     }
-                    break;
-                case "Join":
-                    break;
-                case "JoinLoadedAsFirst":
-                    break;
-                case "JoinNewAsFirst":
-                    break;
-                case "LoadGame":
-                    break;
-                case "PickTilesCommand":
-                    break;
-                case "Pong":
-                    break;
-                case "PutTilesCommand":
                     break;
                 case "Reconnect":
+                    Optional<Reconnect> ro = Reconnect.fromJson(json);
+                    if(ro.isPresent()){
+                        String id = ro.get().getId();
+                        BooleanResponse br;
+                        if(isGameActive()){
+                            //play controller
+                            br = new BooleanResponse(true);
+                        }
+                        else{
+                            br = new BooleanResponse(false);
+                        }
+                        out.println(br.toJson());
+                        return true;
+                    }else { wrongFormatted = true; }
                     break;
                 default:
                     System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+

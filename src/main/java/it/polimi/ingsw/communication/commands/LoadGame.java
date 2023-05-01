@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class LoadGame extends Command{
-    protected String idFirstPlayer;
+    public String idFirstPlayer;
     public String game;
 
     public LoadGame(@NotNull String idFistPlayer, @NotNull String game){

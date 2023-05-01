@@ -12,7 +12,7 @@ class BooleanResponseTest {
 
     @Test
     void fromJson() throws Exception {
-        JsonString json1 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":true}");
+        JsonString json1 = new JsonString("{\"name\":\n\"BooleanResponse\", \"result\":true\n}\n");
         JsonString json2 = new JsonString("{\"name\":\"BooleanResponse\", \"result\":false}");
         assertEquals(Optional.of(new BooleanResponse(true)), BooleanResponse.fromJson(json1.getJson()));
         assertEquals(Optional.of(new BooleanResponse(false)), BooleanResponse.fromJson(json2.getJson()));

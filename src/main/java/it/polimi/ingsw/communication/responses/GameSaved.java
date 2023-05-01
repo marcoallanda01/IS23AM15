@@ -2,13 +2,18 @@ package it.polimi.ingsw.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class GameSaved extends Msg{
 
-    public GameSaved(){
+    public String game;
+
+    public GameSaved(@NotNull String game){
         super("GameSaved");
+        this.game = game;
     }
 
     /**
@@ -25,7 +30,7 @@ public class GameSaved extends Msg{
         catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"GameSaved".equals(gs.name)){
+        if(!"GameSaved".equals(gs.name) || gs.game == null){
             return Optional.empty();
         }
         return Optional.of(gs);
@@ -34,6 +39,8 @@ public class GameSaved extends Msg{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        return o != null && getClass() == o.getClass();
+        if (o == null || getClass() != o.getClass()) return false;
+        GameSaved gameSaved = (GameSaved) o;
+        return Objects.equals(game, gameSaved.game);
     }
 }
