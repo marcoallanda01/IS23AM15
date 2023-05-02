@@ -205,8 +205,11 @@ Client can do three actions:
 
 
 3) Save Game and make all leave
+game = name of the game
 
-{"name":"SaveGame", "id":***}        -------------------------------------------------->
+{"name":"SaveGame",
+"game":"***",                        -------------------------------------------------->
+"id":***}
 
 No answer from the server. If the game is saved, it sends a notification to everybody and the game is stopped.
 

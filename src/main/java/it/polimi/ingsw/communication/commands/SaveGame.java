@@ -8,8 +8,10 @@ import java.util.Optional;
 
 public class SaveGame extends GameCommand{
 
-    public SaveGame(String id){
-        super("SaveGame", id);
+    public String game;
+    public SaveGame(String id, String game){
+    super("SaveGame", id);
+    this.game = game;
     }
 
     /**
@@ -26,7 +28,7 @@ public class SaveGame extends GameCommand{
         catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"SaveGame".equals(sg.name) || sg.id == null){
+        if(!"SaveGame".equals(sg.name) || sg.id == null || sg.game == null){
             return Optional.empty();
         }
         return Optional.of(sg);
@@ -37,7 +39,7 @@ public class SaveGame extends GameCommand{
         if (this == o) return true;
         if(! (o != null && getClass() == o.getClass()) ) return false;
         SaveGame that = (SaveGame) o;
-        return Objects.equals(this.id, that.id);
+        return Objects.equals(this.id, that.id) && Objects.equals(this.game, that.game);
     }
 }
 

@@ -97,26 +97,24 @@ public class TCPServer implements ServerCommunication{
             boolean wrongFormatted = false;
 
             switch (commandName) {
-                case ("HelloCommand"):
+                case ("HelloCommand") -> {
                     Optional<HelloCommand> hc = HelloCommand.fromJson(json);
                     if (hc.isPresent()) {
                         Hello hello;
-                        if(!isGameActive()){
-                            try{
+                        if (!isGameActive()) {
+                            try {
                                 Optional<String> idfp = lobby.join();
-                                if(idfp.isEmpty()){
+                                if (idfp.isEmpty()) {
                                     hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
-                                }
-                                else {
+                                } else {
                                     hello = new Hello(idfp.get());
                                 }
 
-                            }catch (WaitLobbyException e){
+                            } catch (WaitLobbyException e) {
                                 hello = new Hello(false, false);
                             }
 
-                        }
-                        else {
+                        } else {
                             hello = new Hello(true, false);
                         }
                         out.println(hello.toJson());
@@ -124,20 +122,21 @@ public class TCPServer implements ServerCommunication{
                     } else {
                         wrongFormatted = true;
                     }
-                    break;
-                case ("JoinNewAsFirst"):
+                }
+                case ("JoinNewAsFirst") -> {
                     Optional<JoinNewAsFirst> ojnf = JoinNewAsFirst.fromJson(json);
-                    if(ojnf.isPresent()){
+                    if (ojnf.isPresent()) {
                         JoinNewAsFirst jnf = ojnf.get();
-                        boolean res=lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
+                        boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
                         out.println(new BooleanResponse(res));
                         return true;
+                    } else {
+                        wrongFormatted = true;
                     }
-                    else {wrongFormatted = true;}
-                    break;
-                case ("Join"):
+                }
+                case ("Join") -> {
                     Optional<Join> oj = Join.fromJson(json);
-                    if(oj.isPresent()) {
+                    if (oj.isPresent()) {
                         Join j = oj.get();
                         JoinResponse joinResponse;
                         try {
@@ -151,19 +150,22 @@ public class TCPServer implements ServerCommunication{
                         }
                         out.println(joinResponse.toJson());
                         return true;
+                    } else {
+                        wrongFormatted = true;
                     }
-                    else {wrongFormatted = true;}
-                    break;
-                case "GetSavedGames":
+                }
+                case "GetSavedGames" -> {
                     Optional<GetSavedGames> gsg = GetSavedGames.fromJson(json);
-                    if(gsg.isPresent()){
+                    if (gsg.isPresent()) {
                         out.println(new SavedGames(lobby.getSavedGames()).toJson());
                         return true;
-                    }else { wrongFormatted = true; }
-                    break;
-                case "LoadGame":
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
+                case "LoadGame" -> {
                     Optional<LoadGame> lgo = LoadGame.fromJson(json);
-                    if(lgo.isPresent()){
+                    if (lgo.isPresent()) {
                         LoadGame lg = lgo.get();
                         LoadGameResponse loadGameResponse;
                         try {
@@ -178,26 +180,27 @@ public class TCPServer implements ServerCommunication{
                         }
                         out.println(loadGameResponse.toJson());
                         return true;
-                    }else { wrongFormatted = true; }
-                    break;
-                case "GetLoadedPlayers":
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
+                case "GetLoadedPlayers" -> {
                     Optional<GetLoadedPlayers> glp = GetLoadedPlayers.fromJson(json);
                     if (glp.isPresent()) {
-                        if(!isGameActive()) {
+                        if (!isGameActive()) {
                             Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
                             out.println(new LoadedGamePlayers(pns).toJson());
-                        }
-                        else {
+                        } else {
                             out.println(new LoadedGamePlayers(new HashSet<>()).toJson());
                         }
                         return true;
                     } else {
                         wrongFormatted = true;
                     }
-                    break;
-                case ("JoinLoadedAsFirst"):
+                }
+                case ("JoinLoadedAsFirst") -> {
                     Optional<JoinLoadedAsFirst> jlfo = JoinLoadedAsFirst.fromJson(json);
-                    if(jlfo.isPresent()){
+                    if (jlfo.isPresent()) {
                         JoinLoadedAsFirst jlf = jlfo.get();
                         BooleanResponse br;
                         try {
@@ -207,21 +210,22 @@ public class TCPServer implements ServerCommunication{
                         }
                         out.println(br.toJson());
                         return true;
-                    }else { wrongFormatted = true; }
-                    break;
-                case ("Disconnect"):
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
+                case ("Disconnect") -> {
                     Optional<Disconnect> d = Disconnect.fromJson(json);
                     if (d.isPresent()) {
                         BooleanResponse br;
-                        if(isGameActive()){
+                        if (isGameActive()) {
                             boolean res = playController.leave(playersIds.get(client));
-                            if(res) {
+                            if (res) {
                                 // TODO: to finish
                                 notifyDisconnection(playersIds.get(client));
                             }
                             br = new BooleanResponse(res);
-                        }
-                        else {
+                        } else {
                             br = new BooleanResponse(true);
                         }
                         out.println(br.toJson());
@@ -230,71 +234,75 @@ public class TCPServer implements ServerCommunication{
                     } else {
                         wrongFormatted = true;
                     }
-                    break;
-                case "Reconnect":
+                }
+                case "Reconnect" -> {
                     Optional<Reconnect> ro = Reconnect.fromJson(json);
-                    if(ro.isPresent()){
+                    if (ro.isPresent()) {
                         String id = ro.get().getId();
                         BooleanResponse br;
-                        if(isGameActive()){
+                        if (isGameActive()) {
                             String name = lobby.getNameFromId(id);
-                            if(name != null)
+                            if (name != null)
                                 br = new BooleanResponse(playController.reconnect(name));
                             else
                                 br = new BooleanResponse(false);
-                        }
-                        else{
+                        } else {
                             br = new BooleanResponse(false);
                         }
                         out.println(br.toJson());
                         return true;
-                    }else { wrongFormatted = true; }
-                    break;
-                case "PickTilesCommand":
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
+                case "PickTilesCommand" -> {
                     Optional<PickTilesCommand> ptco = PickTilesCommand.fromJson(json);
-                    if(ptco.isPresent()){
+                    if (ptco.isPresent()) {
                         PickTilesCommand ptc = ptco.get();
                         BooleanResponse br;
                         String namep = lobby.getNameFromId(ptc.getId());
-                        if(isGameActive() && namep != null){
-                            br = new BooleanResponse(playController.pickTiles(new ArrayList<>(ptc.tiles),namep));
-                        }else{
+                        if (isGameActive() && namep != null) {
+                            br = new BooleanResponse(playController.pickTiles(new ArrayList<>(ptc.tiles), namep));
+                        } else {
                             br = new BooleanResponse(false);
                         }
                         out.println(br.toJson());
                         return true;
-                    }else { wrongFormatted = true; }
-                    break;
-                case "PutTilesCommand":
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
+                case "PutTilesCommand" -> {
                     Optional<PutTilesCommand> putco = PutTilesCommand.fromJson(json);
-                    if(putco.isPresent()){
+                    if (putco.isPresent()) {
                         PutTilesCommand ptc = putco.get();
                         BooleanResponse br;
                         String namep = lobby.getNameFromId(ptc.getId());
-                        if(isGameActive() && namep != null){
+                        if (isGameActive() && namep != null) {
                             List<Tile> tilesPut = ptc.tiles.stream().map(Tile::new).toList();
                             br = new BooleanResponse(playController.putTiles(tilesPut, ptc.column, namep));
-                        }else{
+                        } else {
                             br = new BooleanResponse(false);
                         }
                         out.println(br.toJson());
                         return true;
-                    }else { wrongFormatted = true; }
-                    break;
-                case "SaveGame":
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
+                case "SaveGame" -> {
                     Optional<SaveGame> sgo = SaveGame.fromJson(json);
                     if (sgo.isPresent()) {
                         SaveGame sg = sgo.get();
-                        if(isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
+                        if (isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
                             boolean res;
                             try {
-                                // TODO: maybe allow the user to choose the name of the save?
-                                res = playController.saveGame(sg.getId());
+                                res = playController.saveGame(sg.game);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 res = false;
                             }
-                            if(res){
+                            if (res) {
                                 // TODO: notify all players
                             }
                         }
@@ -302,14 +310,14 @@ public class TCPServer implements ServerCommunication{
                     } else {
                         wrongFormatted = true;
                     }
-                    break;
-                case "SendMessage":
+                }
+                case "SendMessage" -> {
                     Optional<SendMessage> smo = SendMessage.fromJson(json);
                     if (smo.isPresent()) {
                         SendMessage sm = smo.get();
                         String sender = lobby.getNameFromId(sm.getId());
-                        if(isGameActive() && sender != null) {
-                            if(sm.player != null) {
+                        if (isGameActive() && sender != null) {
+                            if (sm.player != null) {
                                 try {
                                     chatController.sendMessage(sender, sm.player, sm.message);
                                 } catch (PlayerNotFoundException e) {
@@ -321,10 +329,9 @@ public class TCPServer implements ServerCommunication{
                     } else {
                         wrongFormatted = true;
                     }
-                    break;
-                default:
-                    System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+
-                            " with name: "+commandName+" can not be found");
+                }
+                default -> System.err.println("GameCommand from " + client.getLocalSocketAddress().toString() +
+                        " with name: " + commandName + " can not be found");
             }
             if(wrongFormatted){
                 System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+
