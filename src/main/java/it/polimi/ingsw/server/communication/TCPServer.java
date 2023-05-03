@@ -13,17 +13,17 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class TCPServer implements ServerCommunication{
     private List<Socket> clients;
     private Map<Socket, String> playersIds;
 
     private Lobby lobby;
-    private PlayController playController;
+
+    private ControllerProvider controllerProvider = null;
+    private PlayController playController = null;
     private ChatController chatController = null;
     private int port;
-
     private ServerSocket serverSocket;
 
     public TCPServer(int port, Lobby lobby){
@@ -36,6 +36,10 @@ public class TCPServer implements ServerCommunication{
             System.err.println(e.getMessage());
         }
     }
+
+    /**
+     * Function that listen always for new TCP connection
+     */
     public void listenForConnections(){
         ExecutorService executorService = Executors.newCachedThreadPool();
         while(true) {
@@ -49,6 +53,10 @@ public class TCPServer implements ServerCommunication{
         }
     }
 
+    /**
+     * Function to listen for client request
+     * @param client client
+     */
     public void clientHandler(Socket client){
         Scanner in;
         PrintWriter out;
@@ -74,6 +82,10 @@ public class TCPServer implements ServerCommunication{
         closeClient(client);
     }
 
+    /**
+     * Method for close a client
+     * @param client client
+     */
     private void closeClient(Socket client){
         this.clients.remove(client);
         try {
@@ -84,7 +96,7 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
-     *
+     * Method to handle a client request
      * @param client client to witch respond
      * @param json json string that client sent
      * @return true if client still connected
@@ -149,6 +161,7 @@ public class TCPServer implements ServerCommunication{
                             joinResponse = new JoinResponse(e);
                         }
                         out.println(joinResponse.toJson());
+                        tryStartGame();
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -349,10 +362,23 @@ public class TCPServer implements ServerCommunication{
      */
     private boolean isGameActive(){
         boolean playControllerActive;
-        synchronized (playController){
-            playControllerActive = (playController != null);
+        synchronized (controllerProvider) {
+            playControllerActive  = (controllerProvider != null);
         }
         return playControllerActive;
+    }
+
+    private void tryStartGame(){
+        synchronized (controllerProvider){
+            try {
+                controllerProvider = lobby.startGame();
+                playController = controllerProvider.getPlayController();
+                chatController = controllerProvider.getChatController();
+                System.out.println("Player joined, game started!");
+            } catch (EmptyLobbyException e) {
+                System.out.println("Player joined, but lobby not full!");
+            }
+        }
     }
 
     /*
