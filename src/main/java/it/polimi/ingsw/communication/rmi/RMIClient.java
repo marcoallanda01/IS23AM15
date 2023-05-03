@@ -14,9 +14,9 @@ public interface RMIClient extends Remote {
     public void gameSetUp(GameSetUp gameSetUp) throws RemoteException;
     // notifications methods
     public void notifyWinner(String nickname) throws RemoteException;
-    public void notifyChangePlayers(List<String> nicknames) throws RemoteException;
-    public void notifyChangeBoard(List<Tile> tiles) throws RemoteException;
-    public void notifyChangeBookShelf(String nickname, List<Tile> tiles) throws RemoteException;
+    public void notifyChangePlayers(Set<String> nicknames) throws RemoteException;
+    public void notifyChangeBoard(Set<Tile> tiles) throws RemoteException;
+    public void notifyChangeBookShelf(String nickname, Set<Tile> tiles) throws RemoteException;
     public void notifyChangePlayerPoints(String nickname, int points) throws RemoteException;
     public void notifyChangeTurn(String nickname) throws RemoteException;
     void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException;

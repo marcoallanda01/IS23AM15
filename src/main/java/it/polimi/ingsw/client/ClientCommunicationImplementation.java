@@ -17,18 +17,18 @@ public class ClientCommunicationImplementation implements ClientCommunication {
     }
 
     @Override
+    public BooleanResponse joinNewAsFirst(String name, int numPlayersGame, String idFirstPlayer) {
+        return null;
+    }
+
+    @Override
+    public BooleanResponse joinNewAsFirst(String name, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
+        return null;
+    }
+
+    @Override
     public SavedGames getSavedGames() {
         return new SavedGames(new HashSet<>());
-    }
-
-    @Override
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id) {
-        return new BooleanResponse(Boolean.TRUE);
-    }
-
-    @Override
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id, boolean easyRules) {
-        return new BooleanResponse(Boolean.TRUE);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class ClientCommunicationImplementation implements ClientCommunication {
     }
 
     @Override
-    public BooleanResponse joinLoadedGameFirstPlayer(String name, String id) {
-        return new BooleanResponse(Boolean.TRUE) ;
+    public BooleanResponse joinLoadedAsFirst(String name, String idFirstPlayer) {
+        return null;
     }
 
     @Override
@@ -62,22 +62,22 @@ public class ClientCommunicationImplementation implements ClientCommunication {
     }
 
     @Override
-    public BooleanResponse isFistPlayerPresent() {
+    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) {
         return new BooleanResponse(Boolean.TRUE);
     }
 
     @Override
-    public BooleanResponse pickTiles(Set<Tile> tiles) {
+    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) {
         return new BooleanResponse(Boolean.TRUE);
     }
 
     @Override
-    public BooleanResponse putTiles(List<TileType> tiles, int column) {
-        return new BooleanResponse(Boolean.TRUE);
+    public BooleanResponse sendMessage(String playerId, String player, String message) {
+        return null;
     }
 
     @Override
-    public void pong() {
+    public void pong(String playerId) {
 
     }
 }
