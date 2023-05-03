@@ -1,6 +1,6 @@
 package it.polimi.ingsw.communication.rmi;
 
-import it.polimi.ingsw.server.communication.GameSetUp;
+import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.rmi.Remote;
