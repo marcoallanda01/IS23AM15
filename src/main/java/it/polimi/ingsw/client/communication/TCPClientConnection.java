@@ -82,7 +82,8 @@ public class TCPClientConnection implements Connection {
             CommonCards commonCards = CommonCards.fromJson(json).get();
             view.showCommonGoalCards(commonCards.cardsAndTokens);
         } else if (CommonGoals.fromJson(json).isPresent()) {
-
+            CommonGoals commonGoals = CommonGoals.fromJson(json).get();
+            view.showCommonGoals(commonGoals.goals);
         } else if (Disconnection.fromJson(json).isPresent()) {
 
         } else if (GameSaved.fromJson(json).isPresent()) {
