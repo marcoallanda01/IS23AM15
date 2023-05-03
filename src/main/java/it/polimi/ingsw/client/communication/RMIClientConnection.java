@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * this class handles the TCP connection:
- * opens it, closes it
- * offers RMIClient interface to allow the server to edit the view
- */
 public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, Connection{
     private View view;
     private RMIServer rmiServer;
+    private final String hostname;
+    private final int port;
 
-    public RMIClientConnection() throws Exception {
+    public RMIClientConnection(String hostname, int port, View view) throws Exception {
+        this.hostname = hostname;
+        this.port = port;
+        this.view = view;
     }
     public void setViewController(View view) {
         this.view = view;
@@ -32,7 +32,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
         // Getting the registry
         Registry registry;
 
-        registry = LocateRegistry.getRegistry(Settings.SERVER_NAME, Settings.PORT);
+        registry = LocateRegistry.getRegistry(hostname, port);
 
         // Looking up the registry for the remote object
         this.rmiServer = (RMIServer) registry.lookup("ServerService");

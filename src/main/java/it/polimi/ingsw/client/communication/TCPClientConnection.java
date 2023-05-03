@@ -15,8 +15,10 @@ import java.util.function.Predicate;
  * opens it, closes it, responds to notifications
  * receives and sends messages from and to the server
  */
-public class TCPClientConnection {
+public class TCPClientConnection implements Connection {
     private View view;
+    private String hostname;
+    private int port;
     private Socket socket;
     private Object readLock, writeLock;
     private ExecutorService executorService;
@@ -24,8 +26,9 @@ public class TCPClientConnection {
     /**
      * @param view the view
      */
-    public TCPClientConnection(View view) {
-        this.view = view;
+    public TCPClientConnection(String hostname, int port, View view) {
+        this.hostname = hostname;
+        this.port = port;
     }
     /**
      * this method opens the TCP connection,
@@ -36,11 +39,9 @@ public class TCPClientConnection {
         readLock = new Object();
         writeLock = new Object();
         executorService = new ForkJoinPool();
-        String serverHost = Settings.SERVER_NAME; // Server hostname or IP address
-        int serverPort = Settings.PORT; // Server port number
         try {
             // Create a socket to connect to the server
-            socket = new Socket(serverHost, serverPort);
+            socket = new Socket(hostname, port);
             notificationListener = executorService.submit(() -> listenForNotifications());
         } catch (IOException e) {
             e.printStackTrace();
