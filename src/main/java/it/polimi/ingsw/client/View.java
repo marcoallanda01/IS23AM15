@@ -15,9 +15,9 @@ public abstract class View {
     }
     public abstract void showGame(GameSetUp gameSetUp);
     public abstract void showWinner(String nickname);
-    public abstract void showPlayers(List<String> nicknames);
-    public abstract void showBoard(List<Tile> tiles);
-    public abstract void showBookshelf(String nickname, List<Tile> tiles);
+    public abstract void showPlayers(Set<String> nicknames);
+    public abstract void showBoard(Set<Tile> tiles);
+    public abstract void showBookshelf(String nickname, Set<Tile> tiles);
     public abstract void showPoints(String nickname, int points);
     public abstract void showTurn(String nickname);
     public abstract void showPersonalGoalCard(String nickname, String card);

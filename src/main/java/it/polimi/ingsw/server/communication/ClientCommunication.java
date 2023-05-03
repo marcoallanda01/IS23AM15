@@ -12,16 +12,8 @@ public interface ClientCommunication {
 
     // Methods for the connection and lobby creation
     public Hello hello();
-    public SavedGames getSavedGames();
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id);
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id, boolean easyRules);
-    public LoadGameResponse loadGame(String name, String idFirstPlayer);
-    /**
-     * @return null if the game is not loaded, but created (or there is no game), else return the list of possible players
-     */
-    public LoadedGamePlayers getLoadedGamePlayers();
-    public BooleanResponse joinLoadedGameFirstPlayer(String name, String id);
-
+    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer);
+    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules);
     /**
      * Use this function to join the game without creating it
      * @param player player name
@@ -29,6 +21,13 @@ public interface ClientCommunication {
      */
     public JoinResponse join(String player);
 
+    public SavedGames getSavedGames();
+    public LoadGameResponse loadGame(String game, String idFirstPlayer);
+    /**
+     * @return null if the game is not loaded, but created (or there is no game), else return the list of possible players
+     */
+    public LoadedGamePlayers getLoadedGamePlayers();
+    public BooleanResponse joinLoadedAsFirst(String player, String idFirstPlayer);
     /**
      * This function remove the player from the lobby if the game is not started, otherwise send it to
      * the WC (disconnection resilience)
@@ -36,14 +35,10 @@ public interface ClientCommunication {
      */
     public BooleanResponse disconnect(String playerId);
     public BooleanResponse reconnect(String playerId);
-    public BooleanResponse isFistPlayerPresent();
-
     // Methods for the play of the turn
-    public BooleanResponse pickTiles(Set<Tile> tiles);
-
-    public BooleanResponse putTiles(List<TileType> tiles, int column);
-
-
-    public void pong();
+    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles);
+    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column);
+    public BooleanResponse sendMessage(String playerId, String player, String message);
+    public void pong(String playerId);
 
 }

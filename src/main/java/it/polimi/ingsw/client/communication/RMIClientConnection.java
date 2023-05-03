@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * this class handles the TCP connection:
+ * opens it, closes it
+ * offers RMIClient interface to allow the server to edit the view
+ */
 public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, Connection{
     private View view;
     private RMIServer rmiServer;
@@ -54,17 +59,17 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
     }
 
     @Override
-    public void notifyChangePlayers(List<String> nicknames)  throws RemoteException {
+    public void notifyChangePlayers(Set<String> nicknames)  throws RemoteException {
         view.showPlayers(nicknames);
     }
 
     @Override
-    public void notifyChangeBoard(List<Tile> tiles)  throws RemoteException {
+    public void notifyChangeBoard(Set<Tile> tiles)  throws RemoteException {
         view.showBoard(tiles);
     }
 
     @Override
-    public void notifyChangeBookShelf(String nickname, List<Tile> tiles)  throws RemoteException {
+    public void notifyChangeBookShelf(String nickname, Set<Tile> tiles)  throws RemoteException {
         view.showBookshelf(nickname, tiles);
     }
 

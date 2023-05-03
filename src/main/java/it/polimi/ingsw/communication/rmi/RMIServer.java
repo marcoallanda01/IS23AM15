@@ -13,21 +13,20 @@ import java.util.List;
 import java.util.Set;
 
 public interface RMIServer extends Remote {
-
-    // Methods for the connection and lobby creation
     public Hello hello() throws RemoteException;
-    public SavedGames getSavedGames() throws RemoteException;
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id) throws RemoteException;
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id, boolean easyRules) throws RemoteException;
-    public LoadGameResponse loadGame(String name, String idFirstPlayer) throws RemoteException;
-    public LoadedGamePlayers getLoadedGamePlayers() throws RemoteException;
-    public BooleanResponse joinLoadedGameFirstPlayer(String name, String id) throws RemoteException;
+    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) throws RemoteException;
+    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException;
     public JoinResponse join(String player) throws RemoteException;
+    public SavedGames getSavedGames() throws RemoteException;
+    public LoadGameResponse loadGame(String game, String idFirstPlayer) throws RemoteException;
+    public LoadedGamePlayers getLoadedGamePlayers() throws RemoteException;
+    public BooleanResponse joinLoadedAsFirst(String player, String idFirstPlayer) throws RemoteException;
     public BooleanResponse disconnect(String playerId) throws RemoteException;
     public BooleanResponse reconnect(String playerId) throws RemoteException;
-    public BooleanResponse isFistPlayerPresent() throws RemoteException;
-    public BooleanResponse pickTiles(Set<Tile> tiles) throws RemoteException;
-    public BooleanResponse putTiles(List<TileType> tiles, int column) throws RemoteException;
-    public void pong() throws RemoteException;
-    void login(RMIClient rmiClient) throws RemoteException;
+    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) throws RemoteException;
+    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException;
+    public BooleanResponse sendMessage(String playerId, String player, String message) throws RemoteException;
+    public void pong(String playerId) throws RemoteException;
+    public void login(RMIClient rmiClient) throws RemoteException;
+
 }

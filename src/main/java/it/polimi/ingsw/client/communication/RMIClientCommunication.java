@@ -26,6 +26,24 @@ public class RMIClientCommunication implements ClientCommunication {
     }
 
     @Override
+    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
+        try {
+            return this.rmiClientConnection.getServer().joinNewAsFirst(player, numPlayersGame, idFirstPlayer);
+        } catch (RemoteException e) {
+            throw new ClientCommunicationException();
+        }
+    }
+
+    @Override
+    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
+        try {
+            return this.rmiClientConnection.getServer().joinNewAsFirst(player, numPlayersGame, idFirstPlayer, true);
+        } catch (RemoteException e) {
+            throw new ClientCommunicationException();
+        }
+    }
+
+    @Override
     public SavedGames getSavedGames() {
         try {
             return this.rmiClientConnection.getServer().getSavedGames();
@@ -35,27 +53,9 @@ public class RMIClientCommunication implements ClientCommunication {
     }
 
     @Override
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id) {
+    public LoadGameResponse loadGame(String game, String idFirstPlayer) {
         try {
-            return this.rmiClientConnection.getServer().joinFirstPlayer(name, numPlayersGame, id);
-        } catch (RemoteException e) {
-            throw new ClientCommunicationException();
-        }
-    }
-
-    @Override
-    public BooleanResponse joinFirstPlayer(String name, int numPlayersGame, String id, boolean easyRules) {
-        try {
-            return this.rmiClientConnection.getServer().joinFirstPlayer(name, numPlayersGame, id, easyRules);
-        } catch (RemoteException e) {
-            throw new ClientCommunicationException();
-        }
-    }
-
-    @Override
-    public LoadGameResponse loadGame(String name, String idFirstPlayer) {
-        try {
-            return this.rmiClientConnection.getServer().loadGame(name, idFirstPlayer);
+            return this.rmiClientConnection.getServer().loadGame(game, idFirstPlayer);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -71,9 +71,9 @@ public class RMIClientCommunication implements ClientCommunication {
     }
 
     @Override
-    public BooleanResponse joinLoadedGameFirstPlayer(String name, String id) {
+    public BooleanResponse joinLoadedAsFirst(String player, String idFirstPlayer) {
         try {
-            return this.rmiClientConnection.getServer().joinLoadedGameFirstPlayer(name, id);
+            return this.rmiClientConnection.getServer().joinLoadedAsFirst(player, idFirstPlayer);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -107,36 +107,36 @@ public class RMIClientCommunication implements ClientCommunication {
     }
 
     @Override
-    public BooleanResponse isFistPlayerPresent() {
+    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) {
         try {
-            return this.rmiClientConnection.getServer().isFistPlayerPresent();
+            return this.rmiClientConnection.getServer().pickTiles(playerId, tiles);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
     }
 
     @Override
-    public BooleanResponse pickTiles(Set<Tile> tiles) {
+    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) {
         try {
-            return this.rmiClientConnection.getServer().pickTiles(tiles);
+            return this.rmiClientConnection.getServer().putTiles(playerId, tiles, column);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
     }
 
     @Override
-    public BooleanResponse putTiles(List<TileType> tiles, int column) {
+    public BooleanResponse sendMessage(String playerId, String player, String message) {
         try {
-            return this.rmiClientConnection.getServer().putTiles(tiles, column);
+            return this.rmiClientConnection.getServer().sendMessage(playerId, player, message);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
     }
 
     @Override
-    public void pong() {
+    public void pong(String playerId) {
         try {
-            this.rmiClientConnection.getServer().pong();
+            this.rmiClientConnection.getServer().pong(playerId);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
