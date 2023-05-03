@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
-import it.polimi.ingsw.client.CLIView;
+import it.polimi.ingsw.client.CLIRenderer;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.server.communication.ClientCommunication;
 
@@ -14,7 +14,7 @@ public class ClientApp {
                 RMIClientConnection rmiClientConnection = new RMIClientConnection();
                 this.connection = rmiClientConnection;
                 this.clientCommunication = new RMIClientCommunication(rmiClientConnection);
-                this.view = new CLIView(this.clientCommunication);
+                //this.view = new CLIRenderer(this.clientCommunication);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
