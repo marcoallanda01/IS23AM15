@@ -21,7 +21,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().hello();
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -30,7 +30,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().getSavedGames();
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -39,7 +39,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().joinFirstPlayer(name, numPlayersGame, id);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -48,7 +48,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().joinFirstPlayer(name, numPlayersGame, id, easyRules);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -57,7 +57,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().loadGame(name, idFirstPlayer);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -66,7 +66,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().getLoadedGamePlayers();
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -75,7 +75,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().joinLoadedGameFirstPlayer(name, id);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -84,7 +84,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().join(player);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -93,7 +93,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().disconnect(playerId);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -102,7 +102,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().reconnect(playerId);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -111,7 +111,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().isFistPlayerPresent();
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -120,7 +120,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().pickTiles(tiles);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -129,7 +129,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             return this.rmiClientConnection.getServer().putTiles(tiles, column);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 
@@ -138,7 +138,7 @@ public class RMIClientCommunication implements ClientCommunication {
         try {
             this.rmiClientConnection.getServer().pong();
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new ClientCommunicationException();
         }
     }
 }

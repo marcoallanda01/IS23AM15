@@ -40,7 +40,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
             UnicastRemoteObject.unexportObject(this, true);
             System.out.println("RMI client connection closed.");
         } catch (RemoteException e) {
-            System.err.println("Error closing RMI connection: " + e.getMessage());
+            throw new ClientConnectionException();
         }
     }
     @Override
