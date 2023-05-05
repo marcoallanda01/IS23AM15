@@ -60,7 +60,8 @@ public class Game {
             if (player.getBookShelf().getMaxColumnSpace() == 0) {
                 if (isLastRound) {
                     if (this.players.indexOf(player) == this.players.size() - 1) {
-                        //TODO: get winner and finish game
+                        this.winner = goalManager.getWinner(this.players);
+                        return true;
                     }
                 } else {
                     player.setFirstToFinish(true);
@@ -227,7 +228,7 @@ public class Game {
      */
     public boolean reconnectPlayer(String player) {
         try {
-             if (!this.getPlayerFromNickname(player).isPlaying()) {
+            if (!this.getPlayerFromNickname(player).isPlaying()) {
                 this.getPlayerFromNickname(player).setPlaying(true);
             } else {
                 return false;

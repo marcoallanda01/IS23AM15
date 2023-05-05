@@ -29,11 +29,10 @@ public class PlayController {
             return false;
     }
 
-    public synchronized boolean putTiles(List<Tile> tiles, int column, String player) {
+    public synchronized boolean putTiles(List<Tile> tiles, int column, String player){
         if(game.getCurrentPlayer().equals(player))
             return game.putTiles(tiles, column);
-        else
-            return false;
+        return false;
     }
 
     public synchronized boolean saveGame(String name) throws SaveException, IOException {

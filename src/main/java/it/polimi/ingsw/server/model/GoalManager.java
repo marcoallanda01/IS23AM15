@@ -275,6 +275,13 @@ public class GoalManager {
     }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
 
+    public String getWinner(List<Player> players){
+        for(Player player : players){
+            updatePointsEnd(player);
+        }
+        return players.stream().max(Comparator.comparingInt(this::getPoints)).get().getUserName();
+    }
+
     /**
      * @return a map associating cards to tokens
      */
