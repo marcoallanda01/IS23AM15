@@ -78,27 +78,36 @@ public class TCPClientConnection implements Connection {
             view.showBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);
         } else if (ChatMessage.fromJson(json).isPresent()) {
             ChatMessage chatMessage = ChatMessage.fromJson(json).get();
+            // do something with the chat message
         } else if (CommonCards.fromJson(json).isPresent()) {
             CommonCards commonCards = CommonCards.fromJson(json).get();
             view.showCommonGoalCards(commonCards.cardsAndTokens);
         } else if (CommonGoals.fromJson(json).isPresent()) {
-
+            CommonGoals commonGoals = CommonGoals.fromJson(json).get();
+            view.showCommonGoals(commonGoals.goals);
         } else if (Disconnection.fromJson(json).isPresent()) {
-
+            Disconnection disconnection = Disconnection.fromJson(json).get();
+            // do something with the disconnection
         } else if (GameSaved.fromJson(json).isPresent()) {
-
+            GameSaved gameSaved = GameSaved.fromJson(json).get();
+            // do something with the game saved
         } else if (GameSetUp.fromJson(json).isPresent()) {
-
+            GameSetUp gameSetUp = GameSetUp.fromJson(json).get();
+            view.showGame(gameSetUp);
         } else if (Ping.fromJson(json).isPresent()) {
-
+            // do something with the ping
         } else if (PlayerPoints.fromJson(json).isPresent()) {
-
+            PlayerPoints playerPoints = PlayerPoints.fromJson(json).get();
+            view.showPoints(playerPoints.player, playerPoints.points);
         } else if (Reconnected.fromJson(json).isPresent()) {
-
+            Reconnected reconnected = Reconnected.fromJson(json).get();
+            // do something with the reconnection
         } else if (TurnNotify.fromJson(json).isPresent()) {
-
+            TurnNotify turnNotify = TurnNotify.fromJson(json).get();
+            view.showTurn(turnNotify.player);
         } else if (Winner.fromJson(json).isPresent()) {
-
+            Winner winner = Winner.fromJson(json).get();
+            view.showWinner(winner.player);
         } else {
             throw new ClientConnectionException("Unrecognized server message");
         }

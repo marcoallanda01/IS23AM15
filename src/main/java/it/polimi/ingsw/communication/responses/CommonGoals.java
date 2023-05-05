@@ -4,19 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Deprecated. Class not used. It's here to revaluate in the future
  */
 public class CommonGoals extends Msg{
-    public List<String> goals;
+    public Set<String> goals;
 
-    public @Deprecated CommonGoals(@NotNull List<String> goals) {
+    public @Deprecated CommonGoals(@NotNull Set<String> goals) {
         super("CommonGoals");
-        this.goals = new ArrayList<>(goals);
+        this.goals = new HashSet<>(goals);
     }
 
     /**

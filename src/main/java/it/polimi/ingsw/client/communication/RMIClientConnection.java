@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.communication;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
-import it.polimi.ingsw.server.communication.GameSetUp;
+import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.rmi.RemoteException;
