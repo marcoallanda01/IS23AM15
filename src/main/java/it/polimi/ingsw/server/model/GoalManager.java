@@ -271,7 +271,7 @@ public class GoalManager {
     }
 
     public int getPoints(Player player) {
-        return pointsManagers.stream().map(pointsManager -> pointsManager.getPoints(player)).mapToInt(Integer::intValue).sum();
+        return pointsManagers.stream().map(pointsManager -> pointsManager.getPoints(player)).mapToInt(Integer::intValue).sum() + (player.isFirstToFinish() ? 1 : 0);
     }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
 

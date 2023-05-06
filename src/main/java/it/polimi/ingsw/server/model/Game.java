@@ -78,7 +78,7 @@ public class Game {
 
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
-        return goalManager.getPoints(player) + (player.isFirstToFinish() ? 1 : 0);
+        return goalManager.getPoints(player);
     }
 
     public Map<String, List<Integer>> getCommonGoalCardsToTokens() {
