@@ -87,6 +87,7 @@ public class GoalManager {
                 int maxC = patternJ.get("max").getAsInt();
                 int minC = patternJ.get("min").getAsInt();
                 boolean sgc = patternJ.get("sgc").getAsString().equals("Y");
+                boolean fe = patternJ.get("fe").getAsString().equals("Y");
                 JsonArray matrixsJ = patternJ.get("masks").getAsJsonArray();
                 List<List<List<Boolean>>> matrixs = new ArrayList<>();
                 for (int k = 0; k < matrixsJ.size(); k++) {
@@ -110,7 +111,11 @@ public class GoalManager {
                     }
                     matrixs.add(matrix);
                 }
-                pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC);
+                try {
+                    pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC, fe);
+                } catch (InvalidPatternParameterException e) {
+                    throw new RuntimeException(e);
+                }
             }
             case "adjacent" -> {
                 /*
