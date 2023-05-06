@@ -41,14 +41,32 @@ public class Player implements StandardListenable {
     public boolean isPlaying() {
         return this.isPlaying;
     }
+
     /**
-     * Set the value of isPlaying
+     * Set the value of isPlaying, used in deserialization
      * @param playing the new value of isPlaying
      */
     public void setPlaying(boolean playing) {
         this.isPlaying = playing;
+
+    }
+
+    /**
+     * call if from now on player turn is to skip
+     */
+    public void goToWc(){
+        setPlaying(false);
         this.propertyChangeSupport.firePropertyChange("playingState", null, this.isPlaying);
     }
+
+    /**
+     * call if from now on player turn is not to skip
+     */
+    public void backFromWc(){
+        setPlaying(true);
+        this.propertyChangeSupport.firePropertyChange("playingState", null, this.isPlaying);
+    }
+
     /**
      * Get the value of firstToFinish
      * @return the value of firstToFinish

@@ -25,7 +25,7 @@ public class Game{
 
     /**
      * Only method used for instantiation of the game
-     * @param pushNotificationController
+     * @param pushNotificationController Push Notification Controller
      */
     public Game(PushNotificationController pushNotificationController){
         this.pushNotificationController = pushNotificationController;
@@ -309,7 +309,7 @@ public class Game{
     public boolean disconnectPlayer(String player) {
         try {
             if (this.getPlayerFromNickname(player).isPlaying()) {
-                this.getPlayerFromNickname(player).setPlaying(false);
+                this.getPlayerFromNickname(player).goToWc();
             } else {
                 return false;
             }
@@ -335,7 +335,7 @@ public class Game{
     public boolean reconnectPlayer(String player) {
         try {
             if (!this.getPlayerFromNickname(player).isPlaying()) {
-                this.getPlayerFromNickname(player).setPlaying(true);
+                this.getPlayerFromNickname(player).backFromWc();
             } else {
                 return false;
             }

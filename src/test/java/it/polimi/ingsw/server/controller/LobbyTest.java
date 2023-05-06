@@ -54,7 +54,8 @@ class LobbyTest {
 
     @Test
     void loadGame() throws GameLoadException, GameNameException, IOException, IllegalLobbyException, WaitLobbyException {
-        Lobby lobby = new Lobby("saves",new Game(new PushNotificationController(new ArrayList<>())));
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
+        Lobby lobby = new Lobby("saves", game);
         Optional<String> uniqueID = lobby.join();
         if(uniqueID.isEmpty()){
             fail();
