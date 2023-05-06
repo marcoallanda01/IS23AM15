@@ -13,6 +13,7 @@ public class ControllerProvider {
         this.chatController = new ChatController(game);
         this.playController = new PlayController(game, "saves");
     }
+
     public ChatController getChatController() {
         return chatController;
     }

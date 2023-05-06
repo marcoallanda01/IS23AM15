@@ -1,13 +1,17 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.listeners.BoardListener;
+import it.polimi.ingsw.server.listeners.StandardListenable;
 import org.jetbrains.annotations.Nullable;
 
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class LivingRoomBoard {
+public class LivingRoomBoard implements StandardListenable {
     /**
      * The number of players
      */
@@ -28,6 +32,8 @@ public class LivingRoomBoard {
      * The bag is a map of tile types and the number of remaining tiles of that type
      */
     private final Map<TileType, Integer> bag;
+
+    private transient PropertyChangeSupport propertyChangeSupport;
 
     public LivingRoomBoard(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
@@ -53,11 +59,14 @@ public class LivingRoomBoard {
                 TileRule.BLOCK));
         mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.THREE, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
                 TileRule.BLOCK));
+
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     public LivingRoomBoard(int numberOfPlayers, Map<Integer, Map<Integer, TileRule>> mask) {
         this(numberOfPlayers);
         this.mask = mask;
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -90,11 +99,19 @@ public class LivingRoomBoard {
      * Fills the board with tiles according to the mask (based on the number of players)
      */
     public void fillBoard() {
+
+        List<Tile> tilesR = new ArrayList<>();
+
         board.forEach((row, map) -> map.forEach((col, tile) -> {
             if(tile != null) {
+                tilesR.add(new Tile(row, col, tile.getType()));
                 bag.merge(tile.getType(), 1, Integer::sum); // add the tile to the bag
             }
         }));
+
+        this.propertyChangeSupport.firePropertyChange("removedTiles", null, tilesR);
+
+        List<Tile> tilesA = new ArrayList<>();
         mask.forEach((row, map) -> {
             board.put(row, new HashMap<>()); // initialize the row
             map.forEach((col, tileRule) -> {
@@ -108,12 +125,16 @@ public class LivingRoomBoard {
                         }
                         Tile tile = new Tile(row, col, type);
                         board.get(row).put(col, tile); // add the tile to the board
+                        tilesA.add(new Tile(row, col, type));
                     } else {
                         board.get(row).put(col, null); // if the rule is > numberOfPlayers, set the tile to null
                     }
                 }
             });
         });
+
+        this.propertyChangeSupport.firePropertyChange("addedTiles", null, tilesA);
+
     }
 
     /**
@@ -125,6 +146,7 @@ public class LivingRoomBoard {
         for (Tile tile : tiles) {
             board.get(tile.getX()).put(tile.getY(), null);
         }
+        this.propertyChangeSupport.firePropertyChange("removedTiles", null, tiles);
     }
 
     /**
@@ -228,5 +250,31 @@ public class LivingRoomBoard {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    /**
+     * Methods that allow the registration of a standard listener. Call it only once.
+     *
+     * @param pushNotificationController object PushNotificationController is necessary to launch notifications to the
+     *                                   clients
+     */
+    @Override
+    public void setStandardListener(PushNotificationController pushNotificationController) {
+        this.propertyChangeSupport.addPropertyChangeListener(new BoardListener(pushNotificationController));
+    }
+
+    /**
+     * Forcing notify listeners. Example of use: when game is loaded from a file
+     */
+    public void notifyListeners(){
+        List<Tile> tiles = new ArrayList<>();
+        board.forEach((x, row)->{
+            row.forEach((y,tile) -> {
+                if(tile != null) {
+                    tiles.add(new Tile(x, y, tile.getType()));
+                }
+            });
+        });
+        this.propertyChangeSupport.firePropertyChange("addedTiles", null, tiles);
     }
 }

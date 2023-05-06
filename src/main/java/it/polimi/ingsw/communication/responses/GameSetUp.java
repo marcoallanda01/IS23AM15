@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * GameSetUP is the object sent to the player at the beginning of a starting game.
+ * It doesn't include player points and tiles in the board/bookshelf because there are notifyChangeBoard,
+ * notifyChangeBookShelf, updatePlayerPoints, notifyYourTurn, ...
+ */
 public class GameSetUp extends Msg{
     public List<String> players;
     public List<String> goals;

@@ -1,19 +1,97 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.listeners.TurnListener;
+import org.jetbrains.annotations.NotNull;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Game {
-    private final List<Player> players;
+public class Game{
+    private List<Player> players = null;
     private String winner;
     private boolean isLastRound = false;
-    private final boolean isFirstGame;
-    private final LivingRoomBoard board;
+    private boolean isFirstGame;
+    private LivingRoomBoard board;
     private Turn currentTurn;
-    private final Chat chat;
-    private final GoalManager goalManager;
+    private Chat chat;
+    private GoalManager goalManager;
+    private PropertyChangeSupport turnChangeSupport;
+    private static final String PROPERTY_NAME = "currentTurn";
 
-    public Game(List<String> players, boolean isFirstGame) {
+    private transient PushNotificationController pushNotificationController;
+
+    /**
+     * Only method used for instantiation of the game
+     * @param pushNotificationController
+     */
+    public Game(PushNotificationController pushNotificationController){
+        this.pushNotificationController = pushNotificationController;
+        // Creation of the propriety support
+        this.turnChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    /**
+     * Setting up of the game, notification are sent to the clients
+     * @param players list of players' names
+     * @param isFirstGame easy rules game rule
+     */
+    public void setGame(@NotNull List<String> players, boolean isFirstGame) {
+        this.players = players.stream().map(Player::new).collect(Collectors.toList());
+        this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
+        int numberOfPlayers = players.size();
+        this.isFirstGame = isFirstGame;
+        this.board = new LivingRoomBoard(numberOfPlayers);
+        this.board.setStandardListener(pushNotificationController);
+
+        //FirstFill
+        this.board.fillBoard();
+
+        //choosing first player
+        Collections.shuffle(this.players);
+        this.currentTurn = new Turn(this.players.get(0), board);
+
+        addPropertyChangeListener(new TurnListener(pushNotificationController));
+        notifyListeners();
+
+
+        this.chat = new Chat(this.players);
+        String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
+        this.goalManager = new GoalManager(this.players, goalPath);
+
+    }
+    /**
+     * Setting up of the game from another game. Must set first pushNotificationController.
+     * Notification are sent to the clients.
+     * @param game another game
+     */
+    public void setGame(Game game) {
+
+        this.players = game.players;
+        this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
+
+        this.winner = game.winner;
+        this.isFirstGame = game.isFirstGame;
+
+        this.board = game.board;
+        this.board.setStandardListener(pushNotificationController);
+        this.board.notifyListeners();
+
+        this.currentTurn = game.currentTurn;
+        this.chat = game.chat;
+        this.goalManager = game.goalManager;
+        addPropertyChangeListener(new TurnListener(pushNotificationController));
+        notifyListeners();
+    }
+
+    /**
+     * Help constructor used in tests that not requires listeners
+     * @param players players
+     * @param isFirstGame game rule easy game
+     */
+    public @Deprecated Game(@NotNull List<String> players, boolean isFirstGame) {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
@@ -26,6 +104,7 @@ public class Game {
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         this.goalManager = new GoalManager(this.players, goalPath);
+
     }
 
     /**
@@ -39,6 +118,30 @@ public class Game {
         this.currentTurn = currentTurn;
         this.chat = chat;
         this.goalManager = goalManager;
+    }
+
+    /**
+     * Method to notify listeners about turn changes
+     */
+    private void notifyListeners(){
+        this.turnChangeSupport.firePropertyChange(PROPERTY_NAME, null,
+                this.currentTurn.getCurrentPlayer().getUserName());
+    }
+
+    /**
+     * Method to add listeners about turn changes
+     * @param listener listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        turnChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Method to remove listeners about turn changes
+     * @param listener listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        turnChangeSupport.removePropertyChangeListener(listener);
     }
 
     public boolean pickTiles(List<Tile> tiles) {
@@ -70,6 +173,7 @@ public class Game {
             }
             currentTurn.changeState(new EndState(currentTurn));
             nextTurn(player);
+            notifyListeners();
             return true;
         } else {
             return false;
@@ -130,6 +234,8 @@ public class Game {
         }
         if (this.currentTurn.getState() instanceof EndState) {
             this.currentTurn = new Turn(nextPlayer, this.board);
+
+            notifyListeners();
             return true;
         }
         return false;
@@ -238,5 +344,12 @@ public class Game {
             return false;
         }
         return true;
+    }
+
+    public PushNotificationController getPushNotificationController(){
+        return this.pushNotificationController;
+    }
+    public void setPushNotificationController(PushNotificationController pnc){
+        this.pushNotificationController = pnc;
     }
 }

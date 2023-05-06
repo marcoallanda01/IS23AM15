@@ -18,9 +18,6 @@ public class EndGamePointsManager extends PointsManager {
         this.patterns = patterns;
     }
 
-    public void updatePoints() {
-    }
-
     public void updatePoints(Player player) {
         List<List<Optional<Tile>>> bookshelf = player.getBookShelf().getState();
         Integer newPoints = this.patterns.stream().map(pattern -> pattern.getPatternFunction().apply(bookshelf)).reduce(0, Integer::sum);

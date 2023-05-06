@@ -1,11 +1,19 @@
 package it.polimi.ingsw.server.model;
 
-public class Player {
+import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.listeners.PlayerListener;
+import it.polimi.ingsw.server.listeners.StandardListenable;
+
+import java.beans.PropertyChangeSupport;
+
+public class Player implements StandardListenable {
     private final String userName;
     private final BookShelf bookShelf;
     private boolean firstToFinish = false;
     private transient boolean isPlaying = true;
     private boolean fullBookShelf = false;
+    private final transient PropertyChangeSupport propertyChangeSupport;
+
     /**
      * Create a new player
      * @param userName the username of the player
@@ -13,6 +21,7 @@ public class Player {
     public Player(String userName) {
         this.userName = userName;
         this.bookShelf = new BookShelf();
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
     public BookShelf getBookShelf() {
         return this.bookShelf;
@@ -38,6 +47,7 @@ public class Player {
      */
     public void setPlaying(boolean playing) {
         this.isPlaying = playing;
+        this.propertyChangeSupport.firePropertyChange("playingState", null, this.isPlaying);
     }
     /**
      * Get the value of firstToFinish
@@ -66,5 +76,12 @@ public class Player {
      */
     public void setFullBookShelf(boolean fullBookShelf) {
         this.fullBookShelf = fullBookShelf;
+    }
+
+    /**
+     * Set standard player listener
+     */
+    public void setStandardListener(PushNotificationController pnc){
+        this.propertyChangeSupport.addPropertyChangeListener(new PlayerListener(pnc));
     }
 }

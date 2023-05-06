@@ -18,7 +18,7 @@ public class Lobby {
     /**
      * Maps the id of the player to the name of the player
      */
-    private final Map<String, String> players;
+    private Map<String, String> players;
     private String firstPlayerId;
     /**
      * The number of players that will play the game
@@ -29,7 +29,7 @@ public class Lobby {
     /**
      * The directory where the games are saved
      */
-    private final String directory;
+    private String directory;
     /**
      * The game that is being loaded
      */
@@ -45,8 +45,11 @@ public class Lobby {
 
     private Set<String> games;
 
+    private Game currentGame;
 
-    public Lobby(String directory) {
+
+    public Lobby(String directory, Game game) {
+        this.currentGame = game;
         this.directory = directory;
         this.firstPlayerId = null;
         this.numPlayersGame = -1;
@@ -136,8 +139,10 @@ public class Lobby {
             try {
                 Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
                 BufferedReader reader = new BufferedReader(new FileReader(this.directory + "/" + name + ".json"));
+                // TODO: brutto così, non si può non usare un costruttore per fare il load?
                 Game game = gson.fromJson(reader, Game.class);
                 this.loadingGame = game;
+                this.currentGame.setGame(this.loadingGame);
                 return new ArrayList<>(game.getPlayers());
             } catch (Exception e) {
                 throw new GameLoadException(name, e);
@@ -201,7 +206,10 @@ public class Lobby {
         if (!isReadyToPlay()) {
             throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }
-        return new ControllerProvider(new Game(new ArrayList<>(this.players.values()), this.easyRules));
+        if(loadingGame == null){
+            this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
+        }
+        return new ControllerProvider(this.currentGame);
     }
 
 
@@ -211,6 +219,30 @@ public class Lobby {
 
     public synchronized String getNameFromId(String id){
         return this.players.get(id);
+    }
+
+    public synchronized void reset(Game game){
+        this.directory = directory;
+        this.firstPlayerId = null;
+        this.numPlayersGame = -1;
+        this.loadingGame = null;
+        this.easyRules = false;
+        this.players = new HashMap<>();
+        this.isCreating = false;
+
+        this. games = new HashSet<>();
+        File saves = new File(this.directory);
+        if (! (!saves.exists() || saves.isFile()) ) {
+            // saves for sure is not a file
+            File[] savesList = saves.listFiles();
+            games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().
+                    filter(File::isFile)
+                    .map(File::getName)
+                    .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
+                    .collect(Collectors.toSet());
+        }
+
+        this.currentGame = game;
     }
 
 }

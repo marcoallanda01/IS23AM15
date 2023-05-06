@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
+import it.polimi.ingsw.server.communication.ServerCommunication;
 import it.polimi.ingsw.server.model.Game;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,7 @@ class LobbyTest {
 
     @Test
     void getSavedGames() {
-        Lobby lobby = new Lobby("/src/main/resources/saves");
+        Lobby lobby = new Lobby("/src/main/resources/saves", new Game(new PushNotificationController(new ArrayList<>())));
         Set<String> savedGames = lobby.getSavedGames();
         File saves = new File("/src/main/resources/saves");
         File[] savesList = saves.listFiles();
@@ -53,7 +54,7 @@ class LobbyTest {
 
     @Test
     void loadGame() throws GameLoadException, GameNameException, IOException, IllegalLobbyException, WaitLobbyException {
-        Lobby lobby = new Lobby("saves");
+        Lobby lobby = new Lobby("saves",new Game(new PushNotificationController(new ArrayList<>())));
         Optional<String> uniqueID = lobby.join();
         if(uniqueID.isEmpty()){
             fail();

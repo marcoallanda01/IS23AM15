@@ -263,7 +263,9 @@ notifications
 {"name":"BoardUpdate",
 "tiles":[                               -------------------------------------------------->
 {"x":***,"y":***,"type":"***"}, ***
-]}
+]
+"added":(true, false)
+}
 
 
 - Changing in a bookshelf
