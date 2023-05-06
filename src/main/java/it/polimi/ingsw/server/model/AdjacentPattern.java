@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.model;
 import java.util.*;
 import java.util.function.Function;
 
-public class Adjacent extends Pattern{
+public class AdjacentPattern extends Pattern{
     private final Integer points;
     private final Integer minGroups;
     private final Integer minTiles;
@@ -12,7 +12,7 @@ public class Adjacent extends Pattern{
      * @param minTiles the minimum amount of tiles a group should have for it to be deleted
      * @param points the points to be given for each deleted group
      */
-    public Adjacent(String name, int minTiles, int points) throws InvalidPatternParameterException {
+    public AdjacentPattern(String name, int minTiles, int points) throws InvalidPatternParameterException {
         super(name);
         this.points = points;
         this.minTiles = minTiles;
@@ -25,7 +25,7 @@ public class Adjacent extends Pattern{
      * @param minGroups the minimum number of groups to be found to return the points (and not 0)
      * @param points the points to be given for each deleted group
      */
-    public Adjacent(String name, int minTiles, int minGroups, int points) throws InvalidPatternParameterException {
+    public AdjacentPattern(String name, int minTiles, int minGroups, int points) throws InvalidPatternParameterException {
         super(name);
         this.points = points;
         this.minTiles = minTiles;

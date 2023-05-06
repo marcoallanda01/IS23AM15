@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import com.google.gson.*;
@@ -15,9 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class GoalManager {
     private final List<PointsManager> pointsManagers = new ArrayList<>();
-    private final CommonGoalCardManager commonGoalCardManager;
-    private final PersonalGoalCardManager personalGoalCardManager;
-    private final EndGamePointsManager endGamePointsManager;
+    private final CommonCardsPointsManager commonCardsPointsManager;
+    private final PersonalCardsPointsManager personalCardsPointsManager;
+    private final CommonGoalsPointsManager commonGoalsPointsManager;
     //private List<List<Pattern>> patterns;
     /**
      * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
@@ -112,7 +111,7 @@ public class GoalManager {
                     matrixs.add(matrix);
                 }
                 try {
-                    pattern = new Specific(name, matrixs, groupNum, sgc, minC, maxC, fe);
+                    pattern = new SpecificPattern(name, matrixs, groupNum, sgc, minC, maxC, fe);
                 } catch (InvalidPatternParameterException e) {
                     throw new RuntimeException(e);
                 }
@@ -127,7 +126,7 @@ public class GoalManager {
                 int maxTiles = patternJ.get("min_groups").getAsInt();
                 int points = patternJ.get("points").getAsInt();
                 try {
-                    pattern = new Adjacent(name, minTiles, maxTiles, points);
+                    pattern = new AdjacentPattern(name, minTiles, maxTiles, points);
                 } catch (InvalidPatternParameterException e) {
                     throw new RuntimeException(e);
                 }
@@ -160,7 +159,7 @@ public class GoalManager {
                 }
                 // Check to points must be already ordered in the json file
                 try {
-                    pattern = new Personal(name, tiles, checkToPoints);
+                    pattern = new PersonalPattern(name, tiles, checkToPoints);
                 } catch (InvalidPatternParameterException e) {
                     throw new RuntimeException(e);
                 }
@@ -245,23 +244,23 @@ public class GoalManager {
 
 
         // creating default managers, in future to add another manager add it here
-        this.commonGoalCardManager = new CommonGoalCardManager(players, new Deck(patternsCommonGoals));
-        this.personalGoalCardManager = new PersonalGoalCardManager(players, new Deck(patternsPersonalGoals));
-        this.endGamePointsManager = new EndGamePointsManager(players, patternsEndGoals);
+        this.commonCardsPointsManager = new CommonCardsPointsManager(players, new Deck(patternsCommonGoals));
+        this.personalCardsPointsManager = new PersonalCardsPointsManager(players, new Deck(patternsPersonalGoals));
+        this.commonGoalsPointsManager = new CommonGoalsPointsManager(players, patternsEndGoals);
 
-        this.pointsManagers.add(this.commonGoalCardManager);
-        this.pointsManagers.add(this.personalGoalCardManager);
-        this.pointsManagers.add(this.endGamePointsManager);
+        this.pointsManagers.add(this.commonCardsPointsManager);
+        this.pointsManagers.add(this.personalCardsPointsManager);
+        this.pointsManagers.add(this.commonGoalsPointsManager);
     }
 
-    public GoalManager(CommonGoalCardManager commonGoalCardManager, PersonalGoalCardManager personalGoalCardManager, EndGamePointsManager endGamePointsManager,
+    public GoalManager(CommonCardsPointsManager commonCardsPointsManager, PersonalCardsPointsManager personalCardsPointsManager, CommonGoalsPointsManager commonGoalsPointsManager,
                        Boolean frequentUpdates) {
-        this.commonGoalCardManager = commonGoalCardManager;
-        this.personalGoalCardManager = personalGoalCardManager;
-        this.endGamePointsManager = endGamePointsManager;
-        this.pointsManagers.add(this.commonGoalCardManager);
-        this.pointsManagers.add(this.personalGoalCardManager);
-        this.pointsManagers.add(this.endGamePointsManager);
+        this.commonCardsPointsManager = commonCardsPointsManager;
+        this.personalCardsPointsManager = personalCardsPointsManager;
+        this.commonGoalsPointsManager = commonGoalsPointsManager;
+        this.pointsManagers.add(this.commonCardsPointsManager);
+        this.pointsManagers.add(this.personalCardsPointsManager);
+        this.pointsManagers.add(this.commonGoalsPointsManager);
         this.frequentUpdates = frequentUpdates;
     }
 
@@ -300,7 +299,7 @@ public class GoalManager {
      */
     // this method does not take a card as input because cards are handled exclusively  by CardsManagers
     public Map<Pattern, Stack<Integer>> getCommonCardsToTokens() {
-        return commonGoalCardManager.getCardsToTokens();
+        return commonCardsPointsManager.getCardsToTokens();
     }
 
     /**
@@ -308,7 +307,7 @@ public class GoalManager {
      * @return the tokens of the player:
      */
     public List<Integer> getTokens(Player player) {
-        return commonGoalCardManager.getTokens(player);
+        return commonCardsPointsManager.getTokens(player);
     }
 
     /**
@@ -316,7 +315,7 @@ public class GoalManager {
      * @return the unfulfilled cards of the player
      */
     public Set<Pattern> getUnfulfilledCommonCards(Player player) {
-        return commonGoalCardManager.getUnfulfilledCards(player);
+        return commonCardsPointsManager.getUnfulfilledCards(player);
     }
 
     /**
@@ -324,7 +323,7 @@ public class GoalManager {
      * @return the fulfilled cards of the player
      */
     public Set<Pattern> getFulfilledCommonCards(Player player) {
-        return commonGoalCardManager.getFulfilledCards(player);
+        return commonCardsPointsManager.getFulfilledCards(player);
     }
 
     /**
@@ -332,32 +331,32 @@ public class GoalManager {
      * @return the personal card of the player
      */
     public Pattern getPersonalCard(Player player) {
-        return personalGoalCardManager.getCard(player);
+        return personalCardsPointsManager.getCard(player);
     }
 
     public Set<Pattern> getEndGameGoals() {
-        return endGamePointsManager.getPatterns();
+        return commonGoalsPointsManager.getPatterns();
     }
 
     /**
      * Used for serialization
      */
-    public CommonGoalCardManager getCommonGoalCardManager() {
-        return commonGoalCardManager;
+    public CommonCardsPointsManager getCommonGoalCardManager() {
+        return commonCardsPointsManager;
     }
 
     /**
      * Used for serialization
      */
-    public PersonalGoalCardManager getPersonalGoalCardManager() {
-        return personalGoalCardManager;
+    public PersonalCardsPointsManager getPersonalGoalCardManager() {
+        return personalCardsPointsManager;
     }
 
     /**
      * Used for serialization
      */
-    public EndGamePointsManager getEndGamePointsManager() {
-        return endGamePointsManager;
+    public CommonGoalsPointsManager getEndGamePointsManager() {
+        return commonGoalsPointsManager;
     }
 
     /**

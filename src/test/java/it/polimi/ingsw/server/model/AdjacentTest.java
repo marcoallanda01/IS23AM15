@@ -36,19 +36,19 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "6+";
-        Pattern pattern1a = new Adjacent(name,6, 8);
+        Pattern pattern1a = new AdjacentPattern(name,6, 8);
         assertEquals(16, pattern1a.getPatternFunction().apply(myBookshelf));
 
         String name2 = "5";
-        Pattern pattern2a = new Adjacent(name2,5, 1, 5);
+        Pattern pattern2a = new AdjacentPattern(name2,5, 1, 5);
         assertEquals(0, pattern2a.getPatternFunction().apply(myBookshelf));
 
         String name3 = "4";
-        Pattern pattern3a = new Adjacent(name3,4, 1, 3);
+        Pattern pattern3a = new AdjacentPattern(name3,4, 1, 3);
         assertEquals(3, pattern3a.getPatternFunction().apply(myBookshelf));
 
         String name4 = "3";
-        Pattern pattern4a = new Adjacent(name3,3, 1, 2);
+        Pattern pattern4a = new AdjacentPattern(name3,3, 1, 2);
         assertEquals(0, pattern4a.getPatternFunction().apply(myBookshelf));
     }
     @Test
@@ -78,19 +78,19 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "6+";
-        Pattern pattern1a = new Adjacent(name,6, 8);
+        Pattern pattern1a = new AdjacentPattern(name,6, 8);
         assertEquals(16, pattern1a.getPatternFunction().apply(myBookshelf));
 
         String name2 = "5";
-        Pattern pattern2a = new Adjacent(name2,5, 1, 5);
+        Pattern pattern2a = new AdjacentPattern(name2,5, 1, 5);
         assertEquals(0, pattern2a.getPatternFunction().apply(myBookshelf));
 
         String name3 = "4";
-        Pattern pattern3a = new Adjacent(name3,4, 1, 3);
+        Pattern pattern3a = new AdjacentPattern(name3,4, 1, 3);
         assertEquals(0, pattern3a.getPatternFunction().apply(myBookshelf));
 
         String name4 = "3";
-        Pattern pattern4a = new Adjacent(name3,3, 1, 2);
+        Pattern pattern4a = new AdjacentPattern(name3,3, 1, 2);
         assertEquals(0, pattern4a.getPatternFunction().apply(myBookshelf));
     }
     @Test
@@ -120,19 +120,19 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "6+";
-        Pattern pattern1a = new Adjacent(name,6, 8);
+        Pattern pattern1a = new AdjacentPattern(name,6, 8);
         assertEquals(0, pattern1a.getPatternFunction().apply(myBookshelf));
 
         String name2 = "5";
-        Pattern pattern2a = new Adjacent(name2,5, 1, 5);
+        Pattern pattern2a = new AdjacentPattern(name2,5, 1, 5);
         assertEquals(10, pattern2a.getPatternFunction().apply(myBookshelf));
 
         String name3 = "4";
-        Pattern pattern3a = new Adjacent(name3,4, 1, 3);
+        Pattern pattern3a = new AdjacentPattern(name3,4, 1, 3);
         assertEquals(0, pattern3a.getPatternFunction().apply(myBookshelf));
 
         String name4 = "3";
-        Pattern pattern4a = new Adjacent(name3,3, 1, 2);
+        Pattern pattern4a = new AdjacentPattern(name3,3, 1, 2);
         assertEquals(0, pattern4a.getPatternFunction().apply(myBookshelf));
     }
     @Test
@@ -162,19 +162,19 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "6+";
-        Pattern pattern1a = new Adjacent(name,6, 8);
+        Pattern pattern1a = new AdjacentPattern(name,6, 8);
         assertEquals(0, pattern1a.getPatternFunction().apply(myBookshelf));
 
         String name2 = "5";
-        Pattern pattern2a = new Adjacent(name2,5, 1, 5);
+        Pattern pattern2a = new AdjacentPattern(name2,5, 1, 5);
         assertEquals(0, pattern2a.getPatternFunction().apply(myBookshelf));
 
         String name3 = "4";
-        Pattern pattern3a = new Adjacent(name3,4, 1, 3);
+        Pattern pattern3a = new AdjacentPattern(name3,4, 1, 3);
         assertEquals(6, pattern3a.getPatternFunction().apply(myBookshelf));
 
         String name4 = "3";
-        Pattern pattern4a = new Adjacent(name3,3, 1, 2);
+        Pattern pattern4a = new AdjacentPattern(name3,3, 1, 2);
         assertEquals(0, pattern4a.getPatternFunction().apply(myBookshelf));
     }
     @Test
@@ -204,19 +204,19 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "6+";
-        Pattern pattern1a = new Adjacent(name,6, 8);
+        Pattern pattern1a = new AdjacentPattern(name,6, 8);
         assertEquals(0, pattern1a.getPatternFunction().apply(myBookshelf));
 
         String name2 = "5";
-        Pattern pattern2a = new Adjacent(name2,5, 1, 5);
+        Pattern pattern2a = new AdjacentPattern(name2,5, 1, 5);
         assertEquals(0, pattern2a.getPatternFunction().apply(myBookshelf));
 
         String name3 = "4";
-        Pattern pattern3a = new Adjacent(name3,4, 1, 3);
+        Pattern pattern3a = new AdjacentPattern(name3,4, 1, 3);
         assertEquals(0, pattern3a.getPatternFunction().apply(myBookshelf));
 
         String name4 = "3";
-        Pattern pattern4a = new Adjacent(name3,3, 1, 2);
+        Pattern pattern4a = new AdjacentPattern(name3,3, 1, 2);
         assertEquals(4, pattern4a.getPatternFunction().apply(myBookshelf));
     }
     @Test
@@ -246,10 +246,10 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "4";
-        Pattern pattern = new Adjacent(name,4, 3, 1);
+        Pattern pattern = new AdjacentPattern(name,4, 3, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
         // groups are deleted anyway
-        pattern = new Adjacent(name,4, 2, 1);
+        pattern = new AdjacentPattern(name,4, 2, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
         myBookshelf = bookShelf.getState();
         assertEquals(2, pattern.getPatternFunction().apply(myBookshelf));
@@ -281,15 +281,15 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String n = "2";
-        Pattern pattern = new Adjacent(n,2, 7, 1);
+        Pattern pattern = new AdjacentPattern(n,2, 7, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
         //groups are deleted anyway
-        pattern = new Adjacent(n,2, 1, 1);
+        pattern = new AdjacentPattern(n,2, 1, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
         myBookshelf = bookShelf.getState();
-        pattern = new Adjacent(n,2, 6, 1);
+        pattern = new AdjacentPattern(n,2, 6, 1);
         assertEquals(6, pattern.getPatternFunction().apply(myBookshelf));
-        pattern = new Adjacent(n,2, 1, 1);
+        pattern = new AdjacentPattern(n,2, 1, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
     }
 }

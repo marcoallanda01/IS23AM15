@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PersonalGoalCardManager extends CardsAndPointsManager {
+public class PersonalCardsPointsManager extends CardsPointsManager {
     private final Map<Player, Pattern> playersToCards = new HashMap<>();
 
-    public PersonalGoalCardManager(List<Player> players, Deck deck) {
+    public PersonalCardsPointsManager(List<Player> players, Deck deck) {
         super(players, deck);
         // note that the draw operation should not be run in parallel
         players.forEach(player -> playersToCards.put(player, deck.draw()));
@@ -16,7 +16,7 @@ public class PersonalGoalCardManager extends CardsAndPointsManager {
     /**
      * Used for deserialization
      */
-    public PersonalGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Player, Pattern> playersToCards) {
+    public PersonalCardsPointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Player, Pattern> playersToCards) {
         super(players, playersToPoints, updateRule, deck);
         this.playersToCards.putAll(playersToCards);
     }

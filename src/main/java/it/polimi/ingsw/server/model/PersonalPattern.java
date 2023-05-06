@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import java.util.*;
 import java.util.function.Function;
-public class Personal extends Pattern{
+public class PersonalPattern extends Pattern{
     private final List<Tile> tiles;
     private final List<int[]> checkToPoints;
 
@@ -11,7 +11,7 @@ public class Personal extends Pattern{
      * @param tiles tiles in the pattern
      * @param checkToPoints list of couple [num of corrects, points].
      */
-    public Personal(String name, List<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
+    public PersonalPattern(String name, List<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
         super(name);
         this.tiles = new ArrayList<Tile>(tiles);
         this.checkToPoints = new ArrayList<int[]>(checkToPoints);

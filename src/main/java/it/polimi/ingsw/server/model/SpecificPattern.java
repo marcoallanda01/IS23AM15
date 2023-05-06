@@ -6,9 +6,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.summingInt;
-
-public class Specific extends Pattern{
+public class SpecificPattern extends Pattern{
     private final List<List<List<Boolean>>> masks;
     private final boolean sgc;
     private final int minColor;
@@ -23,7 +21,7 @@ public class Specific extends Pattern{
      * @param minC minimum number of colors in the same group
      * @param maxC maximum number of colors in the same group
      */
-    public Specific(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC)  throws InvalidPatternParameterException{
+    public SpecificPattern(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC)  throws InvalidPatternParameterException{
         super(name);
         this.sgc = sgc;
         this.minColor = minC;
@@ -42,7 +40,7 @@ public class Specific extends Pattern{
      * @param maxC maximum number of colors in the same group
      * @param fe if set to true, cells set to false in any of the mask will require the corresponding slot in the bookshelf to be empty
      */
-    public Specific(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC, boolean fe)  throws InvalidPatternParameterException{
+    public SpecificPattern(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC, boolean fe)  throws InvalidPatternParameterException{
         super(name);
         this.sgc = sgc;
         this.minColor = minC;

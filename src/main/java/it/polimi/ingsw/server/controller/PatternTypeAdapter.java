@@ -6,10 +6,10 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import it.polimi.ingsw.server.model.Adjacent;
+import it.polimi.ingsw.server.model.AdjacentPattern;
 import it.polimi.ingsw.server.model.Pattern;
-import it.polimi.ingsw.server.model.Personal;
-import it.polimi.ingsw.server.model.Specific;
+import it.polimi.ingsw.server.model.PersonalPattern;
+import it.polimi.ingsw.server.model.SpecificPattern;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -23,18 +23,18 @@ public class PatternTypeAdapter extends TypeAdapter<Pattern> {
     public void write(JsonWriter jsonWriter, Pattern pattern) throws IOException {
         jsonWriter.beginObject();
         jsonWriter.name("type");
-        if (pattern instanceof Adjacent) {
-            jsonWriter.value("Adjacent");
+        if (pattern instanceof AdjacentPattern) {
+            jsonWriter.value("AdjacentPattern");
             jsonWriter.name("Pattern");
-            gson.toJson(pattern, Adjacent.class, jsonWriter);
-        } else if (pattern instanceof Personal){
-            jsonWriter.value("Personal");
+            gson.toJson(pattern, AdjacentPattern.class, jsonWriter);
+        } else if (pattern instanceof PersonalPattern){
+            jsonWriter.value("PersonalPattern");
             jsonWriter.name("Pattern");
-            gson.toJson(pattern, Personal.class, jsonWriter);
-        } else if (pattern instanceof Specific){
-            jsonWriter.value("Specific");
+            gson.toJson(pattern, PersonalPattern.class, jsonWriter);
+        } else if (pattern instanceof SpecificPattern){
+            jsonWriter.value("SpecificPattern");
             jsonWriter.name("Pattern");
-            gson.toJson(pattern, Specific.class, jsonWriter);
+            gson.toJson(pattern, SpecificPattern.class, jsonWriter);
         } else {
             throw new JsonSyntaxException("Pattern not recognized");
         }
@@ -47,17 +47,17 @@ public class PatternTypeAdapter extends TypeAdapter<Pattern> {
         Pattern pattern;
         if (jsonReader.nextName().equals("type")) {
             switch (jsonReader.nextString()) {
-                case "Adjacent" -> {
+                case "AdjacentPattern" -> {
                     jsonReader.nextName();
-                    pattern = gson.fromJson(jsonReader, Adjacent.class);
+                    pattern = gson.fromJson(jsonReader, AdjacentPattern.class);
                 }
-                case "Personal" -> {
+                case "PersonalPattern" -> {
                     jsonReader.nextName();
-                    pattern = gson.fromJson(jsonReader, Personal.class);
+                    pattern = gson.fromJson(jsonReader, PersonalPattern.class);
                 }
-                case "Specific" -> {
+                case "SpecificPattern" -> {
                     jsonReader.nextName();
-                    pattern = gson.fromJson(jsonReader, Specific.class);
+                    pattern = gson.fromJson(jsonReader, SpecificPattern.class);
                 }
                 default -> throw new JsonSyntaxException("Pattern not recognized");
             }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PersonalTest {
+class PersonalPatternTest {
 
     @Test
     void testGetPatternFunction() throws InvalidPatternParameterException {
@@ -53,7 +52,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(12, pattern.getPatternFunction().apply(bookshelfState));
     }
     void test1Right() throws InvalidPatternParameterException {
@@ -99,7 +98,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(2, pattern.getPatternFunction().apply(bookshelfState));
     }
     void test2Right() throws InvalidPatternParameterException {
@@ -145,7 +144,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(2, pattern.getPatternFunction().apply(bookshelfState));
     }
     void test3Right() throws InvalidPatternParameterException {
@@ -191,7 +190,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(4, pattern.getPatternFunction().apply(bookshelfState));
     }
     void test4Right() throws InvalidPatternParameterException {
@@ -237,7 +236,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(6, pattern.getPatternFunction().apply(bookshelfState));
     }
     void test5Right() throws InvalidPatternParameterException {
@@ -283,7 +282,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(9, pattern.getPatternFunction().apply(bookshelfState));
     }
     void test6Right() throws InvalidPatternParameterException {
@@ -329,7 +328,7 @@ class PersonalTest {
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
         String name = "P";
-        Pattern pattern = new Personal(name, checks, list);
+        Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(12, pattern.getPatternFunction().apply(bookshelfState));
     }
 }

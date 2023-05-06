@@ -5,12 +5,12 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class CommonGoalCardManager extends CardsAndPointsManager {
+public class CommonCardsPointsManager extends CardsPointsManager {
     private final Map<Pattern, Stack<Integer>> cardsToTokens = new HashMap<>();
     private Map<Player, List<Integer>> playersToTokens = new HashMap<>();
     private Map<Player, Set<Pattern>> playersToUnfulfilledCards = new HashMap<>();
 
-    public CommonGoalCardManager(List<Player> players, Deck deck) {
+    public CommonCardsPointsManager(List<Player> players, Deck deck) {
         super(players, deck);
         this.updateRule = UpdateRule.END_TURN;
         generatePlayersToTokens();
@@ -21,8 +21,8 @@ public class CommonGoalCardManager extends CardsAndPointsManager {
     /**
      * Used for deserialization
      */
-    public CommonGoalCardManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Pattern, Stack<Integer>> cardsToTokens,
-                                 Map<Player, List<Integer>> playersToTokens, Map<Player, Set<Pattern>> playersToUnfulfilledCards) {
+    public CommonCardsPointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck, Map<Pattern, Stack<Integer>> cardsToTokens,
+                                    Map<Player, List<Integer>> playersToTokens, Map<Player, Set<Pattern>> playersToUnfulfilledCards) {
         super(players, playersToPoints, updateRule, deck);
         this.cardsToTokens.putAll(cardsToTokens);
         this.playersToTokens.putAll(playersToTokens);

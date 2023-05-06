@@ -55,15 +55,15 @@ class SpecificTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         String name = "4squares";
-        Pattern pattern1a = new Specific(name, masks, 4, false, 1, 1);
+        Pattern pattern1a = new SpecificPattern(name, masks, 4, false, 1, 1);
         assertEquals(1, pattern1a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern1b = new Specific(name, masks, 5, false, 1, 1);
+        Pattern pattern1b = new SpecificPattern(name, masks, 5, false, 1, 1);
         assertEquals(0, pattern1b.getPatternFunction().apply(myBookshelf));
 
         String name2 = "6squaresWith2Types";
-        Pattern pattern2a = new Specific(name2, masks, 6, false, 1, 2);
+        Pattern pattern2a = new SpecificPattern(name2, masks, 6, false, 1, 2);
         assertEquals(1, pattern2a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern2b = new Specific(name2, masks, 7, false, 1, 2);
+        Pattern pattern2b = new SpecificPattern(name2, masks, 7, false, 1, 2);
         assertEquals(0, pattern2b.getPatternFunction().apply(myBookshelf));
 
         List<List<List<Boolean>>> Xmasks = new ArrayList<>();
@@ -87,14 +87,14 @@ class SpecificTest {
         Xmasks.get(0).get(2).set(2, true);
 
         String name3 = "2X";
-        Pattern pattern3a = new Specific(name3, Xmasks, 2, false, 1, 1);
+        Pattern pattern3a = new SpecificPattern(name3, Xmasks, 2, false, 1, 1);
         assertEquals(1, pattern3a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern3b = new Specific(name3, Xmasks, 4, false, 1, 1);
+        Pattern pattern3b = new SpecificPattern(name3, Xmasks, 4, false, 1, 1);
         assertEquals(0, pattern3b.getPatternFunction().apply(myBookshelf));
         String name4 = "4With2Types";
-        Pattern pattern4a = new Specific(name4, Xmasks, 4, false, 1, 2);
+        Pattern pattern4a = new SpecificPattern(name4, Xmasks, 4, false, 1, 2);
         assertEquals(1, pattern4a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern4b = new Specific(name4, Xmasks, 5, false, 1, 2);
+        Pattern pattern4b = new SpecificPattern(name4, Xmasks, 5, false, 1, 2);
         assertEquals(0, pattern4b.getPatternFunction().apply(myBookshelf));
 
         List<List<List<Boolean>>> Cornermasks = new ArrayList<>();
@@ -111,9 +111,9 @@ class SpecificTest {
         Cornermasks.get(0).get(5).set(4, true);
 
         String name5 = "Corners";
-        Pattern pattern5a = new Specific(name2, Cornermasks, 1, false, 1, 1);
+        Pattern pattern5a = new SpecificPattern(name2, Cornermasks, 1, false, 1, 1);
         assertEquals(1, pattern5a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern5b = new Specific(name2, Cornermasks, 2, false, 1, 1);
+        Pattern pattern5b = new SpecificPattern(name2, Cornermasks, 2, false, 1, 1);
         assertEquals(0, pattern5b.getPatternFunction().apply(myBookshelf));
 
         List<List<List<Boolean>>> Couplermasks = new ArrayList<>();
@@ -137,14 +137,14 @@ class SpecificTest {
         Couplermasks.get(1).get(1).set(0, true);
 
         String name7 = "Couples";
-        Pattern pattern7a = new Specific(name7, Couplermasks, 14, false, 1, 1);
+        Pattern pattern7a = new SpecificPattern(name7, Couplermasks, 14, false, 1, 1);
         assertEquals(1, pattern7a.getPatternFunction().apply(myBookshelf));
-        Pattern pattern7b = new Specific(name7, Couplermasks, 15, false, 1, 1);
+        Pattern pattern7b = new SpecificPattern(name7, Couplermasks, 15, false, 1, 1);
         assertEquals(0, pattern7b.getPatternFunction().apply(myBookshelf));
         // you can divide the bookshelf in 15 groups of 2 (any color)
-        Pattern pattern7c = new Specific(name7, Couplermasks, 15, false, 1, 6);
+        Pattern pattern7c = new SpecificPattern(name7, Couplermasks, 15, false, 1, 6);
         assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
-        Pattern pattern7d = new Specific(name7, Couplermasks, 16, false, 1, 6);
+        Pattern pattern7d = new SpecificPattern(name7, Couplermasks, 16, false, 1, 6);
         assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
     }
 
@@ -173,8 +173,8 @@ class SpecificTest {
         Couplermasks.get(1).get(1).set(0, true);
 
         String name = "Couples";
-        Pattern achievablePattern = new Specific(name, Couplermasks, 6, false, 1, 1);
-        Pattern unachievablePattern = new Specific(name, Couplermasks, 7, false, 1, 1);
+        Pattern achievablePattern = new SpecificPattern(name, Couplermasks, 6, false, 1, 1);
+        Pattern unachievablePattern = new SpecificPattern(name, Couplermasks, 7, false, 1, 1);
 
         BookShelf bookShelf = new BookShelf();
         // -C---
@@ -231,8 +231,8 @@ class SpecificTest {
         masks.get(1).get(0).set(4, true);
         // defining the pattern
         String name = "Diagonal";
-        Pattern achievablePattern = new Specific(name, masks, 1, false, 1, 1);
-        Pattern unachievablePattern = new Specific(name, masks, 2, false, 1, 1);
+        Pattern achievablePattern = new SpecificPattern(name, masks, 1, false, 1, 1);
+        Pattern unachievablePattern = new SpecificPattern(name, masks, 2, false, 1, 1);
 
         // first test
         BookShelf bookShelf = new BookShelf();
@@ -311,8 +311,8 @@ class SpecificTest {
         masks.get(0).get(0).set(4, true);;
         // defining the pattern
         String name = "4Rows3Color";
-        Pattern achievablePattern = new Specific(name, masks, 4, false, 1, 3);
-        Pattern unachievablePattern = new Specific(name, masks, 5, false, 1, 3);
+        Pattern achievablePattern = new SpecificPattern(name, masks, 4, false, 1, 3);
+        Pattern unachievablePattern = new SpecificPattern(name, masks, 5, false, 1, 3);
 
         // first test
         BookShelf bookShelf = new BookShelf();
@@ -361,8 +361,8 @@ class SpecificTest {
         mask.add(row5);
         mask.add(row6);
         masks.add(mask);
-        Pattern achievablePattern = new Specific("CORNERS", masks, 1, false, 1, 1);
-        Pattern unAchievablePattern = new Specific("CORNERS", masks, 1, false, 2, 2);
+        Pattern achievablePattern = new SpecificPattern("CORNERS", masks, 1, false, 1, 1);
+        Pattern unAchievablePattern = new SpecificPattern("CORNERS", masks, 1, false, 2, 2);
 
 
         // | P | B | B | B | P |
@@ -427,9 +427,9 @@ class SpecificTest {
         mask.add(row5);
         mask.add(row6);
         masks.add(mask);
-        Pattern easilyAchievablePattern = new Specific("1_COLUMNS_COLOURFUL", masks, 1, false, 6, 6);
-        Pattern achievablePattern = new Specific("2_COLUMNS_COLOURFUL", masks, 2, false, 6, 6);
-        Pattern unAchievablePattern = new Specific("3_COLUMNS_COLOURFUL", masks, 3, false, 6, 6);
+        Pattern easilyAchievablePattern = new SpecificPattern("1_COLUMNS_COLOURFUL", masks, 1, false, 6, 6);
+        Pattern achievablePattern = new SpecificPattern("2_COLUMNS_COLOURFUL", masks, 2, false, 6, 6);
+        Pattern unAchievablePattern = new SpecificPattern("3_COLUMNS_COLOURFUL", masks, 3, false, 6, 6);
 
         // | F | - | G | C | P |
         // | C | - | B | F | B |
@@ -485,9 +485,9 @@ class SpecificTest {
         mask.add(row1);
         mask.add(row2);
         masks.add(mask);
-        Pattern easilyAchievablePattern = new Specific("1_SQUARE", masks, 1, false, 1, 1);
-        Pattern achievablePattern = new Specific("2_SQUARES", masks, 2, false, 1, 1);
-        Pattern unAchievablePattern = new Specific("3_SQUARES", masks, 3, false, 1, 1);
+        Pattern easilyAchievablePattern = new SpecificPattern("1_SQUARE", masks, 1, false, 1, 1);
+        Pattern achievablePattern = new SpecificPattern("2_SQUARES", masks, 2, false, 1, 1);
+        Pattern unAchievablePattern = new SpecificPattern("3_SQUARES", masks, 3, false, 1, 1);
 
         // | F | - | G | C | P |
         // | C | - | B | F | B |
@@ -541,9 +541,9 @@ class SpecificTest {
         List<Boolean> row1 = List.of(true, true, true, true, true);
         mask.add(row1);
         masks.add(mask);
-        Pattern easilyAchievablePattern = new Specific("1_ROW", masks, 1, false, 5, 5);
-        Pattern achievablePattern = new Specific("2_ROWS", masks, 2, false, 5, 5);
-        Pattern unAchievablePattern = new Specific("3_ROWS", masks, 3, false, 5, 5);
+        Pattern easilyAchievablePattern = new SpecificPattern("1_ROW", masks, 1, false, 5, 5);
+        Pattern achievablePattern = new SpecificPattern("2_ROWS", masks, 2, false, 5, 5);
+        Pattern unAchievablePattern = new SpecificPattern("3_ROWS", masks, 3, false, 5, 5);
 
         // | F | - | G | C | P |
         // | C | - | B | F | B |
@@ -607,9 +607,9 @@ class SpecificTest {
         mask.add(row5);
         mask.add(row6);
         masks.add(mask);
-        Pattern easilyAchievablePattern = new Specific("2_COLUMNS_3_COLOR", masks, 2, false, 1, 3);
-        Pattern achievablePattern = new Specific("3_COLUMNS_3_COLOR", masks, 3, false, 1, 3);
-        Pattern unAchievablePattern = new Specific("4_COLUMNS_3_COLOR", masks, 4, false, 1, 3);
+        Pattern easilyAchievablePattern = new SpecificPattern("2_COLUMNS_3_COLOR", masks, 2, false, 1, 3);
+        Pattern achievablePattern = new SpecificPattern("3_COLUMNS_3_COLOR", masks, 3, false, 1, 3);
+        Pattern unAchievablePattern = new SpecificPattern("4_COLUMNS_3_COLOR", masks, 4, false, 1, 3);
 
         // | F | - | G | C | P |
         // | F | - | B | F | B |
@@ -668,9 +668,9 @@ class SpecificTest {
         mask.add(row3);
         masks.add(mask);
 
-        Pattern easilyAchievablePattern = new Specific("MULTICOLOR_X", masks, 1, false, 1, 2);
-        Pattern achievablePattern = new Specific("X", masks, 1, false, 1, 1);
-        Pattern unAchievablePattern = new Specific("2_X", masks, 2, false, 1, 1);
+        Pattern easilyAchievablePattern = new SpecificPattern("MULTICOLOR_X", masks, 1, false, 1, 2);
+        Pattern achievablePattern = new SpecificPattern("X", masks, 1, false, 1, 1);
+        Pattern unAchievablePattern = new SpecificPattern("2_X", masks, 2, false, 1, 1);
 
         // | F | - | G | C | P |
         // | B | - | B | F | B |
@@ -725,9 +725,9 @@ class SpecificTest {
         mask.add(row1);
         masks.add(mask);
 
-        Pattern easilyAchievablePattern = new Specific("7", masks, 7, true, 1, 1);
-        Pattern achievablePattern = new Specific("8", masks, 8, true, 1, 1);
-        Pattern unAchievablePattern = new Specific("9", masks, 9, true, 1, 1);
+        Pattern easilyAchievablePattern = new SpecificPattern("7", masks, 7, true, 1, 1);
+        Pattern achievablePattern = new SpecificPattern("8", masks, 8, true, 1, 1);
+        Pattern unAchievablePattern = new SpecificPattern("9", masks, 9, true, 1, 1);
 
         // | - | - | - | C | P |
         // | - | - | - | F | B |
@@ -789,8 +789,8 @@ class SpecificTest {
         mask.add(row4);
         mask.add(row5);
         masks.add(mask);
-        Pattern achievablePattern = new Specific("CORNERS", masks, 1, false, 1, 6, true);
-        Pattern unAchievablePattern = new Specific("CORNERS", masks, 2, false, 1, 6, true);
+        Pattern achievablePattern = new SpecificPattern("CORNERS", masks, 1, false, 1, 6, true);
+        Pattern unAchievablePattern = new SpecificPattern("CORNERS", masks, 2, false, 1, 6, true);
 
 
         // | - | - | - | - | - |
@@ -847,7 +847,7 @@ class SpecificTest {
         List<Boolean> row2 = new ArrayList<>();
         List<Boolean> row3 = new ArrayList<>();
 
-        // Construction masks for Specific
+        // Construction masks for SpecificPattern
         row1.add(false); row1.add(true); row1.add(false);
         row2.add(true);  row2.add(true); row2.add(true);
         row3.add(false); row3.add(true); row3.add(true);
@@ -894,7 +894,7 @@ class SpecificTest {
         row1.clear(); row2.clear(); row3.clear();
         results.add(m3);
 
-        Specific pattern = new Specific("test", masks, 1, false, 1, 1);
+        SpecificPattern pattern = new SpecificPattern("test", masks, 1, false, 1, 1);
         //assertEquals(results, pattern.getTransposedMasks());
     }
 }

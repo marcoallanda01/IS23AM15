@@ -3,11 +3,11 @@ package it.polimi.ingsw.server.model;
 import java.util.List;
 import java.util.Map;
 
-public  abstract class CardsAndPointsManager extends PointsManager {
+public  abstract class CardsPointsManager extends PointsManager {
 
     protected Deck deck;
 
-    public CardsAndPointsManager(List<Player> players, Deck deck) {
+    public CardsPointsManager(List<Player> players, Deck deck) {
         super(players);
         this.deck = deck;
     }
@@ -15,7 +15,7 @@ public  abstract class CardsAndPointsManager extends PointsManager {
     /**
      * Used for deserialization
      */
-    public CardsAndPointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck) {
+    public CardsPointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck) {
         super(players, playersToPoints, updateRule);
         this.deck = deck;
     }

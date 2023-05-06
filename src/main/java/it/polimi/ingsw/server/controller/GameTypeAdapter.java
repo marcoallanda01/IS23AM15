@@ -144,19 +144,19 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
         Chat chat = null;
 
         GoalManager goalManager = null;
-        CommonGoalCardManager commonGoalCardManager = null;
+        CommonCardsPointsManager commonCardsPointsManager = null;
         Map<Pattern, Stack<Integer>> cardsToTokens = null;
         Map<Player, Integer> playerToPoints = null;
         UpdateRule updateRule = null;
         Deck deck = null;
         Map<Player, List<Integer>> playerToTokens = null;
         Map<Player, Set<Pattern>> playerToUnfulfilledCards = null;
-        PersonalGoalCardManager personalGoalCardManager = null;
+        PersonalCardsPointsManager personalCardsPointsManager = null;
         Map<Player, Integer> playerToPoints2 = null;
         UpdateRule updateRule2 = null;
         Deck deck2 = null;
         Map<Player, Pattern> playerToCards = null;
-        EndGamePointsManager endGamePointsManager = null;
+        CommonGoalsPointsManager commonGoalsPointsManager = null;
         Map<Player, Integer> playerToPoints3 = null;
         UpdateRule updateRule3 = null;
         Set<Pattern> patterns = null;
@@ -233,7 +233,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                         String field = in.nextName();
 
                         switch (field) {
-                            case "commonGoalCardManager" -> {
+                            case "commonCardsPointsManager" -> {
                                 in.beginObject();
                                 while (in.hasNext()) {
                                     String commonGoalCardManagerField = in.nextName();
@@ -275,11 +275,11 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                 }
                                 if (playerToPoints == null || updateRule == null || deck == null || playerToTokens == null || playerToUnfulfilledCards == null)
                                     throw new JsonParseException("Some fields are null");
-                                commonGoalCardManager =
-                                        new CommonGoalCardManager(players, playerToPoints, updateRule, deck, cardsToTokens, playerToTokens, playerToUnfulfilledCards);
+                                commonCardsPointsManager =
+                                        new CommonCardsPointsManager(players, playerToPoints, updateRule, deck, cardsToTokens, playerToTokens, playerToUnfulfilledCards);
                                 in.endObject();
                             }
-                            case "personalGoalCardManager" -> {
+                            case "personalCardsPointsManager" -> {
                                 in.beginObject();
                                 while (in.hasNext()) {
                                     String personalGoalCardManagerField = in.nextName();
@@ -308,10 +308,10 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                     }
                                 }
                                 if (playerToPoints2 == null || updateRule2 == null || deck2 == null || playerToCards == null) throw new JsonParseException("Some fields are null");
-                                personalGoalCardManager = new PersonalGoalCardManager(players, playerToPoints2, updateRule2, deck2, playerToCards);
+                                personalCardsPointsManager = new PersonalCardsPointsManager(players, playerToPoints2, updateRule2, deck2, playerToCards);
                                 in.endObject();
                             }
-                            case "endGamePointsManager" -> {
+                            case "commonGoalsPointsManager" -> {
                                 in.beginObject();
                                 while (in.hasNext()) {
                                     String endGamePointsManagerField = in.nextName();
@@ -334,7 +334,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                     }
                                 }
                                 if (playerToPoints3 == null || updateRule3 == null || patterns == null) throw new JsonParseException("Some fields are null");
-                                endGamePointsManager = new EndGamePointsManager(players, playerToPoints3, updateRule3, patterns);
+                                commonGoalsPointsManager = new CommonGoalsPointsManager(players, playerToPoints3, updateRule3, patterns);
                                 in.endObject();
                             }
                             case "frequentUpdates" -> {
@@ -342,9 +342,9 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                             }
                         }
                     }
-                    if (commonGoalCardManager == null || personalGoalCardManager == null || endGamePointsManager == null)
+                    if (commonCardsPointsManager == null || personalCardsPointsManager == null || commonGoalsPointsManager == null)
                         throw new JsonParseException("At least one of the goal managers is null");
-                    goalManager = new GoalManager(commonGoalCardManager, personalGoalCardManager, endGamePointsManager, frequentUpdates);
+                    goalManager = new GoalManager(commonCardsPointsManager, personalCardsPointsManager, commonGoalsPointsManager, frequentUpdates);
                     in.endObject();
                 }
                 // Ignore unknown fields
