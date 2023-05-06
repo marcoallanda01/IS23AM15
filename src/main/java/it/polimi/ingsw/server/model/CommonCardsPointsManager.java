@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -10,11 +11,44 @@ public class CommonCardsPointsManager extends CardsPointsManager {
     private Map<Player, List<Integer>> playersToTokens = new HashMap<>();
     private Map<Player, Set<Pattern>> playersToUnfulfilledCards = new HashMap<>();
 
+    private Function<Integer, Stack<Integer>> generateCardTokens;
+    /**
+     * @param players the players
+     * @param deck  the deck of patterns from which to draw 2 cards
+     */
     public CommonCardsPointsManager(List<Player> players, Deck deck) {
         super(players, deck);
         this.updateRule = UpdateRule.END_TURN;
+        this.generateCardTokens = this.defaultGenerateCardTokens();
         generatePlayersToTokens();
-        generateCardsToTokens();
+        generateCardsToTokens(2);
+        generatePlayersToUnfulfilledCards();
+    }
+    /**
+     * @param players the players
+     * @param deck  the deck of patterns from which to draw drawNumber cards
+     * @param drawNumber  the number of cards to draw
+     */
+    public CommonCardsPointsManager(List<Player> players, Deck deck, Integer drawNumber) {
+        super(players, deck);
+        this.updateRule = UpdateRule.END_TURN;
+        this.generateCardTokens = this.defaultGenerateCardTokens();
+        generatePlayersToTokens();
+        generateCardsToTokens(drawNumber);
+        generatePlayersToUnfulfilledCards();
+    }
+    /**
+     * @param players the players
+     * @param deck  the deck of patterns from which to draw drawNumber cards
+     * @param drawNumber  the number of cards to draw
+     * @param generateCardTokens a function that given the number of players returns a stack of tokens
+     */
+    public CommonCardsPointsManager(List<Player> players, Deck deck, Integer drawNumber, Function<Integer, Stack<Integer>> generateCardTokens) {
+        super(players, deck);
+        this.updateRule = UpdateRule.END_TURN;
+        this.generateCardTokens = generateCardTokens;
+        generatePlayersToTokens();
+        generateCardsToTokens(drawNumber);
         generatePlayersToUnfulfilledCards();
     }
 
@@ -39,47 +73,44 @@ public class CommonCardsPointsManager extends CardsPointsManager {
     /**
      * Initializes cardsToTokens
      */
-    private void generateCardsToTokens() {
-        // initializing 2 common goal cards, maybe should be parametrized
-        for (int i = 0; i < 2; i++) {
+    private void generateCardsToTokens(Integer drawNumber) {
+        for (int i = 0; i < drawNumber; i++) {
             Pattern card = deck.draw();
-            cardsToTokens.put(card, generateCardTokens());
+            cardsToTokens.put(card, generateCardTokens.apply(this.players.size()));
         }
     }
 
     /**
      * @return the pile of tokens to put on a generic card, based on the number of players
      */
-    // good for now, might want to read these from json and pass it to the constructor
-    private Stack<Integer> generateCardTokens() {
-        Stack<Integer> pile = new Stack<>();
-        switch (this.players.size()) {
-            case 2: {
-                pile.push(Integer.valueOf(4));
-                pile.push(Integer.valueOf(8));
-                break;
+    private Function<Integer, Stack<Integer>>  defaultGenerateCardTokens() {
+        return (playerNumber) -> {
+            Stack<Integer> pile = new Stack<>();
+            switch (playerNumber) {
+                case 2 -> {
+                    pile.push(Integer.valueOf(4));
+                    pile.push(Integer.valueOf(8));
+                }
+                case 3 -> {
+                    pile.push(Integer.valueOf(4));
+                    pile.push(Integer.valueOf(6));
+                    pile.push(Integer.valueOf(8));
+                }
+                case 4 -> {
+                    pile.push(Integer.valueOf(2));
+                    pile.push(Integer.valueOf(4));
+                    pile.push(Integer.valueOf(6));
+                    pile.push(Integer.valueOf(8));
+                }
+                default -> {
+                    pile.push(Integer.valueOf(2));
+                    pile.push(Integer.valueOf(4));
+                    pile.push(Integer.valueOf(6));
+                    pile.push(Integer.valueOf(8));
+                }
             }
-            case 3: {
-                pile.push(Integer.valueOf(4));
-                pile.push(Integer.valueOf( 6));
-                pile.push(Integer.valueOf( 8));
-                break;
-            }
-            case 4: {
-                pile.push(Integer.valueOf( 2));
-                pile.push(Integer.valueOf( 4));
-                pile.push(Integer.valueOf( 6));
-                pile.push(Integer.valueOf( 8));
-                break;
-            }
-            default: {
-                pile.push(Integer.valueOf( 2));
-                pile.push(Integer.valueOf( 4));
-                pile.push(Integer.valueOf( 6));
-                pile.push(Integer.valueOf( 8));
-            }
-        }
-        return pile;
+            return pile;
+        };
     }
 
     /**
