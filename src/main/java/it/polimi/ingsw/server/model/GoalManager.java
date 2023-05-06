@@ -159,7 +159,11 @@ public class GoalManager {
                     checkToPoints.add(new int[]{check, p});
                 }
                 // Check to points must be already ordered in the json file
-                pattern = new Personal(name, tiles, checkToPoints);
+                try {
+                    pattern = new Personal(name, tiles, checkToPoints);
+                } catch (InvalidPatternParameterException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
