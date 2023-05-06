@@ -126,7 +126,11 @@ public class GoalManager {
                 int minTiles = patternJ.get("min_tiles").getAsInt();
                 int maxTiles = patternJ.get("min_groups").getAsInt();
                 int points = patternJ.get("points").getAsInt();
-                pattern = new Adjacent(name, minTiles, maxTiles, points);
+                try {
+                    pattern = new Adjacent(name, minTiles, maxTiles, points);
+                } catch (InvalidPatternParameterException e) {
+                    throw new RuntimeException(e);
+                }
             }
             case "personal" -> {
                 /*

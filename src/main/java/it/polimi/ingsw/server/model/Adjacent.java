@@ -7,19 +7,53 @@ public class Adjacent extends Pattern{
     private final Integer points;
     private final Integer minGroups;
     private final Integer minTiles;
-    public Adjacent(String name, int minTiles, int points){
+    /**
+     * @param name the name of the pattern
+     * @param minTiles the minimum amount of tiles a group should have for it to be deleted
+     * @param points the points to be given for each deleted group
+     */
+    public Adjacent(String name, int minTiles, int points) throws InvalidPatternParameterException {
         super(name);
         this.points = points;
         this.minTiles = minTiles;
         this.minGroups = 1;
+        this.checkParameters();
     }
-    // important, signature change!!
-    public Adjacent(String name, int minTiles, int minGroups, int points){
+    /**
+     * @param name the name of the pattern
+     * @param minTiles the minimum amount of tiles a group should have for it to be deleted
+     * @param minGroups the minimum number of groups to be found to return the points (and not 0)
+     * @param points the points to be given for each deleted group
+     */
+    public Adjacent(String name, int minTiles, int minGroups, int points) throws InvalidPatternParameterException {
         super(name);
         this.points = points;
         this.minTiles = minTiles;
         this.minGroups = minGroups;
+        this.checkParameters();
     }
+    /**
+     * Checks the constructor parameters
+     * @throws InvalidPatternParameterException if the parameters are invalid
+     */
+    private void checkParameters() throws InvalidPatternParameterException {
+        if (minTiles <= 0) {
+            throw new InvalidPatternParameterException("minTiles must be strictly positive");
+        }
+        if (minGroups <= 0) {
+            throw new InvalidPatternParameterException("minGroups must be strictly positive");
+        }
+        if (points <= 0) {
+            throw new InvalidPatternParameterException("points must be strictly positive");
+        }
+    }
+
+    /**
+     * @return a function that given the bookshelf EDITS the bookshelf,
+     * deleting all the tiles contained in the groups with at least minTiles tiles
+     * if the number of deleted groups is more than or equal to minGroups it also returns the points
+     * (that could be interpreted as the actual points or just used to check if it satisfies the pattern)
+     */
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
         return (bookshelf) -> {
             Integer groupsFound = 0;
@@ -27,6 +61,11 @@ public class Adjacent extends Pattern{
             return groupsFound >= this.minGroups ? this.points * groupsFound : 0;
         };
     }
+    /**
+     * @param bookshelf the bookshelf
+     * @param minTiles the minimum amount of tiles a group should have for it to be deleted
+     * @return if a group of at least minTiles has been found (and deleted)
+     */
     private boolean findAndDeleteGroup(List<List<Optional<Tile>>> bookshelf, Integer minTiles) {
         List<List<Boolean>> mask = new ArrayList<>();
         for (int i = 0; i < bookshelf.size(); i++) {
@@ -54,6 +93,11 @@ public class Adjacent extends Pattern{
         }
         return false;
     }
+    /**
+     * Removes tiles from the given bookshelf according to the matrix
+     * @param bookshelf the bookshelf
+     * @param mask a matrix representing the tiles to be removed
+     */
     private void removeTiles(List<List<Optional<Tile>>> bookshelf, List<List<Boolean>> mask) {
         for (int i = 0; i < mask.size(); i++) {
             for (int j = 0; j < mask.get(i).size(); j++) {
@@ -63,6 +107,11 @@ public class Adjacent extends Pattern{
             }
         }
     }
+    /**
+     * Counts the amount of true in the given mask
+     * @param mask a matrix representing the tiles to be counted
+     * @return the amount of true in the given matrix
+     */
     private Integer countAdjacentTiles(List<List<Boolean>> mask) {
         Integer count = 0;
         for (int i = 0; i < mask.size(); i++) {
@@ -74,6 +123,13 @@ public class Adjacent extends Pattern{
         }
         return count;
     }
+    /**
+     * Recursive method, marks the given tile on the mask
+     * calls itself on nearby tiles of the same type (right, top, left, bottom), if any
+     * @param bookshelf the bookshelf
+     * @param checkedTile the currently checked tile
+     * @param mask a matrix representing the tiles of the same type of the starting tile
+     */
     private void markAdjacentTiles(List<List<Optional<Tile>>> bookshelf, Tile checkedTile, List<List<Boolean>> mask) {
         if (mask.get(checkedTile.getX()).get(checkedTile.getY()).equals(Boolean.FALSE)) {
             mask.get(checkedTile.getX()).set(checkedTile.getY(), Boolean.TRUE);

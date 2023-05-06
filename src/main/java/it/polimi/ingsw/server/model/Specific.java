@@ -16,11 +16,12 @@ public class Specific extends Pattern{
     private final int groupNum;
     private final boolean forceEmpty;
     /**
-     * @param masks mask that specifies the pattern true block, false void
-     * @param groupNum number of groups that have to be present
-     * @param sgc      true if different groups of tails must have same colour
-     * @param minC min number of different colour that have to be present in a group
-     * @param maxC max number of different colour that have to be present in a group
+     * @param name the name of the pattern
+     * @param masks a list of matrix representing the acceptable shapes of the groups
+     * @param groupNum the minimum number of groups to be found to return the points (and not 0)
+     * @param sgc should all the groups have the same color?
+     * @param minC minimum number of colors in the same group
+     * @param maxC maximum number of colors in the same group
      */
     public Specific(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC)  throws InvalidPatternParameterException{
         super(name);
@@ -30,8 +31,17 @@ public class Specific extends Pattern{
         this.groupNum = groupNum;
         this.masks = new ArrayList<>(masks);
         this.forceEmpty = false;
-        this.checkParams();
+        this.checkParameters();
     }
+    /**
+     * @param name the name of the pattern
+     * @param masks a list of matrix representing the acceptable shapes of the groups
+     * @param groupNum the minimum number of groups to be found to return the points (and not 0)
+     * @param sgc should all the groups have the same color?
+     * @param minC minimum number of colors in the same group
+     * @param maxC maximum number of colors in the same group
+     * @param fe if set to true, cells set to false in any of the mask will require the corresponding slot in the bookshelf to be empty
+     */
     public Specific(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC, boolean fe)  throws InvalidPatternParameterException{
         super(name);
         this.sgc = sgc;
@@ -40,9 +50,13 @@ public class Specific extends Pattern{
         this.groupNum = groupNum;
         this.masks = new ArrayList<>(masks);
         this.forceEmpty = fe;
-        this.checkParams();
+        this.checkParameters();
     }
-    private void checkParams()  throws InvalidPatternParameterException{
+    /**
+     * Checks the constructor parameters
+     * @throws InvalidPatternParameterException if the parameters are invalid
+     */
+    private void checkParameters()  throws InvalidPatternParameterException{
         if (this.masks == null) {
             throw new InvalidPatternParameterException("masks cannot be null");
         }
@@ -88,13 +102,28 @@ public class Specific extends Pattern{
         if (minColor > maxColor) {
             throw new InvalidPatternParameterException("minC must be less than or equal to maxColor");
         }
+        if (minColor <= 0) {
+            throw new InvalidPatternParameterException("minColor must be strictly positive");
+        }
+        if (maxColor <= 0) {
+            throw new InvalidPatternParameterException("maxColor must be strictly positive");
+        }
     }
+    /**
+     * @return a function that given the bookshelf checks if it satisfies the pattern,
+     * and if it does, then 1 is returned (that could be interpreted as the number of
+     * points or just used to check if it satisfies the pattern), otherwise 0.
+     */
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
         return (bookshelf) -> {
             List<List<Tile>> allGroups = new ArrayList<>(getAllGroups().apply(bookshelf)); // getting all the groups using the private function
             return Boolean.compare(findGoodSequence().test(allGroups), false);
         };
     }
+    /**
+     * @return a predicate that given sequence of groups, checks if it is a valid sequence according to:
+     * same group color (sgc) and the group number (groupNum)
+     */
     private Predicate<List<List<Tile>>> isSequenceValid() {
         return (sequence) -> {
             if (!this.sgc) {
@@ -145,7 +174,12 @@ public class Specific extends Pattern{
         return transposeMasks();
     }
 
-    // gets all the groups, even if overlapping
+    /**
+     * @returna function that given the bookshelf returns:
+     * a list of groups (lists of tiles) representing all the groups that satisfy:
+     * at least one of the masks (accounting for force empty),
+     * the minimum and maximum amount of different colors
+     */
     private Function<List<List<Optional<Tile>>>, List<List<Tile>>> getAllGroups() {
         return (bookshelf) -> {
             List<List<List<Boolean>>> masks = transposeMasks();
@@ -200,6 +234,12 @@ public class Specific extends Pattern{
     }
     // allTheGroups = [[T1, T2, ], [...]] = [Group1, Group2,...]
     // notOverlappingSequences = [[[T1, T4, T5] ...], [...]] = [[Group1, Group4, ...], [...]] = [Sequence1, Sequence2, ...]
+    /**
+     * @returna a predicate that given a sequence of groups returns:
+     * true, when:
+     * no groups in the sequence have overlapping tiles
+     * and the sequence satisfies the predicate returned from isSequenceValid
+     */
     private Predicate<List<List<Tile>>> findGoodSequence() {
         List<List<Tile>> toBeFilteredGroups = new ArrayList<>();
         return startingGroups -> {
@@ -219,7 +259,11 @@ public class Specific extends Pattern{
             return !sequenceChanged && isSequenceValid().test(startingGroups);
         };
     }
-
+    /**
+     * @returna a bifunction that given the sequence of groups and a mainGroup:
+     * removes all groups overlapping with mainGroup from the sequence
+     * returns true if any have been removed
+     */
     private BiFunction<List<List<Tile>>, List<Tile>, Boolean> removeOverlapping() {
         Set<List<Tile>> overlappingGroups = new HashSet<>();
         return (groups, mainGroup) -> {
