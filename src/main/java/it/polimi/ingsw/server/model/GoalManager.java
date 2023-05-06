@@ -334,14 +334,14 @@ public class GoalManager {
         return personalCardsPointsManager.getCard(player);
     }
 
-    public Set<Pattern> getEndGameGoals() {
+    public Set<Pattern> getCommonGoals() {
         return commonGoalsPointsManager.getPatterns();
     }
 
     /**
      * Used for serialization
      */
-    public CommonCardsPointsManager getCommonGoalCardManager() {
+    public CommonCardsPointsManager getCommonCardsPointsManager() {
         return commonCardsPointsManager;
     }
 
@@ -355,7 +355,7 @@ public class GoalManager {
     /**
      * Used for serialization
      */
-    public CommonGoalsPointsManager getEndGamePointsManager() {
+    public CommonGoalsPointsManager getCommonGoalsPointsManager() {
         return commonGoalsPointsManager;
     }
 

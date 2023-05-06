@@ -210,7 +210,7 @@ public class Game{
     }
 
     public Set<String> getEndGameGoals() {
-        return goalManager.getEndGameGoals().stream().map(Pattern::getName).collect(Collectors.toSet());
+        return goalManager.getCommonGoals().stream().map(Pattern::getName).collect(Collectors.toSet());
     }
 
     private Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {

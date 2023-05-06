@@ -62,26 +62,26 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                 jsonWriter.beginObject();
                 {
                     jsonWriter.name("playersToPoints");
-                    Map<String, Integer> playerToPoints = goalManager.getCommonGoalCardManager().getPlayersToPoints().entrySet().stream()
+                    Map<String, Integer> playerToPoints = goalManager.getCommonCardsPointsManager().getPlayersToPoints().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
                     gson.toJson(playerToPoints, new TypeToken<Map<String, Integer>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("updateRule");
-                    gson.toJson(goalManager.getCommonGoalCardManager().getUpdateRule(), UpdateRule.class, jsonWriter);
+                    gson.toJson(goalManager.getCommonCardsPointsManager().getUpdateRule(), UpdateRule.class, jsonWriter);
                     jsonWriter.name("deck");
-                    gson.toJson(goalManager.getCommonGoalCardManager().getDeck(), new TypeToken<Deck>() {
+                    gson.toJson(goalManager.getCommonCardsPointsManager().getDeck(), new TypeToken<Deck>() {
                     }.getType(), jsonWriter);
 
                     jsonWriter.name("cardsToTokens");
-                    gson.toJson(goalManager.getCommonGoalCardManager().getCardsToTokens(), new TypeToken<Map<Pattern, Stack<Integer>>>() {
+                    gson.toJson(goalManager.getCommonCardsPointsManager().getCardsToTokens(), new TypeToken<Map<Pattern, Stack<Integer>>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToTokens");
-                    Map<String, List<Integer>> playerToToken = goalManager.getCommonGoalCardManager().getPlayersToTokens().entrySet().stream()
+                    Map<String, List<Integer>> playerToToken = goalManager.getCommonCardsPointsManager().getPlayersToTokens().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
                     gson.toJson(playerToToken, new TypeToken<Map<String, List<Integer>>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("playersToUnfulfilledCards");
-                    Map<String, Set<Pattern>> playerToUnfulfilledCards = goalManager.getCommonGoalCardManager().getPlayersToUnfulfilledCards().entrySet().stream()
+                    Map<String, Set<Pattern>> playerToUnfulfilledCards = goalManager.getCommonCardsPointsManager().getPlayersToUnfulfilledCards().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
                     gson.toJson(playerToUnfulfilledCards, new TypeToken<Map<String, Set<Pattern>>>() {
                     }.getType(), jsonWriter);
@@ -111,14 +111,14 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                 jsonWriter.beginObject();
                 {
                     jsonWriter.name("playersToPoints");
-                    Map<String, Integer> playerToPoints = goalManager.getEndGamePointsManager().getPlayersToPoints().entrySet().stream()
+                    Map<String, Integer> playerToPoints = goalManager.getCommonGoalsPointsManager().getPlayersToPoints().entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getUserName(), Map.Entry::getValue));
                     gson.toJson(playerToPoints, new TypeToken<Map<String, Integer>>() {
                     }.getType(), jsonWriter);
                     jsonWriter.name("updateRule");
-                    gson.toJson(goalManager.getEndGamePointsManager().getUpdateRule(), UpdateRule.class, jsonWriter);
+                    gson.toJson(goalManager.getCommonGoalsPointsManager().getUpdateRule(), UpdateRule.class, jsonWriter);
                     jsonWriter.name("patterns");
-                    gson.toJson(goalManager.getEndGamePointsManager().getPatterns(), new TypeToken<Set<Pattern>>() {
+                    gson.toJson(goalManager.getCommonGoalsPointsManager().getPatterns(), new TypeToken<Set<Pattern>>() {
                     }.getType(), jsonWriter);
                 }
                 jsonWriter.endObject();
