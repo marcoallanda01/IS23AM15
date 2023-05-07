@@ -357,6 +357,135 @@ class CommonCardsPointsManagerTest {
         assertEquals(4, pm.getPoints(players.get(2)));
         assertEquals(2, pm.getPoints(players.get(3)));
     }
+    @Test
+    void arePlayerTokensUpdatingTest() throws InvalidPatternParameterException {
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("user1"));
+        players.add(new Player("user2"));
+        players.add(new Player("user3"));
+        players.add(new Player("user4"));
 
+        Pattern alwaysTruePattern = new Pattern("alwaysTrue") {
+            @Override
+            public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
+                return (bookshelf) -> 1;
+            }
+        };
+        Pattern alwaysFalsePattern = new Pattern("alwaysTrue") {
+            @Override
+            public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
+                return (bookshelf) -> 0;
+            }
+        };
+        CommonCardsPointsManager pm = new CommonCardsPointsManager(players, new Deck(Set.of(alwaysTruePattern, alwaysFalsePattern)));
+        Map<Player, List<Integer>> ptt = new HashMap<>();
+        ptt.put(players.get(0), List.of());
+        ptt.put(players.get(1), List.of());
+        ptt.put(players.get(2), List.of());
+        ptt.put(players.get(3), List.of());
+        assertEquals(ptt, pm.getPlayersToTokens());
+        assertEquals(List.of(), pm.getTokens(players.get(0)));
+        assertEquals(List.of(), pm.getTokens(players.get(1)));
+        assertEquals(List.of(), pm.getTokens(players.get(2)));
+        assertEquals(List.of(), pm.getTokens(players.get(3)));
+
+        pm.updatePoints(players.get(0));
+        ptt.put(players.get(0), List.of(8));
+        ptt.put(players.get(1), List.of());
+        ptt.put(players.get(2), List.of());
+        ptt.put(players.get(3), List.of());
+        assertEquals(ptt, pm.getPlayersToTokens());
+        assertEquals(List.of(8), pm.getTokens(players.get(0)));
+
+        pm.updatePoints(players.get(1));
+        ptt.put(players.get(0), List.of(8));
+        ptt.put(players.get(1), List.of(6));
+        ptt.put(players.get(2), List.of());
+        ptt.put(players.get(3), List.of());
+        assertEquals(ptt, pm.getPlayersToTokens());
+        assertEquals(List.of(6), pm.getTokens(players.get(1)));
+
+        pm.updatePoints(players.get(2));
+        ptt.put(players.get(0), List.of(8));
+        ptt.put(players.get(1), List.of(6));
+        ptt.put(players.get(2), List.of(4));
+        ptt.put(players.get(3), List.of());
+        assertEquals(ptt, pm.getPlayersToTokens());
+        assertEquals(List.of(4), pm.getTokens(players.get(2)));
+
+        pm.updatePoints(players.get(3));
+        ptt.put(players.get(0), List.of(8));
+        ptt.put(players.get(1), List.of(6));
+        ptt.put(players.get(2), List.of(4));
+        ptt.put(players.get(3), List.of(2));
+        assertEquals(ptt, pm.getPlayersToTokens());
+        assertEquals(List.of(2), pm.getTokens(players.get(3)));
+    }
+    @Test
+    void arePlayerCardsUpdatingTest() throws InvalidPatternParameterException {
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("user1"));
+        players.add(new Player("user2"));
+        players.add(new Player("user3"));
+        players.add(new Player("user4"));
+
+        Pattern alwaysTruePattern = new Pattern("alwaysTrue") {
+            @Override
+            public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
+                return (bookshelf) -> 1;
+            }
+        };
+        Pattern alwaysFalsePattern = new Pattern("alwaysFalse") {
+            @Override
+            public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
+                return (bookshelf) -> 0;
+            }
+        };
+        CommonCardsPointsManager pm = new CommonCardsPointsManager(players, new Deck(Set.of(alwaysTruePattern, alwaysFalsePattern)));
+        Map<Player, Set<Pattern>> ptt = new HashMap<>();
+        ptt.put(players.get(0), Set.of(alwaysTruePattern, alwaysFalsePattern));
+        ptt.put(players.get(1), Set.of(alwaysTruePattern, alwaysFalsePattern));
+        ptt.put(players.get(2), Set.of(alwaysTruePattern, alwaysFalsePattern));
+        ptt.put(players.get(3), Set.of(alwaysTruePattern, alwaysFalsePattern));
+        System.out.println(ptt);
+        System.out.println(pm.getPlayersToUnfulfilledCards());
+        assertEquals(ptt, pm.getPlayersToUnfulfilledCards());
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(0)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(1)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(2)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(3)));
+
+        pm.updatePoints(players.get(0));
+        ptt.put(players.get(0), Set.of(alwaysFalsePattern));
+        assertEquals(ptt, pm.getPlayersToUnfulfilledCards());
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(0)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(1)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(2)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(3)));
+
+        pm.updatePoints(players.get(1));
+        ptt.put(players.get(1), Set.of(alwaysFalsePattern));
+        assertEquals(ptt, pm.getPlayersToUnfulfilledCards());
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(0)));
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(1)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(2)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(3)));
+
+        pm.updatePoints(players.get(2));
+        ptt.put(players.get(2), Set.of(alwaysFalsePattern));
+        assertEquals(ptt, pm.getPlayersToUnfulfilledCards());
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(0)));
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(1)));
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(2)));
+        assertEquals(Set.of(), pm.getFulfilledCards(players.get(3)));
+
+        pm.updatePoints(players.get(3));
+        ptt.put(players.get(3), Set.of(alwaysFalsePattern));
+        assertEquals(ptt, pm.getPlayersToUnfulfilledCards());
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(0)));
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(1)));
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(2)));
+        assertEquals(Set.of(alwaysTruePattern), pm.getFulfilledCards(players.get(3)));
+    }
 
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.listeners.PlayerListener;
 import it.polimi.ingsw.server.listeners.StandardListenable;
 
 import java.beans.PropertyChangeSupport;
+import java.util.Objects;
 
 public class Player implements StandardListenable {
     private final String userName;
@@ -101,5 +102,30 @@ public class Player implements StandardListenable {
      */
     public void setStandardListener(PushNotificationController pnc){
         this.propertyChangeSupport.addPropertyChangeListener(new PlayerListener(pnc));
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "userName='" + userName + '\'' +
+                ", bookShelf=" + bookShelf +
+                ", firstToFinish=" + firstToFinish +
+                ", isPlaying=" + isPlaying +
+                ", fullBookShelf=" + fullBookShelf +
+                ", propertyChangeSupport=" + propertyChangeSupport +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return firstToFinish == player.firstToFinish && isPlaying == player.isPlaying && fullBookShelf == player.fullBookShelf && Objects.equals(userName, player.userName) && Objects.equals(bookShelf, player.bookShelf) && Objects.equals(propertyChangeSupport, player.propertyChangeSupport);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName, bookShelf, firstToFinish, isPlaying, fullBookShelf, propertyChangeSupport);
     }
 }
