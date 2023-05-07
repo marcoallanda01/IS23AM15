@@ -8,10 +8,7 @@ import it.polimi.ingsw.server.model.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameTypeAdapter extends TypeAdapter<Game> {
@@ -159,7 +156,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
         CommonGoalsPointsManager commonGoalsPointsManager = null;
         Map<Player, Integer> playerToPoints3 = null;
         UpdateRule updateRule3 = null;
-        Set<Pattern> patterns = null;
+        LinkedHashSet<Pattern> patterns = null;
         boolean frequentUpdates = false;
 
         in.beginObject();
@@ -328,7 +325,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                             updateRule3 = gson.fromJson(in, UpdateRule.class);
                                         }
                                         case "patterns" -> {
-                                            patterns = gson.fromJson(in, new TypeToken<Set<Pattern>>() {
+                                            patterns = gson.fromJson(in, new TypeToken<LinkedHashSet<Pattern>>() {
                                             }.getType());
                                         }
                                     }

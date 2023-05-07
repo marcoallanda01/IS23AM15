@@ -182,7 +182,7 @@ public class GoalManager {
         Set<Pattern> patternsPersonalGoals = new HashSet<>();
 
         // Just only one pattern for every goal that is in common and all are active at the same time
-        Set<Pattern> patternsEndGoals = new HashSet<>();
+        LinkedHashSet<Pattern> patternsEndGoals = new LinkedHashSet<>();
 
         FileReader in;
         try {

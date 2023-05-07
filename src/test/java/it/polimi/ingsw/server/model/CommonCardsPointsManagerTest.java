@@ -447,8 +447,7 @@ class CommonCardsPointsManagerTest {
         ptt.put(players.get(1), Set.of(alwaysTruePattern, alwaysFalsePattern));
         ptt.put(players.get(2), Set.of(alwaysTruePattern, alwaysFalsePattern));
         ptt.put(players.get(3), Set.of(alwaysTruePattern, alwaysFalsePattern));
-        System.out.println(ptt);
-        System.out.println(pm.getPlayersToUnfulfilledCards());
+
         assertEquals(ptt, pm.getPlayersToUnfulfilledCards());
         assertEquals(Set.of(), pm.getFulfilledCards(players.get(0)));
         assertEquals(Set.of(), pm.getFulfilledCards(players.get(1)));
