@@ -14,7 +14,7 @@ public class SpecificPattern extends Pattern{
     private final boolean forceEmpty;
     /**
      * @param name the name of the pattern
-     * @param masks a list of matrix representing the acceptable shapes of the groups
+     * @param masks a list of matrix representing the acceptable shapes of the groups, must be immutable
      * @param groupNum the minimum number of groups to be found to return the points (and not 0)
      * @param sgc should all the groups have the same color?
      * @param minC minimum number of colors in the same group
@@ -26,13 +26,13 @@ public class SpecificPattern extends Pattern{
         this.minColor = minC;
         this.maxColor = maxC;
         this.groupNum = groupNum;
-        this.masks = new ArrayList<>(masks);
+        this.masks = masks;
         this.forceEmpty = false;
         this.checkParameters();
     }
     /**
      * @param name the name of the pattern
-     * @param masks a list of matrix representing the acceptable shapes of the groups
+     * @param masks a list of matrix representing the acceptable shapes of the groups, must be immutable
      * @param groupNum the minimum number of groups to be found to return the points (and not 0)
      * @param sgc should all the groups have the same color?
      * @param minC minimum number of colors in the same group
@@ -45,7 +45,7 @@ public class SpecificPattern extends Pattern{
         this.minColor = minC;
         this.maxColor = maxC;
         this.groupNum = groupNum;
-        this.masks = new ArrayList<>(masks);
+        this.masks = masks;
         this.forceEmpty = fe;
         this.checkParameters();
     }
@@ -93,17 +93,17 @@ public class SpecificPattern extends Pattern{
         if (groupNum > 16) {
             throw new InvalidPatternParameterException("groupNum must be less than or equal to 16");
         }
-        if (sgc && (minColor > 1 && maxColor > 1)) {
-            throw new InvalidPatternParameterException("if sgc is set to true, both minColor and maxColor must be 1");
-        }
-        if (minColor > maxColor) {
-            throw new InvalidPatternParameterException("minC must be less than or equal to maxColor");
-        }
         if (minColor <= 0) {
             throw new InvalidPatternParameterException("minColor must be strictly positive");
         }
         if (maxColor <= 0) {
             throw new InvalidPatternParameterException("maxColor must be strictly positive");
+        }
+        if (minColor > maxColor) {
+            throw new InvalidPatternParameterException("minC must be less than or equal to maxColor");
+        }
+        if (sgc && (minColor != 1 && maxColor != 1)) {
+            throw new InvalidPatternParameterException("if sgc is set to true, both minColor and maxColor must be 1");
         }
     }
     // all the accessed methods are static and all the parameters are internal variables
@@ -282,6 +282,9 @@ public class SpecificPattern extends Pattern{
             }
             return false;
         };
+    }
+    public static List<List<List<Boolean>>> getTransposedMasks(List<List<List<Boolean>>> masks) {
+        return transposeMasks(masks);
     }
 
 }

@@ -875,7 +875,6 @@ class SpecificTest {
         bookshelfState = bookShelf.getState();
         assertEquals(0, achievablePattern.getPatternFunction().apply(bookshelfState));
     }
-
     @Test
     void test3Columns3ColorWithDeletion() throws InvalidPatternParameterException {
         // Creating the pattern
@@ -952,67 +951,203 @@ class SpecificTest {
         assertEquals(1, egpf.apply(bookshelfState));
         assertEquals(0, agpf.apply(bookshelfState));
     }
+    @Test
+    void testNullMasks() {
+        try {
+            Pattern pattern = new SpecificPattern("", null, 1, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("masks cannot be null", e.getMessage());
+        }
+    }
+    @Test
+    void testNullInMasks() {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row5 = List.of(true, false, false, false, false);
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        mask.add(row1);
+        mask.add(row2);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        masks.add(mask);
+        masks.add(null);
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("masks cannot contain a null element", e.getMessage());
+        }
+    }
+    @Test
+    void testNullRowInMask() {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row5 = List.of(true, false, false, false, false);
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        mask.add(row1);
+        mask.add(null);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        masks.add(mask);
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("masks cannot contain an array containing a null element", e.getMessage());
+        }
+    }
+    @Test
+    void testNullElementInMask() {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row5 = new ArrayList<>(List.of(true, false, false, false));
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        row5.add(null);
+        mask.add(row1);
+        mask.add(row2);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        masks.add(mask);
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("masks cannot contain a matrix containing a null element", e.getMessage());
+        }
+    }
+    @Test
+    void testIrregularlySizedListInMask() {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row5 = List.of(true, false, false, false, false);
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        mask.add(row1);
+        mask.add(row2);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        masks.add(mask);
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("masks cannot contain arrays of different lengths", e.getMessage());
+        }
+    }
+    @Test
+    void testWrongGroupNum() {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row5 = List.of(true, false, false, false, false);
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        mask.add(row1);
+        mask.add(row2);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        masks.add(mask);
+        try {
+            Pattern pattern = new SpecificPattern("", masks, -1, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("groupNum must be strictly positive", e.getMessage());
+        }
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 0, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("groupNum must be strictly positive", e.getMessage());
+        }
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 17, false, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("groupNum must be less than or equal to 16", e.getMessage());
+        }
+    }
+    @Test
+    void testColorCoherency() {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row5 = List.of(true, false, false, false, false);
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        mask.add(row1);
+        mask.add(row2);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        masks.add(mask);
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 0, 1, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("minColor must be strictly positive", e.getMessage());
+        }
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 1, 0, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("maxColor must be strictly positive", e.getMessage());
+        }
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, false, 2, 1, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("minC must be less than or equal to maxColor", e.getMessage());
+        }
+        try {
+            Pattern pattern = new SpecificPattern("", masks, 1, true, 1, 6, true);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("if sgc is set to true, both minColor and maxColor must be 1", e.getMessage());
+        }
+    }
 
     @Test
     void getTransposedMasks() throws InvalidPatternParameterException {
+
         List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<Boolean> row5 = List.of(true, false, false, false, false);
+        List<Boolean> row4 = List.of(true, true, false, false, false);
+        List<Boolean> row3 = List.of(true, true, true, false, false);
+        List<Boolean> row2 = List.of(true, true, true, true, false);
+        List<Boolean> row1 = List.of(true, true, true, true, true);
+        masks.add(List.of(row1, row2, row3, row4, row5));
+        row5 = List.of(true);
+        row4 = List.of(true);
+        row3 = List.of(true);
+        row2 = List.of(true);
+        row1 = List.of(true);
+        masks.add(List.of(row1, row2, row3, row4, row5));
+
         List<List<List<Boolean>>> results = new ArrayList<>();
-        List<List<Boolean>> m1 = new ArrayList<>();
-        List<List<Boolean>> m2 = new ArrayList<>();
-        List<List<Boolean>> m3 = new ArrayList<>();
-        List<Boolean> row1 = new ArrayList<>();
-        List<Boolean> row2 = new ArrayList<>();
-        List<Boolean> row3 = new ArrayList<>();
-
-        // Construction masks for SpecificPattern
-        row1.add(false); row1.add(true); row1.add(false);
-        row2.add(true);  row2.add(true); row2.add(true);
-        row3.add(false); row3.add(true); row3.add(true);
-        m1.add(row1); m1.add(row2); m1.add(row3);
-        row1.clear(); row2.clear(); row3.clear();
-        masks.add(m1);
-
-        row1.add(false); row1.add(true);  row1.add(false);
-        row2.add(true);  row2.add(true);
-        row3.add(false); row3.add(false); row3.add(false);
-        m2.add(row1); m2.add(row2); m2.add(row3);
-        row1.clear(); row2.clear(); row3.clear();
-        masks.add(m2);
-
-        row1.add(false); row1.add(true);  row1.add(false);
-        row2.add(true);  row2.add(false); row2.add(true);
-        row3.add(false); row3.add(true);  row3.add(false);
-        m3.add(row1); m3.add(row2); m3.add(row3);
-        row1.clear(); row2.clear(); row3.clear();
-        masks.add(m3);
-
-        // Construction expected result
-        m1.clear();
-        row1.add(false); row1.add(true); row1.add(false);
-        row2.add(true);  row2.add(true); row2.add(true);
-        row3.add(false); row3.add(true); row3.add(true);
-        m1.add(row1); m1.add(row2); m1.add(row3);
-        row1.clear(); row2.clear(); row3.clear();
-        results.add(m1);
-
-        m2.clear();
-        row1.add(false); row1.add(true);  row1.add(false);
-        row2.add(true);  row2.add(true);  row2.add(false);
-        row3.add(false); row3.add(false); row3.add(false);
-        m2.add(row1); m2.add(row2); m2.add(row3);
-        row1.clear(); row2.clear(); row3.clear();
-        results.add(m2);
-
-        m3.clear();
-        row1.add(false); row1.add(true);  row1.add(false);
-        row2.add(true);  row2.add(false); row2.add(true);
-        row3.add(false); row3.add(true);  row3.add(false);
-        m3.add(row1); m3.add(row2); m3.add(row3);
-        row1.clear(); row2.clear(); row3.clear();
-        results.add(m3);
+        List<Boolean> col5 = List.of(true, false, false, false, false);
+        List<Boolean> col4 = List.of(true, true, false, false, false);
+        List<Boolean> col3 = List.of(true, true, true, false, false);
+        List<Boolean> col2 = List.of(true, true, true, true, false);
+        List<Boolean> col1 = List.of(true, true, true, true, true);
+        results.add(List.of(col1, col2, col3, col4, col5));
+        col5 = List.of(true, true, true, true, true);
+        results.add(List.of(col5));
 
         SpecificPattern pattern = new SpecificPattern("test", masks, 1, false, 1, 1);
-        //assertEquals(results, pattern.getTransposedMasks());
+        assertEquals(results, pattern.getTransposedMasks(masks));
     }
 
 
