@@ -102,7 +102,7 @@ public class SpecificPattern extends Pattern{
         if (minColor > maxColor) {
             throw new InvalidPatternParameterException("minC must be less than or equal to maxColor");
         }
-        if (sgc && (minColor != 1 && maxColor != 1)) {
+        if (sgc && (minColor != 1 || maxColor != 1)) {
             throw new InvalidPatternParameterException("if sgc is set to true, both minColor and maxColor must be 1");
         }
     }
@@ -159,11 +159,7 @@ public class SpecificPattern extends Pattern{
             for (int j = 0; j < maxNumCol; j++) {
                 List<Boolean> col = new ArrayList<>();
                 for (List<Boolean> r : m) {
-                    try {
-                        col.add(r.get(j));
-                    }catch (IndexOutOfBoundsException ignored){
-                        col.add(false);
-                    }
+                    col.add(r.get(j));
                 }
                 tm.add(col);
             }
