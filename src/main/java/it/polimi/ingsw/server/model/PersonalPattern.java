@@ -13,8 +13,8 @@ public class PersonalPattern extends Pattern{
      */
     public PersonalPattern(String name, List<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
         super(name);
-        this.tiles = new ArrayList<Tile>(tiles);
-        this.checkToPoints = new ArrayList<int[]>(checkToPoints);
+        this.tiles = tiles;
+        this.checkToPoints = checkToPoints;
         this.checkParameters();
         this.sortCheckToPoints();
     }

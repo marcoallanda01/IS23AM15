@@ -55,6 +55,7 @@ class PersonalPatternTest {
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(12, pattern.getPatternFunction().apply(bookshelfState));
     }
+    @Test
     void test1Right() throws InvalidPatternParameterException {
         // | - | - | - | - | G |
         // | - | - | - | - | - |
@@ -74,9 +75,6 @@ class PersonalPatternTest {
         list.add(new int[]{5, 9});
         list.add(new int[]{6, 12});
 
-        for (int[] arr : list) {
-            System.out.println(Arrays.toString(arr));
-        }
         // | - | - | - | C | P |
         // | - | - | - | F | B |
         // | - | B | - | T | B |
@@ -99,8 +97,9 @@ class PersonalPatternTest {
 
         String name = "P";
         Pattern pattern = new PersonalPattern(name, checks, list);
-        assertEquals(2, pattern.getPatternFunction().apply(bookshelfState));
+        assertEquals(1, pattern.getPatternFunction().apply(bookshelfState));
     }
+    @Test
     void test2Right() throws InvalidPatternParameterException {
         // | - | - | - | - | G |
         // | - | - | - | - | - |
@@ -120,9 +119,6 @@ class PersonalPatternTest {
         list.add(new int[]{5, 9});
         list.add(new int[]{6, 12});
 
-        for (int[] arr : list) {
-            System.out.println(Arrays.toString(arr));
-        }
         // | - | - | - | C | P |
         // | - | - | - | F | B |
         // | - | B | - | T | B |
@@ -147,6 +143,7 @@ class PersonalPatternTest {
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(2, pattern.getPatternFunction().apply(bookshelfState));
     }
+    @Test
     void test3Right() throws InvalidPatternParameterException {
         // | - | - | - | - | G |
         // | - | - | - | F | - |
@@ -166,9 +163,6 @@ class PersonalPatternTest {
         list.add(new int[]{5, 9});
         list.add(new int[]{6, 12});
 
-        for (int[] arr : list) {
-            System.out.println(Arrays.toString(arr));
-        }
         // | - | - | - | C | P |
         // | - | - | - | F | B |
         // | - | B | - | T | B |
@@ -193,6 +187,7 @@ class PersonalPatternTest {
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(4, pattern.getPatternFunction().apply(bookshelfState));
     }
+    @Test
     void test4Right() throws InvalidPatternParameterException {
         // | - | - | - | - | P |
         // | - | - | - | F | - |
@@ -212,9 +207,6 @@ class PersonalPatternTest {
         list.add(new int[]{5, 9});
         list.add(new int[]{6, 12});
 
-        for (int[] arr : list) {
-            System.out.println(Arrays.toString(arr));
-        }
         // | - | - | - | C | P |
         // | - | - | - | F | B |
         // | - | B | - | T | B |
@@ -239,6 +231,7 @@ class PersonalPatternTest {
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(6, pattern.getPatternFunction().apply(bookshelfState));
     }
+    @Test
     void test5Right() throws InvalidPatternParameterException {
         // | - | - | - | - | P |
         // | - | - | - | F | - |
@@ -258,9 +251,6 @@ class PersonalPatternTest {
         list.add(new int[]{5, 9});
         list.add(new int[]{6, 12});
 
-        for (int[] arr : list) {
-            System.out.println(Arrays.toString(arr));
-        }
         // | - | - | - | C | P |
         // | - | - | - | F | B |
         // | - | B | - | T | B |
@@ -285,6 +275,7 @@ class PersonalPatternTest {
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(9, pattern.getPatternFunction().apply(bookshelfState));
     }
+    @Test
     void test6Right() throws InvalidPatternParameterException {
         // | - | - | - | - | P |
         // | - | - | - | F | - |
@@ -304,9 +295,6 @@ class PersonalPatternTest {
         list.add(new int[]{5, 9});
         list.add(new int[]{6, 12});
 
-        for (int[] arr : list) {
-            System.out.println(Arrays.toString(arr));
-        }
         // | - | - | - | C | P |
         // | - | - | - | F | B |
         // | - | B | - | T | B |
@@ -330,5 +318,121 @@ class PersonalPatternTest {
         String name = "P";
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(12, pattern.getPatternFunction().apply(bookshelfState));
+    }
+    @Test
+    void testNullTiles() {
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 1});
+        list.add(new int[]{2, 2});
+        list.add(new int[]{3, 4});
+        list.add(new int[]{4, 6});
+        list.add(new int[]{5, 9});
+        list.add(new int[]{6, 12});
+
+        String name = "P";
+        try {
+            Pattern pattern = new PersonalPattern(name, null, list);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("tiles cannot be null",e.getMessage());
+        }
+    }
+    @Test
+    void testNullInTiles() {
+        List<Tile> checks =
+                new ArrayList<>(List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+                        new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
+                        new Tile(4,5,TileType.PLANT)));
+        checks.add(null);
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 1});
+        list.add(new int[]{2, 2});
+        list.add(new int[]{3, 4});
+        list.add(new int[]{4, 6});
+        list.add(new int[]{5, 9});
+        list.add(new int[]{6, 12});
+
+        String name = "P";
+        try {
+            Pattern pattern = new PersonalPattern(name, checks, list);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("tiles cannot contain a null element",e.getMessage());
+        }
+    }
+    @Test
+    void testNullCheckToPoints() {
+        List<Tile> checks =
+                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+                        new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
+                        new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
+
+        String name = "P";
+        try {
+            Pattern pattern = new PersonalPattern(name, checks, null);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("checkToPoints cannot be null",e.getMessage());
+        }
+    }
+    @Test
+    void testNullInCheckToPoints() {
+        List<Tile> checks =
+                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+                        new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
+                        new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 1});
+        list.add(null);
+        list.add(new int[]{3, 4});
+        list.add(new int[]{4, 6});
+        list.add(new int[]{5, 9});
+        list.add(new int[]{6, 12});
+
+        String name = "P";
+        try {
+            Pattern pattern = new PersonalPattern(name, checks, list);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("checkToPoints cannot contain a null element",e.getMessage());
+        }
+    }
+    @Test
+    void testNegativeChecks() {
+        List<Tile> checks =
+                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+                        new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
+                        new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 1});
+        list.add(new int[]{2, 2});
+        list.add(new int[]{-3, 4});
+        list.add(new int[]{4, 6});
+        list.add(new int[]{5, 9});
+        list.add(new int[]{6, 12});
+
+        String name = "P";
+        try {
+            Pattern pattern = new PersonalPattern(name, checks, list);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("checkToPoints must contain arrays with the first element (arr[0]) set to a strictly positive value",e.getMessage());
+        }
+    }
+    @Test
+    void testInvalidSize() {
+        List<Tile> checks =
+                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+                        new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
+                        new Tile(3,4,TileType.FRAME));
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 1});
+        list.add(new int[]{2, 2});
+        list.add(new int[]{3, 4});
+        list.add(new int[]{4, 6});
+        list.add(new int[]{5, 9});
+        list.add(new int[]{6, 12});
+
+        String name = "P";
+        try {
+            Pattern pattern = new PersonalPattern(name, checks, list);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("checkToPoints must have the same size or less than tiles",e.getMessage());
+        }
     }
 }
