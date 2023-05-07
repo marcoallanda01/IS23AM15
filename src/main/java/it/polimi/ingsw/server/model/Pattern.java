@@ -18,8 +18,8 @@ public abstract class Pattern {
     }
 
     /**
-     *
-     * @return function to calculate points got from pattern
+     * @return function to calculate points got from pattern checking on the bookshelf
+     * this function is allowed to EDIT the given bookshelf (List<List<Optional<Tile>>>)
      */
     public abstract Function<List<List<Optional<Tile>>>, Integer> getPatternFunction();
 
