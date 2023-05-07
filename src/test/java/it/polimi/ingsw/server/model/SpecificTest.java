@@ -1,10 +1,12 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.utils.ObjectCleaner;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -136,16 +138,53 @@ class SpecificTest {
         Couplermasks.get(1).get(0).set(0, true);
         Couplermasks.get(1).get(1).set(0, true);
 
+
         String name7 = "Couples";
         Pattern pattern7a = new SpecificPattern(name7, Couplermasks, 14, false, 1, 1);
         assertEquals(1, pattern7a.getPatternFunction().apply(myBookshelf));
         Pattern pattern7b = new SpecificPattern(name7, Couplermasks, 15, false, 1, 1);
         assertEquals(0, pattern7b.getPatternFunction().apply(myBookshelf));
         // you can divide the bookshelf in 15 groups of 2 (any color)
+
         Pattern pattern7c = new SpecificPattern(name7, Couplermasks, 15, false, 1, 6);
         assertEquals(1, pattern7c.getPatternFunction().apply(myBookshelf));
         Pattern pattern7d = new SpecificPattern(name7, Couplermasks, 16, false, 1, 6);
         assertEquals(0, pattern7d.getPatternFunction().apply(myBookshelf));
+
+
+        List<List<List<Boolean>>> lmasks = new ArrayList<>();
+        lmasks.add(new ArrayList<>());
+        for (int i = 0; i < 1; i++) {
+            lmasks.get(0).add(new ArrayList<>());
+            for (int j = 0; j < 3; j++) {
+                lmasks.get(0).get(i).add(false);
+            }
+        }
+        lmasks.get(0).get(0).set(0, true);
+        lmasks.get(0).get(0).set(1, true);
+        lmasks.get(0).get(0).set(2, true);
+        lmasks.add(new ArrayList<>());
+        for (int i = 0; i < 3; i++) {
+            lmasks.get(1).add(new ArrayList<>());
+            for (int j = 0; j < 1; j++) {
+                lmasks.get(1).get(i).add(false);
+            }
+        }
+        lmasks.get(1).get(0).set(0, true);
+        lmasks.get(1).get(1).set(0, true);
+        lmasks.get(1).get(2).set(0, true);
+
+
+        String name8 = "LinesOf3";
+        Pattern pattern8a = new SpecificPattern(name8, lmasks, 6, false, 1, 1);
+        assertEquals(1, pattern8a.getPatternFunction().apply(myBookshelf));
+        Pattern pattern8b = new SpecificPattern(name8, lmasks, 7, false, 1, 1);
+        assertEquals(0, pattern8b.getPatternFunction().apply(myBookshelf));
+        Pattern pattern8c = new SpecificPattern(name8, lmasks, 10, false, 1, 6);
+        assertEquals(1, pattern8c.getPatternFunction().apply(myBookshelf));
+        Pattern pattern8d = new SpecificPattern(name8, lmasks, 11, false, 1, 6);
+        assertEquals(0, pattern8d.getPatternFunction().apply(myBookshelf));
+
     }
 
     // NB: this test represents the 6 couples card if done with specific
@@ -836,6 +875,84 @@ class SpecificTest {
         bookshelfState = bookShelf.getState();
         assertEquals(0, achievablePattern.getPatternFunction().apply(bookshelfState));
     }
+
+    @Test
+    void test3Columns3ColorWithDeletion() throws InvalidPatternParameterException {
+        // Creating the pattern
+        List<List<List<Boolean>>> masks = new ArrayList<>();
+        List<List<Boolean>> mask = new ArrayList<>();
+        List<Boolean> row6 = List.of(true);
+        List<Boolean> row5 = List.of(true);
+        List<Boolean> row4 = List.of(true);
+        List<Boolean> row3 = List.of(true);
+        List<Boolean> row2 = List.of(true);
+        List<Boolean> row1 = List.of(true);
+        mask.add(row1);
+        mask.add(row2);
+        mask.add(row3);
+        mask.add(row4);
+        mask.add(row5);
+        mask.add(row6);
+        masks.add(mask);
+        Pattern easilyAchievablePattern = new SpecificPattern("2_COLUMNS_3_COLOR", masks, 2, false, 1, 3);
+        Pattern achievablePattern = new SpecificPattern("3_COLUMNS_3_COLOR", masks, 3, false, 1, 3);
+        Pattern unAchievablePattern = new SpecificPattern("4_COLUMNS_3_COLOR", masks, 4, false, 1, 3);
+        Function<List<List<Optional<Tile>>>, Integer> egpf = easilyAchievablePattern.getPatternFunction();
+        Function<List<List<Optional<Tile>>>, Integer> agpf = achievablePattern.getPatternFunction();
+        Function<List<List<Optional<Tile>>>, Integer> ugpf = unAchievablePattern.getPatternFunction();
+        new ObjectCleaner(easilyAchievablePattern);
+        easilyAchievablePattern = null;
+        achievablePattern = null;
+        unAchievablePattern = null;
+        System.gc();
+        // | F | - | G | C | P |
+        // | F | - | B | F | B |
+        // | F | B | F | T | B |
+        // | F | G | T | T | B |
+        // | B | B | P | C | B |
+        // | P | C | C | C | P |
+        BookShelf bookShelf = new BookShelf();
+        // Inserting tiles to match the pattern
+        List<Tile> firstRow = List.of(new Tile(TileType.PLANT), new Tile(TileType.BOOK), new Tile(TileType.FRAME), new Tile(TileType.FRAME), new Tile(TileType.FRAME), new Tile(TileType.FRAME));
+        bookShelf.insertTiles(firstRow, 0);
+        List<Tile> secondRow = List.of(new Tile(TileType.CAT), new Tile(TileType.BOOK), new Tile(TileType.GAME), new Tile(TileType.BOOK));
+        bookShelf.insertTiles(secondRow, 1);
+        List<Tile> thirdRow = List.of(new Tile(TileType.CAT), new Tile(TileType.PLANT), new Tile(TileType.TROPHY), new Tile(TileType.FRAME), new Tile(TileType.BOOK), new Tile(TileType.GAME));
+        bookShelf.insertTiles(thirdRow, 2);
+        List<Tile> fourthRow = List.of(new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.TROPHY), new Tile(TileType.TROPHY), new Tile(TileType.FRAME), new Tile(TileType.CAT));
+        bookShelf.insertTiles(fourthRow, 3);
+        List<Tile> fifthRow = List.of(new Tile(TileType.PLANT), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(fifthRow, 4);
+        List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
+
+
+
+        assertEquals(1, agpf.apply(bookshelfState));
+        assertEquals(0, ugpf.apply(bookshelfState));
+
+        // | F | - | B | C | P |
+        // | F | - | B | F | B |
+        // | F | B | F | T | B |
+        // | F | G | T | G | B |
+        // | B | B | P | B | B |
+        // | P | C | C | C | P |
+        bookShelf = new BookShelf();
+        // Inserting tiles to match the pattern
+        firstRow = List.of(new Tile(TileType.PLANT), new Tile(TileType.BOOK), new Tile(TileType.FRAME), new Tile(TileType.FRAME), new Tile(TileType.FRAME), new Tile(TileType.FRAME));
+        bookShelf.insertTiles(firstRow, 0);
+        secondRow = List.of(new Tile(TileType.CAT), new Tile(TileType.BOOK), new Tile(TileType.GAME), new Tile(TileType.BOOK));
+        bookShelf.insertTiles(secondRow, 1);
+        thirdRow = List.of(new Tile(TileType.CAT), new Tile(TileType.PLANT), new Tile(TileType.TROPHY), new Tile(TileType.FRAME), new Tile(TileType.BOOK), new Tile(TileType.BOOK));
+        bookShelf.insertTiles(thirdRow, 2);
+        fourthRow = List.of(new Tile(TileType.CAT), new Tile(TileType.BOOK), new Tile(TileType.GAME), new Tile(TileType.TROPHY), new Tile(TileType.FRAME), new Tile(TileType.CAT));
+        bookShelf.insertTiles(fourthRow, 3);
+        fifthRow = List.of(new Tile(TileType.PLANT), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(fifthRow, 4);
+        bookshelfState = bookShelf.getState();
+        assertEquals(1, egpf.apply(bookshelfState));
+        assertEquals(0, agpf.apply(bookshelfState));
+    }
+
     @Test
     void getTransposedMasks() throws InvalidPatternParameterException {
         List<List<List<Boolean>>> masks = new ArrayList<>();
@@ -897,4 +1014,6 @@ class SpecificTest {
         SpecificPattern pattern = new SpecificPattern("test", masks, 1, false, 1, 1);
         //assertEquals(results, pattern.getTransposedMasks());
     }
+
+
 }
