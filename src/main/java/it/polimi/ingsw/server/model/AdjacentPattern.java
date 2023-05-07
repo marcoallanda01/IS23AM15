@@ -43,9 +43,6 @@ public class AdjacentPattern extends Pattern{
         if (minGroups <= 0) {
             throw new InvalidPatternParameterException("minGroups must be strictly positive");
         }
-        if (points <= 0) {
-            throw new InvalidPatternParameterException("points must be strictly positive");
-        }
     }
 
     /**

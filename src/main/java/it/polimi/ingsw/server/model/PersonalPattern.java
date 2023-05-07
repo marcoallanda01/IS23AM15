@@ -8,8 +8,8 @@ public class PersonalPattern extends Pattern{
 
     /**
      * @param name name of the pattern
-     * @param tiles tiles in the pattern
-     * @param checkToPoints list of couple [num of corrects, points].
+     * @param tiles tiles in the pattern, must be immutable
+     * @param checkToPoints list of couple [num of corrects, points], must be immutable
      */
     public PersonalPattern(String name, List<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
         super(name);

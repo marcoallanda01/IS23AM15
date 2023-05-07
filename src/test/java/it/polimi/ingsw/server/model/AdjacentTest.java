@@ -292,4 +292,30 @@ class AdjacentTest {
         pattern = new AdjacentPattern(n,2, 1, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
     }
+    @Test
+    void testMinTiles() {
+        try {
+            Pattern pattern = new AdjacentPattern("",-1, 7, 1);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("minTiles must be strictly positive", e.getMessage());
+        }
+        try {
+            Pattern pattern = new AdjacentPattern("",0, 5, 1);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("minTiles must be strictly positive", e.getMessage());
+        }
+    }
+    @Test
+    void testMinGroups() {
+        try {
+            Pattern pattern = new AdjacentPattern("",1, -1, 1);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("minGroups must be strictly positive", e.getMessage());
+        }
+        try {
+            Pattern pattern = new AdjacentPattern("",3, 0, 1);
+        } catch (InvalidPatternParameterException e) {
+            assertEquals("minGroups must be strictly positive", e.getMessage());
+        }
+    }
 }
