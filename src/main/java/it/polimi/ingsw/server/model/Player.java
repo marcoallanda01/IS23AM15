@@ -7,13 +7,13 @@ import it.polimi.ingsw.server.listeners.StandardListenable;
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
-public class Player implements StandardListenable {
+public class Player implements StandardListenable, PostProcessable {
     private final String userName;
     private final BookShelf bookShelf;
     private boolean firstToFinish = false;
     private transient boolean isPlaying = true;
     private boolean fullBookShelf = false;
-    private final transient PropertyChangeSupport propertyChangeSupport;
+    private transient PropertyChangeSupport propertyChangeSupport;
 
     /**
      * Create a new player
@@ -127,5 +127,10 @@ public class Player implements StandardListenable {
     @Override
     public int hashCode() {
         return Objects.hash(userName, bookShelf, firstToFinish, isPlaying, fullBookShelf, propertyChangeSupport);
+    }
+
+    @Override
+    public void gsonPostProcess() {
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 }

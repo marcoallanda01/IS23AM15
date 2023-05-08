@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class LivingRoomBoard implements StandardListenable {
+public class LivingRoomBoard implements StandardListenable, PostProcessable {
     /**
      * The number of players
      */
@@ -66,7 +66,6 @@ public class LivingRoomBoard implements StandardListenable {
     public LivingRoomBoard(int numberOfPlayers, Map<Integer, Map<Integer, TileRule>> mask) {
         this(numberOfPlayers);
         this.mask = mask;
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -276,5 +275,10 @@ public class LivingRoomBoard implements StandardListenable {
             });
         });
         this.propertyChangeSupport.firePropertyChange("addedTiles", null, tiles);
+    }
+
+    @Override
+    public void gsonPostProcess() {
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 }
