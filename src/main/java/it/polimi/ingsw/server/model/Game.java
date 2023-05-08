@@ -241,6 +241,9 @@ public class Game{
         return false;
     }
 
+    /**
+     * @return list of the players
+     */
     public List<String> getPlayers() {
         return players.stream().map(Player::getUserName).collect(Collectors.toList());
     }
@@ -344,12 +347,5 @@ public class Game{
             return false;
         }
         return true;
-    }
-
-    public PushNotificationController getPushNotificationController(){
-        return this.pushNotificationController;
-    }
-    public void setPushNotificationController(PushNotificationController pnc){
-        this.pushNotificationController = pnc;
     }
 }

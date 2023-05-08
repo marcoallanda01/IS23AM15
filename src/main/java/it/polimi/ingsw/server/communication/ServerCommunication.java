@@ -23,12 +23,12 @@ public interface ServerCommunication {
 
     /**
      * If in game, function notifies the disconnection of a player to all the others
-     * @param playerId player that disconnecter
+     * @param playerName player that disconnect
      */
-    public void notifyDisconnection(String playerId);
-    public void notifyReconnection(String playerId);
+    public void notifyDisconnection(String playerName);
+    public void notifyReconnection(String playerName);
 
-    public void notifyChangeBoard(List<Tile> tiles);
+    public void notifyChangeBoard(List<Tile> tiles, boolean added);
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles);
     public void updatePlayerPoints(String playerName, int points);
     public void notifyTurn(String playerName);
