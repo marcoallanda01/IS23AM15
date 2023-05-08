@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.responses.*;
-import it.polimi.ingsw.server.communication.ClientCommunication;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -11,18 +10,18 @@ import java.util.Set;
 
 /**
  * this class is an RMI based implementation of ClientCommunication
- * it uses a RMIClientConnection to call methods on the server
+ * it uses a RMIClientClientConnection to call methods on the server
  * note that all of its methods block the main thread, therefore
  * it is advised to call them asynchronously or use multiple instances of ClientCommunication
  * NB: this class is thread safe because RMI is thread safe
  */
 public class RMIClientCommunication implements ClientCommunication {
 
-    private RMIClientConnection rmiClientConnection;
+    private RMIClientClientConnection rmiClientConnection;
     /**
      * @param rmiClientConnection the implementation of the connection
      */
-    public RMIClientCommunication(RMIClientConnection rmiClientConnection) {
+    public RMIClientCommunication(RMIClientClientConnection rmiClientConnection) {
         this.rmiClientConnection = rmiClientConnection;
     }
     /**

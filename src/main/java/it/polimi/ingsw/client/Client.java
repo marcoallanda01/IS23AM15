@@ -1,15 +1,15 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.communication.*;
-import it.polimi.ingsw.server.communication.ClientCommunication;
+import it.polimi.ingsw.client.communication.ClientCommunication;
 
 public class Client {
     private static Client singleton;
     private View view;
-
+    private ClientNotificationListener clientNotificationListener;
     private String hostname;
     private int port;
-    private Connection connection;
+    private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;
 
     public Client(String hostname, int port) {
@@ -21,14 +21,14 @@ public class Client {
         return singleton;
     }
 
-    public Connection getConnection() {
-        return connection;
+    public ClientConnection getConnection() {
+        return clientConnection;
     }
 
     public void setupNetworkRMI() throws Exception {
         try {
-            RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, view);
-            this.connection = rmiClientConnection;
+            RMIClientClientConnection rmiClientConnection = new RMIClientClientConnection(hostname, port, clientNotificationListener);
+            this.clientConnection = rmiClientConnection;
             this.clientCommunication = new RMIClientCommunication(rmiClientConnection);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -37,8 +37,8 @@ public class Client {
 
     public void setupNetworkTCP() {
         try {
-            TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, view);
-            this.connection = tcpClientConnection;
+            TCPClientClientConnection tcpClientConnection = new TCPClientClientConnection(hostname, port, clientNotificationListener);
+            this.clientConnection = tcpClientConnection;
             this.clientCommunication = new TCPClientCommunication(tcpClientConnection);
         } catch (Exception e) {
             throw new RuntimeException(e);

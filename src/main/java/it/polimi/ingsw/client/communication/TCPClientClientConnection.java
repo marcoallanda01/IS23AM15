@@ -1,16 +1,12 @@
 package it.polimi.ingsw.client.communication;
 
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.communication.responses.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.*;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -18,8 +14,8 @@ import java.util.function.Predicate;
  * opens it, closes it, handles notifications
  * receives and sends messages from and to the server
  */
-public class TCPClientConnection implements Connection {
-    private View view;
+public class TCPClientClientConnection implements ClientConnection {
+    private ClientNotificationListener clientNotificationListener;
     private String hostname;
     private int port;
     private Socket socket;
@@ -31,9 +27,9 @@ public class TCPClientConnection implements Connection {
 
     private Integer waitingResponses;
     /**
-     * @param view the view
+     * @param clientNotificationListener the clientNotificationListener
      */
-    public TCPClientConnection(String hostname, int port, View view) {
+    public TCPClientClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) {
         this.hostname = hostname;
         this.port = port;
     }
@@ -52,7 +48,7 @@ public class TCPClientConnection implements Connection {
             // Create a socket to connect to the server
             socket = new Socket(hostname, port);
             bufferWriter = executorService.submit(() -> startBufferWriter());
-            notificationListener = executorService.submit(() -> startNotificationListener());
+            notificationListener = executorService.submit(() -> startNotificationReader());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,7 +133,7 @@ public class TCPClientConnection implements Connection {
     /**
      * this method listens for notifications all the time, unless interrupted
      */
-    private Void startNotificationListener() {
+    private Void startNotificationReader() {
         while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
             receiveNotificationFromServer();
         }
@@ -156,7 +152,7 @@ public class TCPClientConnection implements Connection {
         }
         while (response.isEmpty());
         // handle response
-        if (handleNotification(response.get())) {
+        if (dispatchNotification(response.get())) {
             // remove notification if response has been handled correctly
             receivedResponsesAndNotifications.remove(response.get());
         }
@@ -166,23 +162,23 @@ public class TCPClientConnection implements Connection {
      * @param json the notification string received from the server
      * @return true if the response has been handled correctly by the view, false otherwise
      */
-    // TODO: handle notifications properly once view interface is definitive
-    private Boolean handleNotification(String json) {
+    // TODO: dispatch notifications properly once view interface is definitive
+    private Boolean dispatchNotification(String json) {
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
-            view.showBoard(boardUpdate.tiles);
+            clientNotificationListener.notifyBoard(boardUpdate.tiles);
         } else if (BookShelfUpdate.fromJson(json).isPresent()) {
             BookShelfUpdate bookShelfUpdate = BookShelfUpdate.fromJson(json).get();
-            view.showBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);
+            clientNotificationListener.notifyBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);
         } else if (ChatMessage.fromJson(json).isPresent()) {
             ChatMessage chatMessage = ChatMessage.fromJson(json).get();
             // do something with the chat message
         } else if (CommonCards.fromJson(json).isPresent()) {
             CommonCards commonCards = CommonCards.fromJson(json).get();
-            view.showCommonGoalCards(commonCards.cardsAndTokens);
+            clientNotificationListener.notifyCommonGoalCards(commonCards.cardsAndTokens);
         } else if (CommonGoals.fromJson(json).isPresent()) {
             CommonGoals commonGoals = CommonGoals.fromJson(json).get();
-            view.showCommonGoals(commonGoals.goals);
+            clientNotificationListener.notifyCommonGoals(commonGoals.goals);
         } else if (Disconnection.fromJson(json).isPresent()) {
             Disconnection disconnection = Disconnection.fromJson(json).get();
             // do something with the disconnection
@@ -191,21 +187,21 @@ public class TCPClientConnection implements Connection {
             // do something with the game saved
         } else if (GameSetUp.fromJson(json).isPresent()) {
             GameSetUp gameSetUp = GameSetUp.fromJson(json).get();
-            view.showGame(gameSetUp);
+            clientNotificationListener.notifyGame(gameSetUp);
         } else if (Ping.fromJson(json).isPresent()) {
             // do something with the ping
         } else if (PlayerPoints.fromJson(json).isPresent()) {
             PlayerPoints playerPoints = PlayerPoints.fromJson(json).get();
-            view.showPoints(playerPoints.player, playerPoints.points);
+            clientNotificationListener.notifyPoints(playerPoints.player, playerPoints.points);
         } else if (Reconnected.fromJson(json).isPresent()) {
             Reconnected reconnected = Reconnected.fromJson(json).get();
             // do something with the reconnection
         } else if (TurnNotify.fromJson(json).isPresent()) {
             TurnNotify turnNotify = TurnNotify.fromJson(json).get();
-            view.showTurn(turnNotify.player);
+            clientNotificationListener.notifyTurn(turnNotify.player);
         } else if (Winner.fromJson(json).isPresent()) {
             Winner winner = Winner.fromJson(json).get();
-            view.showWinner(winner.player);
+            clientNotificationListener.notifyWinner(winner.player);
         } else {
             return Boolean.FALSE;
         }

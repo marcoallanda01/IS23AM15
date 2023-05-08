@@ -36,7 +36,7 @@ public interface RMIServer extends Remote{
         private ClientController clientController;
         private Lobby lobby;
         private ControllerProvider controllerProvider;
-        private Connection connection;
+        private ClientConnection connection;
         public  ServerApp(String settings) {
             if ("RMI CLI".equals(settings)) {
                 try {
@@ -70,7 +70,7 @@ public interface RMIServer extends Remote{
             }
         }
 
-        public Connection getConnection() {
+        public ClientConnection getConnection() {
             return connection;
         }
         public ControllerProvider getControllerProvider() {

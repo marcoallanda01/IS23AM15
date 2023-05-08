@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
-import it.polimi.ingsw.server.communication.ClientCommunication;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -10,13 +9,12 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
  * this class is a TCP based implementation of ClientCommunication
- * it uses a TCPClientConnection to send messages to the server
+ * it uses a TCPClientClientConnection to send messages to the server
  * note that all of its methods block the main thread, therefore
  * it is advised to call them asynchronously or use multiple instances of ClientCommunication
  * NB: this class is thread safe because of the id system
@@ -24,11 +22,11 @@ import java.util.function.Predicate;
 //TODO: MESSAGES MUST BE ASSIGNED AN UNIQUE ID FROM THE ClientCommunication AND THE SERVER NEEDS TO SEND BACK THAT ID
 public class TCPClientCommunication implements ClientCommunication {
     private BigInteger idCounter;
-    private TCPClientConnection tcpClientConnection;
+    private TCPClientClientConnection tcpClientConnection;
     /**
      * @param tcpClientConnection the implementation of the connection
      */
-    public TCPClientCommunication(TCPClientConnection tcpClientConnection) {
+    public TCPClientCommunication(TCPClientClientConnection tcpClientConnection) {
         idCounter = BigInteger.ZERO;
         this.tcpClientConnection = tcpClientConnection;
     }

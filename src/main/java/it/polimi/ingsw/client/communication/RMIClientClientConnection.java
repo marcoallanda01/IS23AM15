@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.communication;
 
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.communication.responses.GameSetUp;
@@ -15,25 +14,22 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Class that creates the RMI client connection endpoint (implementing Connection)
+ * Class that creates the RMI client connection endpoint (implementing ClientConnection)
  * this class is also an UnicastRemoteObject accessible from the server through the interface RMIClient
  * therefore this class is responsible for receiving notifications from the server
  * it does also offer the possibility to retrieve a reference to the RMIServer Interface representing
  * the UnicastRemoteObject registered from the server
  */
-public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, Connection{
-    private View view;
+public class RMIClientClientConnection extends UnicastRemoteObject implements RMIClient, ClientConnection {
+    private ClientNotificationListener clientNotificationListener;
     private RMIServer rmiServer;
     private final String hostname;
     private final int port;
 
-    public RMIClientConnection(String hostname, int port, View view) throws Exception {
+    public RMIClientClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) throws Exception {
         this.hostname = hostname;
         this.port = port;
-        this.view = view;
-    }
-    public void setViewController(View view) {
-        this.view = view;
+        this.clientNotificationListener = clientNotificationListener;
     }
     public void openConnection() throws Exception {
         // Getting the registry
@@ -57,52 +53,52 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
     }
     @Override
     public void gameSetUp(GameSetUp gameSetUp)  throws RemoteException {
-        view.showGame(gameSetUp);
+        clientNotificationListener.notifyGame(gameSetUp);
     }
 
     @Override
     public void notifyWinner(String nickname)  throws RemoteException {
-        view.showWinner(nickname);
+        clientNotificationListener.notifyWinner(nickname);
     }
 
     @Override
     public void notifyChangePlayers(Set<String> nicknames)  throws RemoteException {
-        view.showPlayers(nicknames);
+        clientNotificationListener.notifyPlayers(nicknames);
     }
 
     @Override
     public void notifyChangeBoard(Set<Tile> tiles)  throws RemoteException {
-        view.showBoard(tiles);
+        clientNotificationListener.notifyBoard(tiles);
     }
 
     @Override
     public void notifyChangeBookShelf(String nickname, Set<Tile> tiles)  throws RemoteException {
-        view.showBookshelf(nickname, tiles);
+        clientNotificationListener.notifyBookshelf(nickname, tiles);
     }
 
     @Override
     public void notifyChangePlayerPoints(String nickname, int points) throws RemoteException {
-        view.showPoints(nickname, points);
+        clientNotificationListener.notifyPoints(nickname, points);
     }
 
     @Override
     public void notifyChangeTurn(String nickname) throws RemoteException {
-        view.showTurn(nickname);
+        clientNotificationListener.notifyTurn(nickname);
     }
 
     @Override
     public void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException {
-        view.showPersonalGoalCard(nickname, card);
+        clientNotificationListener.notifyPersonalGoalCard(nickname, card);
     }
 
     @Override
     public void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException {
-        view.showCommonGoalCards(cardsToTokens);
+        clientNotificationListener.notifyCommonGoalCards(cardsToTokens);
     }
 
     @Override
     public void notifyChangeCommonGoals(Set<String> goals) throws RemoteException {
-        view.showCommonGoals(goals);
+        clientNotificationListener.notifyCommonGoals(goals);
     }
 
     public RMIServer getServer() {

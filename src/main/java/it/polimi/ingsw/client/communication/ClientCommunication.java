@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.communication;
+package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.model.Tile;
@@ -8,6 +8,15 @@ import it.polimi.ingsw.server.model.TileType;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * this class should be implemented from the client class that sends messages
+ * to the server, being it through RMI or TCP or other
+ * this class can be used from the client (being it a controller, an
+ * observer or directly the view) to send messages to the server
+ * this class is thread blocking, the implementations of this class MUST be thread safe
+ * the client is supposed to access this class asynchronously
+ * the client MUST use only one instance of this class
+ */
 public interface ClientCommunication {
 
     // Methods for the connection and lobby creation
