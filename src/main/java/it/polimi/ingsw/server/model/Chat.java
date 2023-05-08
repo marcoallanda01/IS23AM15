@@ -30,16 +30,20 @@ public class Chat {
      * @throws PlayerNotFoundException if the receiver of the message is not in the game
      */
     public void addMessage(Message m) throws PlayerNotFoundException{
-         if(m.receiver.isPresent()){
-            if(MessagesPerPlayer.containsKey(m.receiver.get().getUserName())){
-                MessagesPerPlayer.get(m.receiver.get().getUserName()).add(m);
-            }else{
-                throw new PlayerNotFoundException();
+        if(MessagesPerPlayer.containsKey(m.sender.getUserName())){
+            if (m.receiver.isPresent()) {
+                if (MessagesPerPlayer.containsKey(m.receiver.get().getUserName())) {
+                    MessagesPerPlayer.get(m.receiver.get().getUserName()).add(m);
+                } else {
+                    throw new PlayerNotFoundException("The receiver of the message is not in the game");
+                }
+            } else {
+                for (String p : MessagesPerPlayer.keySet()) {
+                    MessagesPerPlayer.get(p).add(m);
+                }
             }
-         }else{
-             for (String p : MessagesPerPlayer.keySet()){
-                 MessagesPerPlayer.get(p).add(m);
-             }
-         }
+        } else {
+            throw new PlayerNotFoundException("The sender of the message is not in the game");
+        }
      }
 }

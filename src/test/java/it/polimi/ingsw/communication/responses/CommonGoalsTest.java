@@ -17,7 +17,7 @@ class CommonGoalsTest {
 
         assertEquals(Optional.of(new CommonGoals(g)), CommonGoals.fromJson("{\"name\":\"CommonGoals\"," +
                 "\"goals\":[\"Ciao\",\"Come\",\"Stai\"]}"));
-        assertNotEquals(Optional.of(new CommonGoals(g)), CommonGoals.fromJson("{\"name\":\"CommonGoals\"," +
+        assertEquals(Optional.of(new CommonGoals(g)), CommonGoals.fromJson("{\"name\":\"CommonGoals\"," +
                 "\"goals\":[\"Ciao\",\"Stai\",\"Come\"]}"));
         assertEquals(Optional.of(new CommonGoals(new HashSet<>())), CommonGoals.fromJson("{\"name\":\"CommonGoals\"," +
                 "\"goals\":[]}"));

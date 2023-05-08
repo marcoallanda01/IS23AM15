@@ -17,6 +17,9 @@ class ChatTest {
     Message m1 = new Message(p1, p2, "ciao p2");
     Message m2 = new Message(p2, p1, "ciao p1");
     Message m3 = new Message(p3, p1, "ciao p1");
+    Message m4 = new Message(p1, p4, "ciao p4");
+    Message m5 = new Message(p1, "ciao a tutti");
+    Message m6 = new Message(p4, p1, "ciao p1");
     List<Player> players = new ArrayList<>(List.of(p1, p2, p3));
     @Test
     void getMessages() {
@@ -25,11 +28,14 @@ class ChatTest {
             c.addMessage(m1);
             c.addMessage(m2);
             c.addMessage(m3);
+            c.addMessage(m5);
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
         }
-        assertEquals(c.getMessages(p1), List.of(m2, m3));
-        assertEquals(c.getMessages(p2), List.of(m1));
+        assertThrows(PlayerNotFoundException.class, () -> c.addMessage(m4));
+        assertThrows(PlayerNotFoundException.class, () -> c.addMessage(m6));
+        assertEquals(c.getMessages(p1), List.of(m2, m3, m5));
+        assertEquals(c.getMessages(p2), List.of(m1, m5));
     }
 
     @Test

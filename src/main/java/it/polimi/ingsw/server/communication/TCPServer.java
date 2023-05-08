@@ -15,7 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TCPServer implements ServerCommunication{
-    private List<Socket> clients;
+    private final List<Socket> clients;
+    private final List<Socket> clientsInGame;
     private Map<Socket, String> playersIds;
 
     private Lobby lobby;
@@ -23,13 +24,15 @@ public class TCPServer implements ServerCommunication{
     private ControllerProvider controllerProvider = null;
     private PlayController playController = null;
     private ChatController chatController = null;
-    private int port;
+    private final int port;
     private ServerSocket serverSocket;
 
     public TCPServer(int port, Lobby lobby){
         this.port = port;
         this.lobby = lobby;
         this.playController = null;
+        this.clients = Collections.synchronizedList(new ArrayList<>());
+        this.clientsInGame = Collections.synchronizedList(new ArrayList<>());
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -88,6 +91,7 @@ public class TCPServer implements ServerCommunication{
      */
     private void closeClient(Socket client){
         this.clients.remove(client);
+        this.clientsInGame.remove(client);
         try {
             client.close();
         }catch (IOException b){
@@ -141,6 +145,9 @@ public class TCPServer implements ServerCommunication{
                         JoinNewAsFirst jnf = ojnf.get();
                         boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
                         out.println(new BooleanResponse(res));
+                        if(res){
+                            this.clientsInGame.add(client);
+                        }
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -153,6 +160,7 @@ public class TCPServer implements ServerCommunication{
                         JoinResponse joinResponse;
                         try {
                             joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+                            this.clientsInGame.add(client);
                         } catch (NicknameTakenException e) {
                             joinResponse = new JoinResponse(e);
                         } catch (NicknameException e) {
@@ -217,7 +225,11 @@ public class TCPServer implements ServerCommunication{
                         JoinLoadedAsFirst jlf = jlfo.get();
                         BooleanResponse br;
                         try {
-                            br = new BooleanResponse(lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer));
+                            boolean res = lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer);
+                            br = new BooleanResponse(res);
+                            if(res){
+                                this.clientsInGame.add(client);
+                            }
                         } catch (NicknameException e) {
                             br = new BooleanResponse(false);
                         }
@@ -255,8 +267,13 @@ public class TCPServer implements ServerCommunication{
                         BooleanResponse br;
                         if (isGameActive()) {
                             String name = lobby.getNameFromId(id);
-                            if (name != null)
-                                br = new BooleanResponse(playController.reconnect(name));
+                            if (name != null) {
+                                boolean res = playController.reconnect(name);
+                                br = new BooleanResponse(res);
+                                if(res){
+                                    this.clientsInGame.add(client);
+                                }
+                            }
                             else
                                 br = new BooleanResponse(false);
                         } else {
@@ -375,59 +392,103 @@ public class TCPServer implements ServerCommunication{
                 playController = controllerProvider.getPlayController();
                 chatController = controllerProvider.getChatController();
                 System.out.println("Player joined, game started!");
+                gameSetUp();
             } catch (EmptyLobbyException e) {
                 System.out.println("Player joined, but lobby not full!");
             }
         }
     }
 
-    /*
-    private void putTiles(Socket client, PutTilesCommand dc){
-        boolean ok = playcontroller.putTiles();
-        BooleanResponse br = new BooleanResponse(ok);
-        PrintWriter out = new PrintWriter(client.getOutputStream());
-        out.println(br.toJson());
-    }
-    */
 
     /**
-     *
+     * Send to all clients game set up
      */
     @Override
     public void gameSetUp() {
-
+        this.clientsInGame.forEach((c)->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new GameSetUp(playController.getPlayers(), new ArrayList<>(playController.getEndGameGoals())));
+            } catch (IOException e) {
+                System.err.println("Cannot send game set up on client");
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
-     * @return
+     * @return true if winner is sent and game is ended
      */
     @Override
     public boolean sendWinner() {
+        if(isGameActive()){
+            boolean winnerPreset = playController.isWinnerPresent();
+            this.clientsInGame.forEach((c)->{
+                try {
+                    PrintWriter out = new PrintWriter(c.getOutputStream());
+                    out.println(new Winner(playController.getWinner()));
+                    closeClient(c);
+                } catch (IOException e) {
+                    System.err.println("Cannot end game on client");
+                    throw new RuntimeException(e);
+                }
+            });
+            // TODO: recheck this
+            synchronized (controllerProvider){
+                playController = null;
+                chatController = null;
+                controllerProvider = null;
+            }
+            return true;
+        }
         return false;
     }
 
     /**
-     * @param playerId player that disconnecter
+     * @param playerName name of the player who disconnected
      */
     @Override
-    public void notifyDisconnection(String playerId) {
-
+    public void notifyDisconnection(String playerName) {
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new Disconnection(playerName));
+            } catch (IOException e) {
+                System.err.println("Cannot write disconnected on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 
     /**
-     * @param playerId
+     * @param playerName name of the player who reconnected
      */
     @Override
-    public void notifyReconnection(String playerId) {
-
+    public void notifyReconnection(String playerName) {
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new Reconnected(playerName));
+            } catch (IOException e) {
+                System.err.println("Cannot write reconnected on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 
     /**
-     * @param tiles
+     * Notify change in the board to all clients in game
+     * @param tiles list of tiles
+     * @param added true if added, false if removed
      */
     @Override
-    public void notifyChangeBoard(List<Tile> tiles) {
-
+    public void notifyChangeBoard(List<Tile> tiles, boolean added) {
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new BoardUpdate(new HashSet<>(tiles), added));
+            } catch (IOException e) {
+                System.err.println("Cannot write changeBoard on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 
     /**
@@ -449,11 +510,19 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
-     * @param playerName
+     * Notify to all player whom turn is
+     * @param playerName current player
      */
     @Override
     public void notifyTurn(String playerName) {
-
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new TurnNotify(playerName));
+            } catch (IOException e) {
+                System.err.println("Cannot write turn notify on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 
     /**
@@ -461,7 +530,6 @@ public class TCPServer implements ServerCommunication{
      */
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-
     }
 
     /**
@@ -470,6 +538,5 @@ public class TCPServer implements ServerCommunication{
      */
     @Override
     public void notifyChangeToken(String card, List<Integer> tokens) {
-
     }
 }
