@@ -14,6 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Class that creates the RMI client connection endpoint (implementing Connection)
+ * this class is also an UnicastRemoteObject accessible from the server through the interface RMIClient
+ * therefore this class is responsible for receiving notifications from the server
+ * it does also offer the possibility to retrieve a reference to the RMIServer Interface representing
+ * the UnicastRemoteObject registered from the server
+ */
 public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, Connection{
     private View view;
     private RMIServer rmiServer;

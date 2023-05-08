@@ -5,6 +5,9 @@ import it.polimi.ingsw.communication.responses.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
@@ -12,7 +15,7 @@ import java.util.function.Predicate;
 
 /**
  * this class handles the TCP connection:
- * opens it, closes it, responds to notifications
+ * opens it, closes it, handles notifications
  * receives and sends messages from and to the server
  */
 public class TCPClientConnection implements Connection {
@@ -22,7 +25,11 @@ public class TCPClientConnection implements Connection {
     private Socket socket;
     private Object readLock, writeLock;
     private ExecutorService executorService;
+    private TCPClientResponseBuffer receivedResponsesAndNotifications;
+    private Future<Void> bufferWriter;
     private Future<Void> notificationListener;
+
+    private Integer waitingResponses;
     /**
      * @param view the view
      */
@@ -39,10 +46,13 @@ public class TCPClientConnection implements Connection {
         readLock = new Object();
         writeLock = new Object();
         executorService = new ForkJoinPool();
+        receivedResponsesAndNotifications = new TCPClientResponseBuffer();
+        waitingResponses = 0;
         try {
             // Create a socket to connect to the server
             socket = new Socket(hostname, port);
-            notificationListener = executorService.submit(() -> listenForNotifications());
+            bufferWriter = executorService.submit(() -> startBufferWriter());
+            notificationListener = executorService.submit(() -> startNotificationListener());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +67,7 @@ public class TCPClientConnection implements Connection {
             if (socket != null) {
                 socket.close();
                 executorService.close();
-                notificationListener.cancel(Boolean.TRUE);
+                bufferWriter.cancel(Boolean.TRUE);
                 System.out.println("Socket closed.");
             }
         } catch (IOException e) {
@@ -65,11 +75,99 @@ public class TCPClientConnection implements Connection {
         }
     }
     /**
+     * this method submits sendStringToServer to an executor service
+     */
+    public void sendToServer(String json) {
+        executorService.submit(()->sendStringToServer(json));
+    }
+    /**
+     * this method submits receiveStringFromServer to an executor service
+     * @return a Future<String> that can be used from other classes to get the result (locking their thread)
+     */
+    public Future<String> receiveFromServer(Predicate<String> isExpectedResponse) {
+        return executorService.submit(() -> receiveResponseFromServer(isExpectedResponse));
+    }
+    /**
+     * this method sends a message to the server, it locks the writeLock
+     * @param json the message to be sent to the server
+     */
+    private void sendStringToServer(String json) {
+        synchronized (writeLock) {
+            try {
+                // Create output stream for communication with the server
+                PrintWriter out = new PrintWriter(socket.getOutputStream());
+                out.println(json);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            writeLock.notifyAll();
+        }
+    }
+    /**
+     * this method waits for a specific message to be received
+     * @param isExpectedResponse a predicate that determines if the message is the right one
+     * @return a String that is the response
+     */
+    private String receiveResponseFromServer(Predicate<String> isExpectedResponse) {
+        Optional<String> response;
+        do {
+            response = receivedResponsesAndNotifications.popByPredicate(isExpectedResponse);
+        }
+        while (response.isEmpty());
+        return response.get();
+    }
+    /**
+     * this method listen for messages and writes them in the buffer all the time, unless interrupted
+     */
+    private Void startBufferWriter() {
+        synchronized (readLock) {
+            try {
+                while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
+                    // Create output stream for communication with the server
+                    Scanner in = new Scanner(socket.getInputStream());
+                    String json = in.nextLine();
+                    receivedResponsesAndNotifications.add(json);
+                }
+                return null;
+            } catch (IOException e) {
+                throw new ClientConnectionException();
+            }
+        }
+    }
+    /**
+     * this method listens for notifications all the time, unless interrupted
+     */
+    private Void startNotificationListener() {
+        while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
+            receiveNotificationFromServer();
+        }
+        return null;
+    }
+    /**
+     * this method waits for any message, it also
+     * removes it from the buffer if it is a
+     * notification and has been handled correctly
+     */
+    private void receiveNotificationFromServer() {
+        Optional<String> response;
+        // scan for response
+        do {
+            response = receivedResponsesAndNotifications.getByPredicate((any) -> Boolean.TRUE);
+        }
+        while (response.isEmpty());
+        // handle response
+        if (handleNotification(response.get())) {
+            // remove notification if response has been handled correctly
+            receivedResponsesAndNotifications.remove(response.get());
+        }
+    }
+    /**
      * this method handles the received message by calling the appropriate view method
      * @param json the notification string received from the server
+     * @return true if the response has been handled correctly by the view, false otherwise
      */
     // TODO: handle notifications properly once view interface is definitive
-    private void handleNotification(String json) {
+    private Boolean handleNotification(String json) {
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
             view.showBoard(boardUpdate.tiles);
@@ -109,80 +207,8 @@ public class TCPClientConnection implements Connection {
             Winner winner = Winner.fromJson(json).get();
             view.showWinner(winner.player);
         } else {
-            throw new ClientConnectionException("Unrecognized server message");
+            return Boolean.FALSE;
         }
-    }
-    /**
-     * this method listen for notifications all the time, unless interrupted
-     * it submits handleNotification to the executorService, it locks the readLock
-     */
-    private Void listenForNotifications() {
-        synchronized (readLock) {
-            try {
-                while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
-                    // Create output stream for communication with the server
-                    Scanner in = new Scanner(socket.getInputStream());
-                    String json = in.nextLine();
-                    // handling the notification in a separate thread, allowing for multiple notifications
-                    executorService.submit(() -> handleNotification(json));
-                }
-                return null;
-            } catch (IOException e) {
-                throw new ClientConnectionException();
-            }
-        }
-    }
-    /**
-     * this method submits sendStringToServer to an executor service
-     */
-    public void sendToServer(String json) {
-        executorService.submit(()->sendStringToServer(json));
-    }
-    /**
-     * this method sends a message to the server, it locks the writeLock
-     * @param json the message to be sent to the server
-     */
-    private void sendStringToServer(String json) {
-        synchronized (writeLock) {
-            try {
-                // Create output stream for communication with the server
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                out.println(json);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            writeLock.notifyAll();
-        }
-    }
-    /**
-     * this method submits receiveStringFromServer to an executor service
-     * @return a Future<String> that can be used from other classes to get the result (locking their thread)
-     */
-    public Future<String> receiveFromServer(Predicate<String> isExpectedResponse) {
-        return executorService.submit(() -> receiveStringFromServer(isExpectedResponse));
-    }
-    /**
-     * this method waits for a specific message to be received
-     * @param isExpectedResponse a predicate that determines if the message is the right one
-     * @return a String that is the response
-     */
-    private String receiveStringFromServer(Predicate<String> isExpectedResponse) {
-        notificationListener.cancel(Boolean.TRUE);
-        synchronized (readLock) {
-            try {
-                // Create output stream for communication with the server
-                Scanner in = new Scanner(socket.getInputStream());
-                String json = in.nextLine();
-                while(!isExpectedResponse.test(json)) {
-                    // handling the notification in a separate thread, allowing for multiple notifications
-                    executorService.submit(() -> handleNotification(json));
-                }
-                notificationListener = executorService.submit(() -> listenForNotifications());
-                readLock.notifyAll();
-                return json;
-            } catch (IOException e) {
-                throw new ClientConnectionException();
-            }
-        }
+        return Boolean.TRUE;
     }
 }

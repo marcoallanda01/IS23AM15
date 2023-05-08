@@ -9,13 +9,25 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * this class is an RMI based implementation of ClientCommunication
+ * it uses a RMIClientConnection to call methods on the server
+ * note that all of its methods block the main thread, therefore
+ * it is advised to call them asynchronously or use multiple instances of ClientCommunication
+ * NB: this class is thread safe because RMI is thread safe
+ */
 public class RMIClientCommunication implements ClientCommunication {
 
     private RMIClientConnection rmiClientConnection;
+    /**
+     * @param rmiClientConnection the implementation of the connection
+     */
     public RMIClientCommunication(RMIClientConnection rmiClientConnection) {
         this.rmiClientConnection = rmiClientConnection;
     }
-
+    /**
+     * this method calls Hello on the server and waits for its response (blocking its thread)
+     */
     @Override
     public Hello hello() {
         try {
@@ -24,7 +36,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls JoinNewAsFirst on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
         try {
@@ -33,7 +47,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls JoinNewAsFirst on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
         try {
@@ -42,7 +58,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls GetSavedGames on the server and waits for its response (thread blocking)
+     */
     @Override
     public SavedGames getSavedGames() {
         try {
@@ -51,7 +69,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls LoadGame on the server and waits for its response (thread blocking)
+     */
     @Override
     public LoadGameResponse loadGame(String game, String idFirstPlayer) {
         try {
@@ -60,7 +80,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls GetLoadedPlayers on the server and waits for its response (thread blocking)
+     */
     @Override
     public LoadedGamePlayers getLoadedGamePlayers() {
         try {
@@ -69,7 +91,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls JoinLoadedAsFirst on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse joinLoadedAsFirst(String player, String idFirstPlayer) {
         try {
@@ -78,7 +102,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls Join on the server and waits for its response (thread blocking)
+     */
     @Override
     public JoinResponse join(String player) {
         try {
@@ -87,7 +113,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls Disconnect on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse disconnect(String playerId) {
         try {
@@ -96,7 +124,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls Reconnect on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse reconnect(String playerId) {
         try {
@@ -105,7 +135,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls PickTilesCommand on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) {
         try {
@@ -114,7 +146,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls PutTilesCommand on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) {
         try {
@@ -123,7 +157,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls SendMessage on the server and waits for its response (thread blocking)
+     */
     @Override
     public BooleanResponse sendMessage(String playerId, String player, String message) {
         try {
@@ -132,7 +168,9 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
-
+    /**
+     * this method calls pong on the server, doesn't wait
+     */
     @Override
     public void pong(String playerId) {
         try {
