@@ -297,7 +297,7 @@ public class Game{
      * @return name of current player
      */
     public String getCurrentPlayer() {
-        return currentTurn.getCurrenPlayer().getUserName();
+        return currentTurn.getCurrentPlayer().getUserName();
     }
 
     /**
