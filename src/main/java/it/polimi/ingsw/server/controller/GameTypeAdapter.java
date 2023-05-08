@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class GameTypeAdapter extends TypeAdapter<Game> {
 
     private final Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
-            .registerTypeAdapter(Pattern.class, new PatternTypeAdapter()).enableComplexMapKeySerialization().create();
+            .registerTypeAdapter(Pattern.class, new PatternTypeAdapter()).registerTypeAdapterFactory(new PostProcessingEnabler()).enableComplexMapKeySerialization().create();
 
     @Override
     public void write(JsonWriter jsonWriter, Game game) throws IOException {
@@ -55,7 +55,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
             jsonWriter.name("goalManager");
             jsonWriter.beginObject();
             {
-                jsonWriter.name("commonGoalCardManager");
+                jsonWriter.name("commonCardsPointsManager");
                 jsonWriter.beginObject();
                 {
                     jsonWriter.name("playersToPoints");
@@ -84,7 +84,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     }.getType(), jsonWriter);
                 }
                 jsonWriter.endObject();
-                jsonWriter.name("personalGoalCardManager");
+                jsonWriter.name("personalCardsPointsManager");
                 jsonWriter.beginObject();
                 {
                     jsonWriter.name("playersToPoints");
@@ -104,7 +104,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     }.getType(), jsonWriter);
                 }
                 jsonWriter.endObject();
-                jsonWriter.name("endGamePointsManager");
+                jsonWriter.name("commonGoalsPointsManager");
                 jsonWriter.beginObject();
                 {
                     jsonWriter.name("playersToPoints");

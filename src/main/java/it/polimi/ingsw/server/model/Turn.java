@@ -92,5 +92,4 @@ public class Turn {
      * Get current player name
      * @return player
      */
-    public Player getCurrenPlayer(){return currentPlayer;}
 }
