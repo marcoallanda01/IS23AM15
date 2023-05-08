@@ -139,10 +139,8 @@ public class Lobby {
             try {
                 Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
                 BufferedReader reader = new BufferedReader(new FileReader(this.directory + "/" + name + ".json"));
-                // TODO: brutto così, non si può non usare un costruttore per fare il load?
                 Game game = gson.fromJson(reader, Game.class);
                 this.loadingGame = game;
-                this.currentGame.setGame(this.loadingGame);
                 return new ArrayList<>(game.getPlayers());
             } catch (Exception e) {
                 throw new GameLoadException(name, e);
@@ -208,6 +206,9 @@ public class Lobby {
         }
         if(loadingGame == null){
             this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
+        }else{
+            // TODO: brutto così, non si può non usare un costruttore per fare il load?
+            this.currentGame.setGame(this.loadingGame);
         }
         return new ControllerProvider(this.currentGame);
     }
