@@ -25,8 +25,8 @@ public class PushNotificationController {
         servers.forEach((s) -> s.notifyReconnection(playerName));
     }
 
-    public void notifyChangeBoard(List<Tile> tiles, boolean added){
-        servers.forEach((s) -> s.notifyChangeBoard(tiles, added));
+    public void notifyChangeBoard(List<Tile> tiles){
+        servers.forEach((s) -> s.notifyChangeBoard(tiles));
     }
 
     public void updatePlayerPoints(String playerName, int points){
@@ -35,6 +35,10 @@ public class PushNotificationController {
 
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
         servers.forEach((s) -> s.sendCommonGoalsCards(cardsAndTokens));
+    }
+
+    public void notifyChangeBookShelf(String playerName, List<Tile> bookShelfTiles){
+        servers.forEach((s) -> s.notifyChangeBookShelf(playerName, bookShelfTiles));
     }
 
 }

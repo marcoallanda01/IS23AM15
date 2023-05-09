@@ -21,16 +21,18 @@ public class TCPServer implements ServerCommunication{
 
     private final Lobby lobby;
 
-    private ControllerProvider controllerProvider = null;
-    private PlayController playController = null;
-    private ChatController chatController = null;
+    private ControllerProvider controllerProvider;
+    private PlayController playController;
+    private ChatController chatController;
     private final int port;
     private ServerSocket serverSocket;
 
     public TCPServer(int port, Lobby lobby){
         this.port = port;
         this.lobby = lobby;
+        this.controllerProvider = null;
         this.playController = null;
+        this.chatController = null;
         this.clients = Collections.synchronizedList(new ArrayList<>());
         this.clientsInGame = Collections.synchronizedList(new ArrayList<>());
         this.playersIds = Collections.synchronizedMap(new HashMap<>());
@@ -470,6 +472,7 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
+     * Notify to all clients that a player disconnected
      * @param playerName name of the player who disconnected
      */
     @Override
@@ -485,6 +488,7 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
+     * Notify to all clients that a player reconnected
      * @param playerName name of the player who reconnected
      */
     @Override
@@ -501,15 +505,14 @@ public class TCPServer implements ServerCommunication{
 
     /**
      * Notify change in the board to all clients in game
-     * @param tiles list of tiles
-     * @param added true if added, false if removed
+     * @param tiles board
      */
     @Override
-    public void notifyChangeBoard(List<Tile> tiles, boolean added) {
+    public void notifyChangeBoard(List<Tile> tiles) {
         this.clientsInGame.forEach(c->{
             try {
                 PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new BoardUpdate(new HashSet<>(tiles), added).toJson());
+                out.println(new BoardUpdate(new HashSet<>(tiles)).toJson());
             } catch (IOException e) {
                 System.err.println("Cannot write changeBoard on client: "+c.getLocalSocketAddress().toString());
             }
@@ -517,17 +520,26 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
-     * @param playerName
-     * @param tiles
+     * Notify to all clients change in player's bookshelf
+     * @param playerName player's name
+     * @param tiles bookshelf
      */
     @Override
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new BookShelfUpdate(playerName, new HashSet<>(tiles)).toJson());
+            } catch (IOException e) {
+                System.err.println("Cannot write bookshelf update on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 
     /**
-     * @param playerName
-     * @param points
+     * Notify change in point of a player to all clients
+     * @param playerName player's name
+     * @param points new points
      */
     @Override
     public void updatePlayerPoints(String playerName, int points) {
@@ -558,7 +570,8 @@ public class TCPServer implements ServerCommunication{
     }
 
     /**
-     * @param cardsAndTokens
+     * Notify to all clients a change in common goals cards and tokens
+     * @param cardsAndTokens cards with associated tokens
      */
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {

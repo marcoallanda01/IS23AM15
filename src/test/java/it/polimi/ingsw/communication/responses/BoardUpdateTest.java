@@ -17,7 +17,7 @@ class BoardUpdateTest {
         tiles.add(new Tile(3, 4, TileType.BOOK));
         tiles.add(new Tile(4, 1, TileType.CAT));
         tiles.add(new Tile(3, 1, TileType.TROPHY));
-        BoardUpdate bu = new BoardUpdate(tiles,false);
+        BoardUpdate bu = new BoardUpdate(tiles);
         System.out.println(bu.toJson());
         System.out.println(BoardUpdate.fromJson(bu.toJson()).get().toJson());
         System.out.println(

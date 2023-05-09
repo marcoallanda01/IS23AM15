@@ -66,7 +66,7 @@ public class RMIServerCommunication implements ServerCommunication{
     }
 
     @Override
-    public void notifyChangeBoard(List<Tile> tiles, boolean added) {
+    public void notifyChangeBoard(List<Tile> tiles) {
 
     }
 

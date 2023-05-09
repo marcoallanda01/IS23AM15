@@ -56,9 +56,8 @@ public class Game{
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         this.goalManager = new GoalManager(this.players, goalPath);
-
-        //Necessary for first trigger of points notification
-        this.players.forEach((p) -> this.goalManager.updatePointsTurn(p));
+        //Necessary for first trigger of points notification and bookshelf
+        this.players.forEach(Player::notifyListeners);
 
         addPropertyChangeListener(new TurnListener(pushNotificationController));
         notifyListeners();
@@ -87,8 +86,8 @@ public class Game{
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
         //Force notifications
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
-        //Necessary for first trigger of points notification
-        this.players.forEach((p) -> this.goalManager.updatePointsTurn(p));
+        //Necessary for first trigger of points notification and bookshelf
+        this.players.forEach(Player::notifyListeners);
         addPropertyChangeListener(new TurnListener(pushNotificationController));
         notifyListeners();
     }
@@ -171,7 +170,6 @@ public class Game{
                 if (isLastRound) {
                     if (this.players.indexOf(player) == this.players.size() - 1) {
                         this.winner = goalManager.getWinner(this.players);
-                        //TODO add points listerns here as well
                         return true;
                     }
                 } else {
@@ -237,14 +235,17 @@ public class Game{
      */
     private boolean nextTurn(Player currentPlayer) {
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
-        if (!nextPlayer.isPlaying()) {
-            return nextTurn(nextPlayer);
-        }
-        if (this.currentTurn.getState() instanceof EndState) {
-            this.currentTurn = new Turn(nextPlayer, this.board);
+        int playingPlayers = this.players.stream().mapToInt(player -> {return player.isPlaying() ? 1 : 0;}).sum();
+        if (playingPlayers > 1){
+            if (!nextPlayer.isPlaying()) {
+                return nextTurn(nextPlayer);
+            }
+            if (this.currentTurn.getState() instanceof EndState) {
+                this.currentTurn = new Turn(nextPlayer, this.board);
 
-            notifyListeners();
-            return true;
+                notifyListeners();
+                return true;
+            }
         }
         return false;
     }
@@ -317,7 +318,7 @@ public class Game{
      * @param player player to disconnect
      * @return true if the player is disconnected, false if the player is not found or is not playing
      */
-    public boolean disconnectPlayer(String player) {
+    public boolean disconnectPlayer(String player) throws Exception {
         try {
             if (this.getPlayerFromNickname(player).isPlaying()) {
                 this.getPlayerFromNickname(player).goToWc();
@@ -328,8 +329,17 @@ public class Game{
             e.printStackTrace();
             return false;
         }
-        if (players.stream().filter(p -> !p.isPlaying()).count() == players.size()) {
-            //TODO: handle disconnection of last player
+        /*
+            Not needed anymore --> games blocks until 1 player is playing
+            if (players.stream().filter(p -> !p.isPlaying()).count() == players.size()-1) {
+                // handle disconnection of last player
+            }
+
+         */
+        // but now is needed(also before) a TODO if no one is playing
+        if(players.stream().filter(p -> !p.isPlaying()).count() == players.size()){
+            // TODO: handle this exception / create a new exception
+            throw new Exception("No one is connected to the game");
         }
         if (this.getCurrentPlayer().equals(player)) {
             this.nextTurn(this.currentTurn.getCurrentPlayer());
@@ -347,6 +357,10 @@ public class Game{
         try {
             if (!this.getPlayerFromNickname(player).isPlaying()) {
                 this.getPlayerFromNickname(player).backFromWc();
+
+                // If there is just one player of if the player is in the end state then next turn is called
+                nextTurn(this.currentTurn.getCurrentPlayer());
+
             } else {
                 return false;
             }

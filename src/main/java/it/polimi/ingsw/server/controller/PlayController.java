@@ -107,7 +107,12 @@ public class PlayController {
      * @return true if the disconnection ended well. false if the player doesn't exist
      */
     public synchronized boolean leave(String player) {
-        return game.disconnectPlayer(player);
+        try {
+            return game.disconnectPlayer(player);
+        }catch (Exception e){
+            //TODO non gestire cosi
+            throw new RuntimeException();
+        }
     }
 
     /**

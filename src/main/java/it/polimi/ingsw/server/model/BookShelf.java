@@ -4,8 +4,10 @@ import it.polimi.ingsw.server.controller.PushNotificationController;
 import it.polimi.ingsw.server.listeners.StandardListenable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class BookShelf{
     /**
@@ -54,19 +56,32 @@ public class BookShelf{
      *
      * @param tiles  the tiles to insert
      * @param column the column in which to insert the tiles
-     * @return true if the tiles were inserted, false otherwise
+     * @return list of tiles with coordinates if the tiles were inserted, null otherwise
      */
-    public boolean insertTiles(List<Tile> tiles, int column) {
-        if (column < 0 || column >= currentTiles.size()) return false;
+    public List<Tile> insertTiles(List<Tile> tiles, int column) {
+        if (column < 0 || column >= currentTiles.size()) return null;
         int count = 0;
         for (Optional<Tile> tile : currentTiles.get(column)) {
             if (tile.isEmpty()) count++;
         }
-        if (count < tiles.size()) return false;
+        if (count < tiles.size()) return null;
         for (Tile tile : tiles) {
-            if (!insertTile(tile, column)) return false;
+            if (!insertTile(tile, column)) return null;
         }
-        return true;
+        return getAllTiles();
+    }
+
+
+    /**
+     * Get the bookshelf as list of tiles
+     * @return tiles in board
+     */
+    public List<Tile> getAllTiles(){
+        return this.currentTiles.stream()
+                .flatMap((Collection::stream))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
     /**

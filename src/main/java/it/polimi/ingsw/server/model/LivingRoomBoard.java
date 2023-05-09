@@ -102,6 +102,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
         List<Tile> tilesR = new ArrayList<>();
 
+        //DO NOT use remove from board here else notification not needed is sent
         board.forEach((row, map) -> map.forEach((col, tile) -> {
             if(tile != null) {
                 tilesR.add(new Tile(row, col, tile.getType()));
@@ -109,7 +110,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
             }
         }));
 
-        this.propertyChangeSupport.firePropertyChange("removedTiles", null, tilesR);
+        //this.propertyChangeSupport.firePropertyChange("removedTiles", null, getAllTiles());
 
         List<Tile> tilesA = new ArrayList<>();
         mask.forEach((row, map) -> {
@@ -133,7 +134,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
             });
         });
 
-        this.propertyChangeSupport.firePropertyChange("addedTiles", null, tilesA);
+        this.propertyChangeSupport.firePropertyChange("addedTiles", null, getAllTiles());
 
     }
 
@@ -146,7 +147,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
         for (Tile tile : tiles) {
             board.get(tile.getX()).put(tile.getY(), null);
         }
-        this.propertyChangeSupport.firePropertyChange("removedTiles", null, tiles);
+        this.propertyChangeSupport.firePropertyChange("removedTiles", null, getAllTiles());
     }
 
     /**
@@ -264,9 +265,10 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
     }
 
     /**
-     * Force notify listeners. Example of use: when game is loaded from a file
+     * Get the board as list of tiles
+     * @return tiles in board
      */
-    public void notifyListeners(){
+    private List<Tile> getAllTiles(){
         List<Tile> tiles = new ArrayList<>();
         board.forEach((x, row)->{
             row.forEach((y,tile) -> {
@@ -275,7 +277,14 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
                 }
             });
         });
-        this.propertyChangeSupport.firePropertyChange("addedTiles", null, tiles);
+        return tiles;
+    }
+
+    /**
+     * Force notify listeners. Example of use: when game is loaded from a file
+     */
+    public void notifyListeners(){
+        this.propertyChangeSupport.firePropertyChange("addedTiles", null, getAllTiles());
     }
 
     @Override

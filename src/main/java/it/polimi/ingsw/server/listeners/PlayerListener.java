@@ -3,9 +3,11 @@ package it.polimi.ingsw.server.listeners;
 import it.polimi.ingsw.server.controller.PushNotificationController;
 import it.polimi.ingsw.server.controller.SaveException;
 import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.Tile;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public class PlayerListener extends StandardListener implements PropertyChangeListener {
     public PlayerListener(PushNotificationController pnc){
@@ -35,9 +37,9 @@ public class PlayerListener extends StandardListener implements PropertyChangeLi
                 pnc.updatePlayerPoints(playerName, (int) evt.getNewValue());
             }
         }
-        else if(proprietyName.equals("bookShelfAdd")) {
+        else if(proprietyName.equals("bookShelfChange")) {
                 String playerName = ((Player) evt.getSource()).getUserName();
-                //TODO
+                pnc.notifyChangeBookShelf(playerName, (List<Tile>) evt.getNewValue() );
         }else{
             System.err.println("PlayerListener: propriety name "+proprietyName+" not known");
         }

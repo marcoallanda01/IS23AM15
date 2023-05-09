@@ -13,13 +13,13 @@ class BookShelfTest {
     @Test
     void insertTiles() {
         BookShelf bookShelf = new BookShelf();
-        assertTrue(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 2));
-        assertTrue(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), 2));
-        assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), -2));
-        assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), 40));
-        assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK)), 2));
+        assertNotNull(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 2));
+        assertNotNull(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), 2));
+        assertNull(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), -2));
+        assertNull(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.PLANT)), 40));
+        assertNull(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK)), 2));
         assertNull(bookShelf.getTile(2, 5));
-        assertFalse(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK)), 6));
+        assertNull(bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK)), 6));
         for (int i = 0; i < 5; i++) {
             assertEquals(2, bookShelf.getTile(2, i).getX());
             assertEquals(i, bookShelf.getTile(2, i).getY());

@@ -120,7 +120,8 @@ public class TCPClientClientConnection implements ClientConnection {
     private Boolean dispatchNotification(String json) {
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
-            clientNotificationListener.notifyBoard(boardUpdate.tiles, boardUpdate.added);
+            //TODO: problema con doarduPDATE ADESSO NON HA ADDED
+            //clientNotificationListener.notifyBoard(boardUpdate.tiles, boardUpdate.added);
         } else if (BookShelfUpdate.fromJson(json).isPresent()) {
             BookShelfUpdate bookShelfUpdate = BookShelfUpdate.fromJson(json).get();
             clientNotificationListener.notifyBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);

@@ -20,6 +20,15 @@ class MsgTest {
     }
 
     @Test
+    void PolymorphismCheck(){
+        Msg m = SavedGames.fromJson("{\"name\":\"SavedGames\"," +
+                "\"names\":[\"Come\",\"Ciao\",\"Stai\"]}").get();
+        String json = m.toJson();
+        System.out.println("Case1"+json);
+        assertEquals("{ \"name\": \"SavedGames\", \"names\": [\"Come\",\"Ciao\",\"Stai\"]}", json);
+    }
+
+    @Test
     void getName() {
         Hello h = new Hello("test");
         assertEquals("Hello", h.getName());

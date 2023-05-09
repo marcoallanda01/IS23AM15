@@ -28,7 +28,7 @@ public interface ServerCommunication {
     public void notifyDisconnection(String playerName);
     public void notifyReconnection(String playerName);
 
-    public void notifyChangeBoard(List<Tile> tiles, boolean added);
+    public void notifyChangeBoard(List<Tile> tiles);
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles);
     public void updatePlayerPoints(String playerName, int points);
     public void notifyTurn(String playerName);

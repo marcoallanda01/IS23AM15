@@ -128,13 +128,13 @@ public class RMIServerApp implements RMIServer {
     }
 
     @Override
-    public BooleanResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer) throws RemoteException {
-        return joinNewAsFirst(client, player,  numPlayersGame,  idFirstPlayer, false);
+    public void joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer) throws RemoteException {
+         joinNewAsFirst(client, player,  numPlayersGame,  idFirstPlayer, false);
     }
 
 
     @Override
-    public BooleanResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
+    public void joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
         BooleanResponse br;
         if(client != null) {
             boolean res = lobby.joinFirstPlayer(player, numPlayersGame, easyRules, idFirstPlayer);
@@ -146,7 +146,8 @@ public class RMIServerApp implements RMIServer {
         else{
             br = new BooleanResponse(false);
         }
-        return br;
+        return;
+        //return br;
     }
 
 
@@ -209,7 +210,7 @@ public class RMIServerApp implements RMIServer {
 
 
     @Override
-    public BooleanResponse joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
+    public void joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
         BooleanResponse br;
         if(client != null) {
             try {
@@ -225,12 +226,12 @@ public class RMIServerApp implements RMIServer {
         else {
             br = new BooleanResponse(false);
         }
-        return br;
+       // return br;
     }
 
 
     @Override
-    public BooleanResponse disconnect(String playerId) throws RemoteException {
+    public void disconnect(String playerId) throws RemoteException {
         BooleanResponse br;
         RMIClient client = playersIds.entrySet()
                 .stream()
@@ -253,12 +254,12 @@ public class RMIServerApp implements RMIServer {
             }
             closeClient(client);
         }
-        return br;
+        //return br;
     }
 
 
     @Override
-    public BooleanResponse reconnect(RMIClient client, String playerId) throws RemoteException {
+    public void reconnect(RMIClient client, String playerId) throws RemoteException {
         String id = playerId;
         BooleanResponse br;
         if(client != null) {
@@ -279,12 +280,12 @@ public class RMIServerApp implements RMIServer {
         else {
             br = new BooleanResponse(false);
         }
-        return br;
+        //return br;
     }
 
 
     @Override
-    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) throws RemoteException {
+    public void pickTiles(String playerId, Set<Tile> tiles) throws RemoteException {
         BooleanResponse br;
         String namep = lobby.getNameFromId(playerId);
         if (isGameActive() && namep != null) {
@@ -292,12 +293,12 @@ public class RMIServerApp implements RMIServer {
         } else {
             br = new BooleanResponse(false);
         }
-        return br;
+        //return br;
     }
 
 
     @Override
-    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException {
+    public void putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException {
         BooleanResponse br;
         String namep = lobby.getNameFromId(playerId);
         if (isGameActive() && namep != null) {
@@ -306,7 +307,7 @@ public class RMIServerApp implements RMIServer {
         } else {
             br = new BooleanResponse(false);
         }
-        return br;
+        //return br;
     }
 
     @Override

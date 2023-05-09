@@ -9,13 +9,11 @@ import java.util.*;
 
 public class BoardUpdate extends Msg {
     public Set<Tile> tiles;
-    public boolean added;
 
-    public BoardUpdate(@NotNull Set<Tile> tiles, boolean added) {
+    public BoardUpdate(@NotNull Set<Tile> tiles) {
         super("BoardUpdate");
         this.tiles = new HashSet<>();
         this.tiles.addAll(tiles);
-        this.added = added;
     }
 
     /**
@@ -43,6 +41,6 @@ public class BoardUpdate extends Msg {
         if (o == null || getClass() != o.getClass()) return false;
         BoardUpdate that = (BoardUpdate) o;
         if(this.tiles == null || that.tiles == null) return false;
-        return Objects.equals(tiles, that.tiles) && that.added == this.added;
+        return Objects.equals(tiles, that.tiles);
     }
 }

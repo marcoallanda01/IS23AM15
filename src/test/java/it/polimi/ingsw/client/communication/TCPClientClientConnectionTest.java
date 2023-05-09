@@ -175,7 +175,7 @@ class TCPClientClientConnectionTest {
     }
     @Test
     void boardNotificationTest() throws InterruptedException, ExecutionException {
-        Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new BoardUpdate(Set.of(new Tile(TileType.BOOK)), true).toJson()));
+        Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new BoardUpdate(Set.of(new Tile(TileType.BOOK))).toJson()));
         sentMessage.get();
         Thread.sleep(500);
         assertEquals(List.of(Set.of(new Tile(TileType.BOOK)).toString() + "true").toString(), notificationsSentToTheListener.toString());

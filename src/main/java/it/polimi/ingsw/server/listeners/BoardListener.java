@@ -22,10 +22,10 @@ public class BoardListener extends StandardListener implements PropertyChangeLis
     public void propertyChange(PropertyChangeEvent evt) {
         String proprietyName = evt.getPropertyName();
         if(proprietyName.equals("removedTiles")) {
-           pnc.notifyChangeBoard((List<Tile>)evt.getNewValue(), false);
+            pnc.notifyChangeBoard((List<Tile>)evt.getNewValue());
         }
         else if(proprietyName.equals("addedTiles")){
-            pnc.notifyChangeBoard((List<Tile>)evt.getNewValue(), true);
+            pnc.notifyChangeBoard((List<Tile>)evt.getNewValue());
         }else{
             System.err.println("BoardListener: propriety name "+proprietyName+" not known");
         }

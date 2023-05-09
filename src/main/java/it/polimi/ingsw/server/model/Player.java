@@ -33,10 +33,11 @@ public class Player implements StandardListenable, PostProcessable {
      * @return result from @code{ BookShelf.insertTiles() }
      */
     public boolean insertTiles(List<Tile> tiles, int column){
-        boolean res = this.bookShelf.insertTiles(tiles, column);
-        if(res){
-            //List<Tile> updatedTiles = tiles.
-            this.propertyChangeSupport.firePropertyChange("bookShelfAdd", this, updatedTiles);
+        boolean res = false;
+        List<Tile> updatedTiles = this.bookShelf.insertTiles(tiles, column);
+        if(updatedTiles != null){
+            res = true;
+            this.propertyChangeSupport.firePropertyChange("bookShelfChange", this, updatedTiles);
         }
         return res;
     }
@@ -163,5 +164,14 @@ public class Player implements StandardListenable, PostProcessable {
     @Override
     public void gsonPostProcess() {
         this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    /**
+     * Force listeners notification
+     */
+    public void notifyListeners(){
+        this.propertyChangeSupport.firePropertyChange("pointsUpdate", -1, points);
+        this.propertyChangeSupport.firePropertyChange("bookShelfChange", this,
+                this.bookShelf.getAllTiles());
     }
 }

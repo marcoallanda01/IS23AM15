@@ -14,8 +14,8 @@ LEGEND:
 
 The server say hello to the client. Saying if the lobby is ready to accept players or not, so if the client can
 try to join.
-If the lobby isn't ready and there is not a first player the server send the id of the first player otherwise the id is
-set to "NoFirst".
+If the lobby isn't ready and there is not a first player, the server sends back the  id of the first player, otherwise
+the id is set to "NoFirst".
 loadedGame is set true if the game is already created, and it's loaded from a save.
 
                                                                                      {"name":"Hello",
