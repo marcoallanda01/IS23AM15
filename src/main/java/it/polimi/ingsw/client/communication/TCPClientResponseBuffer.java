@@ -1,19 +1,13 @@
 package it.polimi.ingsw.client.communication;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class TCPClientResponseBuffer {
     private List<String> buffer;
 
-    public synchronized String getNext() {
-        Iterator<String> iterator = buffer.iterator();
-        if (iterator.hasNext())
-            return buffer.iterator().next();
-        return null;
+    public TCPClientResponseBuffer() {
+        this.buffer = new ArrayList<>();
     }
     public synchronized void remove(String string) {
         buffer.remove(string);
@@ -28,5 +22,24 @@ public class TCPClientResponseBuffer {
         Optional<String> response = buffer.stream().filter(predicate).findAny();
         if (response.isPresent()) buffer.remove(response);
         return response;
+    }
+    @Override
+    public String toString() {
+        return "TCPClientResponseBuffer{" +
+                "buffer=" + buffer +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TCPClientResponseBuffer that = (TCPClientResponseBuffer) o;
+        return Objects.equals(buffer, that.buffer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(buffer);
     }
 }

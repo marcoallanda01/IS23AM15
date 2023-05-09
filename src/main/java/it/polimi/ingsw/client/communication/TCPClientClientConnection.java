@@ -30,6 +30,7 @@ public class TCPClientClientConnection implements ClientConnection {
      * @param clientNotificationListener the clientNotificationListener
      */
     public TCPClientClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) {
+        this.clientNotificationListener = clientNotificationListener;
         this.hostname = hostname;
         this.port = port;
     }
@@ -134,8 +135,9 @@ public class TCPClientClientConnection implements ClientConnection {
      * this method listens for notifications all the time, unless interrupted
      */
     private Void startNotificationReader() {
+        System.out.println("Starting notification reader");
         while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
-            receiveNotificationFromServer();
+            System.out.println("Handled notification: " + receiveNotificationFromServer());
         }
         return null;
     }
@@ -144,7 +146,7 @@ public class TCPClientClientConnection implements ClientConnection {
      * removes it from the buffer if it is a
      * notification and has been handled correctly
      */
-    private void receiveNotificationFromServer() {
+    private String receiveNotificationFromServer() {
         Optional<String> response;
         // scan for response
         do {
@@ -156,6 +158,7 @@ public class TCPClientClientConnection implements ClientConnection {
             // remove notification if response has been handled correctly
             receivedResponsesAndNotifications.remove(response.get());
         }
+        return response.get();
     }
     /**
      * this method handles the received message by calling the appropriate view method
@@ -206,5 +209,8 @@ public class TCPClientClientConnection implements ClientConnection {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
+    }
+    public TCPClientResponseBuffer getBuffer() {
+        return receivedResponsesAndNotifications;
     }
 }
