@@ -165,17 +165,16 @@ public class TCPClientClientConnection implements ClientConnection {
      * @param json the notification string received from the server
      * @return true if the response has been handled correctly by the view, false otherwise
      */
-    // TODO: dispatch notifications properly once view interface is definitive
     private Boolean dispatchNotification(String json) {
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
-            clientNotificationListener.notifyBoard(boardUpdate.tiles);
+            clientNotificationListener.notifyBoard(boardUpdate.tiles, boardUpdate.added);
         } else if (BookShelfUpdate.fromJson(json).isPresent()) {
             BookShelfUpdate bookShelfUpdate = BookShelfUpdate.fromJson(json).get();
             clientNotificationListener.notifyBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);
         } else if (ChatMessage.fromJson(json).isPresent()) {
             ChatMessage chatMessage = ChatMessage.fromJson(json).get();
-            // do something with the chat message
+            clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date);
         } else if (CommonCards.fromJson(json).isPresent()) {
             CommonCards commonCards = CommonCards.fromJson(json).get();
             clientNotificationListener.notifyCommonGoalCards(commonCards.cardsAndTokens);
@@ -184,21 +183,22 @@ public class TCPClientClientConnection implements ClientConnection {
             clientNotificationListener.notifyCommonGoals(commonGoals.goals);
         } else if (Disconnection.fromJson(json).isPresent()) {
             Disconnection disconnection = Disconnection.fromJson(json).get();
-            // do something with the disconnection
+            clientNotificationListener.notifyDisconnection(disconnection.player);
         } else if (GameSaved.fromJson(json).isPresent()) {
             GameSaved gameSaved = GameSaved.fromJson(json).get();
-            // do something with the game saved
+            clientNotificationListener.notifyGameSaved(gameSaved.game);
         } else if (GameSetUp.fromJson(json).isPresent()) {
             GameSetUp gameSetUp = GameSetUp.fromJson(json).get();
             clientNotificationListener.notifyGame(gameSetUp);
         } else if (Ping.fromJson(json).isPresent()) {
-            // do something with the ping
+            Ping ping = Ping.fromJson(json).get();
+            clientNotificationListener.notifyPing(ping.toString());
         } else if (PlayerPoints.fromJson(json).isPresent()) {
             PlayerPoints playerPoints = PlayerPoints.fromJson(json).get();
             clientNotificationListener.notifyPoints(playerPoints.player, playerPoints.points);
         } else if (Reconnected.fromJson(json).isPresent()) {
             Reconnected reconnected = Reconnected.fromJson(json).get();
-            // do something with the reconnection
+            clientNotificationListener.notifyReconnection(reconnected.toString());
         } else if (TurnNotify.fromJson(json).isPresent()) {
             TurnNotify turnNotify = TurnNotify.fromJson(json).get();
             clientNotificationListener.notifyTurn(turnNotify.player);

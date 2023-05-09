@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.communication;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,14 +14,19 @@ import java.util.Set;
  * the client MUST use only one instance of this class
  */
 public interface ClientNotificationListener {
-    public abstract void notifyGame(GameSetUp gameSetUp);
-    public abstract void notifyWinner(String nickname);
-    public abstract void notifyPlayers(Set<String> nicknames);
-    public abstract void notifyBoard(Set<Tile> tiles);
-    public abstract void notifyBookshelf(String nickname, Set<Tile> tiles);
-    public abstract void notifyPoints(String nickname, int points);
-    public abstract void notifyTurn(String nickname);
-    public abstract void notifyPersonalGoalCard(String nickname, String card);
-    public abstract void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens);
-    public abstract void notifyCommonGoals(Set<String> goals);
+    void notifyGame(GameSetUp gameSetUp);
+    void notifyWinner(String nickname);
+    void notifyBoard(Set<Tile> tiles, boolean added);
+    void notifyBookshelf(String nickname, Set<Tile> tiles);
+    void notifyPoints(String nickname, int points);
+    void notifyTurn(String nickname);
+    void notifyPersonalGoalCard(String nickname, String card);
+    void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens);
+    void notifyCommonGoals(Set<String> goals);
+    void notifyChatMessage(String nickname, String message, String date);
+    void notifyDisconnection(String nickname);
+    void notifyGameSaved(String game);
+    void notifyPing(String id);
+    void notifyReconnection(String nickname);
+
 }
