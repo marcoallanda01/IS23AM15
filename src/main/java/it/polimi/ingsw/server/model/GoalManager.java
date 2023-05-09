@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import java.beans.PropertyChangeSupport;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,9 +11,11 @@ import java.util.function.Predicate;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.listeners.StandardListenable;
 import org.jetbrains.annotations.NotNull;
 
-public class GoalManager {
+public class GoalManager{
     private final List<PointsManager> pointsManagers = new ArrayList<>();
     private final CommonCardsPointsManager commonCardsPointsManager;
     private final PersonalCardsPointsManager personalCardsPointsManager;
@@ -271,7 +274,11 @@ public class GoalManager {
     public void updatePointsTurn(Player player) {
         Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) :
                 pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_TURN);
-        pointsManagers.stream().filter(toUpdate).forEach(pointsManager -> pointsManager.updatePoints(player));
+        pointsManagers.stream().filter(toUpdate)
+                .forEach(pointsManager -> {
+                pointsManager.updatePoints(player);
+                player.setPoints(this.getPoints(player));
+        });
     }
 
     /**
@@ -283,14 +290,25 @@ public class GoalManager {
     }
 
     public int getPoints(Player player) {
-        return pointsManagers.stream().map(pointsManager -> pointsManager.getPoints(player)).mapToInt(Integer::intValue).sum() + (player.isFirstToFinish() ? 1 : 0);
+        return pointsManagers.stream()
+                .map(pointsManager -> pointsManager.getPoints(player))
+                .mapToInt(Integer::intValue)
+                .sum()
+                + (player.isFirstToFinish() ? 1 : 0);
     }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
 
+    /**
+     * Get player with most points
+     * @param players list of the player among us calculate the winner
+     * @return player with most points
+     */
     public String getWinner(List<Player> players){
         for(Player player : players){
             updatePointsEnd(player);
         }
+        //Last update of player points
+        players.forEach( (p) -> {p.setPoints(this.getPoints(p));} );
         return players.stream().max(Comparator.comparingInt(this::getPoints)).get().getUserName();
     }
 

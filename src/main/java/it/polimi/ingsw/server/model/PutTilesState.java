@@ -20,7 +20,7 @@ public class PutTilesState extends State{
      */
     @Override
     public boolean putTiles(List<Tile> tiles, int column) {
-        return this.turn.getCurrentPlayer().getBookShelf().insertTiles(tiles, column);
+        return this.turn.getCurrentPlayer().insertTiles(tiles, column);
     }
 
     @Override

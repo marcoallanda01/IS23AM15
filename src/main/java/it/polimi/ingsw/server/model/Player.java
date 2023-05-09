@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.listeners.PlayerListener;
 import it.polimi.ingsw.server.listeners.StandardListenable;
 
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 import java.util.Objects;
 
 public class Player implements StandardListenable, PostProcessable {
@@ -13,6 +14,7 @@ public class Player implements StandardListenable, PostProcessable {
     private boolean firstToFinish = false;
     private transient boolean isPlaying = true;
     private boolean fullBookShelf = false;
+    private int points;
     private transient PropertyChangeSupport propertyChangeSupport;
 
     /**
@@ -22,8 +24,27 @@ public class Player implements StandardListenable, PostProcessable {
     public Player(String userName) {
         this.userName = userName;
         this.bookShelf = new BookShelf();
+        this.points = 0;
         this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
+
+    /**
+     * Insert tiles in player bookshelf
+     * @return result from @code{ BookShelf.insertTiles() }
+     */
+    public boolean insertTiles(List<Tile> tiles, int column){
+        boolean res = this.bookShelf.insertTiles(tiles, column);
+        if(res){
+            //List<Tile> updatedTiles = tiles.
+            this.propertyChangeSupport.firePropertyChange("bookShelfAdd", this, updatedTiles);
+        }
+        return res;
+    }
+
+    /**
+     * Get player's BookShelf
+     * @return player's BookShelf
+     */
     public BookShelf getBookShelf() {
         return this.bookShelf;
     }
@@ -95,6 +116,16 @@ public class Player implements StandardListenable, PostProcessable {
      */
     public void setFullBookShelf(boolean fullBookShelf) {
         this.fullBookShelf = fullBookShelf;
+    }
+
+
+    /**
+     * Set point
+     * @param points points to set
+     */
+    public void setPoints(int points) {
+        propertyChangeSupport.firePropertyChange("pointsUpdate", this.points, points);
+        this.points = points;
     }
 
     /**

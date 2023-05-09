@@ -53,13 +53,15 @@ public class Game{
         Collections.shuffle(this.players);
         this.currentTurn = new Turn(this.players.get(0), board);
 
-        addPropertyChangeListener(new TurnListener(pushNotificationController));
-        notifyListeners();
-
-
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
         this.goalManager = new GoalManager(this.players, goalPath);
+
+        //Necessary for first trigger of points notification
+        this.players.forEach((p) -> this.goalManager.updatePointsTurn(p));
+
+        addPropertyChangeListener(new TurnListener(pushNotificationController));
+        notifyListeners();
 
     }
     /**
@@ -82,6 +84,11 @@ public class Game{
         this.currentTurn = game.currentTurn;
         this.chat = game.chat;
         this.goalManager = game.goalManager;
+        this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
+        //Force notifications
+        this.goalManager.getCommonCardsPointsManager().notifyListeners();
+        //Necessary for first trigger of points notification
+        this.players.forEach((p) -> this.goalManager.updatePointsTurn(p));
         addPropertyChangeListener(new TurnListener(pushNotificationController));
         notifyListeners();
     }
@@ -164,6 +171,7 @@ public class Game{
                 if (isLastRound) {
                     if (this.players.indexOf(player) == this.players.size() - 1) {
                         this.winner = goalManager.getWinner(this.players);
+                        //TODO add points listerns here as well
                         return true;
                     }
                 } else {
