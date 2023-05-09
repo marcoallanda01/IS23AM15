@@ -39,7 +39,7 @@ public class RMIClientClientConnection extends UnicastRemoteObject implements RM
         registry = LocateRegistry.getRegistry(hostname, port);
 
         // Looking up the registry for the remote object
-        this.rmiServer = (RMIServer) registry.lookup("ServerService");
+        this.rmiServer = (RMIServer) registry.lookup("ServerRMIApp");
     }
     // Method to close RMI connection
     public void closeConnection() {
