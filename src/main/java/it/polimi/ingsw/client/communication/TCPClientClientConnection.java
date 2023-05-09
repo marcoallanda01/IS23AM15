@@ -21,8 +21,6 @@ public class TCPClientClientConnection implements ClientConnection {
     private Socket socket;
     private Object readLock, writeLock;
     private ExecutorService executorService;
-    private TCPClientResponseBuffer receivedResponsesAndNotifications;
-    private Future<Void> bufferWriter;
     private Future<Void> notificationListener;
 
     private Integer waitingResponses;
@@ -43,13 +41,11 @@ public class TCPClientClientConnection implements ClientConnection {
         readLock = new Object();
         writeLock = new Object();
         executorService = Executors.newCachedThreadPool();
-        receivedResponsesAndNotifications = new TCPClientResponseBuffer();
         waitingResponses = 0;
         try {
             // Create a socket to connect to the server
             socket = new Socket(hostname, port);
-            bufferWriter = executorService.submit(() -> startBufferWriter());
-            notificationListener = executorService.submit(() -> startNotificationReader());
+            notificationListener = executorService.submit(() -> startNotificationHandler());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,7 +60,7 @@ public class TCPClientClientConnection implements ClientConnection {
             if (socket != null) {
                 socket.close();
                 executorService.close();
-                bufferWriter.cancel(Boolean.TRUE);
+                notificationListener.cancel(Boolean.TRUE);
                 System.out.println("Socket closed.");
             }
         } catch (IOException e) {
@@ -77,13 +73,7 @@ public class TCPClientClientConnection implements ClientConnection {
     public void sendToServer(String json) {
         executorService.submit(()->sendStringToServer(json));
     }
-    /**
-     * this method submits receiveStringFromServer to an executor service
-     * @return a Future<String> that can be used from other classes to get the result (locking their thread)
-     */
-    public Future<String> receiveFromServer(Predicate<String> isExpectedResponse) {
-        return executorService.submit(() -> receiveResponseFromServer(isExpectedResponse));
-    }
+
     /**
      * this method sends a message to the server, it locks the writeLock
      * @param json the message to be sent to the server
@@ -101,65 +91,23 @@ public class TCPClientClientConnection implements ClientConnection {
         }
     }
     /**
-     * this method waits for a specific message to be received
-     * @param isExpectedResponse a predicate that determines if the message is the right one
-     * @return a String that is the response
-     */
-    private String receiveResponseFromServer(Predicate<String> isExpectedResponse) {
-        Optional<String> response;
-        do {
-            response = receivedResponsesAndNotifications.popByPredicate(isExpectedResponse);
-        }
-        while (response.isEmpty());
-        return response.get();
-    }
-    /**
      * this method listen for messages and writes them in the buffer all the time, unless interrupted
      */
-    private Void startBufferWriter() {
+    private Void startNotificationHandler() {
         synchronized (readLock) {
             try {
                 while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
                     // Create output stream for communication with the server
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
-                    System.out.println("writing on buffer: " + json);
-                    receivedResponsesAndNotifications.add(json);
+                    //TODO: do not block the reader, do this in a separate thread
+                    dispatchNotification(json);
                 }
                 return null;
             } catch (IOException e) {
                 throw new ClientConnectionException();
             }
         }
-    }
-    /**
-     * this method listens for notifications all the time, unless interrupted
-     */
-    private Void startNotificationReader() {
-        System.out.println("Starting notification reader");
-        while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
-            System.out.println("Handled notification: " + receiveNotificationFromServer());
-        }
-        return null;
-    }
-    /**
-     * this method waits for any message, it also
-     * removes it from the buffer if it is a
-     * notification and has been handled correctly
-     */
-    private String receiveNotificationFromServer() {
-        Optional<String> response;
-        // scan for response
-        do {
-            response = receivedResponsesAndNotifications.getByPredicate((any) -> Boolean.TRUE);
-        }
-        while (response.isEmpty());
-        // handle response
-        if (dispatchNotification(response.get())) {
-            // remove notification if response has been handled correctly
-            receivedResponsesAndNotifications.remove(response.get());
-        }
-        return response.get();
     }
     /**
      * this method handles the received message by calling the appropriate view method
@@ -191,6 +139,18 @@ public class TCPClientClientConnection implements ClientConnection {
         } else if (GameSetUp.fromJson(json).isPresent()) {
             GameSetUp gameSetUp = GameSetUp.fromJson(json).get();
             clientNotificationListener.notifyGame(gameSetUp);
+        }  else if (Hello.fromJson(json).isPresent()) {
+            Hello hello = Hello.fromJson(json).get();
+            clientNotificationListener.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
+        }  else if (JoinResponse.fromJson(json).isPresent()) {
+            JoinResponse joinResponse = JoinResponse.fromJson(json).get();
+            clientNotificationListener.notifyJoinResponse(joinResponse.result, joinResponse.error, joinResponse.id);
+        } else if (LoadedGamePlayers.fromJson(json).isPresent()) {
+            LoadedGamePlayers loadedGamePlayers = LoadedGamePlayers.fromJson(json).get();
+            clientNotificationListener.notifyLoadedGamePlayers(loadedGamePlayers.names);
+        } else if (LoadGameResponse.fromJson(json).isPresent()) {
+            LoadGameResponse loadGameResponse = LoadGameResponse.fromJson(json).get();
+            clientNotificationListener.notifyLoadGameResponse(loadGameResponse.result, loadGameResponse.error);
         } else if (Ping.fromJson(json).isPresent()) {
             Ping ping = Ping.fromJson(json).get();
             clientNotificationListener.notifyPing();
@@ -200,7 +160,10 @@ public class TCPClientClientConnection implements ClientConnection {
         } else if (Reconnected.fromJson(json).isPresent()) {
             Reconnected reconnected = Reconnected.fromJson(json).get();
             clientNotificationListener.notifyReconnection(reconnected.toString());
-        } else if (TurnNotify.fromJson(json).isPresent()) {
+        } else if (SavedGames.fromJson(json).isPresent()) {
+            SavedGames savedGames = SavedGames.fromJson(json).get();
+            clientNotificationListener.notifySavedGames(savedGames.names);
+        }  else if (TurnNotify.fromJson(json).isPresent()) {
             TurnNotify turnNotify = TurnNotify.fromJson(json).get();
             clientNotificationListener.notifyTurn(turnNotify.player);
         } else if (Winner.fromJson(json).isPresent()) {
@@ -210,8 +173,5 @@ public class TCPClientClientConnection implements ClientConnection {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
-    }
-    public TCPClientResponseBuffer getBuffer() {
-        return receivedResponsesAndNotifications;
     }
 }

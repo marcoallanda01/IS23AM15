@@ -158,15 +158,11 @@ class TCPClientClientConnectionTest {
             tcpClientConnection = new TCPClientClientConnection("localhost", 100, clientNotificationListener);
             tcpClientConnection.openConnection();
             acceptingThread.get();
-            assertEquals(new TCPClientResponseBuffer(), tcpClientConnection.getBuffer());
     }
     //TODO: assert buffer in while loop
     @Test
     void gameNotificationTest() throws InterruptedException, ExecutionException {
         Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new GameSetUp(new ArrayList<>(), new ArrayList<>()).toJson()));
-        while (!tcpClientConnection.getBuffer().toString().equals((new TCPClientResponseBuffer()).toString())) {
-            Thread.sleep(500);
-        }
         Thread.sleep(500);
         assertEquals(List.of(new GameSetUp(new ArrayList<>(), new ArrayList<>()).toJson()).toString(), notificationsSentToTheListener.toString());
     }
@@ -174,9 +170,6 @@ class TCPClientClientConnectionTest {
     void winnerNotificationTest() throws InterruptedException, ExecutionException {
         Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new Winner("player1").toJson()));
         sentMessage.get();
-        while (!tcpClientConnection.getBuffer().toString().equals((new TCPClientResponseBuffer()).toString())) {
-            Thread.sleep(500);
-        }
         Thread.sleep(500);
         assertEquals(List.of("player1").toString(), notificationsSentToTheListener.toString());
     }
@@ -184,9 +177,6 @@ class TCPClientClientConnectionTest {
     void boardNotificationTest() throws InterruptedException, ExecutionException {
         Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new BoardUpdate(Set.of(new Tile(TileType.BOOK)), true).toJson()));
         sentMessage.get();
-        while (!tcpClientConnection.getBuffer().toString().equals((new TCPClientResponseBuffer()).toString())) {
-            Thread.sleep(100);
-        }
         Thread.sleep(500);
         assertEquals(List.of(Set.of(new Tile(TileType.BOOK)).toString() + "true").toString(), notificationsSentToTheListener.toString());
     }
@@ -194,9 +184,6 @@ class TCPClientClientConnectionTest {
     void bookshelfNotificationTest() throws InterruptedException, ExecutionException {
         Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new BookShelfUpdate("player2", Set.of(new Tile(TileType.BOOK))).toJson()));
         sentMessage.get();
-        while (!tcpClientConnection.getBuffer().toString().equals((new TCPClientResponseBuffer()).toString())) {
-            Thread.sleep(100);
-        }
         Thread.sleep(500);
         assertEquals(List.of("player2"+Set.of(new Tile(TileType.BOOK))).toString(), notificationsSentToTheListener.toString());
     }
