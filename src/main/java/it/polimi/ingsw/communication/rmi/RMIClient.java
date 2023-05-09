@@ -10,16 +10,18 @@ import java.util.Map;
 import java.util.Set;
 
 public interface RMIClient extends Remote {
-    // send one GameSetUp object to every player
-    public void gameSetUp(GameSetUp gameSetUp) throws RemoteException;
-    // notifications methods
-    public void notifyWinner(String nickname) throws RemoteException;
-    public void notifyChangePlayers(Set<String> nicknames) throws RemoteException;
-    public void notifyChangeBoard(Set<Tile> tiles) throws RemoteException;
-    public void notifyChangeBookShelf(String nickname, Set<Tile> tiles) throws RemoteException;
-    public void notifyChangePlayerPoints(String nickname, int points) throws RemoteException;
-    public void notifyChangeTurn(String nickname) throws RemoteException;
-    void notifyChangePersonalGoalCard(String nickname, String card) throws RemoteException;
-    void notifyChangeCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException;
-    void notifyChangeCommonGoals(Set<String> goals) throws RemoteException;
+    void notifyGame(GameSetUp gameSetUp) throws RemoteException;
+    void notifyWinner(String nickname) throws RemoteException;
+    void notifyBoard(Set<Tile> tiles, boolean added) throws RemoteException;
+    void notifyBookshelf(String nickname, Set<Tile> tiles) throws RemoteException;
+    void notifyPoints(String nickname, int points) throws RemoteException;
+    void notifyTurn(String nickname) throws RemoteException;
+    void notifyPersonalGoalCard(String nickname, String card) throws RemoteException;
+    void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException;
+    void notifyCommonGoals(Set<String> goals) throws RemoteException;
+    void notifyChatMessage(String nickname, String message, String date) throws RemoteException;
+    void notifyDisconnection(String nickname) throws RemoteException;
+    void notifyGameSaved(String game) throws RemoteException;
+    void notifyPing() throws RemoteException;
+    void notifyReconnection(String nickname) throws RemoteException;
 }
