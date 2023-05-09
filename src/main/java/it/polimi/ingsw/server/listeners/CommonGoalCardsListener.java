@@ -1,9 +1,14 @@
 package it.polimi.ingsw.server.listeners;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.model.Pattern;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 public class CommonGoalCardsListener extends StandardListener implements PropertyChangeListener {
     public CommonGoalCardsListener(PushNotificationController pushNotificationController) {
@@ -19,8 +24,15 @@ public class CommonGoalCardsListener extends StandardListener implements Propert
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String proprietyName = evt.getPropertyName();
-        if(proprietyName.equals("cardsToTokens")) {
-
+        if(proprietyName.equals("CardsToTokensChange")) {
+            Map<Pattern, Stack<Integer>> cardToTokens = (Map<Pattern, Stack<Integer>>) evt.getNewValue();
+            Map<String, List<Integer>> cardnameToTokens = new HashMap<>();
+            cardToTokens.forEach(
+                    (p, lt) -> {
+                        cardnameToTokens.put(p.getName(), (List<Integer>) lt.clone());
+                    }
+            );
+            this.pnc.sendCommonGoalsCards(cardnameToTokens);
         }else{
             System.err.println("CommonGoalCardsListener: propriety name "+proprietyName+" not known");
         }

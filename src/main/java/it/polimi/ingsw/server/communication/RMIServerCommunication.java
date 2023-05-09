@@ -89,9 +89,4 @@ public class RMIServerCommunication implements ServerCommunication{
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
 
     }
-
-    @Override
-    public void notifyChangeToken(String card, List<Integer> tokens) {
-
-    }
 }

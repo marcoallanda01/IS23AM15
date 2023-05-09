@@ -264,7 +264,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
     }
 
     /**
-     * Forcing notify listeners. Example of use: when game is loaded from a file
+     * Force notify listeners. Example of use: when game is loaded from a file
      */
     public void notifyListeners(){
         List<Tile> tiles = new ArrayList<>();

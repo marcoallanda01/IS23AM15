@@ -1,15 +1,22 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.listeners.CommonGoalCardsListener;
+import it.polimi.ingsw.server.listeners.StandardListenable;
+
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class CommonCardsPointsManager extends CardsPointsManager {
+public class CommonCardsPointsManager extends CardsPointsManager implements PostProcessable, StandardListenable {
     private final Map<Pattern, Stack<Integer>> cardsToTokens = new HashMap<>();
     private Map<Player, List<Integer>> playersToTokens = new HashMap<>();
     private Map<Player, Set<Pattern>> playersToUnfulfilledCards = new HashMap<>();
+
+    private transient PropertyChangeSupport propertyChangeSupport;
 
     private Function<Integer, Stack<Integer>> generateCardTokens;
     /**
@@ -18,10 +25,12 @@ public class CommonCardsPointsManager extends CardsPointsManager {
      */
     public CommonCardsPointsManager(List<Player> players, Deck deck) {
         super(players, deck);
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
         this.updateRule = UpdateRule.END_TURN;
         this.generateCardTokens = this.defaultGenerateCardTokens();
         generatePlayersToTokens();
         generateCardsToTokens(2);
+        this.propertyChangeSupport.firePropertyChange("CardsToTokensChange", null, cardsToTokens);
         generatePlayersToUnfulfilledCards();
     }
     /**
@@ -31,10 +40,12 @@ public class CommonCardsPointsManager extends CardsPointsManager {
      */
     public CommonCardsPointsManager(List<Player> players, Deck deck, Integer drawNumber) {
         super(players, deck);
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
         this.updateRule = UpdateRule.END_TURN;
         this.generateCardTokens = this.defaultGenerateCardTokens();
         generatePlayersToTokens();
         generateCardsToTokens(drawNumber);
+        this.propertyChangeSupport.firePropertyChange("CardsToTokensChange", null, cardsToTokens);
         generatePlayersToUnfulfilledCards();
     }
     /**
@@ -45,10 +56,12 @@ public class CommonCardsPointsManager extends CardsPointsManager {
      */
     public CommonCardsPointsManager(List<Player> players, Deck deck, Integer drawNumber, Function<Integer, Stack<Integer>> generateCardTokens) {
         super(players, deck);
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
         this.updateRule = UpdateRule.END_TURN;
         this.generateCardTokens = generateCardTokens;
         generatePlayersToTokens();
         generateCardsToTokens(drawNumber);
+        this.propertyChangeSupport.firePropertyChange("CardsToTokensChange", null, cardsToTokens);
         generatePlayersToUnfulfilledCards();
     }
 
@@ -142,6 +155,8 @@ public class CommonCardsPointsManager extends CardsPointsManager {
         Map<Boolean, Set<Pattern>> cardsPartition = partitionCardsByFulfillment(player, this.playersToUnfulfilledCards.get(player));
         //moving the token from fulfilled cards to player
         cardsPartition.get(true).forEach((moveTokenFromCardToPlayer(player)));
+        //due to moveTokenFromCardToPlayer
+        this.propertyChangeSupport.firePropertyChange("CardsToTokensChange", null, cardsToTokens);
         //updating unfulfilledCards
         this.playersToUnfulfilledCards.put(player, cardsPartition.get(false));
     }
@@ -229,5 +244,31 @@ public class CommonCardsPointsManager extends CardsPointsManager {
         // removing the unfulfilled cards
         playerFulfilledCards.removeAll(this.getUnfulfilledCards(player));
         return playerFulfilledCards;
+    }
+
+    /**
+     * Methods that allow the registration of a standard listener. Call it only once.
+     *
+     * @param pushNotificationController object PushNotificationController is necessary to launch notifications to the
+     *                                   clients
+     */
+    @Override
+    public void setStandardListener(PushNotificationController pushNotificationController) {
+        this.propertyChangeSupport.addPropertyChangeListener(new CommonGoalCardsListener(pushNotificationController));
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void gsonPostProcess() {
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    /**
+     * Force notification
+     */
+    public void notifyListeners(){
+        this.propertyChangeSupport.firePropertyChange("CardsToTokensChange", null, cardsToTokens);
     }
 }

@@ -451,7 +451,7 @@ public class TCPServer implements ServerCommunication{
             this.clientsInGame.forEach((c)->{
                 try {
                     PrintWriter out = new PrintWriter(c.getOutputStream());
-                    out.println(new Winner(playController.getWinner()));
+                    out.println(new Winner(playController.getWinner()).toJson());
                     closeClient(c);
                 } catch (IOException e) {
                     System.err.println("Cannot end game on client");
@@ -477,7 +477,7 @@ public class TCPServer implements ServerCommunication{
         this.clientsInGame.forEach(c->{
             try {
                 PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new Disconnection(playerName));
+                out.println(new Disconnection(playerName).toJson());
             } catch (IOException e) {
                 System.err.println("Cannot write disconnected on client: "+c.getLocalSocketAddress().toString());
             }
@@ -492,7 +492,7 @@ public class TCPServer implements ServerCommunication{
         this.clientsInGame.forEach(c->{
             try {
                 PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new Reconnected(playerName));
+                out.println(new Reconnected(playerName).toJson());
             } catch (IOException e) {
                 System.err.println("Cannot write reconnected on client: "+c.getLocalSocketAddress().toString());
             }
@@ -509,7 +509,7 @@ public class TCPServer implements ServerCommunication{
         this.clientsInGame.forEach(c->{
             try {
                 PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new BoardUpdate(new HashSet<>(tiles), added));
+                out.println(new BoardUpdate(new HashSet<>(tiles), added).toJson());
             } catch (IOException e) {
                 System.err.println("Cannot write changeBoard on client: "+c.getLocalSocketAddress().toString());
             }
@@ -531,7 +531,14 @@ public class TCPServer implements ServerCommunication{
      */
     @Override
     public void updatePlayerPoints(String playerName, int points) {
-
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new PlayerPoints(playerName, points).toJson());
+            } catch (IOException e) {
+                System.err.println("Cannot write player update on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 
     /**
@@ -543,7 +550,7 @@ public class TCPServer implements ServerCommunication{
         this.clientsInGame.forEach(c->{
             try {
                 PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new TurnNotify(playerName));
+                out.println(new TurnNotify(playerName).toJson());
             } catch (IOException e) {
                 System.err.println("Cannot write turn notify on client: "+c.getLocalSocketAddress().toString());
             }
@@ -555,13 +562,13 @@ public class TCPServer implements ServerCommunication{
      */
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-    }
-
-    /**
-     * @param card
-     * @param tokens
-     */
-    @Override
-    public void notifyChangeToken(String card, List<Integer> tokens) {
+        this.clientsInGame.forEach(c->{
+            try {
+                PrintWriter out = new PrintWriter(c.getOutputStream());
+                out.println(new CommonCards(cardsAndTokens).toJson());
+            } catch (IOException e) {
+                System.err.println("Cannot write CommonGoalsCards on client: "+c.getLocalSocketAddress().toString());
+            }
+        });
     }
 }
