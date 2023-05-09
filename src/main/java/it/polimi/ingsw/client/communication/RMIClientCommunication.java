@@ -13,9 +13,7 @@ import java.util.Set;
 /**
  * this class is an RMI based implementation of ClientCommunication
  * it uses a RMIClientClientConnection to call methods on the server
- * note that all of its methods block the main thread, therefore
- * it is advised to call them asynchronously or use multiple instances of ClientCommunication
- * NB: this class is thread safe because RMI is thread safe
+ * note that some methods expect a return value blocking the thread
  */
 public class RMIClientCommunication implements ClientCommunication {
 

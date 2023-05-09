@@ -24,6 +24,9 @@ public class TCPClientClientConnection implements ClientConnection {
     private Future<Void> notificationListener;
 
     private Integer waitingResponses;
+    public  Socket getSocket() {
+        return socket;
+    }
     /**
      * @param clientNotificationListener the clientNotificationListener
      */
@@ -82,7 +85,7 @@ public class TCPClientClientConnection implements ClientConnection {
         synchronized (writeLock) {
             try {
                 // Create output stream for communication with the server
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(json);
             } catch (IOException e) {
                 e.printStackTrace();

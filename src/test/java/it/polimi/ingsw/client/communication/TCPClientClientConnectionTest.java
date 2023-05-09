@@ -39,6 +39,7 @@ class TCPClientClientConnectionTest {
     Future<?> acceptingThread;
     @AfterEach
     void close() throws IOException, InterruptedException {
+        this.tcpClientConnection.closeConnection();
         this.serverSocket.close();
     }
 
@@ -122,7 +123,7 @@ class TCPClientClientConnectionTest {
 
                 @Override
                 public void notifyPing() {
-                    notificationsSentToTheListener.add();
+                    //notificationsSentToTheListener.add();
                 }
 
                 @Override
@@ -159,7 +160,6 @@ class TCPClientClientConnectionTest {
             tcpClientConnection.openConnection();
             acceptingThread.get();
     }
-    //TODO: assert buffer in while loop
     @Test
     void gameNotificationTest() throws InterruptedException, ExecutionException {
         Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new GameSetUp(new ArrayList<>(), new ArrayList<>()).toJson()));
