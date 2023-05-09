@@ -42,7 +42,7 @@ public class TCPClientClientConnection implements ClientConnection {
     public void openConnection() {
         readLock = new Object();
         writeLock = new Object();
-        executorService = new ForkJoinPool();
+        executorService = Executors.newCachedThreadPool();
         receivedResponsesAndNotifications = new TCPClientResponseBuffer();
         waitingResponses = 0;
         try {
@@ -123,6 +123,7 @@ public class TCPClientClientConnection implements ClientConnection {
                     // Create output stream for communication with the server
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
+                    System.out.println("writing on buffer: " + json);
                     receivedResponsesAndNotifications.add(json);
                 }
                 return null;
