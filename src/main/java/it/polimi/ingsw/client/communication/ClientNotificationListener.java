@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.communication;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,11 @@ public interface ClientNotificationListener {
     void notifyChatMessage(String nickname, String message, String date);
     void notifyDisconnection(String nickname);
     void notifyGameSaved(String game);
-    void notifyPing(String id);
+    void notifyPing();
     void notifyReconnection(String nickname);
-
+    void notifyLoadedGamePlayers(Set<String> nicknames);
+    void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame);
+    void notifySavedGames(Set<String> games);
+    void notifyJoinResponse(boolean result, String error, String id);
+    void notifyLoadGameResponse(boolean result, String error);
 }

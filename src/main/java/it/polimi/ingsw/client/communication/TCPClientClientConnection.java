@@ -193,7 +193,7 @@ public class TCPClientClientConnection implements ClientConnection {
             clientNotificationListener.notifyGame(gameSetUp);
         } else if (Ping.fromJson(json).isPresent()) {
             Ping ping = Ping.fromJson(json).get();
-            clientNotificationListener.notifyPing(ping.toString());
+            clientNotificationListener.notifyPing();
         } else if (PlayerPoints.fromJson(json).isPresent()) {
             PlayerPoints playerPoints = PlayerPoints.fromJson(json).get();
             clientNotificationListener.notifyPoints(playerPoints.player, playerPoints.points);

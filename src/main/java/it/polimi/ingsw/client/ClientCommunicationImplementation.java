@@ -12,68 +12,68 @@ import java.util.Set;
 public class ClientCommunicationImplementation implements ClientCommunication {
 
     @Override
-    public Hello hello() {
-        return new Hello(Boolean.TRUE, Boolean.TRUE);
+    public void hello() {
+
     }
 
     @Override
-    public BooleanResponse joinNewAsFirst(String name, int numPlayersGame, String idFirstPlayer) {
-        return null;
+    public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
+
     }
 
     @Override
-    public BooleanResponse joinNewAsFirst(String name, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
-        return null;
+    public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
+
     }
 
     @Override
-    public SavedGames getSavedGames() {
-        return new SavedGames(new HashSet<>());
+    public void join(String player) {
+
     }
 
     @Override
-    public LoadGameResponse loadGame(String name, String idFirstPlayer) {
-        return new LoadGameResponse();
+    public void getSavedGames() {
+
     }
 
     @Override
-    public LoadedGamePlayers getLoadedGamePlayers() {
-        return new LoadedGamePlayers(new HashSet<>());
+    public void loadGame(String game, String idFirstPlayer) {
+
     }
 
     @Override
-    public BooleanResponse joinLoadedAsFirst(String name, String idFirstPlayer) {
-        return null;
+    public void getLoadedGamePlayers() {
+
     }
 
     @Override
-    public JoinResponse join(String player) {
-        return new JoinResponse("fancy id");
+    public void joinLoadedAsFirst(String player, String idFirstPlayer) {
+
     }
 
     @Override
-    public BooleanResponse disconnect(String playerId) {
-        return new BooleanResponse(Boolean.TRUE);
+    public void disconnect(String playerId) {
+
     }
 
     @Override
-    public BooleanResponse reconnect(String playerId) {
-        return new BooleanResponse(Boolean.TRUE);
+    public void reconnect(String playerId) {
+
     }
 
     @Override
-    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) {
-        return new BooleanResponse(Boolean.TRUE);
+    public void pickTiles(String playerId, Set<Tile> tiles) {
+
     }
 
     @Override
-    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) {
-        return new BooleanResponse(Boolean.TRUE);
+    public void putTiles(String playerId, List<TileType> tiles, int column) {
+
     }
 
     @Override
-    public BooleanResponse sendMessage(String playerId, String player, String message) {
-        return null;
+    public void sendMessage(String playerId, String player, String message) {
+
     }
 
     @Override

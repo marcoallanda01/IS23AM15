@@ -121,13 +121,38 @@ class TCPClientClientConnectionTest {
                 }
 
                 @Override
-                public void notifyPing(String id) {
-                    notificationsSentToTheListener.add(id);
+                public void notifyPing() {
+                    notificationsSentToTheListener.add();
                 }
 
                 @Override
                 public void notifyReconnection(String nickname) {
                     notificationsSentToTheListener.add(nickname);
+                }
+
+                @Override
+                public void notifyLoadedGamePlayers(Set<String> nicknames) {
+
+                }
+
+                @Override
+                public void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame) {
+
+                }
+
+                @Override
+                public void notifySavedGames(Set<String> games) {
+
+                }
+
+                @Override
+                public void notifyJoinResponse(boolean result, String error, String id) {
+
+                }
+
+                @Override
+                public void notifyLoadGameResponse(boolean result, String error) {
+
                 }
             };
             tcpClientConnection = new TCPClientClientConnection("localhost", 100, clientNotificationListener);

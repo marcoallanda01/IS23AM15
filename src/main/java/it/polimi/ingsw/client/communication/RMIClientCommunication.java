@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.responses.*;
+import it.polimi.ingsw.communication.rmi.RMIClient;
+import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -28,9 +30,10 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls Hello on the server and waits for its response (blocking its thread)
      */
     @Override
-    public Hello hello() {
+    public void hello() {
         try {
-            return this.rmiClientConnection.getServer().hello();
+            Hello hello = rmiClientConnection.getServer().hello();
+            rmiClientConnection.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -39,9 +42,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls JoinNewAsFirst on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
+    public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
         try {
-            return this.rmiClientConnection.getServer().joinNewAsFirst(player, numPlayersGame, idFirstPlayer);
+            rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -50,9 +53,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls JoinNewAsFirst on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
+    public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
         try {
-            return this.rmiClientConnection.getServer().joinNewAsFirst(player, numPlayersGame, idFirstPlayer, true);
+            rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer, true);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -61,9 +64,10 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls GetSavedGames on the server and waits for its response (thread blocking)
      */
     @Override
-    public SavedGames getSavedGames() {
+    public void getSavedGames() {
         try {
-            return this.rmiClientConnection.getServer().getSavedGames();
+            SavedGames savedGames = rmiClientConnection.getServer().getSavedGames();
+            rmiClientConnection.notifySavedGames(savedGames.names);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -72,9 +76,10 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls LoadGame on the server and waits for its response (thread blocking)
      */
     @Override
-    public LoadGameResponse loadGame(String game, String idFirstPlayer) {
+    public void loadGame(String game, String idFirstPlayer) {
         try {
-            return this.rmiClientConnection.getServer().loadGame(game, idFirstPlayer);
+            LoadGameResponse loadGameResponse = rmiClientConnection.getServer().loadGame(game, idFirstPlayer);
+            rmiClientConnection.notifyLoadGameResponse(loadGameResponse.result, loadGameResponse.error);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -83,9 +88,10 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls GetLoadedPlayers on the server and waits for its response (thread blocking)
      */
     @Override
-    public LoadedGamePlayers getLoadedGamePlayers() {
+    public void getLoadedGamePlayers() {
         try {
-            return this.rmiClientConnection.getServer().getLoadedGamePlayers();
+            LoadedGamePlayers loadedGamePlayers = rmiClientConnection.getServer().getLoadedGamePlayers();
+            rmiClientConnection.notifyLoadedGamePlayers(loadedGamePlayers.names);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -94,9 +100,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls JoinLoadedAsFirst on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse joinLoadedAsFirst(String player, String idFirstPlayer) {
+    public void joinLoadedAsFirst(String player, String idFirstPlayer) {
         try {
-            return this.rmiClientConnection.getServer().joinLoadedAsFirst(player, idFirstPlayer);
+            rmiClientConnection.getServer().joinLoadedAsFirst(rmiClientConnection, player, idFirstPlayer);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -105,9 +111,10 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls Join on the server and waits for its response (thread blocking)
      */
     @Override
-    public JoinResponse join(String player) {
+    public void join(String player) {
         try {
-            return this.rmiClientConnection.getServer().join(player);
+            JoinResponse joinResponse = rmiClientConnection.getServer().join(rmiClientConnection, player);
+            rmiClientConnection.notifyJoinResponse(joinResponse.result, joinResponse.error, joinResponse.id);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -116,9 +123,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls Disconnect on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse disconnect(String playerId) {
+    public void disconnect(String playerId) {
         try {
-            return this.rmiClientConnection.getServer().disconnect(playerId);
+            rmiClientConnection.getServer().disconnect(playerId);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -127,9 +134,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls Reconnect on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse reconnect(String playerId) {
+    public void reconnect(String playerId) {
         try {
-            return this.rmiClientConnection.getServer().reconnect(playerId);
+            rmiClientConnection.getServer().reconnect(rmiClientConnection, playerId);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -138,9 +145,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls PickTilesCommand on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse pickTiles(String playerId, Set<Tile> tiles) {
+    public void pickTiles(String playerId, Set<Tile> tiles) {
         try {
-            return this.rmiClientConnection.getServer().pickTiles(playerId, tiles);
+            rmiClientConnection.getServer().pickTiles(playerId, tiles);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -149,9 +156,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls PutTilesCommand on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse putTiles(String playerId, List<TileType> tiles, int column) {
+    public void putTiles(String playerId, List<TileType> tiles, int column) {
         try {
-            return this.rmiClientConnection.getServer().putTiles(playerId, tiles, column);
+            rmiClientConnection.getServer().putTiles(playerId, tiles, column);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -160,9 +167,9 @@ public class RMIClientCommunication implements ClientCommunication {
      * this method calls SendMessage on the server and waits for its response (thread blocking)
      */
     @Override
-    public BooleanResponse sendMessage(String playerId, String player, String message) {
+    public void sendMessage(String playerId, String player, String message) {
         try {
-            return this.rmiClientConnection.getServer().sendMessage(playerId, player, message);
+            rmiClientConnection.getServer().sendMessage(playerId, player, message);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
@@ -173,7 +180,7 @@ public class RMIClientCommunication implements ClientCommunication {
     @Override
     public void pong(String playerId) {
         try {
-            this.rmiClientConnection.getServer().pong(playerId);
+            rmiClientConnection.getServer().pong(playerId);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }
