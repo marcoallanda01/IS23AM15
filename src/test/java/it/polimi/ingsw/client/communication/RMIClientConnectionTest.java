@@ -28,7 +28,7 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
 
     protected RMIClientConnectionTest() throws RemoteException {
         try {
-            Registry registry = LocateRegistry.createRegistry(100);
+            Registry registry = LocateRegistry.createRegistry(1002);
             try {
                 registry.bind("ServerRMIApp", this);
             }
@@ -147,7 +147,7 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
 
             }
         };
-        rmiClientConnection = new RMIClientConnection("localhost", 100, clientNotificationListener);
+        rmiClientConnection = new RMIClientConnection("localhost", 1002, clientNotificationListener);
         rmiClientConnection.openConnection();
         rmiClientConnection.notifyHello(this.hello().lobbyReady, this.hello().firstPlayerId,this.hello().loadedGame);
         assertEquals("[trueNoFirsttrue]", notificationsSentToTheListener.toString());

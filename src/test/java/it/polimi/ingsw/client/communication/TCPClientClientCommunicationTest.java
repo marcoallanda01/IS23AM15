@@ -37,7 +37,7 @@ class TCPClientClientCommunicationTest {
     @Test
     void constructorTest() throws InterruptedException, ExecutionException {
             try {
-                this.serverSocket = new ServerSocket(100);
+                this.serverSocket = new ServerSocket(1000);
                 serverExecutorService = Executors.newCachedThreadPool();
                 this.acceptingThread = serverExecutorService.submit(() -> {
                     try {
@@ -49,7 +49,7 @@ class TCPClientClientCommunicationTest {
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
-            tcpClientConnection = new TCPClientConnection("127.0.0.1", 100, clientNotificationListener);
+            tcpClientConnection = new TCPClientConnection("127.0.0.1", 1000, clientNotificationListener);
             tcpClientCommunication = new TCPClientCommunication(tcpClientConnection);
             tcpClientConnection.openConnection();
             acceptingThread.get();
