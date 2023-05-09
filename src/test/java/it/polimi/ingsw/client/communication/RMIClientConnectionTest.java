@@ -1,43 +1,32 @@
 package it.polimi.ingsw.client.communication;
 
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
-import it.polimi.ingsw.server.model.Message;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class RMIClientClientConnectionTest extends UnicastRemoteObject implements RMIServer {
+class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
     ClientNotificationListener clientNotificationListener;
-    RMIClientClientConnection rmiClientConnection;
+    RMIClientConnection rmiClientConnection;
     List<String> notificationsSentToTheListener;
     RMIClient rmiClient;
 
-    protected RMIClientClientConnectionTest() throws RemoteException {
+    protected RMIClientConnectionTest() throws RemoteException {
         try {
             Registry registry = LocateRegistry.createRegistry(100);
             try {
@@ -158,7 +147,7 @@ class RMIClientClientConnectionTest extends UnicastRemoteObject implements RMISe
 
             }
         };
-        rmiClientConnection = new RMIClientClientConnection("localhost", 100, clientNotificationListener);
+        rmiClientConnection = new RMIClientConnection("localhost", 100, clientNotificationListener);
         rmiClientConnection.openConnection();
         rmiClientConnection.notifyHello(this.hello().lobbyReady, this.hello().firstPlayerId,this.hello().loadedGame);
         assertEquals("[trueNoFirsttrue]", notificationsSentToTheListener.toString());

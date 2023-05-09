@@ -1,27 +1,22 @@
 package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.commands.*;
-import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * this class is a TCP based implementation of ClientCommunication
- * it uses a TCPClientClientConnection to send messages to the server
+ * it uses a TCPClientConnection to send messages to the server
  */
 public class TCPClientCommunication implements ClientCommunication {
-    private TCPClientClientConnection tcpClientConnection;
+    private TCPClientConnection tcpClientConnection;
     /**
      * @param tcpClientConnection the implementation of the connection
      */
-    public TCPClientCommunication(TCPClientClientConnection tcpClientConnection) {
+    public TCPClientCommunication(TCPClientConnection tcpClientConnection) {
         this.tcpClientConnection = tcpClientConnection;
     }
     /**

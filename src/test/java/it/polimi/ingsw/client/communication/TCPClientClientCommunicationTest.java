@@ -1,15 +1,11 @@
 package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.commands.HelloCommand;
-import it.polimi.ingsw.communication.responses.*;
-import it.polimi.ingsw.server.model.Tile;
-import it.polimi.ingsw.server.model.TileType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -24,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TCPClientClientCommunicationTest {
     ExecutorService serverExecutorService = Executors.newCachedThreadPool();
     ClientNotificationListener clientNotificationListener;
-    TCPClientClientConnection tcpClientConnection;
+    TCPClientConnection tcpClientConnection;
     List<String> notificationsSentToTheListener = new ArrayList<>();
     Socket serverSideClientSocket;
     ServerSocket serverSocket;
@@ -53,7 +49,7 @@ class TCPClientClientCommunicationTest {
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
-            tcpClientConnection = new TCPClientClientConnection("127.0.0.1", 100, clientNotificationListener);
+            tcpClientConnection = new TCPClientConnection("127.0.0.1", 100, clientNotificationListener);
             tcpClientCommunication = new TCPClientCommunication(tcpClientConnection);
             tcpClientConnection.openConnection();
             acceptingThread.get();

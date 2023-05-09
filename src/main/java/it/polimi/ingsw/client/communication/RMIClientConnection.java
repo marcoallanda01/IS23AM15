@@ -9,7 +9,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,13 +20,13 @@ import java.util.Set;
  * it does also offer the possibility to retrieve a reference to the RMIServer Interface representing
  * the UnicastRemoteObject registered from the server
  */
-public class RMIClientClientConnection extends UnicastRemoteObject implements RMIClient, ClientConnection {
+public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, ClientConnection {
     private ClientNotificationListener clientNotificationListener;
     private RMIServer rmiServer;
     private final String hostname;
     private final int port;
 
-    public RMIClientClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) throws Exception {
+    public RMIClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) throws Exception {
         this.hostname = hostname;
         this.port = port;
         this.clientNotificationListener = clientNotificationListener;

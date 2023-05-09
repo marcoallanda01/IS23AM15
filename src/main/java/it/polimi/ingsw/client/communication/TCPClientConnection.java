@@ -4,17 +4,15 @@ import it.polimi.ingsw.communication.responses.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.*;
-import java.util.function.Predicate;
 
 /**
  * this class handles the TCP connection:
  * opens it, closes it, handles notifications
  * receives and sends messages from and to the server
  */
-public class TCPClientClientConnection implements ClientConnection {
+public class TCPClientConnection implements ClientConnection {
     private ClientNotificationListener clientNotificationListener;
     private String hostname;
     private int port;
@@ -30,7 +28,7 @@ public class TCPClientClientConnection implements ClientConnection {
     /**
      * @param clientNotificationListener the clientNotificationListener
      */
-    public TCPClientClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) {
+    public TCPClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) {
         this.clientNotificationListener = clientNotificationListener;
         this.hostname = hostname;
         this.port = port;

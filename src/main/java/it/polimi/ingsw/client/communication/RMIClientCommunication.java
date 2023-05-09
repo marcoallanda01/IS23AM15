@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.responses.*;
-import it.polimi.ingsw.communication.rmi.RMIClient;
-import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -14,16 +12,16 @@ import java.util.concurrent.Executors;
 
 /**
  * this class is an RMI based implementation of ClientCommunication
- * it uses a RMIClientClientConnection to call methods on the server
+ * it uses a RMIClientConnection to call methods on the server
  * note that some methods expect a return value blocking the thread
  */
 public class RMIClientCommunication implements ClientCommunication {
     private ExecutorService executorService;
-    private RMIClientClientConnection rmiClientConnection;
+    private RMIClientConnection rmiClientConnection;
     /**
      * @param rmiClientConnection the implementation of the connection
      */
-    public RMIClientCommunication(RMIClientClientConnection rmiClientConnection) {
+    public RMIClientCommunication(RMIClientConnection rmiClientConnection) {
         executorService = Executors.newCachedThreadPool();
         this.rmiClientConnection = rmiClientConnection;
     }

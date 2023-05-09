@@ -27,7 +27,7 @@ public class Client {
 
     public void setupNetworkRMI() throws Exception {
         try {
-            RMIClientClientConnection rmiClientConnection = new RMIClientClientConnection(hostname, port, clientNotificationListener);
+            RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientNotificationListener);
             this.clientConnection = rmiClientConnection;
             this.clientCommunication = new RMIClientCommunication(rmiClientConnection);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class Client {
 
     public void setupNetworkTCP() {
         try {
-            TCPClientClientConnection tcpClientConnection = new TCPClientClientConnection(hostname, port, clientNotificationListener);
+            TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, clientNotificationListener);
             this.clientConnection = tcpClientConnection;
             this.clientCommunication = new TCPClientCommunication(tcpClientConnection);
         } catch (Exception e) {
