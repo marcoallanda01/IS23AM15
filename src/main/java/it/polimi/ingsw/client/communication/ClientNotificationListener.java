@@ -17,7 +17,7 @@ import java.util.Set;
 public interface ClientNotificationListener {
     void notifyGame(GameSetUp gameSetUp);
     void notifyWinner(String nickname);
-    void notifyBoard(Set<Tile> tiles, boolean added);
+    void notifyBoard(Set<Tile> tiles);
     void notifyBookshelf(String nickname, Set<Tile> tiles);
     void notifyPoints(String nickname, int points);
     void notifyTurn(String nickname);

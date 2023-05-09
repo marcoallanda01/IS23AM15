@@ -12,7 +12,7 @@ import java.util.Set;
 public interface RMIClient extends Remote {
     void notifyGame(GameSetUp gameSetUp) throws RemoteException;
     void notifyWinner(String nickname) throws RemoteException;
-    void notifyBoard(Set<Tile> tiles, boolean added) throws RemoteException;
+    void notifyBoard(Set<Tile> tiles) throws RemoteException;
     void notifyBookshelf(String nickname, Set<Tile> tiles) throws RemoteException;
     void notifyPoints(String nickname, int points) throws RemoteException;
     void notifyTurn(String nickname) throws RemoteException;

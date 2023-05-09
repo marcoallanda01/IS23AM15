@@ -63,8 +63,8 @@ public class RMIClientClientConnection extends UnicastRemoteObject implements RM
         clientNotificationListener.notifyWinner(nickname);
     }
     @Override
-    public void notifyBoard(Set<Tile> tiles, boolean added) throws RemoteException {
-        clientNotificationListener.notifyBoard(tiles, added);
+    public void notifyBoard(Set<Tile> tiles) throws RemoteException {
+        clientNotificationListener.notifyBoard(tiles);
     }
     @Override
     public void notifyBookshelf(String nickname, Set<Tile> tiles) throws RemoteException {

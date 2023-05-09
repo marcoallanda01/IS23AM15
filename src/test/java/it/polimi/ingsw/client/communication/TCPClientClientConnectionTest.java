@@ -71,8 +71,8 @@ class TCPClientClientConnectionTest {
                 }
 
                 @Override
-                public void notifyBoard(Set<Tile> tiles, boolean added) {
-                    notificationsSentToTheListener.add(tiles.toString() + added);
+                public void notifyBoard(Set<Tile> tiles) {
+                    notificationsSentToTheListener.add(tiles.toString());
                 }
 
 
@@ -178,7 +178,7 @@ class TCPClientClientConnectionTest {
         Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new BoardUpdate(Set.of(new Tile(TileType.BOOK))).toJson()));
         sentMessage.get();
         Thread.sleep(500);
-        assertEquals(List.of(Set.of(new Tile(TileType.BOOK)).toString() + "true").toString(), notificationsSentToTheListener.toString());
+        assertEquals(List.of(Set.of(new Tile(TileType.BOOK)).toString()).toString(), notificationsSentToTheListener.toString());
     }
     @Test
     void bookshelfNotificationTest() throws InterruptedException, ExecutionException {
