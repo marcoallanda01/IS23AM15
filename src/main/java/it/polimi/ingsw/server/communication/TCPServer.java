@@ -14,22 +14,17 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TCPServer implements ServerCommunication{
+public class TCPServer extends ResponseServer implements ServerCommunication{
     private final List<Socket> clients;
     private final List<Socket> clientsInGame;
     private final Map<Socket, String> playersIds;
 
-    private final Lobby lobby;
-
-    private ControllerProvider controllerProvider;
-    private PlayController playController;
-    private ChatController chatController;
     private final int port;
     private ServerSocket serverSocket;
 
-    public TCPServer(int port, Lobby lobby){
+    public TCPServer(int port, Lobby lobby, String sharedLock){
+        super(lobby, sharedLock);
         this.port = port;
-        this.lobby = lobby;
         this.controllerProvider = null;
         this.playController = null;
         this.chatController = null;
@@ -41,12 +36,14 @@ public class TCPServer implements ServerCommunication{
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+        System.out.println("TCP Server socket opened");
     }
 
     /**
      * Function that listen always for new TCP connection
      */
     public void listenForConnections(){
+        System.out.println("TCP Server listening to new connections...");
         ExecutorService executorService = Executors.newCachedThreadPool();
         while(true) {
             try {
@@ -401,11 +398,23 @@ public class TCPServer implements ServerCommunication{
         return playControllerActive;
     }
 
+
+    /**
+     * Add a playing client
+     * @param client (casted to Socket)
+     */
+    @Override
+    protected void addPlayingClient(Object client) {
+        Socket socket = (Socket) client;
+        this.clientsInGame.add(socket);
+        //TODO: this.playersIds.put(socket, lobby.ge)
+    }
+
     /**
      * Tries to start game if not started
      */
-    private synchronized void tryStartGame(){
-        //synchronized (controllerProvider){
+    protected void tryStartGame(){
+        synchronized (playLock){
             try {
                 controllerProvider = lobby.startGame();
                 playController = controllerProvider.getPlayController();
@@ -415,16 +424,7 @@ public class TCPServer implements ServerCommunication{
             } catch (EmptyLobbyException e) {
                 System.out.println("Player joined, but lobby not full!");
             }
-        //}
-    }
-
-    /**
-     * Start the game from the extern
-     */
-    public synchronized void startGame(ControllerProvider controllerProvider){
-        this.controllerProvider = controllerProvider;
-        this.playController = this.controllerProvider.getPlayController();
-        this.chatController = this.controllerProvider.getChatController();
+        }
     }
 
     /**
@@ -583,5 +583,14 @@ public class TCPServer implements ServerCommunication{
                 System.err.println("Cannot write CommonGoalsCards on client: "+c.getLocalSocketAddress().toString());
             }
         });
+    }
+
+    /**
+     * Write something on client output stream
+     * @param client client's socket
+     * @param content message to send
+     */
+    private void sendToClient(Socket client, String content){
+        //TODO write here
     }
 }

@@ -10,6 +10,29 @@ import java.util.Map;
 public class PushNotificationController {
 
     private final List<ServerCommunication> servers;
+
+    /**
+     * Register a server to witch notify changes in model
+     * @param server server
+     * @return true if server was added
+     */
+    public boolean addServer(ServerCommunication server){
+        if(!servers.contains(server)){
+            servers.add(server);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Delete subscription of a server to witch changes in model were notified
+     * @param server server
+     * @return true if server was removed
+     */
+    public boolean removeServer(ServerCommunication server){
+        return servers.remove(server);
+    }
+
     public PushNotificationController(@NotNull List<ServerCommunication> servers){
         this.servers = servers;
     }

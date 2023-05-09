@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.server.communication.ServerCommunication;
 import it.polimi.ingsw.server.model.Game;
 
 import java.io.BufferedReader;
@@ -47,9 +48,24 @@ public class Lobby {
 
     private Game currentGame;
 
+    /**
+     * Attribute needed to understand if the lobby was already reset or not
+     */
+    private int resets;
 
-    public Lobby(String directory, Game game) {
-        this.currentGame = game;
+    /**
+     * attribute to count how many servers are using the lobby
+     */
+    private int numServers;
+
+    private PushNotificationController pushNotificationController;
+
+
+    public Lobby(String directory) {
+        this.pushNotificationController = new PushNotificationController(new ArrayList<>());
+        this.numServers = 0;
+        this.resets = 0;
+        this.currentGame = new Game(this.pushNotificationController);
         this.directory = directory;
         this.firstPlayerId = null;
         this.numPlayersGame = -1;
@@ -99,7 +115,7 @@ public class Lobby {
     /**
      * @return a Set of the saved games names
      */
-    public Set<String> getSavedGames() {
+    public synchronized Set<String> getSavedGames() {
         return this.games;
     }
 
@@ -222,28 +238,60 @@ public class Lobby {
         return this.players.get(id);
     }
 
-    public synchronized void reset(Game game){
-        this.directory = directory;
-        this.firstPlayerId = null;
-        this.numPlayersGame = -1;
-        this.loadingGame = null;
-        this.easyRules = false;
-        this.players = new HashMap<>();
-        this.isCreating = false;
 
-        this. games = new HashSet<>();
-        File saves = new File(this.directory);
-        if (! (!saves.exists() || saves.isFile()) ) {
-            // saves for sure is not a file
-            File[] savesList = saves.listFiles();
-            games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().
-                    filter(File::isFile)
-                    .map(File::getName)
-                    .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
-                    .collect(Collectors.toSet());
+    /**
+     * Reset game and lobby.
+     * Note MUST CALL when game is ended
+     */
+    public synchronized void reset(){
+        if(this.resets == 0) {
+            this.directory = directory;
+            this.firstPlayerId = null;
+            this.numPlayersGame = -1;
+            this.loadingGame = null;
+            this.easyRules = false;
+            this.players = new HashMap<>();
+            this.isCreating = false;
+
+            this.games = new HashSet<>();
+            File saves = new File(this.directory);
+            if (!(!saves.exists() || saves.isFile())) {
+                // saves for sure is not a file
+                File[] savesList = saves.listFiles();
+                games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().
+                        filter(File::isFile)
+                        .map(File::getName)
+                        .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
+                        .collect(Collectors.toSet());
+            }
+            this.currentGame = new Game(pushNotificationController);
         }
+        this.resets++;
+        if(this.resets == this.numServers){
+            this.resets = 0;
+        }
+    }
 
-        this.currentGame = game;
+    /**
+     * Register a server to play and receive notifications about model status
+     * @param server server
+     */
+    public synchronized void registerServer(ServerCommunication server){
+        if(this.pushNotificationController.addServer(server)){
+            this.numServers++;
+            System.out.println("Lobby: server added. Now there are "+this.numServers+" servers");
+        }
+    }
+
+    /**
+     * Remove server's privilege to play and receive notifications about model status
+     * @param server server
+     */
+    public synchronized void removeServer(ServerCommunication server){
+        if(this.pushNotificationController.removeServer(server)) {
+            this.numServers--;
+            System.out.println("Lobby: server removed. Now there are " + this.numServers + " servers");
+        }
     }
 
 }
