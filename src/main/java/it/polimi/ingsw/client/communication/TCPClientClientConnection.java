@@ -103,8 +103,7 @@ public class TCPClientClientConnection implements ClientConnection {
                     // Create output stream for communication with the server
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
-                    //TODO: do not block the reader, do this in a separate thread
-                    dispatchNotification(json);
+                    executorService.submit(()->dispatchNotification(json));
                 }
                 return null;
             } catch (IOException e) {
