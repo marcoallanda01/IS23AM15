@@ -66,6 +66,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
     public LivingRoomBoard(int numberOfPlayers, Map<Integer, Map<Integer, TileRule>> mask) {
         this(numberOfPlayers);
         this.mask = mask;
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**

@@ -17,9 +17,9 @@ import java.util.concurrent.Executors;
 public class TCPServer implements ServerCommunication{
     private final List<Socket> clients;
     private final List<Socket> clientsInGame;
-    private Map<Socket, String> playersIds;
+    private final Map<Socket, String> playersIds;
 
-    private Lobby lobby;
+    private final Lobby lobby;
 
     private ControllerProvider controllerProvider = null;
     private PlayController playController = null;
@@ -33,6 +33,7 @@ public class TCPServer implements ServerCommunication{
         this.playController = null;
         this.clients = Collections.synchronizedList(new ArrayList<>());
         this.clientsInGame = Collections.synchronizedList(new ArrayList<>());
+        this.playersIds = Collections.synchronizedMap(new HashMap<>());
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -83,6 +84,17 @@ public class TCPServer implements ServerCommunication{
         in.close();
         out.close();
         closeClient(client);
+    }
+
+    /**
+     * Method for add a playing client
+     * @param client client socket
+     */
+    private synchronized void addPlayingClient(Socket client, String id){
+        if(!clientsInGame.contains(client)){
+            clientsInGame.add(client);
+            playersIds.put(client, id);
+        }
     }
 
     /**
@@ -146,7 +158,7 @@ public class TCPServer implements ServerCommunication{
                         boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
                         out.println(new BooleanResponse(res));
                         if(res){
-                            this.clientsInGame.add(client);
+                            addPlayingClient(client, jnf.idFirstPlayer);
                         }
                         return true;
                     } else {
@@ -160,13 +172,15 @@ public class TCPServer implements ServerCommunication{
                         JoinResponse joinResponse;
                         try {
                             joinResponse = new JoinResponse(lobby.addPlayer(j.player));
-                            this.clientsInGame.add(client);
                         } catch (NicknameTakenException e) {
                             joinResponse = new JoinResponse(e);
                         } catch (NicknameException e) {
                             joinResponse = new JoinResponse(e);
                         } catch (FullGameException e) {
                             joinResponse = new JoinResponse(e);
+                        }
+                        if(joinResponse.result){
+                            addPlayingClient(client, joinResponse.id);
                         }
                         out.println(joinResponse.toJson());
                         tryStartGame();
@@ -228,7 +242,7 @@ public class TCPServer implements ServerCommunication{
                             boolean res = lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer);
                             br = new BooleanResponse(res);
                             if(res){
-                                this.clientsInGame.add(client);
+                                addPlayingClient(client, jlf.idFirstPlayer);
                             }
                         } catch (NicknameException e) {
                             br = new BooleanResponse(false);
@@ -271,7 +285,7 @@ public class TCPServer implements ServerCommunication{
                                 boolean res = playController.reconnect(name);
                                 br = new BooleanResponse(res);
                                 if(res){
-                                    this.clientsInGame.add(client);
+                                    addPlayingClient(client, id);
                                 }
                             }
                             else
@@ -377,16 +391,19 @@ public class TCPServer implements ServerCommunication{
      * Check if we are in the playing phase of the game
      * @return true if we are
      */
-    private boolean isGameActive(){
+    private synchronized boolean isGameActive(){
         boolean playControllerActive;
-        synchronized (controllerProvider) {
+        //synchronized (controllerProvider) {
             playControllerActive  = (controllerProvider != null);
-        }
+        //}
         return playControllerActive;
     }
 
-    private void tryStartGame(){
-        synchronized (controllerProvider){
+    /**
+     * Tries to start game if not started
+     */
+    private synchronized void tryStartGame(){
+        //synchronized (controllerProvider){
             try {
                 controllerProvider = lobby.startGame();
                 playController = controllerProvider.getPlayController();
@@ -396,9 +413,17 @@ public class TCPServer implements ServerCommunication{
             } catch (EmptyLobbyException e) {
                 System.out.println("Player joined, but lobby not full!");
             }
-        }
+        //}
     }
 
+    /**
+     * Start the game from the extern
+     */
+    public synchronized void startGame(ControllerProvider controllerProvider){
+        this.controllerProvider = controllerProvider;
+        this.playController = this.controllerProvider.getPlayController();
+        this.chatController = this.controllerProvider.getChatController();
+    }
 
     /**
      * Send to all clients game set up
@@ -420,7 +445,7 @@ public class TCPServer implements ServerCommunication{
      * @return true if winner is sent and game is ended
      */
     @Override
-    public boolean sendWinner() {
+    public synchronized boolean sendWinner() {
         if(isGameActive()){
             boolean winnerPreset = playController.isWinnerPresent();
             this.clientsInGame.forEach((c)->{
@@ -434,11 +459,11 @@ public class TCPServer implements ServerCommunication{
                 }
             });
             // TODO: recheck this
-            synchronized (controllerProvider){
+            //synchronized (controllerProvider){
                 playController = null;
                 chatController = null;
                 controllerProvider = null;
-            }
+            //}
             return true;
         }
         return false;
