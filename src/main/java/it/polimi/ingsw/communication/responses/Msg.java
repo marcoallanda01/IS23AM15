@@ -4,11 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public abstract class Msg{
+public abstract class Msg implements Serializable {
     protected String name;
-
+    public Msg(){
+        this.name = "";
+    }
     public Msg(String name){
         this.name = name;
     }

@@ -36,6 +36,7 @@ public class RMIClientCommunication implements ClientCommunication {
                 hello = rmiClientConnection.getServer().hello();
                 rmiClientConnection.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
             } catch (RemoteException e) {
+                e.printStackTrace();
                 throw new ClientCommunicationException();
             }
         });
@@ -45,22 +46,32 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
-        try {
-            rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer);
-        } catch (RemoteException e) {
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            FirstJoinResponse firstJoinResponse = null;
+            try {
+                firstJoinResponse = rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer);
+                rmiClientConnection.notifyFirstJoinResponse(firstJoinResponse.result);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                throw new ClientCommunicationException();
+            }
+        });
     }
     /**
      * this method calls JoinNewAsFirst on the server
      */
     @Override
     public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
-        try {
-            rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer, true);
-        } catch (RemoteException e) {
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            FirstJoinResponse firstJoinResponse = null;
+            try {
+                firstJoinResponse = rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer, easyRules);
+                rmiClientConnection.notifyFirstJoinResponse(firstJoinResponse.result);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                throw new ClientCommunicationException();
+            }
+        });
     }
     /**
      * this method calls GetSavedGames on the server
@@ -112,11 +123,16 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void joinLoadedAsFirst(String player, String idFirstPlayer) {
-        try {
-            rmiClientConnection.getServer().joinLoadedAsFirst(rmiClientConnection, player, idFirstPlayer);
-        } catch (RemoteException e) {
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            FirstJoinResponse firstJoinResponse = null;
+            try {
+                firstJoinResponse = rmiClientConnection.getServer().joinLoadedAsFirst(rmiClientConnection, player, idFirstPlayer);
+                rmiClientConnection.notifyFirstJoinResponse(firstJoinResponse.result);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                throw new ClientCommunicationException();
+            }
+        });
     }
     /**
      * this method calls Join on the server

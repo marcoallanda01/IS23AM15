@@ -133,6 +133,9 @@ public class TCPClientConnection implements ClientConnection {
         } else if (Disconnection.fromJson(json).isPresent()) {
             Disconnection disconnection = Disconnection.fromJson(json).get();
             clientNotificationListener.notifyDisconnection(disconnection.player);
+        } else if (ErrorMessage.fromJson(json).isPresent()) {
+            ErrorMessage errorMessage = ErrorMessage.fromJson(json).get();
+            clientNotificationListener.notifyError(errorMessage.message);
         } else if (GameSaved.fromJson(json).isPresent()) {
             GameSaved gameSaved = GameSaved.fromJson(json).get();
             clientNotificationListener.notifyGameSaved(gameSaved.game);

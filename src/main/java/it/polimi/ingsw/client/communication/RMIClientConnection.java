@@ -112,20 +112,28 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
         clientNotificationListener.notifyReconnection(nickname);
     }
 
+    @Override
+    public void notifyError(String message) throws RemoteException {
+        clientNotificationListener.notifyError(message);
+    }
 
-    public void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame) throws RemoteException {
+
+    public void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame) {
         clientNotificationListener.notifyHello(lobbyReady, firstPlayerId, loadedGame);
     }
-    public void notifySavedGames(Set<String> games) throws RemoteException {
+    public void notifySavedGames(Set<String> games) {
         clientNotificationListener.notifySavedGames(games);
     }
-    public void notifyJoinResponse(boolean result, String error, String id) throws RemoteException {
+    public void notifyJoinResponse(boolean result, String error, String id) {
         clientNotificationListener.notifyJoinResponse(result, error, id);
     }
-    public void notifyLoadGameResponse(boolean result, String error) throws RemoteException {
+    public void notifyFirstJoinResponse(boolean result) {
+        clientNotificationListener.notifyFirstJoinResponse(result);
+    }
+    public void notifyLoadGameResponse(boolean result, String error) {
         clientNotificationListener.notifyLoadGameResponse(result, error);
     }
-    public void notifyLoadedGamePlayers(Set<String> nicknames) throws RemoteException {
+    public void notifyLoadedGamePlayers(Set<String> nicknames) {
         clientNotificationListener.notifyLoadedGamePlayers(nicknames);
     }
 }

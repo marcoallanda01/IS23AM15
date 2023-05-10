@@ -128,8 +128,13 @@ class TCPClientConnectionTest {
                 }
 
                 @Override
-                public void notifyLoadedGamePlayers(Set<String> nicknames) {
+                public void notifyFirstJoinResponse(boolean result) {
+                    notificationsSentToTheListener.add(String.valueOf(result));
+                }
 
+                @Override
+                public void notifyLoadedGamePlayers(Set<String> nicknames) {
+                    
                 }
 
                 @Override
@@ -149,6 +154,11 @@ class TCPClientConnectionTest {
 
                 @Override
                 public void notifyLoadGameResponse(boolean result, String error) {
+
+                }
+
+                @Override
+                public void notifyError(String message) {
 
                 }
             };

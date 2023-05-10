@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 public class Hello extends Msg {

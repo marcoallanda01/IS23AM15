@@ -29,9 +29,11 @@ public interface ClientNotificationListener {
     void notifyGameSaved(String game);
     void notifyPing();
     void notifyReconnection(String nickname);
+    void notifyFirstJoinResponse(boolean result);
     void notifyLoadedGamePlayers(Set<String> nicknames);
     void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame);
     void notifySavedGames(Set<String> games);
     void notifyJoinResponse(boolean result, String error, String id);
     void notifyLoadGameResponse(boolean result, String error);
+    void notifyError(String message);
 }
