@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.model.ArrestGameException;
 import it.polimi.ingsw.server.model.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -423,6 +424,10 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 gameSetUp();
             } catch (EmptyLobbyException e) {
                 System.out.println("Player joined, but lobby not full!");
+            } catch (ArrestGameException e){
+                System.err.println("Game arrested unexpected!");
+                e.printStackTrace();
+                //TODO: notify all clients with an errorMessage
             }
         }
     }

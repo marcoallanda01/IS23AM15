@@ -24,4 +24,5 @@ public interface RMIClient extends Remote {
     void notifyGameSaved(String game) throws RemoteException;
     void notifyPing() throws RemoteException;
     void notifyReconnection(String nickname) throws RemoteException;
+    void notifyError(String message) throws RemoteException;
 }

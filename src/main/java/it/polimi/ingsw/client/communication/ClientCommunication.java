@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
-import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.model.Tile;
-import it.polimi.ingsw.server.model.TileRule;
 import it.polimi.ingsw.server.model.TileType;
 
 import java.util.List;

@@ -128,13 +128,13 @@ public class RMIServerApp implements RMIServer {
     }
 
     @Override
-    public void joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer) throws RemoteException {
-         joinNewAsFirst(client, player,  numPlayersGame,  idFirstPlayer, false);
+    public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer) throws RemoteException {
+         return joinNewAsFirst(client, player,  numPlayersGame,  idFirstPlayer, false);
     }
 
 
     @Override
-    public void joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
+    public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
         BooleanResponse br;
         if(client != null) {
             boolean res = lobby.joinFirstPlayer(player, numPlayersGame, easyRules, idFirstPlayer);
@@ -146,7 +146,7 @@ public class RMIServerApp implements RMIServer {
         else{
             br = new BooleanResponse(false);
         }
-        return;
+        return new FirstJoinResponse(true);
         //return br;
     }
 
@@ -210,7 +210,7 @@ public class RMIServerApp implements RMIServer {
 
 
     @Override
-    public void joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
+    public FirstJoinResponse joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
         BooleanResponse br;
         if(client != null) {
             try {
@@ -227,6 +227,7 @@ public class RMIServerApp implements RMIServer {
             br = new BooleanResponse(false);
         }
        // return br;
+        return new FirstJoinResponse(true);
     }
 
 

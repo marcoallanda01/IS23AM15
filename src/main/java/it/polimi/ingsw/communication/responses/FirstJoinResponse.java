@@ -5,29 +5,29 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
-public class BooleanResponse extends Msg {
+public class FirstJoinResponse extends Msg {
     public boolean result;
 
-    public @Deprecated BooleanResponse(boolean result) {
-        super("BooleanResponse");
+    public FirstJoinResponse(boolean result) {
+        super("FirstJoinResponse");
         this.result = result;
     }
 
     /**
-     * Generator of BooleanResponse from a json string
-     * @param json json string from which generate BooleanResponse
-     * @return Optional of BooleanResponse, empty if json string was not coherent
+     * Generator of FirstJoinResponse from a json string
+     * @param json json string from which generate FirstJoinResponse
+     * @return Optional of FirstJoinResponse, empty if json string was not coherent
      */
-    public static Optional<BooleanResponse> fromJson(String json) {
-        BooleanResponse br;
+    public static Optional<FirstJoinResponse> fromJson(String json) {
+        FirstJoinResponse br;
         try{
             Gson gson = new Gson();
-            br = gson.fromJson(json, BooleanResponse.class);
+            br = gson.fromJson(json, FirstJoinResponse.class);
         }
         catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"BooleanResponse".equals(br.name)){
+        if(!"FirstJoinResponse".equals(br.name)){
             return Optional.empty();
         }
         return Optional.of(br);
@@ -37,7 +37,7 @@ public class BooleanResponse extends Msg {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BooleanResponse that = (BooleanResponse) o;
+        FirstJoinResponse that = (FirstJoinResponse) o;
         return result == that.result;
     }
 }

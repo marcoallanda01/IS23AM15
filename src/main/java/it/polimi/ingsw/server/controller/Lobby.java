@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.server.communication.ServerCommunication;
+import it.polimi.ingsw.server.model.ArrestGameException;
 import it.polimi.ingsw.server.model.Game;
 
 import java.io.BufferedReader;
@@ -58,7 +59,7 @@ public class Lobby {
      */
     private int numServers;
 
-    private PushNotificationController pushNotificationController;
+    private final PushNotificationController pushNotificationController;
 
 
     public Lobby(String directory) {
@@ -216,7 +217,7 @@ public class Lobby {
         return this.players.size() == this.numPlayersGame;
     }
 
-    public synchronized ControllerProvider startGame() throws EmptyLobbyException {
+    public synchronized ControllerProvider startGame() throws EmptyLobbyException, ArrestGameException {
         if (!isReadyToPlay()) {
             throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }

@@ -38,7 +38,7 @@ public class Game{
      * @param players list of players' names
      * @param isFirstGame easy rules game rule
      */
-    public void setGame(@NotNull List<String> players, boolean isFirstGame) {
+    public void setGame(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException{
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
         int numberOfPlayers = players.size();
@@ -97,7 +97,7 @@ public class Game{
      * @param players players
      * @param isFirstGame game rule easy game
      */
-    public @Deprecated Game(@NotNull List<String> players, boolean isFirstGame) {
+    public @Deprecated Game(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;
