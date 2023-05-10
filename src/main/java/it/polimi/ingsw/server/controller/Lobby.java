@@ -61,6 +61,8 @@ public class Lobby {
 
     private final PushNotificationController pushNotificationController;
 
+    private ControllerProvider controllerProvider;
+
 
     public Lobby(String directory) {
         this.pushNotificationController = new PushNotificationController(new ArrayList<>());
@@ -74,6 +76,7 @@ public class Lobby {
         this.easyRules = false;
         this.players = new HashMap<>();
         this.isCreating = false;
+        this.controllerProvider = null;
 
         this. games = new HashSet<>();
         File saves = new File(this.directory);
@@ -227,7 +230,22 @@ public class Lobby {
             // TODO: brutto così, non si può non usare un costruttore per fare il load?
             this.currentGame.setGame(this.loadingGame);
         }
-        return new ControllerProvider(this.currentGame);
+        this.controllerProvider = new ControllerProvider(this.currentGame);
+        return this.controllerProvider;
+    }
+
+    /**
+     * Ask if the game started
+     * @return true if game is being played
+     */
+    public synchronized boolean isPlaying(){return this.controllerProvider != null;}
+
+    /**
+     * get current controller provider
+     * @return controller provider | null if not present
+     */
+    public synchronized ControllerProvider getControllerProvider(){
+        return this.controllerProvider;
     }
 
 
@@ -253,6 +271,7 @@ public class Lobby {
             this.easyRules = false;
             this.players = new HashMap<>();
             this.isCreating = false;
+            this.controllerProvider = null;
 
             this.games = new HashSet<>();
             File saves = new File(this.directory);

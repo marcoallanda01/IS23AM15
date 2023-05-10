@@ -5,9 +5,9 @@ import it.polimi.ingsw.server.controller.PushNotificationController;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class TurnListener extends StandardListener implements PropertyChangeListener {
+public class GameListener extends StandardListener implements PropertyChangeListener {
 
-    public TurnListener(PushNotificationController pnc){
+    public GameListener(PushNotificationController pnc){
         super(pnc);
     }
 
@@ -23,7 +23,14 @@ public class TurnListener extends StandardListener implements PropertyChangeList
         if(proprietyName.equals("currentTurn")) {
             String playerName = (String) evt.getNewValue();
             pnc.notifyTurnChange(playerName);
-        }else{
+        }
+        else if(proprietyName.equals("gameStarted")){
+            pnc.notifyGameSetUp();
+        }
+        else if(proprietyName.equals("gameWon")){
+            pnc.notifyWinner((String) evt.getNewValue());
+        }
+        else{
             System.err.println("TurnListener: propriety name "+proprietyName+" not known");
         }
     }

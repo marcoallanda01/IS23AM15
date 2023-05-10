@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
-import it.polimi.ingsw.server.listeners.TurnListener;
+import it.polimi.ingsw.server.listeners.GameListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
@@ -18,7 +18,7 @@ public class Game{
     private Turn currentTurn;
     private Chat chat;
     private GoalManager goalManager;
-    private PropertyChangeSupport turnChangeSupport;
+    private PropertyChangeSupport GameChangeSupport;
     private static final String PROPERTY_NAME = "currentTurn";
 
     private transient PushNotificationController pushNotificationController;
@@ -30,7 +30,7 @@ public class Game{
     public Game(PushNotificationController pushNotificationController){
         this.pushNotificationController = pushNotificationController;
         // Creation of the propriety support
-        this.turnChangeSupport = new PropertyChangeSupport(this);
+        this.GameChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -59,10 +59,11 @@ public class Game{
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
 
-        addPropertyChangeListener(new TurnListener(pushNotificationController));
+        addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
 
     }
+
     /**
      * Setting up of the game from another game. Must set first pushNotificationController.
      * Notification are sent to the clients.
@@ -88,7 +89,7 @@ public class Game{
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
-        addPropertyChangeListener(new TurnListener(pushNotificationController));
+        addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
     }
 
@@ -130,8 +131,10 @@ public class Game{
      * Method to notify listeners about turn changes
      */
     private void notifyListeners(){
-        this.turnChangeSupport.firePropertyChange(PROPERTY_NAME, null,
+        this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
                 this.currentTurn.getCurrentPlayer().getUserName());
+        this.GameChangeSupport.firePropertyChange("gameStarted", null,
+                this);
     }
 
     /**
@@ -139,7 +142,7 @@ public class Game{
      * @param listener listener
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        turnChangeSupport.addPropertyChangeListener(listener);
+        GameChangeSupport.addPropertyChangeListener(listener);
     }
 
     /**
@@ -147,7 +150,7 @@ public class Game{
      * @param listener listener
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        turnChangeSupport.removePropertyChangeListener(listener);
+        GameChangeSupport.removePropertyChangeListener(listener);
     }
 
     public boolean pickTiles(List<Tile> tiles) {

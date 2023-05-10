@@ -1,18 +1,21 @@
 package it.polimi.ingsw.server.communication;
 
-
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.communication.commands.*;
+import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
-import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.ArrestGameException;
+import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.PlayerNotFoundException;
+import it.polimi.ingsw.server.model.Tile;
 
-import java.util.Objects;
-import java.util.concurrent.locks.Lock;
+import java.util.*;
+
 
 /**
  * Class that implements methods to answer a client request
  */
 // TODO: make TCPServer and RMIServerApp to extends this
-public abstract class ResponseServer {
+public abstract class ResponseServer{
 
     protected final Lobby lobby;
     protected ControllerProvider controllerProvider;
@@ -30,15 +33,284 @@ public abstract class ResponseServer {
     }
 
     /**
+     * Respond to a hello command
+     * @param hc command
+     * @return hello msg
+     */
+    protected Hello respondHello(HelloCommand hc){
+            Hello hello;
+            if (!isGameActive()) {
+                try {
+                    Optional<String> idfp = lobby.join();
+                    if (idfp.isEmpty()) {
+                        hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
+                    } else {
+                        hello = new Hello(idfp.get());
+                    }
+
+                } catch (WaitLobbyException e) {
+                    hello = new Hello(false, false);
+                }
+
+            } else {
+                hello = new Hello(true, false);
+            }
+            return hello;
+    }
+
+    /**
+     * Respond to a JoinNewAsFirst command
+     * @param jnf command
+     * @param client client object
+     * @return FirstJoinResponse msg
+     */
+    protected FirstJoinResponse respondJoinNewAsFirst(JoinNewAsFirst jnf, Object client){
+        boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
+        if(res){
+            addPlayingClient(client, jnf.idFirstPlayer);
+        }
+        return new FirstJoinResponse(res);
+    }
+
+    /**
+     * Respond to a JoinNewAsFirst command
+     * @param j command
+     * @param client client object
+     * @return JoinResponse msg
+     */
+    protected JoinResponse respondJoin(Join j, Object client){
+        JoinResponse joinResponse;
+        try {
+            joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+        } catch (NicknameTakenException e) {
+            joinResponse = new JoinResponse(e);
+        } catch (NicknameException e) {
+            joinResponse = new JoinResponse(e);
+        } catch (FullGameException e) {
+            joinResponse = new JoinResponse(e);
+        }
+        if(joinResponse.result){
+            addPlayingClient(client, joinResponse.id);
+        }
+        tryStartGame();
+        return joinResponse;
+    }
+
+    /**
+     * Respond to a GetSavedGames command
+     * @param gsg command
+     * @return SavedGames msg
+     */
+    protected SavedGames respondGetSavedGames(GetSavedGames gsg){
+        return new SavedGames(lobby.getSavedGames());
+    }
+
+    /**
+     * Respond to a GetSavedGames command
+     * @param lg Load Game Command
+     * @return LoadGameRespond
+     */
+    protected LoadGameResponse respondLoadGame(LoadGame lg){
+        LoadGameResponse loadGameResponse;
+        try {
+            lobby.loadGame(lg.game, lg.idFirstPlayer);
+            loadGameResponse = new LoadGameResponse();
+        } catch (GameLoadException e) {
+            loadGameResponse = new LoadGameResponse(e);
+        } catch (GameNameException e) {
+            loadGameResponse = new LoadGameResponse(e);
+        } catch (IllegalLobbyException e) {
+            loadGameResponse = new LoadGameResponse(e);
+        }
+        return loadGameResponse;
+    }
+
+    /**
+     * Respond to a GetLoadedPlayers command
+     * @param glp command
+     * @return LoadedGamePlayers
+     */
+    protected LoadedGamePlayers respondGetLoadedPlayers(GetLoadedPlayers glp){
+        LoadedGamePlayers loadedGamePlayers;
+        if (!isGameActive()) {
+            Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
+            loadedGamePlayers = new LoadedGamePlayers(pns);
+        } else {
+           loadedGamePlayers = new LoadedGamePlayers(new HashSet<>());
+        }
+        return loadedGamePlayers;
+    }
+
+    /**
+     * Respond to a JoinLoadedAsFirst command
+     * @param jlf command
+     * @param client client object
+     * @return FirstJoinResponse
+     */
+    protected FirstJoinResponse respondJoinLoadedAsFirst(JoinLoadedAsFirst jlf, Object client){
+        FirstJoinResponse fjr;
+        try {
+            boolean res = lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer);
+            fjr = new FirstJoinResponse(res);
+            if(res){
+                addPlayingClient(client, jlf.idFirstPlayer);
+            }
+        } catch (NicknameException e) {
+            fjr = new FirstJoinResponse(false);
+        }
+        return fjr;
+    }
+
+    /**
+     * "Respond" to a Disconnect command and close client connection
+     * @param d command
+     * @param client client object
+     */
+    protected void respondDisconnect(Disconnect d, Object client){
+        if (isGameActive()) {
+            String playerName = getPlayerNameFromClient(client);
+            if(!playController.leave(playerName)){
+                System.err.println("Problems with disconnection of "+playerName);
+            }
+        }
+        closeClient(client);
+    }
+
+    /**
+     * "Respond" to a Reconnect command and in case add the client to playing clients
+     * @param r command
+     * @param client client object
+     */
+    protected void respondReconnect(Reconnect r, Object client){
+        String id = r.getId();
+        if (isGameActive()) {
+            String name = lobby.getNameFromId(id);
+            if (name != null) {
+                if(playController.reconnect(name)){
+                    addPlayingClient(client, id);
+                }
+            }
+        }
+    }
+
+    /**
+     * Respond to a pick tiles command and send an error message if pick tiles failed
+     * @param ptc command
+     */
+    protected void respondPickTiles(PickTilesCommand ptc){
+        String namep = lobby.getNameFromId(ptc.getId());
+        if (isGameActive() && namep != null) {
+            if(! playController.pickTiles(new ArrayList<>(ptc.tiles), namep) ){
+                //TODO send error message
+            }
+        }
+    }
+
+    /**
+     * Respond to a put tiles command and send an error message if put tiles failed
+     * @param ptc command
+     */
+    protected void respondPutTiles(PutTilesCommand ptc){
+        String namep = lobby.getNameFromId(ptc.getId());
+        if (isGameActive() && namep != null) {
+            List<Tile> tilesPut = ptc.tiles.stream().map(Tile::new).toList();
+            if(! playController.putTiles(tilesPut, ptc.column, namep) ){
+                //TODO send error message
+            }
+        }
+    }
+
+    /**
+     * Respond to a save game command and save the game if was sent from a playing player
+     * @param sg command
+     */
+    protected void respondSaveGame(SaveGame sg){
+        if (isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
+            boolean res;
+            try {
+                res = playController.saveGame(sg.game);
+            } catch (Exception e) {
+                e.printStackTrace();
+                res = false;
+            }
+            if (res) {
+                // TODO: notify all players
+            }
+        }
+    }
+
+    /**
+     * Respond to a send message command
+     * @param sm command
+     */
+    protected void respondSendMessage(SendMessage sm){
+        String sender = lobby.getNameFromId(sm.getId());
+        if (isGameActive() && sender != null) {
+            if (sm.player != null) {
+                try {
+                    chatController.sendMessage(sender, sm.player, sm.message);
+                } catch (PlayerNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Close a client connection
+     * @param client client object. A cast is needed
+     */
+    protected abstract void closeClient(Object client);
+
+    /**
+     * Get name of a playing client form his connection
+     * @param client client object. A cast is needed
+     * @return client's nickname. Return null if client is not in game
+     */
+    protected abstract String getPlayerNameFromClient(Object client);
+
+    /**
      * Add a playing client
      * @param client object (need cast)
+     * @param id player's id
      */
-    protected abstract void addPlayingClient(Object client);
+    protected abstract void addPlayingClient(Object client, String id);
 
     /**
      * Lock playLock and tries to start the game
      */
-    protected abstract void tryStartGame();
+    protected void tryStartGame(){
+        synchronized (playLock){
+            if(controllerProvider == null) {
+                if (!lobby.isPlaying()) {
+                    try {
+                        controllerProvider = lobby.startGame();
+                        System.out.println("Player joined, game started!");
+                    } catch (EmptyLobbyException e) {
+                        System.out.println("Player joined, but lobby not full!");
+                        return;
+                    } catch (ArrestGameException e) {
+                        System.err.println("Game arrested unexpected!");
+                        e.printStackTrace();
+                        //TODO: notify all clients with an errorMessage
+                        return;
+                    }
+                } else {
+                    controllerProvider = lobby.getControllerProvider();
+                    System.out.println("Player joined with another protocol (rather than TCP), game started!");
+                }
+                playController = controllerProvider.getPlayController();
+                chatController = controllerProvider.getChatController();
+            }
+        }
+    }
+
+    /**
+     * check if game is active
+     */
+    protected boolean isGameActive(){
+        return lobby.isPlaying();
+    }
 
     /**
      * reset game and lobby.
@@ -52,258 +324,15 @@ public abstract class ResponseServer {
             chatController = null;
         }
     }
+
+
+    //TODO check this two
+    /*
+
+     * Send a message to all the clients
+     * @param message Msg to send
+     /
+    protected abstract void sendMessageToAll(Msg message);
+    protected abstract void sendMessageToClient(Object client, Msg message);
+    */
 }
-/*
-    switch (commandName) {
-        case ("HelloCommand") -> {
-            Optional<HelloCommand> hc = HelloCommand.fromJson(json);
-            if (hc.isPresent()) {
-                Hello hello;
-                if (!isGameActive()) {
-                    try {
-                        Optional<String> idfp = lobby.join();
-                        if (idfp.isEmpty()) {
-                            hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
-                        } else {
-                            hello = new Hello(idfp.get());
-                        }
-
-                    } catch (WaitLobbyException e) {
-                        hello = new Hello(false, false);
-                    }
-
-                } else {
-                    hello = new Hello(true, false);
-                }
-                out.println(hello.toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case ("JoinNewAsFirst") -> {
-            Optional<JoinNewAsFirst> ojnf = JoinNewAsFirst.fromJson(json);
-            if (ojnf.isPresent()) {
-                JoinNewAsFirst jnf = ojnf.get();
-                boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
-                out.println(new BooleanResponse(res));
-                if(res){
-                    addPlayingClient(client, jnf.idFirstPlayer);
-                }
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case ("Join") -> {
-            Optional<Join> oj = Join.fromJson(json);
-            if (oj.isPresent()) {
-                Join j = oj.get();
-                JoinResponse joinResponse;
-                try {
-                    joinResponse = new JoinResponse(lobby.addPlayer(j.player));
-                } catch (NicknameTakenException e) {
-                    joinResponse = new JoinResponse(e);
-                } catch (NicknameException e) {
-                    joinResponse = new JoinResponse(e);
-                } catch (FullGameException e) {
-                    joinResponse = new JoinResponse(e);
-                }
-                if(joinResponse.result){
-                    addPlayingClient(client, joinResponse.id);
-                }
-                out.println(joinResponse.toJson());
-                tryStartGame();
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "GetSavedGames" -> {
-            Optional<GetSavedGames> gsg = GetSavedGames.fromJson(json);
-            if (gsg.isPresent()) {
-                out.println(new SavedGames(lobby.getSavedGames()).toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "LoadGame" -> {
-            Optional<LoadGame> lgo = LoadGame.fromJson(json);
-            if (lgo.isPresent()) {
-                LoadGame lg = lgo.get();
-                LoadGameResponse loadGameResponse;
-                try {
-                    lobby.loadGame(lg.game, lg.idFirstPlayer);
-                    loadGameResponse = new LoadGameResponse();
-                } catch (GameLoadException e) {
-                    loadGameResponse = new LoadGameResponse(e);
-                } catch (GameNameException e) {
-                    loadGameResponse = new LoadGameResponse(e);
-                } catch (IllegalLobbyException e) {
-                    loadGameResponse = new LoadGameResponse(e);
-                }
-                out.println(loadGameResponse.toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "GetLoadedPlayers" -> {
-            Optional<GetLoadedPlayers> glp = GetLoadedPlayers.fromJson(json);
-            if (glp.isPresent()) {
-                if (!isGameActive()) {
-                    Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
-                    out.println(new LoadedGamePlayers(pns).toJson());
-                } else {
-                    out.println(new LoadedGamePlayers(new HashSet<>()).toJson());
-                }
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case ("JoinLoadedAsFirst") -> {
-            Optional<JoinLoadedAsFirst> jlfo = JoinLoadedAsFirst.fromJson(json);
-            if (jlfo.isPresent()) {
-                JoinLoadedAsFirst jlf = jlfo.get();
-                BooleanResponse br;
-                try {
-                    boolean res = lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer);
-                    br = new BooleanResponse(res);
-                    if(res){
-                        addPlayingClient(client, jlf.idFirstPlayer);
-                    }
-                } catch (NicknameException e) {
-                    br = new BooleanResponse(false);
-                }
-                out.println(br.toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case ("Disconnect") -> {
-            Optional<Disconnect> d = Disconnect.fromJson(json);
-            if (d.isPresent()) {
-                BooleanResponse br;
-                if (isGameActive()) {
-                    boolean res = playController.leave(playersIds.get(client));
-                    if (res) {
-                        // TODO: to finish
-                        notifyDisconnection(playersIds.get(client));
-                    }
-                    br = new BooleanResponse(res);
-                } else {
-                    br = new BooleanResponse(true);
-                }
-                out.println(br.toJson());
-                closeClient(client);
-                return false;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "Reconnect" -> {
-            Optional<Reconnect> ro = Reconnect.fromJson(json);
-            if (ro.isPresent()) {
-                String id = ro.get().getId();
-                BooleanResponse br;
-                if (isGameActive()) {
-                    String name = lobby.getNameFromId(id);
-                    if (name != null) {
-                        boolean res = playController.reconnect(name);
-                        br = new BooleanResponse(res);
-                        if(res){
-                            addPlayingClient(client, id);
-                        }
-                    }
-                    else
-                        br = new BooleanResponse(false);
-                } else {
-                    br = new BooleanResponse(false);
-                }
-                out.println(br.toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "PickTilesCommand" -> {
-            Optional<PickTilesCommand> ptco = PickTilesCommand.fromJson(json);
-            if (ptco.isPresent()) {
-                PickTilesCommand ptc = ptco.get();
-                BooleanResponse br;
-                String namep = lobby.getNameFromId(ptc.getId());
-                if (isGameActive() && namep != null) {
-                    br = new BooleanResponse(playController.pickTiles(new ArrayList<>(ptc.tiles), namep));
-                } else {
-                    br = new BooleanResponse(false);
-                }
-                out.println(br.toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "PutTilesCommand" -> {
-            Optional<PutTilesCommand> putco = PutTilesCommand.fromJson(json);
-            if (putco.isPresent()) {
-                PutTilesCommand ptc = putco.get();
-                BooleanResponse br;
-                String namep = lobby.getNameFromId(ptc.getId());
-                if (isGameActive() && namep != null) {
-                    List<Tile> tilesPut = ptc.tiles.stream().map(Tile::new).toList();
-                    br = new BooleanResponse(playController.putTiles(tilesPut, ptc.column, namep));
-                } else {
-                    br = new BooleanResponse(false);
-                }
-                out.println(br.toJson());
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "SaveGame" -> {
-            Optional<SaveGame> sgo = SaveGame.fromJson(json);
-            if (sgo.isPresent()) {
-                SaveGame sg = sgo.get();
-                if (isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
-                    boolean res;
-                    try {
-                        res = playController.saveGame(sg.game);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        res = false;
-                    }
-                    if (res) {
-                        // TODO: notify all players
-                    }
-                }
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-        case "SendMessage" -> {
-            Optional<SendMessage> smo = SendMessage.fromJson(json);
-            if (smo.isPresent()) {
-                SendMessage sm = smo.get();
-                String sender = lobby.getNameFromId(sm.getId());
-                if (isGameActive() && sender != null) {
-                    if (sm.player != null) {
-                        try {
-                            chatController.sendMessage(sender, sm.player, sm.message);
-                        } catch (PlayerNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                return true;
-            } else {
-                wrongFormatted = true;
-            }
-        }
-}
-
-*/
