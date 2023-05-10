@@ -156,7 +156,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     if (ojnf.isPresent()) {
                         JoinNewAsFirst jnf = ojnf.get();
                         boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
-                        out.println(new FirstJoinResponse(res));
+                        out.println((new FirstJoinResponse(res)).toJson());
                         if(res){
                             addPlayingClient(client, jnf.idFirstPlayer);
                         }
@@ -237,17 +237,17 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     Optional<JoinLoadedAsFirst> jlfo = JoinLoadedAsFirst.fromJson(json);
                     if (jlfo.isPresent()) {
                         JoinLoadedAsFirst jlf = jlfo.get();
-                        BooleanResponse br;
+                        FirstJoinResponse fjr;
                         try {
                             boolean res = lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer);
-                            br = new BooleanResponse(res);
+                            fjr = new FirstJoinResponse(res);
                             if(res){
                                 addPlayingClient(client, jlf.idFirstPlayer);
                             }
                         } catch (NicknameException e) {
-                            br = new BooleanResponse(false);
+                            fjr = new FirstJoinResponse(false);
                         }
-                        out.println(br.toJson());
+                        out.println(fjr.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;

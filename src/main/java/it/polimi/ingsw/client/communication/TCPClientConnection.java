@@ -181,6 +181,7 @@ public class TCPClientConnection implements ClientConnection {
             Winner winner = Winner.fromJson(json).get();
             clientNotificationListener.notifyWinner(winner.player);
         } else {
+            System.out.println("Notification: " + json + " not recognized");
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

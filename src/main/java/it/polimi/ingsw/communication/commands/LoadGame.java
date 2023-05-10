@@ -12,7 +12,7 @@ public class LoadGame extends Command{
     public String game;
 
     public LoadGame(@NotNull String idFistPlayer, @NotNull String game){
-        super("GetSavedGames");
+        super("LoadGame");
         this.idFirstPlayer = new String(idFistPlayer);
         this.game = game;
     }
