@@ -3,8 +3,6 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
-import it.polimi.ingsw.server.model.ArrestGameException;
-import it.polimi.ingsw.server.model.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
@@ -19,7 +17,9 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     private final List<Socket> clients;
     private final List<Socket> clientsInGame;
     private final Map<Socket, String> playersIds;
-
+    private final Map<Socket, PrintWriter> clientsToOut;
+    private final String lockOnLocks = "outLocks";
+    private final Map<Socket, String> clientsToLockOut; //lock of the map -- listen and closeClient
     private final int port;
     private ServerSocket serverSocket;
 
@@ -32,12 +32,72 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         this.clients = Collections.synchronizedList(new ArrayList<>());
         this.clientsInGame = Collections.synchronizedList(new ArrayList<>());
         this.playersIds = Collections.synchronizedMap(new HashMap<>());
+        this.clientsToOut = Collections.synchronizedMap(new HashMap<>());
+        this.clientsToLockOut = new HashMap<>();
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
         System.out.println("TCP Server socket opened");
+    }
+
+    /**
+     * Add client
+     * @param client client's socket
+     * @return true if add succeeded
+     */
+    private boolean addClient(Socket client) throws IOException {
+        boolean res = clients.add(client);
+        clientsToOut.put(client, new PrintWriter(client.getOutputStream(), true));
+        synchronized (lockOnLocks){
+            clientsToLockOut.put(client, client.toString());
+        }
+        return res;
+    }
+
+    /**
+     * Write something on client output stream
+     * @param client client's socket
+     * @param content message to send
+     */
+    private void sendToClient(Socket client, String content){
+        String clientLock;
+        PrintWriter out = clientsToOut.get(client);
+        synchronized (lockOnLocks){
+            clientLock = clientsToLockOut.get(client);
+        }
+        if(out != null && clientLock != null){
+            // clientLock is a reference because map.get() returns a reference
+            synchronized (clientLock){
+                //this lock is separated because I don't care if now the client is deleted
+                //the message is sent but no one receive it
+                out.println(content);
+            }
+        }
+    }
+
+    /**
+     * Method for close a client
+     * @param client client's socket
+     */
+    private void closeClient(Socket client){
+        this.clients.remove(client);
+        this.clientsInGame.remove(client);
+        PrintWriter out = this.clientsToOut.remove(client);
+        if(out != null){
+            out.close();
+        }
+        synchronized (lockOnLocks){
+            this.clientsToLockOut.remove(client);
+        }
+        try {
+            Scanner in = new Scanner(client.getInputStream());
+            in.close();
+            client.close();
+        }catch (IOException b){
+            b.printStackTrace();
+        }
     }
 
     /**
@@ -49,8 +109,11 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         while(true) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                clients.add(clientSocket);
-                executorService.submit(()->{clientHandler(clientSocket);});
+                if(addClient(clientSocket)) {
+                    executorService.submit(() -> {
+                        clientHandler(clientSocket);
+                    });
+                }
             } catch(IOException e) {
                 e.printStackTrace();
             }
@@ -63,10 +126,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     public void clientHandler(Socket client){
         Scanner in;
-        PrintWriter out;
         try {
             in = new Scanner(client.getInputStream());
-            out = new PrintWriter(client.getOutputStream(), true);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -77,12 +138,10 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         do {
             json = in.nextLine();
             System.out.println("Received from "+client.getLocalSocketAddress().toString()+": " + json);
-
-        } while (respond(client, out, json));
+        } while (respond(client, json));
 
         System.out.println("Closing sockets of "+client.getLocalSocketAddress().toString());
         in.close();
-        out.close();
         closeClient(client);
     }
 
@@ -98,26 +157,12 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     }
 
     /**
-     * Method for close a client
-     * @param client client
-     */
-    private void closeClient(Socket client){
-        this.clients.remove(client);
-        this.clientsInGame.remove(client);
-        try {
-            client.close();
-        }catch (IOException b){
-            b.printStackTrace();
-        }
-    }
-
-    /**
      * Method to handle a client request
      * @param client client to witch respond
      * @param json json string that client sent
      * @return true if client still connected
      */
-    private boolean respond(Socket client, PrintWriter out, String json){
+    private boolean respond(Socket client, String json){
         String commandName;
         Optional<String> oName = Command.nameFromJson(json);
         if(oName.isPresent()) {
@@ -128,24 +173,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case ("HelloCommand") -> {
                     Optional<HelloCommand> hc = HelloCommand.fromJson(json);
                     if (hc.isPresent()) {
-                        Hello hello;
-                        if (!isGameActive()) {
-                            try {
-                                Optional<String> idfp = lobby.join();
-                                if (idfp.isEmpty()) {
-                                    hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
-                                } else {
-                                    hello = new Hello(idfp.get());
-                                }
-
-                            } catch (WaitLobbyException e) {
-                                hello = new Hello(false, false);
-                            }
-
-                        } else {
-                            hello = new Hello(true, false);
-                        }
-                        out.println(hello.toJson());
+                        Hello hello = respondHello(hc.get());
+                        sendToClient(client, hello.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -154,12 +183,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case ("JoinNewAsFirst") -> {
                     Optional<JoinNewAsFirst> ojnf = JoinNewAsFirst.fromJson(json);
                     if (ojnf.isPresent()) {
-                        JoinNewAsFirst jnf = ojnf.get();
-                        boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
-                        out.println((new FirstJoinResponse(res)).toJson());
-                        if(res){
-                            addPlayingClient(client, jnf.idFirstPlayer);
-                        }
+                        FirstJoinResponse fjr = respondJoinNewAsFirst(ojnf.get(), client);
+                        sendToClient(client, fjr.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -168,22 +193,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case ("Join") -> {
                     Optional<Join> oj = Join.fromJson(json);
                     if (oj.isPresent()) {
-                        Join j = oj.get();
-                        JoinResponse joinResponse;
-                        try {
-                            joinResponse = new JoinResponse(lobby.addPlayer(j.player));
-                        } catch (NicknameTakenException e) {
-                            joinResponse = new JoinResponse(e);
-                        } catch (NicknameException e) {
-                            joinResponse = new JoinResponse(e);
-                        } catch (FullGameException e) {
-                            joinResponse = new JoinResponse(e);
-                        }
-                        if(joinResponse.result){
-                            addPlayingClient(client, joinResponse.id);
-                        }
-                        out.println(joinResponse.toJson());
-                        tryStartGame();
+                        JoinResponse joinResponse = respondJoin(oj.get(), client);
+                        sendToClient(client, joinResponse.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -192,7 +203,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case "GetSavedGames" -> {
                     Optional<GetSavedGames> gsg = GetSavedGames.fromJson(json);
                     if (gsg.isPresent()) {
-                        out.println(new SavedGames(lobby.getSavedGames()).toJson());
+                        SavedGames sg = respondGetSavedGames(gsg.get());
+                        sendToClient(client, sg.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -202,18 +214,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     Optional<LoadGame> lgo = LoadGame.fromJson(json);
                     if (lgo.isPresent()) {
                         LoadGame lg = lgo.get();
-                        LoadGameResponse loadGameResponse;
-                        try {
-                            lobby.loadGame(lg.game, lg.idFirstPlayer);
-                            loadGameResponse = new LoadGameResponse();
-                        } catch (GameLoadException e) {
-                            loadGameResponse = new LoadGameResponse(e);
-                        } catch (GameNameException e) {
-                            loadGameResponse = new LoadGameResponse(e);
-                        } catch (IllegalLobbyException e) {
-                            loadGameResponse = new LoadGameResponse(e);
-                        }
-                        out.println(loadGameResponse.toJson());
+                        LoadGameResponse loadGameResponse = respondLoadGame(lg);
+                        sendToClient(client, loadGameResponse.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -222,12 +224,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case "GetLoadedPlayers" -> {
                     Optional<GetLoadedPlayers> glp = GetLoadedPlayers.fromJson(json);
                     if (glp.isPresent()) {
-                        if (!isGameActive()) {
-                            Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
-                            out.println(new LoadedGamePlayers(pns).toJson());
-                        } else {
-                            out.println(new LoadedGamePlayers(new HashSet<>()).toJson());
-                        }
+                        LoadedGamePlayers loadedGamePlayers = respondGetLoadedPlayers(glp.get());
+                        sendToClient(client, loadedGamePlayers.toJson());;
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -237,17 +235,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     Optional<JoinLoadedAsFirst> jlfo = JoinLoadedAsFirst.fromJson(json);
                     if (jlfo.isPresent()) {
                         JoinLoadedAsFirst jlf = jlfo.get();
-                        FirstJoinResponse fjr;
-                        try {
-                            boolean res = lobby.joinLoadedGameFirstPlayer(jlf.player, jlf.idFirstPlayer);
-                            fjr = new FirstJoinResponse(res);
-                            if(res){
-                                addPlayingClient(client, jlf.idFirstPlayer);
-                            }
-                        } catch (NicknameException e) {
-                            fjr = new FirstJoinResponse(false);
-                        }
-                        out.println(fjr.toJson());
+                        FirstJoinResponse firstJoinResponse = respondJoinLoadedAsFirst(jlf, client);
+                        sendToClient(client, firstJoinResponse.toJson());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -256,19 +245,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case ("Disconnect") -> {
                     Optional<Disconnect> d = Disconnect.fromJson(json);
                     if (d.isPresent()) {
-                        BooleanResponse br;
-                        if (isGameActive()) {
-                            boolean res = playController.leave(playersIds.get(client));
-                            if (res) {
-                                // TODO: to finish
-                                notifyDisconnection(playersIds.get(client));
-                            }
-                            br = new BooleanResponse(res);
-                        } else {
-                            br = new BooleanResponse(true);
-                        }
-                        out.println(br.toJson());
-                        closeClient(client);
+                        respondDisconnect(d.get(), client);
                         return false;
                     } else {
                         wrongFormatted = true;
@@ -277,23 +254,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case "Reconnect" -> {
                     Optional<Reconnect> ro = Reconnect.fromJson(json);
                     if (ro.isPresent()) {
-                        String id = ro.get().getId();
-                        BooleanResponse br;
-                        if (isGameActive()) {
-                            String name = lobby.getNameFromId(id);
-                            if (name != null) {
-                                boolean res = playController.reconnect(name);
-                                br = new BooleanResponse(res);
-                                if(res){
-                                    addPlayingClient(client, id);
-                                }
-                            }
-                            else
-                                br = new BooleanResponse(false);
-                        } else {
-                            br = new BooleanResponse(false);
-                        }
-                        out.println(br.toJson());
+                        respondReconnect(ro.get(), client);
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -303,14 +264,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     Optional<PickTilesCommand> ptco = PickTilesCommand.fromJson(json);
                     if (ptco.isPresent()) {
                         PickTilesCommand ptc = ptco.get();
-                        BooleanResponse br;
-                        String namep = lobby.getNameFromId(ptc.getId());
-                        if (isGameActive() && namep != null) {
-                            br = new BooleanResponse(playController.pickTiles(new ArrayList<>(ptc.tiles), namep));
-                        } else {
-                            br = new BooleanResponse(false);
-                        }
-                        out.println(br.toJson());
+                        respondPickTiles(ptc);
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -320,15 +274,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     Optional<PutTilesCommand> putco = PutTilesCommand.fromJson(json);
                     if (putco.isPresent()) {
                         PutTilesCommand ptc = putco.get();
-                        BooleanResponse br;
-                        String namep = lobby.getNameFromId(ptc.getId());
-                        if (isGameActive() && namep != null) {
-                            List<Tile> tilesPut = ptc.tiles.stream().map(Tile::new).toList();
-                            br = new BooleanResponse(playController.putTiles(tilesPut, ptc.column, namep));
-                        } else {
-                            br = new BooleanResponse(false);
-                        }
-                        out.println(br.toJson());
+                        respondPutTiles(ptc);
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -337,19 +283,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case "SaveGame" -> {
                     Optional<SaveGame> sgo = SaveGame.fromJson(json);
                     if (sgo.isPresent()) {
-                        SaveGame sg = sgo.get();
-                        if (isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
-                            boolean res;
-                            try {
-                                res = playController.saveGame(sg.game);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                res = false;
-                            }
-                            if (res) {
-                                // TODO: notify all players
-                            }
-                        }
+                        respondSaveGame(sgo.get());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -358,17 +292,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case "SendMessage" -> {
                     Optional<SendMessage> smo = SendMessage.fromJson(json);
                     if (smo.isPresent()) {
-                        SendMessage sm = smo.get();
-                        String sender = lobby.getNameFromId(sm.getId());
-                        if (isGameActive() && sender != null) {
-                            if (sm.player != null) {
-                                try {
-                                    chatController.sendMessage(sender, sm.player, sm.message);
-                                } catch (PlayerNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
+                        respondSendMessage(smo.get());
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -388,92 +312,50 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     }
 
     /**
-     * Check if we are in the playing phase of the game
-     * @return true if we are
+     * Close a client connection
+     *
+     * @param client client object. Client is cast to Socket
      */
-    private synchronized boolean isGameActive(){
-        boolean playControllerActive;
-        //synchronized (controllerProvider) {
-            playControllerActive  = (controllerProvider != null);
-        //}
-        return playControllerActive;
+    @Override
+    protected void closeClient(Object client) {
+        closeClient((Socket) client);
     }
 
+    /**
+     * Get name of a playing client form his connection
+     *
+     * @param client client object. A cast is needed
+     * @return client's nickname. Return null if client is not in game
+     */
+    @Override
+    protected String getPlayerNameFromClient(Object client) {
+        return this.lobby.getNameFromId(this.playersIds.get((Socket) client));
+    }
 
     /**
      * Add a playing client
      * @param client (casted to Socket)
      */
     @Override
-    protected void addPlayingClient(Object client) {
+    protected void addPlayingClient(Object client, String id) {
         Socket socket = (Socket) client;
-        this.clientsInGame.add(socket);
-        //TODO: this.playersIds.put(socket, lobby.ge)
+        addPlayingClient(socket, id);
     }
 
-    /**
-     * Tries to start game if not started
-     */
-    protected void tryStartGame(){
-        synchronized (playLock){
-            try {
-                controllerProvider = lobby.startGame();
-                playController = controllerProvider.getPlayController();
-                chatController = controllerProvider.getChatController();
-                System.out.println("Player joined, game started!");
-                gameSetUp();
-            } catch (EmptyLobbyException e) {
-                System.out.println("Player joined, but lobby not full!");
-            } catch (ArrestGameException e){
-                System.err.println("Game arrested unexpected!");
-                e.printStackTrace();
-                //TODO: notify all clients with an errorMessage
-            }
-        }
-    }
 
     /**
      * Send to all clients game set up
      */
     @Override
     public void gameSetUp() {
+        tryStartGame();
         this.clientsInGame.forEach((c)->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new GameSetUp(playController.getPlayers(), new ArrayList<>(playController.getEndGameGoals())));
-            } catch (IOException e) {
-                System.err.println("Cannot send game set up on client");
-                throw new RuntimeException(e);
-            }
+            sendToClient(c,
+                    new GameSetUp(
+                            playController.getPlayers(),
+                            new ArrayList<>(playController.getEndGameGoals())
+                    ).toJson());
         });
-    }
-
-    /**
-     * @return true if winner is sent and game is ended
-     */
-    @Override
-    public synchronized boolean sendWinner() {
-        if(isGameActive()){
-            boolean winnerPreset = playController.isWinnerPresent();
-            this.clientsInGame.forEach((c)->{
-                try {
-                    PrintWriter out = new PrintWriter(c.getOutputStream());
-                    out.println(new Winner(playController.getWinner()).toJson());
-                    closeClient(c);
-                } catch (IOException e) {
-                    System.err.println("Cannot end game on client");
-                    throw new RuntimeException(e);
-                }
-            });
-            // TODO: recheck this
-            //synchronized (controllerProvider){
-                playController = null;
-                chatController = null;
-                controllerProvider = null;
-            //}
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -483,12 +365,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void notifyDisconnection(String playerName) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new Disconnection(playerName).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write disconnected on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new Disconnection(playerName).toJson());
         });
     }
 
@@ -499,12 +376,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void notifyReconnection(String playerName) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new Reconnected(playerName).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write reconnected on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new Reconnected(playerName).toJson());
         });
     }
 
@@ -515,12 +387,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void notifyChangeBoard(List<Tile> tiles) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new BoardUpdate(new HashSet<>(tiles)).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write changeBoard on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new BoardUpdate(new HashSet<>(tiles)).toJson());
         });
     }
 
@@ -532,12 +399,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new BookShelfUpdate(playerName, new HashSet<>(tiles)).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write bookshelf update on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new BookShelfUpdate(playerName, new HashSet<>(tiles)).toJson());
         });
     }
 
@@ -549,12 +411,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void updatePlayerPoints(String playerName, int points) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new PlayerPoints(playerName, points).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write player update on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new PlayerPoints(playerName, points).toJson());
         });
     }
 
@@ -565,12 +422,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void notifyTurn(String playerName) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new TurnNotify(playerName).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write turn notify on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new TurnNotify(playerName).toJson());
         });
     }
 
@@ -581,21 +433,22 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
         this.clientsInGame.forEach(c->{
-            try {
-                PrintWriter out = new PrintWriter(c.getOutputStream());
-                out.println(new CommonCards(cardsAndTokens).toJson());
-            } catch (IOException e) {
-                System.err.println("Cannot write CommonGoalsCards on client: "+c.getLocalSocketAddress().toString());
-            }
+            sendToClient(c, new CommonCards(cardsAndTokens).toJson());
         });
     }
 
     /**
-     * Write something on client output stream
-     * @param client client's socket
-     * @param content message to send
+     * Notify the winner to all playing clients, close all playing clients, reset lobby
+     * @param playerName winner's game
      */
-    private void sendToClient(Socket client, String content){
-        //TODO write here
+    @Override
+    public void notifyWinner(String playerName) {
+        this.clientsInGame.forEach(c->{
+            sendToClient(c, new Winner(playController.getWinner()).toJson());
+        });
+        // Close all playing clients
+        this.clientsInGame.forEach(this::closeClient);
+        // Reset lobby
+        reset();
     }
 }

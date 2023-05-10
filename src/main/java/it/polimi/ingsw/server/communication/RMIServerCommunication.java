@@ -41,16 +41,6 @@ public class RMIServerCommunication implements ServerCommunication{
     }
 
     /**
-     * Send notification of the winner to all players
-     *
-     * @return true if there is a winner and the notification is sent, false otherwise
-     */
-    @Override
-    public boolean sendWinner() {
-        return false;
-    }
-
-    /**
      * If in game, function notifies the disconnection of a player to all the others
      *
      * @param playerName player that disconnect
@@ -87,6 +77,16 @@ public class RMIServerCommunication implements ServerCommunication{
 
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
+
+    }
+
+    /**
+     * Send notification of the winner to all players
+     *
+     * @param playerName name of the winner
+     */
+    @Override
+    public void notifyWinner(String playerName) {
 
     }
 }

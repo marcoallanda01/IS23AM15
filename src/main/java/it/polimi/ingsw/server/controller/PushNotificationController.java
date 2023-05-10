@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class PushNotificationController {
+public class PushNotificationController{
 
     private final List<ServerCommunication> servers;
 
@@ -33,6 +33,10 @@ public class PushNotificationController {
         return servers.remove(server);
     }
 
+    /**
+     * Create controller to witch register to receive notification about the game
+     * @param servers list of the servers
+     */
     public PushNotificationController(@NotNull List<ServerCommunication> servers){
         this.servers = servers;
     }
@@ -62,6 +66,14 @@ public class PushNotificationController {
 
     public void notifyChangeBookShelf(String playerName, List<Tile> bookShelfTiles){
         servers.forEach((s) -> s.notifyChangeBookShelf(playerName, bookShelfTiles));
+    }
+
+    public void notifyGameSetUp(){
+        servers.forEach(ServerCommunication::gameSetUp);
+    }
+
+    public void notifyWinner(String playerName){
+        servers.forEach((s) -> s.notifyWinner(playerName));
     }
 
 }

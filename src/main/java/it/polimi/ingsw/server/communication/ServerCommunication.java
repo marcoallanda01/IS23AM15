@@ -14,13 +14,6 @@ public interface ServerCommunication {
 
 
     // notifications methods
-
-    /**
-     * Send notification of the winner to all players
-     * @return true if there is a winner and the notification is sent, false otherwise
-     */
-    public boolean sendWinner();
-
     /**
      * If in game, function notifies the disconnection of a player to all the others
      * @param playerName player that disconnect
@@ -37,4 +30,10 @@ public interface ServerCommunication {
     //Non serve, inviati in GameSeUp perché sono unici e non cambiano
     //public void sendCommonGoals(List<String> commonGoals);
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens);
+
+    /**
+     * Send notification of the winner to all players
+     * @param playerName name of the winner
+     */
+    public void notifyWinner(String playerName);
 }
