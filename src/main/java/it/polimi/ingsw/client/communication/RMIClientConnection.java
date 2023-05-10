@@ -32,13 +32,15 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
         this.clientNotificationListener = clientNotificationListener;
     }
     public void openConnection() throws Exception {
+        System.out.println("Opening RMI client connection...");
         // Getting the registry
         Registry registry;
-
+        System.out.println("Locating registry...");
         registry = LocateRegistry.getRegistry(hostname, port);
-
+        System.out.println("Looking up the registry for ServerRMIApp...");
         // Looking up the registry for the remote object
         this.rmiServer = (RMIServer) registry.lookup("ServerRMIApp");
+        System.out.println("RMI client connection open");
     }
     // Method to close RMI connection
     public void closeConnection() {

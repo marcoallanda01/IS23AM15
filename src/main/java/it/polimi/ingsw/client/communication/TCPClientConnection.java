@@ -39,14 +39,18 @@ public class TCPClientConnection implements ClientConnection {
      * starts listening to notifications
      */
     public void openConnection() {
+        System.out.println("Opening TCP client connection...");
         readLock = new Object();
         writeLock = new Object();
         executorService = Executors.newCachedThreadPool();
         waitingResponses = 0;
         try {
             // Create a socket to connect to the server
+            System.out.println("Opening socket...");
             socket = new Socket(hostname, port);
+            System.out.println("Starting notification handler...");
             notificationListener = executorService.submit(() -> startNotificationHandler());
+            System.out.println("TCP client connection open");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,6 +105,7 @@ public class TCPClientConnection implements ClientConnection {
                     // Create output stream for communication with the server
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
+                    System.out.println("Received from server: " + json);
                     executorService.submit(()->dispatchNotification(json));
                 }
                 return null;
@@ -136,6 +141,9 @@ public class TCPClientConnection implements ClientConnection {
         } else if (ErrorMessage.fromJson(json).isPresent()) {
             ErrorMessage errorMessage = ErrorMessage.fromJson(json).get();
             clientNotificationListener.notifyError(errorMessage.message);
+        } else if (FirstJoinResponse.fromJson(json).isPresent()) {
+            FirstJoinResponse firstJoinResponse = FirstJoinResponse.fromJson(json).get();
+            clientNotificationListener.notifyFirstJoinResponse(firstJoinResponse.result);
         } else if (GameSaved.fromJson(json).isPresent()) {
             GameSaved gameSaved = GameSaved.fromJson(json).get();
             clientNotificationListener.notifyGameSaved(gameSaved.game);

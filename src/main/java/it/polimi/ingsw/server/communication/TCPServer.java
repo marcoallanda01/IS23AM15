@@ -66,7 +66,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         PrintWriter out;
         try {
             in = new Scanner(client.getInputStream());
-            out = new PrintWriter(client.getOutputStream());
+            out = new PrintWriter(client.getOutputStream(), true);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -156,7 +156,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     if (ojnf.isPresent()) {
                         JoinNewAsFirst jnf = ojnf.get();
                         boolean res = lobby.joinFirstPlayer(jnf.player, jnf.numOfPlayers, jnf.easyRules, jnf.idFirstPlayer);
-                        out.println(new BooleanResponse(res));
+                        out.println(new FirstJoinResponse(res));
                         if(res){
                             addPlayingClient(client, jnf.idFirstPlayer);
                         }
