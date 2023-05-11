@@ -96,7 +96,8 @@ public class Lobby {
      * can be called
      * @throws WaitLobbyException if the there is already a first player and the game is in creation
      */
-    public synchronized Optional<String> join() throws WaitLobbyException {
+    public synchronized Optional<String> join() throws WaitLobbyException { //HELLO COMMAND
+        System.out.println("Before join(hello): "+this);
         Optional<String> uniqueID = Optional.empty();
         if (this.firstPlayerId == null) {
             this.firstPlayerId = UUID.randomUUID().toString();
@@ -133,12 +134,14 @@ public class Lobby {
 
 
     public synchronized boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
-        if (this.isCreating && this.loadingGame != null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
+        System.out.println("Before joinFirstPlayer: "+this);
+        if (this.isCreating && this.loadingGame == null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
                 this.firstPlayerId.equals(id)) { // this.isCreating can be true only when fistPlayer.isPresent()
             this.isCreating = false;
             this.easyRules = easyRules;
             this.players.put(this.firstPlayerId, name);
             this.numPlayersGame = numPlayersGame;
+            return true;
         }
         return false;
     }
@@ -152,6 +155,7 @@ public class Lobby {
      * @return the list of loaded game players nicknames
      */
     public synchronized List<String> loadGame(String name, String idFirstPlayer) throws GameLoadException, GameNameException, IllegalLobbyException {
+        System.out.println("Before loadgame: "+this);
         if (this.isCreating && this.firstPlayerId.equals(idFirstPlayer)) {
             if (!getSavedGames().contains(name)) {
                 throw new GameNameException(name);
@@ -171,6 +175,7 @@ public class Lobby {
     }
 
     public synchronized boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
+        System.out.println("Before joinLoadedGameFirstPlayer: "+this);
         if (this.isCreating && this.loadingGame != null && this.firstPlayerId.equals(id)) {
             if (!this.loadingGame.getPlayers().contains(name)) {
                 throw new NicknameException(name);
@@ -183,21 +188,28 @@ public class Lobby {
     }
 
     public synchronized String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
-        Set<String> uniquePlayers = (Set<String>) this.players.values();
+        System.out.println("Before addPlayer: "+this);
+        Set<String> uniquePlayers = new HashSet<>(this.players.values());
+        System.out.println("addPlayer: before checks");
         if (uniquePlayers.size() == this.numPlayersGame) {
+            System.out.println("addPlayer: FullGameException");
             throw new FullGameException(player);
         }
         if (uniquePlayers.contains(player)) {
+            System.out.println("addPlayer: NicknameTakenException");
             throw new NicknameTakenException(player);
         }
         if (this.loadingGame != null) {
             if (!this.loadingGame.getPlayers().contains(player)) {
+                System.out.println("addPlayer: NicknameException");
                 throw new NicknameException(player);
             }
         }
         String id;
+        System.out.println("addPlayer: Before generating id");
         do {
             id = UUID.randomUUID().toString();
+            System.out.println("addPlayer: Generated id->"+id);
         } while (this.players.putIfAbsent(id, player) != null);
 
         return id;
@@ -221,16 +233,25 @@ public class Lobby {
     }
 
     public synchronized ControllerProvider startGame() throws EmptyLobbyException, ArrestGameException {
+        System.out.println("Before startGame: "+this);
         if (!isReadyToPlay()) {
             throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
         }
         if(loadingGame == null){
-            this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
+            System.out.println("Lobby startGame: starting new game");
+            try {
+                this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }else{
             // TODO: brutto così, non si può non usare un costruttore per fare il load?
+            System.out.println("Lobby startGame: starting loaded game");
             this.currentGame.setGame(this.loadingGame);
         }
+        System.out.println("Lobby startGame: creating controller provider...");
         this.controllerProvider = new ControllerProvider(this.currentGame);
+        System.out.println("Lobby startGame: before return, controller provider created");
         return this.controllerProvider;
     }
 
@@ -314,4 +335,23 @@ public class Lobby {
         }
     }
 
+    @Override
+    public String toString() {
+        String pink = "\u001B[35m";  // ANSI escape code for pink color
+        String reset = "\u001B[0m";  // ANSI escape code to reset color
+        return pink+"Lobby{" +
+                "players=" + players +
+                ", firstPlayerId='" + firstPlayerId + '\'' +
+                ", numPlayersGame=" + numPlayersGame +
+                ", directory='" + directory + '\'' +
+                ", loadingGame=" + loadingGame +
+                ", easyRules=" + easyRules +
+                ", isCreating=" + isCreating +
+                ", games=" + games +
+                ", currentGame=" + currentGame +
+                ", resets=" + resets +
+                ", numServers=" + numServers +
+                ", controllerProvider=" + controllerProvider +
+                '}'+reset;
+    }
 }

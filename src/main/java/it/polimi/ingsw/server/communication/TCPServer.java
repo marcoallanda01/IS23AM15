@@ -53,6 +53,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         synchronized (lockOnLocks){
             clientsToLockOut.put(client, client.toString());
         }
+        System.out.println("Client added: "+client+" "+res);
         return res;
     }
 
@@ -74,6 +75,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 //the message is sent but no one receive it
                 out.println(content);
             }
+            System.out.println("Sent to "+client+": "+content);
         }
     }
 
@@ -91,6 +93,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         synchronized (lockOnLocks){
             this.clientsToLockOut.remove(client);
         }
+        System.out.println("Closing "+client+"...");
         try {
             Scanner in = new Scanner(client.getInputStream());
             in.close();
@@ -137,10 +140,9 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         String json;
         do {
             json = in.nextLine();
-            System.out.println("Received from "+client.getLocalSocketAddress().toString()+": " + json);
+            System.out.println("Received from "+client+": " + json);
         } while (respond(client, json));
 
-        System.out.println("Closing sockets of "+client.getLocalSocketAddress().toString());
         in.close();
         closeClient(client);
     }
@@ -153,6 +155,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         if(!clientsInGame.contains(client)){
             clientsInGame.add(client);
             playersIds.put(client, id);
+            System.out.println("Client "+client+" added to playing clients");
         }
     }
 
@@ -298,15 +301,15 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                         wrongFormatted = true;
                     }
                 }
-                default -> System.err.println("GameCommand from " + client.getLocalSocketAddress().toString() +
+                default -> System.err.println("GameCommand from " + client.toString() +
                         " with name: " + commandName + " can not be found");
             }
             if(wrongFormatted){
-                System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+
+                System.err.println("GameCommand from "+client.toString()+
                         " cannot be understood because wrong formatted");
             }
         }else{
-            System.err.println("GameCommand from "+client.getLocalSocketAddress().toString()+" empty");
+            System.err.println("GameCommand from "+client.toString()+" empty");
         }
         return true;
     }

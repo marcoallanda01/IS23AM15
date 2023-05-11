@@ -80,6 +80,7 @@ public abstract class ResponseServer{
      */
     protected JoinResponse respondJoin(Join j, Object client){
         JoinResponse joinResponse;
+        System.out.println("\u001B[38;5;202m respond join called \u001B[0m");
         try {
             joinResponse = new JoinResponse(lobby.addPlayer(j.player));
         } catch (NicknameTakenException e) {
@@ -90,9 +91,11 @@ public abstract class ResponseServer{
             joinResponse = new JoinResponse(e);
         }
         if(joinResponse.result){
+            System.out.println("\u001B[38;5;202m respond join: adding client \u001B[0m");
             addPlayingClient(client, joinResponse.id);
         }
         tryStartGame();
+        System.out.println("\\u001B[38;5;202m respond join after try to start game here \\u001B[0m");
         return joinResponse;
     }
 
@@ -280,10 +283,14 @@ public abstract class ResponseServer{
      * Lock playLock and tries to start the game
      */
     protected void tryStartGame(){
+        System.out.println("\u001B[38;5;202m tryStartGame called \u001B[0m");
         synchronized (playLock){
+            System.out.println("\u001B[38;5;202m tryStartGame: platLock acquired  \u001B[0m");
             if(controllerProvider == null) {
                 if (!lobby.isPlaying()) {
+                    System.out.println("\u001B[38;5;202m tryStartGame: trying to start game  \u001B[0m");
                     try {
+                        System.out.println("\u001B[38;5;202m tryStartGame: before startGame  \u001B[0m");
                         controllerProvider = lobby.startGame();
                         System.out.println("Player joined, game started!");
                     } catch (EmptyLobbyException e) {
@@ -297,7 +304,7 @@ public abstract class ResponseServer{
                     }
                 } else {
                     controllerProvider = lobby.getControllerProvider();
-                    System.out.println("Player joined with another protocol (rather than TCP), game started!");
+                    System.out.println("Game started from another protocol!");
                 }
                 playController = controllerProvider.getPlayController();
                 chatController = controllerProvider.getChatController();

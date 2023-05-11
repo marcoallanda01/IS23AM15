@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.model.Tile;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class PlayerListener extends StandardListener implements PropertyChangeListener {
@@ -23,6 +26,7 @@ public class PlayerListener extends StandardListener implements PropertyChangeLi
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String proprietyName = evt.getPropertyName();
+        System.out.println("\u001B[33m"+"PlayerLister: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("playingState")) {
             String playerName = ((Player) evt.getSource()).getUserName();
             if ((boolean) evt.getNewValue()) {
@@ -39,7 +43,7 @@ public class PlayerListener extends StandardListener implements PropertyChangeLi
         }
         else if(proprietyName.equals("bookShelfChange")) {
                 String playerName = ((Player) evt.getSource()).getUserName();
-                pnc.notifyChangeBookShelf(playerName, (List<Tile>) evt.getNewValue() );
+                pnc.notifyChangeBookShelf(playerName, new ArrayList<Tile>((Collection) evt.getNewValue()));
         }else{
             System.err.println("PlayerListener: propriety name "+proprietyName+" not known");
         }

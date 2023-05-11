@@ -20,6 +20,7 @@ public class GameListener extends StandardListener implements PropertyChangeList
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String proprietyName = evt.getPropertyName();
+        System.out.println("\u001B[33m"+"GameListener: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("currentTurn")) {
             String playerName = (String) evt.getNewValue();
             pnc.notifyTurnChange(playerName);

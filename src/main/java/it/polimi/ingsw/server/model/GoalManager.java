@@ -189,6 +189,7 @@ public class GoalManager{
 
         FileReader in;
         try {
+            //TODO null pointer exception in toURI
             in = new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile());
         } catch (FileNotFoundException e) {
             System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");

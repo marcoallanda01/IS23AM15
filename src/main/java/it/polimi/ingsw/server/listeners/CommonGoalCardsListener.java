@@ -24,6 +24,7 @@ public class CommonGoalCardsListener extends StandardListener implements Propert
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String proprietyName = evt.getPropertyName();
+        System.out.println("\u001B[33m"+"CommonGoalCardsListener: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("CardsToTokensChange")) {
             Map<Pattern, Stack<Integer>> cardToTokens = (Map<Pattern, Stack<Integer>>) evt.getNewValue();
             Map<String, List<Integer>> cardnameToTokens = new HashMap<>();

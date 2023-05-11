@@ -171,7 +171,7 @@ public class Player implements StandardListenable, PostProcessable {
      */
     public void notifyListeners(){
         this.propertyChangeSupport.firePropertyChange("pointsUpdate", -1, points);
-        this.propertyChangeSupport.firePropertyChange("bookShelfChange", this,
+        this.propertyChangeSupport.firePropertyChange("bookShelfChange", null,
                 this.bookShelf.getAllTiles());
     }
 }
