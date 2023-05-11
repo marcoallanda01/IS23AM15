@@ -22,18 +22,17 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     private final Map<Socket, String> clientsToLockOut; //lock of the map -- listen and closeClient
     private final int port;
     private ServerSocket serverSocket;
+    private ExecutorService executorService;
 
     public TCPServer(int port, Lobby lobby, String sharedLock){
         super(lobby, sharedLock);
         this.port = port;
-        this.controllerProvider = null;
-        this.playController = null;
-        this.chatController = null;
         this.clients = Collections.synchronizedList(new ArrayList<>());
         this.clientsInGame = Collections.synchronizedList(new ArrayList<>());
         this.playersIds = Collections.synchronizedMap(new HashMap<>());
         this.clientsToOut = Collections.synchronizedMap(new HashMap<>());
         this.clientsToLockOut = new HashMap<>();
+        this.executorService = Executors.newCachedThreadPool();
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -63,20 +62,23 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      * @param content message to send
      */
     private void sendToClient(Socket client, String content){
-        String clientLock;
-        PrintWriter out = clientsToOut.get(client);
-        synchronized (lockOnLocks){
-            clientLock = clientsToLockOut.get(client);
-        }
-        if(out != null && clientLock != null){
-            // clientLock is a reference because map.get() returns a reference
-            synchronized (clientLock){
-                //this lock is separated because I don't care if now the client is deleted
-                //the message is sent but no one receive it
-                out.println(content);
-            }
-            System.out.println("Sent to "+client+": "+content);
-        }
+        this.executorService.submit(()-> {
+                    String clientLock;
+                    PrintWriter out = clientsToOut.get(client);
+                    synchronized (lockOnLocks){
+                        clientLock = clientsToLockOut.get(client);
+                    }
+                    if(out != null && clientLock != null){
+                        // clientLock is a reference because map.get() returns a reference
+                        synchronized (clientLock){
+                            //this lock is separated because I don't care if now the client is deleted
+                            //the message is sent but no one receive it
+                            out.println(content);
+                        }
+                        System.out.println("Sent to "+client+": "+content);
+                    }
+                }
+        );
     }
 
     /**
@@ -108,12 +110,11 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     public void listenForConnections(){
         System.out.println("TCP Server listening to new connections...");
-        ExecutorService executorService = Executors.newCachedThreadPool();
         while(true) {
             try {
                 Socket clientSocket = serverSocket.accept();
                 if(addClient(clientSocket)) {
-                    executorService.submit(() -> {
+                    this.executorService.submit(() -> {
                         clientHandler(clientSocket);
                     });
                 }

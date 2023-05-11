@@ -69,7 +69,9 @@ public class PushNotificationController{
     }
 
     public void notifyGameSetUp(){
-        servers.forEach(ServerCommunication::gameSetUp);
+        servers.forEach((s)->
+            new Thread(s::gameSetUp).start()
+        );
     }
 
     public void notifyWinner(String playerName){

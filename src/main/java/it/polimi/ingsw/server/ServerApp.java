@@ -11,7 +11,8 @@ public class ServerApp {
     public static void main(String[] args){
         System.out.println("Starting server...");
 
-        String sharedLock = "playLock";
+        String stringLock = "playLock";
+        String sharedLock = stringLock.intern();
 
         Lobby lobby = new Lobby(saves);
 

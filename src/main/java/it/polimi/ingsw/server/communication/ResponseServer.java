@@ -97,12 +97,13 @@ public abstract class ResponseServer{
         }
 
         ResponseServer rs = this;
+        //TODO: choose
         new Thread(() -> {
             System.out.println("\u001B[38;5;202m started a new thread with tryStartGame() \u001B[0m");
             rs.tryStartGame();
             return;
-        }).start();
-
+        });//.start();
+        tryStartGame();
         System.out.println("\u001B[38;5;202m respond join after try to start game here \u001B[0m");
         return joinResponse;
     }
@@ -301,7 +302,7 @@ public abstract class ResponseServer{
                     try {
                         System.out.println("\u001B[38;5;202m tryStartGame: before startGame  \u001B[0m");
                         controllerProvider = lobby.startGame();
-                        System.out.println("Player joined, game started!");
+                        System.out.println("Player joined, game started!"+controllerProvider);
                     } catch (EmptyLobbyException e) {
                         System.out.println("Player joined, but lobby not full!");
                         return;
@@ -313,7 +314,7 @@ public abstract class ResponseServer{
                     }
                 } else {
                     controllerProvider = lobby.getControllerProvider(); //TODO null here
-                    System.out.println("Game started from another protocol!");
+                    System.out.println("Game started from another protocol! " + controllerProvider);
                 }
                 playController = controllerProvider.getPlayController();
                 chatController = controllerProvider.getChatController();
