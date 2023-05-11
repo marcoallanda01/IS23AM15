@@ -2,17 +2,12 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.communication.*;
 import it.polimi.ingsw.client.communication.ClientCommunication;
-import it.polimi.ingsw.communication.responses.GameSetUp;
-import it.polimi.ingsw.server.model.Tile;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Client {
     private static Client singleton;
+    private ClientStates state;
     private View view;
-    private ClientNotificationListener clientNotificationListener;
+    private ClientNotificationListener clientController;
     private String hostname;
     private int port;
     private ClientConnection clientConnection;
@@ -34,7 +29,7 @@ public class Client {
     public void setupNetworkRMI() throws Exception {
         try {
             System.out.println("RMI setup");
-            RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientNotificationListener);
+            RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
             singleton.clientConnection = rmiClientConnection;
             singleton.clientCommunication = new RMIClientCommunication(rmiClientConnection);
         } catch (Exception e) {
@@ -45,7 +40,7 @@ public class Client {
     public void setupNetworkTCP() {
         try {
             System.out.println("TCP setup");
-            TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, clientNotificationListener);
+            TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, clientController);
             singleton.clientConnection = tcpClientConnection;
             singleton.clientCommunication = new TCPClientCommunication(tcpClientConnection);
         } catch (Exception e) {
@@ -62,7 +57,7 @@ public class Client {
         Modes modes = parseMode(args);
 
         try {
-            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 12345 : Integer.parseInt(port));
+            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +65,7 @@ public class Client {
             if (modes.equals(Modes.TESTING)) {
                 // I am in testing, setup is easier
                 TestingView testingView = new TestingView();
-                singleton.clientNotificationListener = testingView;
+                singleton.clientController = testingView;
                 if (protocol.equals(Protocols.RMI)) {
                     singleton.setupNetworkRMI();
                 } else if (protocol.equals(Protocols.TCP)) {
@@ -81,13 +76,14 @@ public class Client {
                 testingView.start();
             }
             else {
+                singleton.clientController = new ClientController();
                 if (protocol.equals(Protocols.RMI)) {
                     singleton.setupNetworkRMI();
                 } else if (protocol.equals(Protocols.TCP)) {
                     singleton.setupNetworkTCP();
                 }
                 if (view.equals(Views.CLI)) {
-                    singleton.view = new CLI(singleton.clientCommunication);
+                    singleton.view = new CLI();
                 } else if (view.equals(Views.GUI)) {
                     //singleton.view = new GUI();
                 }
@@ -137,6 +133,10 @@ public class Client {
             if (s.contains("testing")) return true;
         }
         return false; // default
+    }
+
+    public View getView() {
+        return view;
     }
 
     private enum Protocols {
