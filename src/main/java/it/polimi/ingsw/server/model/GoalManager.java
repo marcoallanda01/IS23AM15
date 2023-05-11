@@ -189,14 +189,11 @@ public class GoalManager{
 
         FileReader in;
         try {
-            //TODO null pointer exception in toURI
             in = new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile());
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | NullPointerException | URISyntaxException e) {
             System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
             System.err.println("More details: " + e);
             throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
 
         try {

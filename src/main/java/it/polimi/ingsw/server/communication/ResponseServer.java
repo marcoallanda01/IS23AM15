@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.communication;
 
+import com.google.gson.internal.bind.TreeTypeAdapter;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
@@ -94,8 +95,15 @@ public abstract class ResponseServer{
             System.out.println("\u001B[38;5;202m respond join: adding client \u001B[0m");
             addPlayingClient(client, joinResponse.id);
         }
-        tryStartGame();
-        System.out.println("\\u001B[38;5;202m respond join after try to start game here \\u001B[0m");
+
+        ResponseServer rs = this;
+        new Thread(() -> {
+            System.out.println("\u001B[38;5;202m started a new thread with tryStartGame() \u001B[0m");
+            rs.tryStartGame();
+            return;
+        }).start();
+
+        System.out.println("\u001B[38;5;202m respond join after try to start game here \u001B[0m");
         return joinResponse;
     }
 
@@ -285,7 +293,8 @@ public abstract class ResponseServer{
     protected void tryStartGame(){
         System.out.println("\u001B[38;5;202m tryStartGame called \u001B[0m");
         synchronized (playLock){
-            System.out.println("\u001B[38;5;202m tryStartGame: platLock acquired  \u001B[0m");
+            System.out.println("\u001B[38;5;202m tryStartGame: playlock address:"+System.identityHashCode(playLock)+" \u001B[0m");
+            System.out.println("\u001B[38;5;202m tryStartGame: playLock acquired  \u001B[0m");
             if(controllerProvider == null) {
                 if (!lobby.isPlaying()) {
                     System.out.println("\u001B[38;5;202m tryStartGame: trying to start game  \u001B[0m");
@@ -303,12 +312,13 @@ public abstract class ResponseServer{
                         return;
                     }
                 } else {
-                    controllerProvider = lobby.getControllerProvider();
+                    controllerProvider = lobby.getControllerProvider(); //TODO null here
                     System.out.println("Game started from another protocol!");
                 }
                 playController = controllerProvider.getPlayController();
                 chatController = controllerProvider.getChatController();
             }
+            System.out.println("\u001B[38;5;202m tryStartGame: playLock releasing...  \u001B[0m");
         }
     }
 

@@ -46,21 +46,21 @@ public class Game{
         this.board = new LivingRoomBoard(numberOfPlayers);
         this.board.setStandardListener(pushNotificationController);
 
-        //FirstFill
-        this.board.fillBoard();
-
         //choosing first player
         Collections.shuffle(this.players);
         this.currentTurn = new Turn(this.players.get(0), board);
 
         this.chat = new Chat(this.players);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
-        this.goalManager = new GoalManager(this.players, goalPath);
-        //Necessary for first trigger of points notification and bookshelf
-        this.players.forEach(Player::notifyListeners);
+
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
+        //FirstFill
+        this.board.fillBoard();
+        this.goalManager = new GoalManager(this.players, goalPath);
+        //Necessary for first trigger of points notification and bookshelf
+        this.players.forEach(Player::notifyListeners);
 
     }
 
@@ -79,18 +79,21 @@ public class Game{
 
         this.board = game.board;
         this.board.setStandardListener(pushNotificationController);
-        this.board.notifyListeners();
+
 
         this.currentTurn = game.currentTurn;
         this.chat = game.chat;
         this.goalManager = game.goalManager;
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
+
+        addPropertyChangeListener(new GameListener(pushNotificationController));
+        notifyListeners();
+
+        this.board.notifyListeners();
         //Force notifications
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
-        addPropertyChangeListener(new GameListener(pushNotificationController));
-        notifyListeners();
     }
 
     /**
@@ -131,10 +134,10 @@ public class Game{
      * Method to notify listeners about turn changes
      */
     private void notifyListeners(){
-        this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
-                this.currentTurn.getCurrentPlayer().getUserName());
         this.GameChangeSupport.firePropertyChange("gameStarted", null,
                 this);
+        this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
+                this.currentTurn.getCurrentPlayer().getUserName());
     }
 
     /**

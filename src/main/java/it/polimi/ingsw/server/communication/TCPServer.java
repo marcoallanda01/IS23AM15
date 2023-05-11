@@ -352,7 +352,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void gameSetUp() {
         tryStartGame();
-        this.clientsInGame.forEach((c)->{
+        this.clientsInGame.forEach((c) -> {
             sendToClient(c,
                     new GameSetUp(
                             playController.getPlayers(),

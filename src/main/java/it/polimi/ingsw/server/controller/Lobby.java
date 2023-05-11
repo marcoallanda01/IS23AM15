@@ -62,6 +62,7 @@ public class Lobby {
     private final PushNotificationController pushNotificationController;
 
     private ControllerProvider controllerProvider;
+    private boolean isPlaying;
 
 
     public Lobby(String directory) {
@@ -77,6 +78,7 @@ public class Lobby {
         this.players = new HashMap<>();
         this.isCreating = false;
         this.controllerProvider = null;
+        this.isPlaying = false;
 
         this. games = new HashSet<>();
         File saves = new File(this.directory);
@@ -232,41 +234,50 @@ public class Lobby {
         return this.players.size() == this.numPlayersGame;
     }
 
-    public synchronized ControllerProvider startGame() throws EmptyLobbyException, ArrestGameException {
-        System.out.println("Before startGame: "+this);
-        if (!isReadyToPlay()) {
-            throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
-        }
-        if(loadingGame == null){
-            System.out.println("Lobby startGame: starting new game");
-            try {
-                this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
-            }catch (Exception e){
-                e.printStackTrace();
+    public ControllerProvider startGame() throws EmptyLobbyException, ArrestGameException {
+        synchronized (this) {
+            System.out.println("Before startGame: " + this);
+            if (!isReadyToPlay()) {
+                throw new EmptyLobbyException(this.players.size(), this.numPlayersGame);
             }
-        }else{
-            // TODO: brutto così, non si può non usare un costruttore per fare il load?
-            System.out.println("Lobby startGame: starting loaded game");
-            this.currentGame.setGame(this.loadingGame);
+            if (loadingGame == null) {
+                System.out.println("Lobby startGame: starting new game");
+                try {
+                    this.isPlaying = true;
+                    this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // TODO: brutto così, non si può non usare un costruttore per fare il load?
+                System.out.println("Lobby startGame: starting loaded game");
+                this.currentGame.setGame(this.loadingGame);
+            }
+            System.out.println("Lobby startGame: creating controller provider...");
+            this.controllerProvider = new ControllerProvider(this.currentGame);
+            System.out.println("Lobby startGame: before return, controller provider created");
+            return this.controllerProvider;
         }
-        System.out.println("Lobby startGame: creating controller provider...");
-        this.controllerProvider = new ControllerProvider(this.currentGame);
-        System.out.println("Lobby startGame: before return, controller provider created");
-        return this.controllerProvider;
     }
 
     /**
      * Ask if the game started
      * @return true if game is being played
      */
-    public synchronized boolean isPlaying(){return this.controllerProvider != null;}
+    public boolean isPlaying(){
+        synchronized (this){
+            return this.isPlaying;
+        }
+    }
 
     /**
      * get current controller provider
      * @return controller provider | null if not present
      */
-    public synchronized ControllerProvider getControllerProvider(){
-        return this.controllerProvider;
+    public ControllerProvider getControllerProvider(){
+       synchronized (this){
+           return this.controllerProvider;
+       }
     }
 
 
@@ -293,6 +304,7 @@ public class Lobby {
             this.players = new HashMap<>();
             this.isCreating = false;
             this.controllerProvider = null;
+            this.isPlaying = false;
 
             this.games = new HashSet<>();
             File saves = new File(this.directory);
