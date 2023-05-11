@@ -167,7 +167,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
         }
         for (Tile tile : tiles) {
             // check if the tiles are present on the board
-            if (board.get(tile.getX()).get(tile.getY()) != tile) {
+            if (!board.get(tile.getX()).get(tile.getY()).equals(tile)) {
                 return false;
             }
             // check if the tiles do not have free sides
