@@ -197,8 +197,13 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case ("Join") -> {
                     Optional<Join> oj = Join.fromJson(json);
                     if (oj.isPresent()) {
-                        JoinResponse joinResponse = respondJoin(oj.get(), client);
-                        sendToClient(client, joinResponse.toJson());
+                        JoinResponse joinResponse = null;
+                        try {
+                            joinResponse = respondJoin(oj.get(), client);
+                            sendToClient(client, joinResponse.toJson());
+                        } catch (FirstPlayerAbsentException e) {
+                            System.out.println(client+" tried to join without a first player preset!");
+                        }
                         return true;
                     } else {
                         wrongFormatted = true;

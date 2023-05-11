@@ -43,11 +43,23 @@ public class TestingView implements ClientNotificationListener {
                 case "join new as first":
                     clientCommunication.joinNewAsFirst("player1", 2, myId);
                     break;
+                case "jnaf 3":
+                    clientCommunication.joinNewAsFirst("player1", 3, myId);
+                    break;
                 case "join new as first easy rules":
                     clientCommunication.joinNewAsFirst("player1", 2, myId, true);
                     break;
-                case "join":
+                case "join 1":
+                    clientCommunication.join("player1");
+                    break;
+                case "join 2":
                     clientCommunication.join("player2");
+                    break;
+                case "join 3":
+                    clientCommunication.join("player3");
+                    break;
+                case "join 4":
+                    clientCommunication.join("player4");
                     break;
                 case "get saved games":
                     clientCommunication.getSavedGames();

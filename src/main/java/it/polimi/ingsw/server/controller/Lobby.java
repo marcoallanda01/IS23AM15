@@ -189,7 +189,10 @@ public class Lobby {
         return false;
     }
 
-    public synchronized String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException {
+    public synchronized String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException, FirstPlayerAbsentException {
+        if (this.firstPlayerId == null){
+            throw new FirstPlayerAbsentException();
+        }
         System.out.println("Before addPlayer: "+this);
         Set<String> uniquePlayers = new HashSet<>(this.players.values());
         System.out.println("addPlayer: before checks");
@@ -222,8 +225,8 @@ public class Lobby {
         return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
-    public synchronized boolean removePlayer(String player) {
-        return this.players.remove(getIdFromNameNotSync(player), player);
+    public synchronized boolean removePlayer(String playerId) {
+        return this.players.remove(playerId) != null;
     }
 
     public synchronized boolean isFistPlayerPresent() {

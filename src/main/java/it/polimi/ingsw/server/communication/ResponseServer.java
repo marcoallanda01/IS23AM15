@@ -79,7 +79,7 @@ public abstract class ResponseServer{
      * @param client client object
      * @return JoinResponse msg
      */
-    protected JoinResponse respondJoin(Join j, Object client){
+    protected JoinResponse respondJoin(Join j, Object client) throws FirstPlayerAbsentException {
         JoinResponse joinResponse;
         System.out.println("\u001B[38;5;202m respond join called \u001B[0m");
         try {
@@ -184,6 +184,9 @@ public abstract class ResponseServer{
             if(!playController.leave(playerName)){
                 System.err.println("Problems with disconnection of "+playerName);
             }
+        }else{
+            //Game not started yet
+            lobby.removePlayer(d.getId());
         }
         closeClient(client);
     }

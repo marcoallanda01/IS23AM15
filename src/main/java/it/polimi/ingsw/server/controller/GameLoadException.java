@@ -16,7 +16,7 @@ public class GameLoadException extends Exception{
 
     @Override
     public String toString() {
-        return "LoadGameException{}";
+        return "GameLoadException{}";
     }
 
 }

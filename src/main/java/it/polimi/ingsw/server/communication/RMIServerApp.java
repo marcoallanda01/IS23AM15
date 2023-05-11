@@ -163,6 +163,8 @@ public class RMIServerApp implements RMIServer {
                 joinResponse = new JoinResponse(e);
             } catch (FullGameException e) {
                 joinResponse = new JoinResponse(e);
+            } catch (FirstPlayerAbsentException e) {
+                throw new RuntimeException(e);
             }
             if(joinResponse.result){
                 addPlayingClient(client, joinResponse.id);
