@@ -1,7 +1,11 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.communication.responses.CommonCards;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.client.communication.ClientCommunication;
+import it.polimi.ingsw.server.model.BookShelf;
+import it.polimi.ingsw.server.model.Chat;
+import it.polimi.ingsw.server.model.LivingRoomBoard;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.List;
@@ -9,18 +13,21 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class View {
-    protected ClientCommunication clientCommunication;
-    public View(ClientCommunication clientCommunication) {
-        this.clientCommunication = clientCommunication;
-    }
-    public abstract void showGame(GameSetUp gameSetUp);
-    public abstract void showWinner(String nickname);
-    public abstract void showPlayers(Set<String> nicknames);
-    public abstract void showBoard(Set<Tile> tiles);
-    public abstract void showBookshelf(String nickname, Set<Tile> tiles);
-    public abstract void showPoints(String nickname, int points);
-    public abstract void showTurn(String nickname);
-    public abstract void showPersonalGoalCard(String nickname, String card);
-    public abstract void showCommonGoalCards(Map<String, List<Integer>> cardsToTokens);
-    public abstract void showCommonGoals(Set<String> goals);
+    private String nickname;
+    private Set<Tile> bookShelf;
+    private List<String> players;
+    private Map<String,Set<Tile>> otherBookShelves;
+    private Set<Tile> livingRoomBoard;
+    private Map<String,Map<String,String>> chat;
+    private List<String> goals;
+    private Map<String,Integer> points;
+    private String currentTurnPlayer;
+    private String personalGoal;
+    private Map<String,List<Integer>> commonGoalsCards;
+    private Set<String> commonGoals;
+    private String game;
+    private Set<String> savedGames;
+    public void render(){}
+    public void showError(String error){}
+    public void showChat(){}
 }
