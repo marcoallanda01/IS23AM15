@@ -194,12 +194,23 @@ public class RMIClientCommunication implements ClientCommunication {
         }
     }
     /**
-     * this method calls SendMessage on the server
+     * this method calls SendMessage on the server (to one player)
      */
     @Override
-    public void sendMessage(String playerId, String player, String message) {
+    public void sendMessage(String playerId, String message, String receiverNickname) {
         try {
-            rmiClientConnection.getServer().sendMessage(playerId, player, message);
+            rmiClientConnection.getServer().sendMessage(playerId, message, receiverNickname);
+        } catch (RemoteException e) {
+            throw new ClientCommunicationException();
+        }
+    }
+    /**
+     * this method calls SendMessage on the server (to all)
+     */
+    @Override
+    public void sendMessage(String playerId, String message) {
+        try {
+            rmiClientConnection.getServer().sendMessage(playerId, message);
         } catch (RemoteException e) {
             throw new ClientCommunicationException();
         }

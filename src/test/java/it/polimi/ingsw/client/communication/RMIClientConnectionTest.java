@@ -243,6 +243,11 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
     }
 
     @Override
+    public void sendMessage(String playerId, String message) throws RemoteException {
+
+    }
+
+    @Override
     public void pong(String playerId) throws RemoteException {
 
     }

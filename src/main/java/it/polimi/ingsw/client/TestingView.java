@@ -86,7 +86,7 @@ public class TestingView implements ClientNotificationListener {
                     clientCommunication.putTiles(myId, new ArrayList<>(List.of(TileType.BOOK)), 1);
                     break;
                 case "send message":
-                    clientCommunication.sendMessage(myId, "player2", "Hello, how are you?");
+                    clientCommunication.sendMessage(myId, "Hello, how are you?", "player2");
                     break;
                 case "pong":
                     clientCommunication.pong(myId);

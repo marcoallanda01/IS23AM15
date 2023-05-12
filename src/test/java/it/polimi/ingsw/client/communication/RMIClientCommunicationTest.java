@@ -256,6 +256,11 @@ class RMIClientCommunicationTest extends UnicastRemoteObject implements RMIServe
     }
 
     @Override
+    public void sendMessage(String playerId, String message) throws RemoteException {
+
+    }
+
+    @Override
     public void pong(String playerId) throws RemoteException {
 
     }

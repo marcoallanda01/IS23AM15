@@ -26,7 +26,7 @@ public interface RMIServer extends Remote {
     public void pickTiles(String playerId, Set<Tile> tiles) throws RemoteException;
     public void putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException;
     public void saveGame(String playerId, String gameName) throws RemoteException;
-    public void sendMessage(String playerId, String player, String message) throws RemoteException;
+    public void sendMessage(String playerId, String message, String receiverNickname) throws RemoteException;
+    void sendMessage(String playerId, String message) throws RemoteException;
     public void pong(String playerId) throws RemoteException;
-
 }

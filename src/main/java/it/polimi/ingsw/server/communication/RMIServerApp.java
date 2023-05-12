@@ -344,6 +344,11 @@ public class RMIServerApp implements RMIServer {
         }
     }
 
+    @Override
+    public void sendMessage(String playerId, String message) throws RemoteException {
+        // TODO
+    }
+
 
     @Override
     public void pong(String playerId) throws RemoteException {

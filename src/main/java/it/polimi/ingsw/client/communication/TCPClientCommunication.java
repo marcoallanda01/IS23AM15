@@ -104,11 +104,18 @@ public class TCPClientCommunication implements ClientCommunication {
         tcpClientConnection.sendToServer((new PutTilesCommand(playerId, tiles, column)).toJson());
     }
     /**
-     * this method sends a SendMessage to the server
+     * this method sends a SendMessage to the server (to just one player)
      */
     @Override
-    public void sendMessage(String playerId, String player, String message) {
-        tcpClientConnection.sendToServer((new SendMessage(playerId, player, message)).toJson());
+    public void sendMessage(String playerId, String message, String receiverNickname) {
+        tcpClientConnection.sendToServer((new SendMessage(playerId, message, receiverNickname)).toJson());
+    }
+    /**
+     * this method sends a SendMessage to the server (to all)
+     */
+    @Override
+    public void sendMessage(String playerId, String message) {
+        tcpClientConnection.sendToServer((new SendMessage(playerId, message)).toJson());
     }
     /**
      * this method sends a Pong to the server, doesn't wait
