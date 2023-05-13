@@ -150,4 +150,7 @@ public class Client {
     private enum Modes {
         TESTING, PRODUCTION
     }
+    public ClientStates getClientState() {
+        return state;
+    }
 }
