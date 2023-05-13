@@ -27,17 +27,8 @@ public class InputCLI {
                         case "join":
                             joinLobbyRequest(inputArray);
                             break;
-                        case "leave":
-                            leaveLobbyRequest(inputArray);
-                            break;
                         case "start":
                             startGameRequest(inputArray);
-                            break;
-                        case "chat":
-                            sendChatMessageRequest(inputArray);
-                            break;
-                        case "show":
-                            showGoalCardsRequest(inputArray);
                             break;
                         default:
                             System.out.println("Invalid input");
@@ -75,7 +66,7 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send login request
+        ClientController.login(inputArray[0]);
     }
 
     private static void logoutRequest(String[] inputArray) {
@@ -83,31 +74,38 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send logout request
+        ClientController.logout();
     }
 
     private static void createLobbyRequest(String[] inputArray) {
-        if (inputArray.length != 1) {
+        if (inputArray.length < 1 || inputArray.length> 2) {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send create lobby request
+        int numPlayers;
+        try {
+            numPlayers = Integer.parseInt(inputArray[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
+        if (inputArray.length == 2) {
+            if (inputArray[1].equalsIgnoreCase("easyRules")) {
+                ClientController.createLobby(numPlayers, true);
+            } else{
+                System.out.println("Invalid input");
+            }
+        } else {
+            ClientController.createLobby(numPlayers);
+        }
     }
 
     private static void joinLobbyRequest(String[] inputArray) {
-        if (inputArray.length != 2) {
-            System.out.println("Invalid input");
-            return;
-        }
-        // TODO: send join lobby request
-    }
-
-    private static void leaveLobbyRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send leave lobby request
+        ClientController.joinLobby();
     }
 
     private static void startGameRequest(String[] inputArray) {
@@ -115,15 +113,15 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send start game request
+        ClientController.startGame();
     }
 
     private static void pickTilesRequest(String[] inputArray) {
-        if (inputArray.length != 3) {
+        if (inputArray.length <2 || inputArray.length > 4) {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send pick tiles request
+
     }
 
     private static void putTilesRequest(String[] inputArray) {

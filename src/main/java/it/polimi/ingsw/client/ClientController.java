@@ -119,4 +119,27 @@ public class ClientController implements ClientNotificationListener {
     public void notifyError(String message) {
 
     }
+
+    public static void login(String nickname) {
+
+    }
+    public static void logout() {
+
+    }
+    public static void createLobby(int numOfPlayers) {
+
+    }
+    public static void createLobby(int numOfPlayers, boolean easyRules) {
+
+    }
+    public static void joinLobby() {
+
+    }
+    public static void startGame() {
+
+    }
+    public static void pickTiles(){
+
+    }
+
 }

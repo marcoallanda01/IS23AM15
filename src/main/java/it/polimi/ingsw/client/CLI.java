@@ -20,6 +20,7 @@ public class CLI extends View {
 
     public CLI() {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
+        this.inputThread = new Thread(this::inputHandler);
         this.running = true;
         this.renderHelper = new CLIRenderer();
     }
@@ -38,28 +39,57 @@ public class CLI extends View {
         running = false;
     }
 
-    private void clearScreen()
-    {
-        try
-        {
+    private void clearScreen(){
+        try {
             final String os = System.getProperty("os.name");
-            if (os.contains("Windows"))
-            {
+            if (os.contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             }
-            else
-            {
+            else {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
     }
+    public void inputHandler() {
+        while(running){
+            InputCLI.inputHandler(inputScanner);
+        }
+        System.out.println("CLI InputHandler Closed");
+    }
 
-    public void render(){}
-    public void showError(String error){}
-    public void showChat(){}
+    public void render(){
+        clearScreen();
+        switch (client.getClientState()){
+            case LOGIN:
+                renderHelper.printLogin();
+                break;
+            case CREATE_LOBBY:
+                renderHelper.printCreateLobby();
+                break;
+            case LOBBY:
+                renderHelper.printLobby();
+                renderHelper.printSavedGames();
+                break;
+            case IN_GAME:
+                renderHelper.printLivingRoomBoard();
+                renderHelper.printBookshelves();
+
+                break;
+            case END_GAME:
+                break;
+            default:
+                System.out.println("Invalid state");
+                break;
+        }
+    }
+    public void showError(){
+        renderHelper.printError();
+    }
+    public void showChat(){
+        renderHelper.printChat();
+    }
 }
