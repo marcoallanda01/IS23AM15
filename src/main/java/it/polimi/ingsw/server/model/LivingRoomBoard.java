@@ -268,7 +268,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
      * Get the board as list of tiles
      * @return tiles in board
      */
-    private List<Tile> getAllTiles(){
+    public List<Tile> getAllTiles(){
         List<Tile> tiles = new ArrayList<>();
         board.forEach((x, row)->{
             row.forEach((y,tile) -> {

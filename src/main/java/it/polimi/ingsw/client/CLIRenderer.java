@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.server.model.Tile;
+
+import java.util.*;
+
 public class CLIRenderer {
 
     public static void printGame() {
@@ -32,47 +36,123 @@ public class CLIRenderer {
                 """;
         System.out.println(gameScreen);
     }
+
     public static void printLogin() {
-        String loginScreen = "Login Screen";
-        System.out.println(loginScreen);
+        System.out.println("Insert a nickname to join a lobby");
     }
 
     public static void printCreateLobby() {
-        String createLobbyScreen = "Create Lobby Screen";
-        System.out.println(createLobbyScreen);
+        System.out.println("There is no lobby available, would you like to create a new game or load one from the saves?");
+        System.out.println("Select an option:");
+        System.out.println("1. Create a new game");
+        System.out.println("2. Load a saved game");
     }
 
-
-    public static void printSavedGames(){
-
+    public static void printCreateGame() {
+        System.out.println("To create a new game please specify:");
+        System.out.println("- The number of players (2-4)");
+        System.out.println("- Should the game use easy rules? (y/n)");
+        System.out.println("Please enter the \"create (n. of players) (y/n)\" command");
     }
 
-    public static void printLobby() {
-        String lobbyScreen = "Lobby Screen";
-        System.out.println(lobbyScreen);
+    public static void printSavedGames(List<String> savedGames) {
+        System.out.println("Here's the list of saved games:");
+        System.out.println("Select an option:");
+        for (String savedGame : savedGames) {
+            System.out.println(savedGames.indexOf(savedGame) + ". " + savedGame);
+        }
     }
 
-    public static void printLivingRoomBoard(){
-
-    }
-
-    public static void printBookshelves(){
-
-    }
-
-    public static void printChat(){
-
-    }
-
-    public static void printCommonGoals(){
+    public static void printLobby(List<String> players, int maxPlayers, boolean isEasyRules) {
 
     }
 
-    public static void printPersonalGoal(){
+    public static void printLivingRoomBoard(Set<Tile> board) {
+        for (int n = 0; n < 9; n++) {
+            printLivingRoomBoardLine(board, n);
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public static void printLivingRoomBoardLine(Set<Tile> board, int n) {
+        List<Tile> line = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            line.add(null);
+        }
+        for (Tile tile : board) {
+            if (tile != null && tile.getY() == n) {
+                line.set(tile.getX(), tile);
+            }
+        }
+        for (Tile tile : line) {
+            if (tile != null) {
+                System.out.print(tile.getType().getSymbol());
+            } else {
+                System.out.print("\uD83D\uDD33");
+            }
+        }
+    }
+
+    public static void printBookshelves(Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
+        for (int n = 0; n < 6; n++) {
+            for (Set<Tile> tiles : bookshelves.values()) {
+                printBookshelfLine(tiles, n);
+                System.out.print("      ");
+            }
+            System.out.println();
+        }
+        System.out.print("  ");
+        for (String name : bookshelves.keySet()) {
+            name = name.substring(0, Math.min(name.length(), 8));
+            if (name.equals(currentPlayer)) {
+                System.out.print(CliColor.RED_BOLD_BRIGHT + name + CliColor.RESET);
+            } else {
+                if (name.equals(myName)) {
+                    System.out.print(CliColor.WHITE_UNDERLINED_BRIGHT + name + CliColor.RESET);
+                } else {
+                    System.out.print(CliColor.WHITE_BRIGHT + name + CliColor.RESET);
+                }
+            }
+            for (int i = 0; i < 18 - name.length(); i++) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+    }
+
+    public static void printBookshelfLine(Set<Tile> tiles, int n) {
+        List<Tile> line = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            line.add(null);
+        }
+        for (Tile tile : tiles) {
+            if (tile != null && tile.getY() == n) {
+                line.set(tile.getX(), tile);
+            }
+        }
+        for (Tile tile : line) {
+            if (tile != null) {
+                System.out.print(tile.getType().getSymbol());
+            } else {
+                System.out.print("\uD83D\uDD33");
+            }
+        }
+    }
+
+    public static void printChat() {
 
     }
 
-    public static void printError(){
+    public static void printCommonGoals() {
+
+    }
+
+    public static void printPersonalGoal() {
+
+    }
+
+    public static void printError() {
 
     }
 

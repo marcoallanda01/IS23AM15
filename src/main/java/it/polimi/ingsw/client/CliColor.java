@@ -33,6 +33,7 @@ public class CliColor {
     public static final String PURPLE_UNDERLINED = "\033[4;35m"; // PURPLE
     public static final String CYAN_UNDERLINED = "\033[4;36m";   // CYAN
     public static final String WHITE_UNDERLINED = "\033[4;37m";  // WHITE
+    public static final String WHITE_UNDERLINED_BRIGHT = "\033[4;97m";  // WHITE
 
     // Background
     public static final String BLACK_BACKGROUND = "\033[40m";  // BLACK
