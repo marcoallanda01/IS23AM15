@@ -140,8 +140,13 @@ public class CLIRenderer {
         }
     }
 
-    public static void printChat() {
-
+    public static void printChat(Map<String,Map<String,String>> chat) {
+        for (String date : chat.keySet()) {
+            System.out.print(date + " - ");
+            for (String name : chat.get(date).keySet()) {
+                System.out.println(name + ": " + chat.get(date).get(name));
+            }
+        }
     }
 
     public static void printCommonGoals() {

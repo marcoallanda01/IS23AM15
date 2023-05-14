@@ -1,11 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.communication.responses.CommonCards;
-import it.polimi.ingsw.communication.responses.GameSetUp;
-import it.polimi.ingsw.client.communication.ClientCommunication;
-import it.polimi.ingsw.server.model.BookShelf;
-import it.polimi.ingsw.server.model.Chat;
-import it.polimi.ingsw.server.model.LivingRoomBoard;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.List;
@@ -14,9 +8,8 @@ import java.util.Set;
 
 public abstract class View {
     protected String nickname;
-    protected Set<Tile> bookShelf;
     protected List<String> players;
-    protected Map<String,Set<Tile>> otherBookShelves;
+    protected Map<String,Set<Tile>> bookShelves;
     protected Set<Tile> livingRoomBoard;
     protected int numberOfPlayers;
     protected boolean easyRules;

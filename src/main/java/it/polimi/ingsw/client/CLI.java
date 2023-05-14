@@ -1,32 +1,16 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.communication.ClientCommunication;
-import it.polimi.ingsw.communication.responses.GameSetUp;
-import it.polimi.ingsw.server.model.Tile;
-
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class CLI extends View {
-    private Client client;
-
-    private Thread inputThread;
-    private Scanner inputScanner;
+    private final Thread inputThread;
+    private final Scanner inputScanner;
     private boolean running;
-
-    private CLIRenderer renderHelper;
 
     public CLI() {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
         this.inputThread = new Thread(this::inputHandler);
         this.running = true;
-        this.renderHelper = new CLIRenderer();
-    }
-
-    public void attach(Client client) {
-        this.client = client;
     }
 
     public void start() {
@@ -63,20 +47,20 @@ public class CLI extends View {
 
     public void render(){
         clearScreen();
-        switch (client.getClientState()){
+        switch (Client.getInstance().getClientState()){
             case LOGIN:
-                renderHelper.printLogin();
+                CLIRenderer.printLogin();
                 break;
             case CREATE_LOBBY:
-                renderHelper.printCreateLobby();
+                CLIRenderer.printCreateLobby();
                 break;
             case LOBBY:
-                renderHelper.printLobby(client.getView().players, client.getView().numberOfPlayers, client.getView().easyRules);
-                renderHelper.printSavedGames(client.getView().savedGames);
+                CLIRenderer.printLobby(this.players, this.numberOfPlayers, this.easyRules);
+                CLIRenderer.printSavedGames(this.savedGames);
                 break;
             case IN_GAME:
-                renderHelper.printLivingRoomBoard(client.getView().livingRoomBoard);
-                //renderHelper.printBookshelves(client.getView().otherBookShelves);
+                CLIRenderer.printLivingRoomBoard(this.livingRoomBoard);
+                CLIRenderer.printBookshelves(this.bookShelves, this.nickname, this.currentTurnPlayer);
                 break;
             case END_GAME:
                 break;
@@ -86,9 +70,9 @@ public class CLI extends View {
         }
     }
     public void showError(){
-        renderHelper.printError();
+        CLIRenderer.printError();
     }
     public void showChat(){
-        renderHelper.printChat();
+        CLIRenderer.printChat(this.chat);
     }
 }
