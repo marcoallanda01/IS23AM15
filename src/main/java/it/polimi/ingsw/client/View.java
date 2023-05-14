@@ -13,20 +13,22 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class View {
-    private String nickname;
-    private Set<Tile> bookShelf;
-    private List<String> players;
-    private Map<String,Set<Tile>> otherBookShelves;
-    private Set<Tile> livingRoomBoard;
-    private Map<String,Map<String,String>> chat;
-    private List<String> goals;
-    private Map<String,Integer> points;
-    private String currentTurnPlayer;
-    private String personalGoal;
-    private Map<String,List<Integer>> commonGoalsCards;
-    private Set<String> commonGoals;
-    private String game;
-    private Set<String> savedGames;
+    protected String nickname;
+    protected Set<Tile> bookShelf;
+    protected List<String> players;
+    protected Map<String,Set<Tile>> otherBookShelves;
+    protected Set<Tile> livingRoomBoard;
+    protected int numberOfPlayers;
+    protected boolean easyRules;
+    protected Map<String,Map<String,String>> chat;
+    protected List<String> goals;
+    protected Map<String,Integer> points;
+    protected String currentTurnPlayer;
+    protected String personalGoal;
+    protected Map<String,List<Integer>> commonGoalsCards;
+    protected Set<String> commonGoals;
+    protected String game;
+    protected List<String> savedGames;
     public void render(){}
     public void showError(String error){}
     public void showChat(){}

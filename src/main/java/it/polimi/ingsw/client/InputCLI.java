@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class InputCLI {
@@ -54,9 +56,6 @@ public class InputCLI {
                             break;
                     }
                     break;
-                case END_GAME:
-                    showWinnerRequest(inputArray);
-                    break;
             }
         }
     }
@@ -66,7 +65,8 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        ClientController.login(inputArray[0]);
+        Client.getInstance().getView().nickname = inputArray[0];
+        ClientController.login();
     }
 
     private static void logoutRequest(String[] inputArray) {
@@ -121,23 +121,56 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-
+        List<List<Integer>> coordTiles = new ArrayList<>();
+        for (int i = 1; i < inputArray.length; i++) {
+            if(inputArray[i].length() != 5 || inputArray[i].charAt(0) != '(' || inputArray[i].charAt(4) != ')'){
+                System.out.println("Invalid input");
+                return;
+            }
+            List<Integer> coord = new ArrayList<>();
+            try {
+                coord.add(Integer.parseInt(inputArray[i].charAt(1)+""));
+                coord.add(Integer.parseInt(inputArray[i].charAt(3)+""));
+                coordTiles.add(coord);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input");
+                return;
+            }
+        }
+        ClientController.pickTiles(coordTiles);
     }
 
     private static void putTilesRequest(String[] inputArray) {
-        if (inputArray.length != 5) {
+        if (inputArray.length != 2) {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send put tiles request
+        Integer column;
+        try {
+            column = Integer.parseInt(inputArray[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
+        ClientController.putTiles(column);
     }
 
     private static void sendChatMessageRequest(String[] inputArray) {
-        if (inputArray.length < 2) {
+        if (inputArray.length < 3) {
             System.out.println("Invalid input");
             return;
         }
-        // TODO: send send chat message request
+        String message = "";
+        for (int i = 2; i < inputArray.length; i++) {
+            message += inputArray[i] + " ";
+        }
+        if(inputArray[1].equalsIgnoreCase("all")){
+            ClientController.sendChatMessage(message);
+        } else if(Client.getInstance().getView().players.contains(inputArray[1])){
+            ClientController.sendChatMessage(inputArray[1], message);
+        } else {
+            System.out.println("Invalid input");
+        }
     }
 
     private static void showGoalCardsRequest(String[] inputArray) {
@@ -146,13 +179,5 @@ public class InputCLI {
             return;
         }
         // TODO: send show goal cards request
-    }
-
-    private static void showWinnerRequest(String[] inputArray) {
-        if (inputArray.length != 1) {
-            System.out.println("Invalid input");
-            return;
-        }
-        // TODO: send show winner request
     }
 }

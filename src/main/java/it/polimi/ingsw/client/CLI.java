@@ -71,13 +71,12 @@ public class CLI extends View {
                 renderHelper.printCreateLobby();
                 break;
             case LOBBY:
-                renderHelper.printLobby();
-                renderHelper.printSavedGames();
+                renderHelper.printLobby(client.getView().players, client.getView().numberOfPlayers, client.getView().easyRules);
+                renderHelper.printSavedGames(client.getView().savedGames);
                 break;
             case IN_GAME:
-                renderHelper.printLivingRoomBoard();
-                renderHelper.printBookshelves();
-
+                renderHelper.printLivingRoomBoard(client.getView().livingRoomBoard);
+                //renderHelper.printBookshelves(client.getView().otherBookShelves);
                 break;
             case END_GAME:
                 break;

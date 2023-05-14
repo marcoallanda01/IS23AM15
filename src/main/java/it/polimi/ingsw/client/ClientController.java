@@ -120,7 +120,7 @@ public class ClientController implements ClientNotificationListener {
 
     }
 
-    public static void login(String nickname) {
+    public static void login() {
 
     }
     public static void logout() {
@@ -138,8 +138,16 @@ public class ClientController implements ClientNotificationListener {
     public static void startGame() {
 
     }
-    public static void pickTiles(){
+    public static void pickTiles(List<List<Integer>> coordinates) {
 
     }
+    public static void putTiles(Integer column) {
 
+    }
+    public static void sendChatMessage(String message) {
+
+    }
+    public static void sendChatMessage(String receiver, String message) {
+
+    }
 }
