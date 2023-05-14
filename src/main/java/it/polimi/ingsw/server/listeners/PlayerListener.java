@@ -45,7 +45,7 @@ public class PlayerListener extends StandardListener implements PropertyChangeLi
                 String playerName = ((Player) evt.getSource()).getUserName();
                 pnc.notifyChangeBookShelf(playerName, new ArrayList<Tile>((Collection) evt.getNewValue()));
         }else{
-            System.err.println("PlayerListener: propriety name "+proprietyName+" not known");
+            System.err.println("\u001B[33m"+"PlayerListener: propriety name "+proprietyName+" not known"+"\u001B[0m");
         }
     }
 }

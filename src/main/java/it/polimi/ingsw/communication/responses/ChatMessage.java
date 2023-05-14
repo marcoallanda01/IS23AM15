@@ -30,6 +30,19 @@ public class ChatMessage extends Msg{
     }
 
     /**
+     * Constructor of ChatMessage
+     * @param sender sender's name
+     * @param date date of message creation
+     * @param message actual message to be sent
+     */
+    public ChatMessage(String sender, String date, String message) {
+        super("ChatMessage");
+        this.message = message;
+        this.sender = sender;
+        this.date = date;
+    }
+
+    /**
      * Generator of ChatMessage from a json string
      * @param json json string from which generate returned object
      * @return Optional of ChatMessage, empty if json string was not coherent

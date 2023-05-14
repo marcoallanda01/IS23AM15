@@ -1,11 +1,9 @@
 package it.polimi.ingsw.server.communication;
 
-import com.google.gson.internal.bind.TreeTypeAdapter;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
 import it.polimi.ingsw.server.model.ArrestGameException;
-import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -24,13 +22,25 @@ public abstract class ResponseServer{
     protected ChatController chatController;
 
     protected final String playLock;
+    private final Timer pingPongService;
+    /**
+     * Map to check if the last ping pong was answered. Map client to boolean.
+     */
+    private Map<Object, Boolean> pingPongMap;
 
+    /**
+     * Create a RespondServer. Its use is to implement methods to answer a client request.
+     * @param lobby lobby shared between RespondServers
+     * @param sharedLock shared lock on lobby, controllerProvider, playController, chatController between RespondServers
+     */
     public ResponseServer(Lobby lobby, String sharedLock){
         this.lobby = lobby;
         this.playLock = sharedLock;
-        controllerProvider = null;
-        playController = null;
-        chatController = null;
+        this.controllerProvider = null;
+        this.playController = null;
+        this.chatController = null;
+        this.pingPongService = new Timer();
+        this.pingPongMap = Collections.synchronizedMap(new HashMap<>());
     }
 
     /**
@@ -39,24 +49,24 @@ public abstract class ResponseServer{
      * @return hello msg
      */
     protected Hello respondHello(HelloCommand hc){
-            Hello hello;
-            if (!isGameActive()) {
-                try {
-                    Optional<String> idfp = lobby.join();
-                    if (idfp.isEmpty()) {
-                        hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
-                    } else {
-                        hello = new Hello(idfp.get());
-                    }
-
-                } catch (WaitLobbyException e) {
-                    hello = new Hello(false, false);
+        Hello hello;
+        if (!isGameActive()) {
+            try {
+                Optional<String> idfp = lobby.join();
+                if (idfp.isEmpty()) {
+                    hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
+                } else {
+                    hello = new Hello(idfp.get());
                 }
 
-            } else {
-                hello = new Hello(true, false);
+            } catch (WaitLobbyException e) {
+                hello = new Hello(false, false);
             }
-            return hello;
+
+        } else {
+            hello = new Hello(true, false);
+        }
+        return hello;
     }
 
     /**
@@ -83,7 +93,9 @@ public abstract class ResponseServer{
         JoinResponse joinResponse;
         System.out.println("\u001B[38;5;202m respond join called \u001B[0m");
         try {
-            joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+            synchronized (playLock){
+                joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+            }
         } catch (NicknameTakenException e) {
             joinResponse = new JoinResponse(e);
         } catch (NicknameException e) {
@@ -179,16 +191,7 @@ public abstract class ResponseServer{
      * @param client client object
      */
     protected void respondDisconnect(Disconnect d, Object client){
-        if (isGameActive()) {
-            String playerName = getPlayerNameFromClient(client);
-            if(!playController.leave(playerName)){
-                System.err.println("Problems with disconnection of "+playerName);
-            }
-        }else{
-            //Game not started yet
-            lobby.removePlayer(d.getId());
-        }
-        closeClient(client);
+        disconnectPlayer(d.getId(), client);
     }
 
     /**
@@ -265,7 +268,7 @@ public abstract class ResponseServer{
                 try {
                     chatController.sendMessage(sender, sm.player, sm.message);
                 } catch (PlayerNotFoundException e) {
-                    e.printStackTrace();
+                    System.out.println(sender+" tried to send a message to "+sm.player+", but this player doesn't exists!");
                 }
             }
         }
@@ -316,7 +319,7 @@ public abstract class ResponseServer{
                         return;
                     }
                 } else {
-                    controllerProvider = lobby.getControllerProvider(); //TODO null here
+                    controllerProvider = lobby.getControllerProvider();
                     System.out.println("Game started from another protocol! " + controllerProvider);
                 }
                 playController = controllerProvider.getPlayController();
@@ -346,6 +349,67 @@ public abstract class ResponseServer{
         }
     }
 
+    /**
+     * Handle pong message
+     * @param pong pong object
+     * @param client client object
+     */
+    protected void respondPong(Pong pong, Object client){
+        if(this.pingPongMap.get(client) != null){
+            this.pingPongMap.put(client, true);
+        }
+    }
+
+    /**
+     * Starts ping pong between client and server
+     * @param client client's object
+     */
+    protected void startPingPong(Object client){
+        this.pingPongMap.put(client, true);
+        TimerTask PingTask = new TimerTask() {
+            public void run() {
+                Boolean responded = pingPongMap.get(client);
+                if( responded == null ){
+                    //If res is null means that client disconnected
+                    this.cancel();
+                }else if(!responded){
+                    disconnectPlayer(lobby.getIdFromName(getPlayerNameFromClient(client)),client);
+                    this.cancel();
+                }else {
+                    ping(client);
+                    pingPongMap.put(client, false);
+                }
+            }
+        };
+        this.pingPongService.scheduleAtFixedRate(PingTask, 5000,10000);
+    }
+
+    /**
+     * Disconnect a player and calls closeClient()
+     * @param id player's id
+     * @param client client object
+     */
+    private void disconnectPlayer(String id, Object client){
+        pingPongMap.remove(client);
+        synchronized (playLock){
+            if (isGameActive()) {
+                String playerName = getPlayerNameFromClient(client);
+                if(!playController.leave(playerName)){
+                    System.err.println("Problems with disconnection of "+playerName);
+                }
+            }else{
+                //Game not started yet
+                lobby.removePlayer(id);
+            }
+        }
+        closeClient(client);
+    }
+
+    /**
+     * Ping a client to keep connection alive
+     * @param client object
+     */
+    protected abstract void ping(Object client);
 
     //TODO check this two
     /*

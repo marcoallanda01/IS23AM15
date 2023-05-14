@@ -22,7 +22,7 @@ public class RMIServerApp implements RMIServer {
     private final Lobby lobby;
 
     private ControllerProvider controllerProvider = null;
-    private PlayController playController = null;
+    private PlayController playController;
     private ChatController chatController = null;
     private final RMIServerCommunication pushNotificationHandler;
 
@@ -246,7 +246,8 @@ public class RMIServerApp implements RMIServer {
         }
         else {
             if (isGameActive()) {
-                boolean res = playController.leave(playersIds.get(client));
+                boolean res = false;
+                res = playController.leave(playersIds.get(client));
                 if (res) {
                     // TODO: to finish
                     //notifyDisconnection(playersIds.get(client));

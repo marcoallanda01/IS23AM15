@@ -51,6 +51,7 @@ public class Game{
         this.currentTurn = new Turn(this.players.get(0), board);
 
         this.chat = new Chat(this.players);
+        this.chat.setStandardListener(pushNotificationController);
         String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
 
 
@@ -83,6 +84,7 @@ public class Game{
 
         this.currentTurn = game.currentTurn;
         this.chat = game.chat;
+        this.chat.setStandardListener(pushNotificationController);
         this.goalManager = game.goalManager;
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
 
@@ -324,7 +326,7 @@ public class Game{
      * @param player player to disconnect
      * @return true if the player is disconnected, false if the player is not found or is not playing
      */
-    public boolean disconnectPlayer(String player) throws Exception {
+    public boolean disconnectPlayer(String player){
         try {
             if (this.getPlayerFromNickname(player).isPlaying()) {
                 this.getPlayerFromNickname(player).goToWc();
@@ -344,8 +346,7 @@ public class Game{
          */
         // but now is needed(also before) a TODO if no one is playing
         if(players.stream().filter(p -> !p.isPlaying()).count() == players.size()){
-            // TODO: handle this exception / create a new exception
-            throw new Exception("No one is connected to the game");
+            this.GameChangeSupport.firePropertyChange("lastPlayerDisconnected", null, player);
         }
         if (this.getCurrentPlayer().equals(player)) {
             this.nextTurn(this.currentTurn.getCurrentPlayer());
