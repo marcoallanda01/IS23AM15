@@ -31,8 +31,13 @@ public class GameListener extends StandardListener implements PropertyChangeList
         else if(proprietyName.equals("gameWon")){
             pnc.notifyWinner((String) evt.getNewValue());
         }
+        else if(proprietyName.equals("lastPlayerDisconnected")){
+            String player = (String) evt.getNewValue();
+            System.out.println("\u001B[33m"+"GameListener: last player " + player +" disconnected!" + "\u001B[0m");
+            pnc.handleLastPlayerDisconnection();
+        }
         else{
-            System.err.println("TurnListener: propriety name "+proprietyName+" not known");
+            System.err.println("\u001B[33m"+"GameListener: propriety name "+proprietyName+" not known"+"\u001B[0m");
         }
     }
 }

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PushNotificationController{
 
@@ -78,4 +79,15 @@ public class PushNotificationController{
         servers.forEach((s) -> s.notifyWinner(playerName));
     }
 
+    public void notifyMessage(String sender, String date, String message, Optional<String> receiver){
+        if(receiver.isPresent()){
+            servers.forEach((s) -> s.notifyMessage(sender, date, message, receiver.get()));
+        }else{
+            servers.forEach((s) -> s.notifyMessage(sender, date, message));
+        }
+    }
+
+    public void handleLastPlayerDisconnection(){
+        servers.forEach(ServerCommunication::handleLastPlayerDisconnection);
+    }
 }

@@ -225,6 +225,11 @@ public class Lobby {
         return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
+    /**
+     * Remove a player from the lobby
+     * @param playerId player's id
+     * @return true if remove was successful, false if it wasn't or player didn't exist
+     */
     public synchronized boolean removePlayer(String playerId) {
         return this.players.remove(playerId) != null;
     }

@@ -22,7 +22,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     private final Map<Socket, String> clientsToLockOut; //lock of the map -- listen and closeClient
     private final int port;
     private ServerSocket serverSocket;
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
     public TCPServer(int port, Lobby lobby, String sharedLock){
         super(lobby, sharedLock);
@@ -132,6 +132,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         Scanner in;
         try {
             in = new Scanner(client.getInputStream());
+            startPingPong(client);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -307,6 +308,15 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                         wrongFormatted = true;
                     }
                 }
+                case "Pong" -> {
+                    Optional<Pong> po = Pong.fromJson(json);
+                    if (po.isPresent()) {
+                        respondPong(po.get(), client);
+                        return true;
+                    } else {
+                        wrongFormatted = true;
+                    }
+                }
                 default -> System.err.println("GameCommand from " + client.toString() +
                         " with name: " + commandName + " can not be found");
             }
@@ -390,6 +400,37 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     }
 
     /**
+     * Send a message to all players
+     * @param sender sender's name
+     * @param date date of message creation
+     * @param message actual message to be sent
+     */
+    @Override
+    public void notifyMessage(String sender, String date, String message) {
+        this.clientsInGame.forEach(c->{
+            sendToClient(c, new ChatMessage(sender, date, message).toJson());
+        });
+    }
+
+    /**
+     * Send a message to all players
+     * @param sender sender's name
+     * @param date date of message creation
+     * @param message actual message to be sent
+     * @param receiver receiver's name
+     */
+    @Override
+    public void notifyMessage(String sender, String date, String message, String receiver) {
+        this.playersIds.entrySet().stream()
+                .filter(entry -> Objects.equals(entry.getValue(), receiver))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .ifPresent(
+                        c -> sendToClient(c, new ChatMessage(sender, date, message).toJson())
+                );
+    }
+
+    /**
      * Notify change in the board to all clients in game
      * @param tiles board
      */
@@ -459,5 +500,23 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         this.clientsInGame.forEach(this::closeClient);
         // Reset lobby
         reset();
+    }
+
+    /**
+     * Handle the disconnection of the last player terminating the game
+     */
+    @Override
+    public void handleLastPlayerDisconnection() {
+        reset();
+    }
+
+    /**
+     * Ping a client to keep connection alive
+     * @param client object (Cast to Socket)
+     */
+    @Override
+    protected void ping(Object client){
+        Socket clientSock = (Socket) client;
+        sendToClient(clientSock, new Ping().toJson());
     }
 }

@@ -35,7 +35,7 @@ public class CommonGoalCardsListener extends StandardListener implements Propert
             );
             this.pnc.sendCommonGoalsCards(cardnameToTokens);
         }else{
-            System.err.println("CommonGoalCardsListener: propriety name "+proprietyName+" not known");
+            System.err.println("\u001B[33m"+"CommonGoalCardsListener: propriety name "+proprietyName+" not known"+"\u001B[0m");
         }
     }
 }

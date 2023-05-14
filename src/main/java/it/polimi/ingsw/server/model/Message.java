@@ -55,4 +55,12 @@ public class Message {
         return this.date.toString();
     }
 
+    /**
+     * Get username of receiver player
+     * @return optional of receiver player. If empty all players are receivers.
+     */
+    public Optional<String> getReceiverName(){
+        return this.receiver.map(Player::getUserName);
+    }
+
 }

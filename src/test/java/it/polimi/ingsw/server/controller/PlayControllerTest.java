@@ -4,7 +4,6 @@ import it.polimi.ingsw.server.model.Game;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ class PlayControllerTest {
     }
 
     @Test
-    void reconnect() {
+    void reconnect(){
         List<String> players = new ArrayList<>();
         players.add("player1");
         players.add("player2");

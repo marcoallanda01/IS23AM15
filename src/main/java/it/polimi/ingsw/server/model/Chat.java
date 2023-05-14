@@ -1,17 +1,25 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.listeners.ChatListener;
+import it.polimi.ingsw.server.listeners.PlayerListener;
+import it.polimi.ingsw.server.listeners.StandardListenable;
+
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Chat {
+public class Chat implements PostProcessable, StandardListenable {
      private final Map<String, List<Message>> MessagesPerPlayer;
+    private transient PropertyChangeSupport propertyChangeSupport;
      public Chat(List<Player> players){
          MessagesPerPlayer = new HashMap<>();
          for (Player p : players){
               MessagesPerPlayer.put(p.getUserName(), new ArrayList<>());
          }
+         this.propertyChangeSupport = new PropertyChangeSupport(this);
      }
 
     /**
@@ -42,8 +50,21 @@ public class Chat {
                     MessagesPerPlayer.get(p).add(m);
                 }
             }
+            this.propertyChangeSupport.firePropertyChange("messageSent", null, m);
         } else {
             throw new PlayerNotFoundException("The sender of the message is not in the game");
         }
-     }
+    }
+
+    @Override
+    public void gsonPostProcess() {
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    /**
+     * Set standard player listener
+     */
+    public void setStandardListener(PushNotificationController pnc){
+        this.propertyChangeSupport.addPropertyChangeListener(new ChatListener(pnc));
+    }
 }
