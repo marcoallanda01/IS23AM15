@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ClientController implements ClientNotificationListener {
-    private View view;
+    private final View view;
 
     public ClientController() {
         view = Client.getInstance().getView();
@@ -120,9 +120,10 @@ public class ClientController implements ClientNotificationListener {
 
     }
 
-    public static void login() {
-
+    public void login(String nickname) {
+        view.setNickname(nickname);
     }
+
     public static void logout() {
 
     }

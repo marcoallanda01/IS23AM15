@@ -65,8 +65,7 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        Client.getInstance().getView().nickname = inputArray[0];
-        ClientController.login();
+        Client.getInstance().getClientController().login(inputArray[0]);
     }
 
     private static void logoutRequest(String[] inputArray) {
@@ -123,7 +122,7 @@ public class InputCLI {
         }
         List<List<Integer>> coordTiles = new ArrayList<>();
         for (int i = 1; i < inputArray.length; i++) {
-            if(inputArray[i].length() != 5 || inputArray[i].charAt(0) != '(' || inputArray[i].charAt(4) != ')'){
+            if(inputArray[i].length() != 5 || inputArray[i].charAt(0) != '(' || inputArray[i].charAt(4) != ')' || inputArray[i].charAt(2) != ','){
                 System.out.println("Invalid input");
                 return;
             }
@@ -166,7 +165,7 @@ public class InputCLI {
         }
         if(inputArray[1].equalsIgnoreCase("all")){
             ClientController.sendChatMessage(message);
-        } else if(Client.getInstance().getView().players.contains(inputArray[1])){
+        } else if(Client.getInstance().getView().getPlayers().contains(inputArray[1])){
             ClientController.sendChatMessage(inputArray[1], message);
         } else {
             System.out.println("Invalid input");

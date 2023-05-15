@@ -153,4 +153,11 @@ public class Client {
     public ClientStates getClientState() {
         return state;
     }
+
+    public ClientController getClientController() {
+        if(clientController instanceof ClientController)
+            return (ClientController) clientController;
+        else
+            throw new RuntimeException("ClientController is not an instance of ClientController");
+    }
 }

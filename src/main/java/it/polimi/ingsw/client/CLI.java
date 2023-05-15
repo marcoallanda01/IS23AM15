@@ -55,12 +55,12 @@ public class CLI extends View {
                 CLIRenderer.printCreateLobby();
                 break;
             case LOBBY:
-                CLIRenderer.printLobby(this.players, this.numberOfPlayers, this.easyRules);
-                CLIRenderer.printSavedGames(this.savedGames);
+                CLIRenderer.printLobby(this.getPlayers(), this.getNumberOfPlayers(), this.isEasyRules());
+                CLIRenderer.printSavedGames(this.getSavedGames());
                 break;
             case IN_GAME:
-                CLIRenderer.printLivingRoomBoard(this.livingRoomBoard);
-                CLIRenderer.printBookshelves(this.bookShelves, this.nickname, this.currentTurnPlayer);
+                CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
+                CLIRenderer.printBookshelves(this.getBookShelves(), this.getNickname(), this.getCurrentTurnPlayer());
                 break;
             case END_GAME:
                 break;
@@ -73,6 +73,6 @@ public class CLI extends View {
         CLIRenderer.printError();
     }
     public void showChat(){
-        CLIRenderer.printChat(this.chat);
+        CLIRenderer.printChat(this.getChat());
     }
 }
