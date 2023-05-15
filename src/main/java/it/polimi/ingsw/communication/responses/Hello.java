@@ -28,7 +28,7 @@ public class Hello extends Msg {
      * @param loadedGame true if the game is loaded from a save
      */
     public Hello(boolean lobbyReady, boolean loadedGame) {
-        super("hello");
+        super("Hello");
         this.lobbyReady = lobbyReady;
         this.loadedGame = loadedGame;
         this.firstPlayerId = "NoFirst";
