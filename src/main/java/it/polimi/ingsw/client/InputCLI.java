@@ -78,9 +78,9 @@ public class InputCLI {
             return;
         }
         if (inputArray[0].equals("1")) {
-            Client.getInstance().getClientController().createLobby(true);
-        } else if (inputArray[0].equals("2")) {
             Client.getInstance().getClientController().createLobby(false);
+        } else if (inputArray[0].equals("2")) {
+            Client.getInstance().getClientController().createLobby(true);
         } else {
             Client.getInstance().getView().showError("Invalid input");
         }

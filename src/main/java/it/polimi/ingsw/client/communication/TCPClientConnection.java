@@ -131,7 +131,7 @@ public class TCPClientConnection implements ClientConnection {
             clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date);
         } else if (CommonCards.fromJson(json).isPresent()) {
             CommonCards commonCards = CommonCards.fromJson(json).get();
-            clientNotificationListener.notifyCommonGoalCards(commonCards.cardsAndTokens);
+            clientNotificationListener.notifyCommonCards(commonCards.cardsAndTokens);
         } else if (CommonGoals.fromJson(json).isPresent()) {
             CommonGoals commonGoals = CommonGoals.fromJson(json).get();
             clientNotificationListener.notifyCommonGoals(commonGoals.goals);

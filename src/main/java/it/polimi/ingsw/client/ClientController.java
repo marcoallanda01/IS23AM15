@@ -12,16 +12,17 @@ import java.util.Set;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
-    private final ClientCommunication communication;
 
     public ClientController() {
         view = Client.getInstance().getView();
-        communication = Client.getInstance().getClientCommunication();
     }
 
     @Override
     public void notifyGame(GameSetUp gameSetUp) {
-
+        Client.getInstance().setClientState(ClientStates.IN_GAME);
+        view.setPlayers(gameSetUp.players);
+        view.setCommonGoals(gameSetUp.goals);
+        view.render();
     }
 
     @Override
@@ -72,15 +73,16 @@ public class ClientController implements ClientNotificationListener {
     }
 
     @Override
-    public void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens) {
-        view.setCommonGoalsCards(cardsToTokens);
+    public void notifyCommonCards(Map<String, List<Integer>> cardsToTokens) {
+        view.setCommonCards(cardsToTokens);
 
         view.render();
     }
 
     @Override
     public void notifyCommonGoals(Set<String> goals) {
-        view.setCommonGoals(goals);
+        List<String> goalsList = new ArrayList<>(goals);
+        view.setCommonGoals(goalsList);
 
         view.render();
     }
@@ -96,35 +98,43 @@ public class ClientController implements ClientNotificationListener {
 
     @Override
     public void notifyDisconnection(String nickname) {
-
+        view.render();
+        view.showError("The player " + nickname + " has disconnected.");
     }
 
     @Override
     public void notifyGameSaved(String game) {
-
+        view.render();
+        view.showError("The game has been saved successfully.");
     }
 
     @Override
     public void notifyPing() {
-
+        Client.getInstance().getClientCommunication().pong(Client.getInstance().getId());
     }
 
     @Override
     public void notifyReconnection(String nickname) {
-
+        view.render();
+        view.showError("The player " + nickname + " has reconnected.");
     }
 
     @Override
     public void notifyFirstJoinResponse(boolean result) {
-
+        if (result) {
+            Client.getInstance().setClientState(ClientStates.LOBBY);
+            view.render();
+        } else {
+            view.render();
+            view.showError("There was an error while creating the lobby. Please try again.");
+        }
     }
 
     @Override
     public void notifyLoadedGamePlayers(Set<String> nicknames) {
         List<String> players = new ArrayList<>(nicknames);
-        view.setPlayers(players);
-
-        view.render();
+        view.setLobbyPlayers(players);
+        Client.getInstance().getClientCommunication().joinLoadedAsFirst(view.getNickname(), Client.getInstance().getId());
     }
 
     @Override
@@ -134,11 +144,17 @@ public class ClientController implements ClientNotificationListener {
                 Client.getInstance().setId(firstPlayerId);
                 Client.getInstance().setClientState(ClientStates.CREATE_LOBBY);
                 view.render();
+            } else {
+                view.render();
+                view.showError("The lobby is being created by another player. Please retry later.");
             }
         } else {
-            if (loadedGame) {
-                communication.join(Client.getInstance().getView().getNickname());
-            }
+            Client.getInstance().getClientCommunication().join(Client.getInstance().getView().getNickname());
+//            if (loadedGame) {
+//                Client.getInstance().getClientCommunication().getLoadedGamePlayers();
+//            } else {
+//
+//            }
         }
     }
 
@@ -152,12 +168,24 @@ public class ClientController implements ClientNotificationListener {
 
     @Override
     public void notifyJoinResponse(boolean result, String error, String id) {
-
+        if (result) {
+            Client.getInstance().setId(id);
+            Client.getInstance().setClientState(ClientStates.LOBBY);
+            view.render();
+        } else {
+            view.render();
+            view.showError(error);
+        }
     }
 
     @Override
     public void notifyLoadGameResponse(boolean result, String error) {
-
+        if (result) {
+            Client.getInstance().getClientCommunication().getLoadedGamePlayers();
+        } else {
+            view.render();
+            view.showError(error);
+        }
     }
 
     @Override
@@ -171,29 +199,29 @@ public class ClientController implements ClientNotificationListener {
     }
 
     public void logout() {
-
+        Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
     }
 
     public void createLobby(boolean loadGame) {
-
+        if (loadGame) {
+            Client.getInstance().setClientState(ClientStates.LOAD_GAME);
+            Client.getInstance().getClientCommunication().getSavedGames();
+        } else {
+            Client.getInstance().setClientState(ClientStates.CREATE_GAME);
+            view.render();
+        }
     }
 
     public void createGame(int numOfPlayers, boolean easyRules) {
-
+        Client.getInstance().getClientCommunication().joinNewAsFirst(view.getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
     }
 
     public void getSavedGames() {
         Client.getInstance().getClientCommunication().getSavedGames();
     }
+
     public void loadGame(int index) {
         Client.getInstance().getClientCommunication().loadGame(view.getSavedGames().get(index), view.getNickname());
-    }
-    public static void joinLobby() {
-
-    }
-
-    public void startGame() {
-
     }
 
     public void pickTiles(List<List<Integer>> coordinates) {
@@ -205,10 +233,14 @@ public class ClientController implements ClientNotificationListener {
     }
 
     public void sendChatMessage(String message) {
-
+        Client.getInstance().getClientCommunication().sendMessage(Client.getInstance().getId(), message);
     }
 
     public void sendChatMessage(String receiver, String message) {
+        Client.getInstance().getClientCommunication().sendMessage(Client.getInstance().getId(), message, receiver);
+    }
 
+    public void saveGame() {
+        //Client.getInstance().getClientCommunication().saveGame();
     }
 }

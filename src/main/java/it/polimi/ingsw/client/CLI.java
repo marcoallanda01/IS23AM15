@@ -11,6 +11,7 @@ public class CLI extends View {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
         this.inputThread = new Thread(this::inputHandler);
         this.running = true;
+        start();
     }
 
     public void start() {
@@ -66,9 +67,9 @@ public class CLI extends View {
                 break;
             case IN_GAME:
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
-                CLIRenderer.printCommonGoals(this.getGoals());
-
+                CLIRenderer.printCommonCards(this.getCommonCards());
                 CLIRenderer.printBookshelves(this.getBookShelves(), this.getNickname(), this.getCurrentTurnPlayer());
+                CLIRenderer.printPersonalGoal(this.getPersonalGoal());
                 break;
             case END_GAME:
                 CLIRenderer.printEndGame(this.getPoints(), this.getWinner());

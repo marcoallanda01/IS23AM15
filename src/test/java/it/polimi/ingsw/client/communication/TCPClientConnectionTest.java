@@ -93,7 +93,7 @@ class TCPClientConnectionTest {
                 }
 
                 @Override
-                public void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens) {
+                public void notifyCommonCards(Map<String, List<Integer>> cardsToTokens) {
                     notificationsSentToTheListener.add(cardsToTokens.toString());
                 }
 

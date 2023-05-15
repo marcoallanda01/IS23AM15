@@ -66,7 +66,12 @@ public class CLIRenderer {
     }
 
     public static void printLobby(List<String> players, int maxPlayers, boolean isEasyRules) {
-
+        System.out.println("Players in the lobby:");
+        for (String player : players) {
+            System.out.println("- " + player);
+        }
+        System.out.println("This is a " + maxPlayers + " players game, ¬so it will start when " + (maxPlayers - players.size()) + " more players will join");
+        System.out.println("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
     }
 
     public static void printLivingRoomBoard(Set<Tile> board) {
@@ -151,10 +156,13 @@ public class CLIRenderer {
         }
     }
 
-    public static void printCommonGoals(List<String> commonGoals) {
-        System.out.println("Common goals:");
-        for (String commonGoal : commonGoals) {
-            System.out.println(commonGoals.indexOf(commonGoal) + ". " + commonGoal);
+    public static void printCommonCards(Map<String, List<Integer>> commonGoals) {
+        for (String name : commonGoals.keySet()) {
+            System.out.print(name + ": ");
+            for (Integer goal : commonGoals.get(name)) {
+                System.out.print(goal + " ");
+            }
+            System.out.println();
         }
     }
 
@@ -173,7 +181,7 @@ public class CLIRenderer {
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-        for(String name : sortedPoints.keySet()) {
+        for (String name : sortedPoints.keySet()) {
             if (name.equals(winner)) {
                 System.out.println(CliColor.GREEN_BOLD_BRIGHT + name + ": " + sortedPoints.get(name) + " WINNER" + CliColor.RESET);
             } else {

@@ -85,7 +85,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
     }
     @Override
     public void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens) throws RemoteException {
-        clientNotificationListener.notifyCommonGoalCards(cardsToTokens);
+        clientNotificationListener.notifyCommonCards(cardsToTokens);
     }
     @Override
     public void notifyCommonGoals(Set<String> goals) throws RemoteException {

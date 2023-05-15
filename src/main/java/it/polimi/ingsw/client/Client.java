@@ -17,6 +17,7 @@ public class Client {
     public Client(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
+        state = ClientStates.LOGIN;
     }
 
     public static Client getInstance() {
@@ -79,16 +80,16 @@ public class Client {
                 testingView.setClientCommunication(singleton.clientCommunication);
                 testingView.start();
             } else {
+                if (view.equals(Views.CLI)) {
+                    singleton.view = new CLI();
+                } else if (view.equals(Views.GUI)) {
+                    //singleton.view = new GUI();
+                }
                 singleton.clientController = new ClientController();
                 if (protocol.equals(Protocols.RMI)) {
                     singleton.setupNetworkRMI();
                 } else if (protocol.equals(Protocols.TCP)) {
                     singleton.setupNetworkTCP();
-                }
-                if (view.equals(Views.CLI)) {
-                    singleton.view = new CLI();
-                } else if (view.equals(Views.GUI)) {
-                    //singleton.view = new GUI();
                 }
             }
             singleton.clientConnection.openConnection();

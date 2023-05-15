@@ -9,17 +9,17 @@ import java.util.Set;
 public abstract class View {
     private String nickname;
     private List<String> players;
+    private List<String> lobbyPlayers;
     private Map<String,Set<Tile>> bookShelves;
     private Set<Tile> livingRoomBoard;
     private int numberOfPlayers;
     private boolean easyRules;
     private Map<String,Map<String,String>> chat;
-    private List<String> goals;
     private Map<String,Integer> points;
     private String currentTurnPlayer;
     private String personalGoal;
-    private Map<String,List<Integer>> commonGoalsCards;
-    private Set<String> commonGoals;
+    private Map<String,List<Integer>> commonCards;
+    private List<String> commonGoals;
     private String game;
     private List<String> savedGames;
     private String winner;
@@ -41,6 +41,14 @@ public abstract class View {
 
     public void setPlayers(List<String> players) {
         this.players = players;
+    }
+
+    public List<String> getLobbyPlayers() {
+        return lobbyPlayers;
+    }
+
+    public void setLobbyPlayers(List<String> lobbyPlayers) {
+        this.lobbyPlayers = lobbyPlayers;
     }
 
     public Map<String, Set<Tile>> getBookShelves() {
@@ -83,14 +91,6 @@ public abstract class View {
         this.chat = chat;
     }
 
-    public List<String> getGoals() {
-        return goals;
-    }
-
-    public void setGoals(List<String> goals) {
-        this.goals = goals;
-    }
-
     public Map<String, Integer> getPoints() {
         return points;
     }
@@ -115,19 +115,19 @@ public abstract class View {
         this.personalGoal = personalGoal;
     }
 
-    public Map<String, List<Integer>> getCommonGoalsCards() {
-        return commonGoalsCards;
+    public Map<String, List<Integer>> getCommonCards() {
+        return commonCards;
     }
 
-    public void setCommonGoalsCards(Map<String, List<Integer>> commonGoalsCards) {
-        this.commonGoalsCards = commonGoalsCards;
+    public void setCommonCards(Map<String, List<Integer>> commonCards) {
+        this.commonCards = commonCards;
     }
 
-    public Set<String> getCommonGoals() {
+    public List<String> getCommonGoals() {
         return commonGoals;
     }
 
-    public void setCommonGoals(Set<String> commonGoals) {
+    public void setCommonGoals(List<String> commonGoals) {
         this.commonGoals = commonGoals;
     }
 

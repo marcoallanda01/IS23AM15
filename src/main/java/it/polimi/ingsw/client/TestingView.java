@@ -132,7 +132,7 @@ public class TestingView implements ClientNotificationListener {
     }
 
     @Override
-    public void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens) {
+    public void notifyCommonCards(Map<String, List<Integer>> cardsToTokens) {
         System.out.println("Common goal cards notified: " + cardsToTokens);
     }
 

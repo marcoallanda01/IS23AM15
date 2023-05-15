@@ -94,7 +94,7 @@ class RMIClientCommunicationTest extends UnicastRemoteObject implements RMIServe
             }
 
             @Override
-            public synchronized void notifyCommonGoalCards(Map<String, List<Integer>> cardsToTokens) {
+            public synchronized void notifyCommonCards(Map<String, List<Integer>> cardsToTokens) {
                 notificationsSentToTheListener.add(cardsToTokens.toString());
             }
 
