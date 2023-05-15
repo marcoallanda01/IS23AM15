@@ -63,12 +63,13 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
 
     /**
      * HelloCommand to server
+     * @param client RMIClient that says hello
      * @return Hello response
      * @throws RemoteException if something about connection went bad
      */
     @Override
-    public Hello hello() throws RemoteException {
-        return respondHello(new HelloCommand());
+    public Hello hello(RMIClient client) throws RemoteException {
+        return respondHello(new HelloCommand(), client);
     }
 
     /**

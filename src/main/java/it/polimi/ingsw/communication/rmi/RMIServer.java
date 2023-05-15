@@ -14,10 +14,11 @@ import java.util.*;
 public interface RMIServer extends Remote {
     /**
      * HelloCommand to server
+     * @param client RMIClient that says hello
      * @return Hello response
      * @throws RemoteException if something about connection went bad
      */
-    public Hello hello() throws RemoteException;
+    public Hello hello(RMIClient client) throws RemoteException;
 
     /**
      * join as first player in a new game

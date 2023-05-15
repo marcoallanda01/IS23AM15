@@ -132,7 +132,6 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         Scanner in;
         try {
             in = new Scanner(client.getInputStream());
-            startPingPong(client);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -178,7 +177,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 case ("HelloCommand") -> {
                     Optional<HelloCommand> hc = HelloCommand.fromJson(json);
                     if (hc.isPresent()) {
-                        Hello hello = respondHello(hc.get());
+                        Hello hello = respondHello(hc.get(), client);
                         sendToClient(client, hello.toJson());
                         return true;
                     } else {

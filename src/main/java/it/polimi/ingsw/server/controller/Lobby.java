@@ -231,7 +231,12 @@ public class Lobby {
      * @return true if remove was successful, false if it wasn't or player didn't exist
      */
     public synchronized boolean removePlayer(String playerId) {
-        return this.players.remove(playerId) != null;
+        if(playerId.equals(this.firstPlayerId) && this.isCreating){
+            forceReset();
+            return true;
+        }else {
+            return this.players.remove(playerId) != null;
+        }
     }
 
     public synchronized boolean isFistPlayerPresent() {
@@ -291,6 +296,29 @@ public class Lobby {
         return this.players.get(id);
     }
 
+    private void forceReset(){
+        this.firstPlayerId = null;
+        this.numPlayersGame = -1;
+        this.loadingGame = null;
+        this.easyRules = false;
+        this.players = new HashMap<>();
+        this.isCreating = false;
+        this.controllerProvider = null;
+        this.isPlaying = false;
+
+        this.games = new HashSet<>();
+        File saves = new File(this.directory);
+        if (!(!saves.exists() || saves.isFile())) {
+            // saves for sure is not a file
+            File[] savesList = saves.listFiles();
+            games = Arrays.stream(savesList != null ? savesList : new File[0]).sequential().
+                    filter(File::isFile)
+                    .map(File::getName)
+                    .map((name) -> (name.substring(0, name.lastIndexOf('.'))))
+                    .collect(Collectors.toSet());
+        }
+        this.currentGame = new Game(pushNotificationController);
+    }
 
     /**
      * Reset game and lobby.

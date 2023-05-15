@@ -48,8 +48,9 @@ public abstract class ResponseServer{
      * @param hc command
      * @return hello msg
      */
-    protected Hello respondHello(HelloCommand hc){
+    protected Hello respondHello(HelloCommand hc, Object client){
         Hello hello;
+        startPingPong(client);
         if (!isGameActive()) {
             try {
                 Optional<String> idfp = lobby.join();
@@ -91,6 +92,7 @@ public abstract class ResponseServer{
      */
     protected JoinResponse respondJoin(Join j, Object client) throws FirstPlayerAbsentException {
         JoinResponse joinResponse;
+        startPingPong(client);
         System.out.println("\u001B[38;5;202m respond join called \u001B[0m");
         try {
             synchronized (playLock){
@@ -357,6 +359,7 @@ public abstract class ResponseServer{
     protected void respondPong(Pong pong, Object client){
         if(this.pingPongMap.get(client) != null){
             this.pingPongMap.put(client, true);
+            System.out.println("Pong received by "+pong.getId());
         }
     }
 
@@ -365,23 +368,25 @@ public abstract class ResponseServer{
      * @param client client's object
      */
     protected void startPingPong(Object client){
-        this.pingPongMap.put(client, true);
-        TimerTask PingTask = new TimerTask() {
-            public void run() {
-                Boolean responded = pingPongMap.get(client);
-                if( responded == null ){
-                    //If res is null means that client disconnected
-                    this.cancel();
-                }else if(!responded){
-                    disconnectPlayer(lobby.getIdFromName(getPlayerNameFromClient(client)),client);
-                    this.cancel();
-                }else {
-                    ping(client);
-                    pingPongMap.put(client, false);
+        if(!pingPongMap.containsKey(client)) {
+            this.pingPongMap.put(client, true);
+            TimerTask PingTask = new TimerTask() {
+                public void run() {
+                    Boolean responded = pingPongMap.get(client);
+                    if (responded == null) {
+                        //If res is null means that client disconnected
+                        this.cancel();
+                    } else if (!responded) {
+                        disconnectPlayer(lobby.getIdFromName(getPlayerNameFromClient(client)), client);
+                        this.cancel();
+                    } else {
+                        ping(client);
+                        pingPongMap.put(client, false);
+                    }
                 }
-            }
-        };
-        this.pingPongService.scheduleAtFixedRate(PingTask, 5000,10000);
+            };
+            this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 10000);
+        }
     }
 
     /**
