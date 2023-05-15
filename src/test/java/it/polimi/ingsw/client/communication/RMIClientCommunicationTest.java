@@ -181,7 +181,7 @@ class RMIClientCommunicationTest extends UnicastRemoteObject implements RMIServe
     }
 
     @Override
-    public Hello hello() throws RemoteException {
+    public Hello hello(RMIClient client) throws RemoteException {
         return new Hello(true, true);
     }
 

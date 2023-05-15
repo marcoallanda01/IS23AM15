@@ -55,7 +55,7 @@ public abstract class ResponseServer{
             try {
                 Optional<String> idfp = lobby.join();
                 if (idfp.isEmpty()) {
-                    hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
+                    hello = new Hello(!lobby.getIsCreating(), lobby.isGameLoaded());
                 } else {
                     hello = new Hello(idfp.get());
                 }

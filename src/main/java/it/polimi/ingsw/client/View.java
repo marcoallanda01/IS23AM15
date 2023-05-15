@@ -2,26 +2,24 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.server.model.Tile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class View {
     private String nickname;
-    private List<String> players;
-    private List<String> lobbyPlayers;
-    private Map<String,Set<Tile>> bookShelves;
-    private Set<Tile> livingRoomBoard;
+    private List<String> players = new ArrayList<>();
+    private List<String> lobbyPlayers = new ArrayList<>();
+    private Map<String,Set<Tile>> bookShelves = new HashMap<>();
+    private Set<Tile> livingRoomBoard = new HashSet<>();
     private int numberOfPlayers;
     private boolean easyRules;
-    private Map<String,Map<String,String>> chat;
-    private Map<String,Integer> points;
+    private Map<String,Map<String,String>> chat = new HashMap<>();
+    private Map<String,Integer> points = new HashMap<>();
     private String currentTurnPlayer;
     private String personalGoal;
-    private Map<String,List<Integer>> commonCards;
-    private List<String> commonGoals;
+    private Map<String,List<Integer>> commonCards = new HashMap<>();
+    private List<String> commonGoals = new ArrayList<>();
     private String game;
-    private List<String> savedGames;
+    private List<String> savedGames = new ArrayList<>();
     private String winner;
     public void render(){}
     public void showError(String error){}

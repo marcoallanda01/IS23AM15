@@ -30,14 +30,18 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().setClientState(ClientStates.END_GAME);
         view.setWinner(nickname);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
     public void notifyBoard(Set<Tile> tiles) {
         view.setLivingRoomBoard(tiles);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
@@ -46,7 +50,9 @@ public class ClientController implements ClientNotificationListener {
         bookShelves.put(nickname, tiles);
         view.setBookShelves(bookShelves);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
@@ -55,28 +61,36 @@ public class ClientController implements ClientNotificationListener {
         pointsMap.put(nickname, points);
         view.setPoints(pointsMap);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
     public void notifyTurn(String nickname) {
         view.setCurrentTurnPlayer(nickname);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
     public void notifyPersonalGoalCard(String nickname, String card) {
         view.setPersonalGoal(card);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
     public void notifyCommonCards(Map<String, List<Integer>> cardsToTokens) {
         view.setCommonCards(cardsToTokens);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
@@ -84,7 +98,9 @@ public class ClientController implements ClientNotificationListener {
         List<String> goalsList = new ArrayList<>(goals);
         view.setCommonGoals(goalsList);
 
-        view.render();
+        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+            view.render();
+        }
     }
 
     @Override
@@ -93,7 +109,7 @@ public class ClientController implements ClientNotificationListener {
         chat.put(date, Map.of("nickname", nickname, "message", message));
         view.setChat(chat);
 
-        view.render();
+        //view.render();
     }
 
     @Override
@@ -170,8 +186,6 @@ public class ClientController implements ClientNotificationListener {
     public void notifyJoinResponse(boolean result, String error, String id) {
         if (result) {
             Client.getInstance().setId(id);
-            Client.getInstance().setClientState(ClientStates.LOBBY);
-            view.render();
         } else {
             view.render();
             view.showError(error);
@@ -213,6 +227,8 @@ public class ClientController implements ClientNotificationListener {
     }
 
     public void createGame(int numOfPlayers, boolean easyRules) {
+        view.setNumberOfPlayers(numOfPlayers);
+        view.setEasyRules(easyRules);
         Client.getInstance().getClientCommunication().joinNewAsFirst(view.getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
     }
 

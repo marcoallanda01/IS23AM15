@@ -161,7 +161,7 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
         rmiClientConnection.openConnection();
     }
     void helloTest() throws RemoteException {
-        rmiClientConnection.notifyHello(this.hello().lobbyReady, this.hello().firstPlayerId,this.hello().loadedGame);
+        rmiClientConnection.notifyHello(this.hello(this.rmiClient).lobbyReady, this.hello(this.rmiClient).firstPlayerId,this.hello(this.rmiClient).loadedGame);
         assertEquals("[trueNoFirsttrue]", notificationsSentToTheListener.toString());
     }
     @Test
@@ -171,7 +171,7 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
     }
 
     @Override
-    public Hello hello() throws RemoteException {
+    public Hello hello(RMIClient client) throws RemoteException {
         return new Hello(true, true);
     }
 

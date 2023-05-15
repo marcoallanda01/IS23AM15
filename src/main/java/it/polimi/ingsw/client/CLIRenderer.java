@@ -70,7 +70,7 @@ public class CLIRenderer {
         for (String player : players) {
             System.out.println("- " + player);
         }
-        System.out.println("This is a " + maxPlayers + " players game, ¬so it will start when " + (maxPlayers - players.size()) + " more players will join");
+        System.out.println("This is a " + maxPlayers + " players game, so it will start when " + (maxPlayers - players.size()) + " more players will join");
         System.out.println("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
     }
 

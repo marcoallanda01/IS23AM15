@@ -33,7 +33,7 @@ public class RMIClientCommunication implements ClientCommunication {
         executorService.submit(() -> {
             Hello hello = null;
             try {
-                hello = rmiClientConnection.getServer().hello();
+                hello = rmiClientConnection.getServer().hello(rmiClientConnection);
                 rmiClientConnection.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
             } catch (RemoteException e) {
                 e.printStackTrace();

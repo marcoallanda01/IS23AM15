@@ -63,7 +63,6 @@ public class CLI extends View {
                 break;
             case LOBBY:
                 CLIRenderer.printLobby(this.getPlayers(), this.getNumberOfPlayers(), this.isEasyRules());
-                CLIRenderer.printSavedGames(this.getSavedGames());
                 break;
             case IN_GAME:
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
