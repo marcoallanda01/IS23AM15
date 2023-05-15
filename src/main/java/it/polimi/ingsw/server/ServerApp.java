@@ -11,7 +11,8 @@ import java.util.concurrent.Executors;
 
 public class ServerApp {
     private static String saves = "saves";
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         System.out.println("Starting server...");
 
         String stringLock = "playLock";
@@ -29,7 +30,7 @@ public class ServerApp {
         try {
             serverRMI.start();
             lobby.registerServer(serverRMI);
-        }catch (AlreadyBoundException | RemoteException e) {
+        } catch (AlreadyBoundException | RemoteException e) {
             System.err.println("RMI server failed to start!");
             e.printStackTrace();
         }

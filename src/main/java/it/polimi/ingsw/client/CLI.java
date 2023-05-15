@@ -54,23 +54,32 @@ public class CLI extends View {
             case CREATE_LOBBY:
                 CLIRenderer.printCreateLobby();
                 break;
+            case CREATE_GAME:
+                CLIRenderer.printCreateGame();
+                break;
+            case LOAD_GAME:
+                CLIRenderer.printSavedGames(this.getSavedGames());
+                break;
             case LOBBY:
                 CLIRenderer.printLobby(this.getPlayers(), this.getNumberOfPlayers(), this.isEasyRules());
                 CLIRenderer.printSavedGames(this.getSavedGames());
                 break;
             case IN_GAME:
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
+                CLIRenderer.printCommonGoals(this.getGoals());
+
                 CLIRenderer.printBookshelves(this.getBookShelves(), this.getNickname(), this.getCurrentTurnPlayer());
                 break;
             case END_GAME:
+                CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
                 break;
             default:
                 System.out.println("Invalid state");
                 break;
         }
     }
-    public void showError(){
-        CLIRenderer.printError();
+    public void showError(String message){
+        CLIRenderer.printError(message);
     }
     public void showChat(){
         CLIRenderer.printChat(this.getChat());

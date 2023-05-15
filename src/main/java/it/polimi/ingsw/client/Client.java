@@ -10,6 +10,7 @@ public class Client {
     private ClientNotificationListener clientController;
     private String hostname;
     private int port;
+    private String id;
     private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;
 
@@ -58,9 +59,12 @@ public class Client {
 
         try {
             singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port));
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid port number");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         try {
             if (modes.equals(Modes.TESTING)) {
                 // I am in testing, setup is easier
@@ -74,8 +78,7 @@ public class Client {
                 singleton.clientConnection.openConnection();
                 testingView.setClientCommunication(singleton.clientCommunication);
                 testingView.start();
-            }
-            else {
+            } else {
                 singleton.clientController = new ClientController();
                 if (protocol.equals(Protocols.RMI)) {
                     singleton.setupNetworkRMI();
@@ -89,9 +92,6 @@ public class Client {
                 }
             }
             singleton.clientConnection.openConnection();
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid port number");
-            return;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -128,6 +128,7 @@ public class Client {
         }
         return Modes.TESTING; // default
     }
+
     private static boolean isTesting(String[] args) {
         for (String s : args) {
             if (s.contains("testing")) return true;
@@ -150,14 +151,31 @@ public class Client {
     private enum Modes {
         TESTING, PRODUCTION
     }
+
     public ClientStates getClientState() {
         return state;
     }
 
+    public void setClientState(ClientStates state) {
+        this.state = state;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
     public ClientController getClientController() {
-        if(clientController instanceof ClientController)
+        if (clientController instanceof ClientController)
             return (ClientController) clientController;
         else
             throw new RuntimeException("ClientController is not an instance of ClientController");
+    }
+
+    public ClientCommunication getClientCommunication() {
+        return clientCommunication;
     }
 }

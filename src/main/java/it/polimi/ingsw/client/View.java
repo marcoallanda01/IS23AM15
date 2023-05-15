@@ -22,6 +22,7 @@ public abstract class View {
     private Set<String> commonGoals;
     private String game;
     private List<String> savedGames;
+    private String winner;
     public void render(){}
     public void showError(String error){}
     public void showChat(){}
@@ -144,5 +145,13 @@ public abstract class View {
 
     public void setSavedGames(List<String> savedGames) {
         this.savedGames = savedGames;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 }

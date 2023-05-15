@@ -91,4 +91,10 @@ class CLIRendererTest {
     @Test
     void printChat() {
     }
+
+    @Test
+    void printEndGame() {
+        Map<String, Integer> points = Map.of("Marco", 20, "Luca", 15, "Pietro1234", 30);
+        CLIRenderer.printEndGame(points, "Pietro1234");
+    }
 }

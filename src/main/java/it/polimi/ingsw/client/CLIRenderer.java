@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CLIRenderer {
 
@@ -58,8 +59,9 @@ public class CLIRenderer {
     public static void printSavedGames(List<String> savedGames) {
         System.out.println("Here's the list of saved games:");
         System.out.println("Select an option:");
-        for (String savedGame : savedGames) {
-            System.out.println(savedGames.indexOf(savedGame) + ". " + savedGame);
+        List<String> savedGamesList = new ArrayList<>(savedGames);
+        for (String savedGame : savedGamesList) {
+            System.out.println(savedGamesList.indexOf(savedGame) + ". " + savedGame);
         }
     }
 
@@ -140,7 +142,7 @@ public class CLIRenderer {
         }
     }
 
-    public static void printChat(Map<String,Map<String,String>> chat) {
+    public static void printChat(Map<String, Map<String, String>> chat) {
         for (String date : chat.keySet()) {
             System.out.print(date + " - ");
             for (String name : chat.get(date).keySet()) {
@@ -149,16 +151,40 @@ public class CLIRenderer {
         }
     }
 
-    public static void printCommonGoals() {
+    public static void printCommonGoals(List<String> commonGoals) {
+        System.out.println("Common goals:");
+        for (String commonGoal : commonGoals) {
+            System.out.println(commonGoals.indexOf(commonGoal) + ". " + commonGoal);
+        }
+    }
+
+    public static void printPersonalGoal(String personalGoal) {
+        System.out.println("personalGoal = " + personalGoal);
+    }
+
+    public static void printEndGame(Map<String, Integer> points, String winner) {
+        System.out.println("The game is over!");
+        System.out.println("Final scores:");
+        System.out.println("──────────────────────────────");
+        LinkedHashMap<String, Integer> sortedPoints = points.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        for(String name : sortedPoints.keySet()) {
+            if (name.equals(winner)) {
+                System.out.println(CliColor.GREEN_BOLD_BRIGHT + name + ": " + sortedPoints.get(name) + " WINNER" + CliColor.RESET);
+            } else {
+                System.out.println(name + ": " + sortedPoints.get(name));
+            }
+        }
 
     }
 
-    public static void printPersonalGoal() {
-
-    }
-
-    public static void printError() {
-
+    public static void printError(String message) {
+        System.out.println(CliColor.RED_BOLD_BRIGHT + message + CliColor.RESET);
     }
 
 }
