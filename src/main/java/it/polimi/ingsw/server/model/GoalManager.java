@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import java.beans.PropertyChangeSupport;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,8 +10,6 @@ import java.util.function.Predicate;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.server.controller.PushNotificationController;
-import it.polimi.ingsw.server.listeners.StandardListenable;
 import org.jetbrains.annotations.NotNull;
 
 public class GoalManager{
@@ -287,6 +284,11 @@ public class GoalManager{
         pointsManagers.forEach(PointsManager -> PointsManager.updatePoints(player));
     }
 
+    /**
+     * Get player's points
+     * @param player player
+     * @return points
+     */
     public int getPoints(Player player) {
         return pointsManagers.stream()
                 .map(pointsManager -> pointsManager.getPoints(player))
@@ -350,6 +352,10 @@ public class GoalManager{
         return personalCardsPointsManager.getCard(player);
     }
 
+    /**
+     * Get common goals patterns
+     * @return patterns
+     */
     public Set<Pattern> getCommonGoals() {
         return commonGoalsPointsManager.getPatterns();
     }
