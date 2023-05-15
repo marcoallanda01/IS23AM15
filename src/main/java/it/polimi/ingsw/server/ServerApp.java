@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.communication.RMIServerApp;
 import it.polimi.ingsw.server.communication.TCPServer;
 import it.polimi.ingsw.server.controller.Lobby;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,5 +25,13 @@ public class ServerApp {
         lobby.registerServer(serverTcp);
         executorService.submit(serverTcp::listenForConnections);
 
+        RMIServerApp serverRMI = new RMIServerApp(7000, lobby, sharedLock);
+        try {
+            serverRMI.start();
+            lobby.registerServer(serverRMI);
+        }catch (AlreadyBoundException | RemoteException e) {
+            System.err.println("RMI server failed to start!");
+            e.printStackTrace();
+        }
     }
 }
