@@ -41,12 +41,12 @@ First player must specify his name (player), the number of players, his id and t
 "easyRule":(false, true)
 }
 
-The server respond with a BooleanResponse set to true if the game was created or to false if the game was not.
-Note: if is chosen a numOfPlayer different the BooleanResponse will set to false. Because here is supposed a client
+The server respond with a  FirstJoinResponse set to true if the game was created or to false if the game was not.
+Note: if is chosen a numOfPlayer different the FirstJoinResponse will set to false. Because here is supposed a client
 who follow the protocol.
 If the result was true the first player must wait until all the players join and the game start.
 
-          <--------------------------------------------------         {"name":"BooleanResponse", "result":(true, false)}
+          <--------------------------------------------------       {"name":"FirstJoinResponse", "result":(true, false)}
 
 
 ################
@@ -113,8 +113,8 @@ First player join indicating a name(player)
 "player":"***",                 -------------------------------------------------->
 "idFirstPlayer":"***"}
 
-The server respond with a Boolean response.
-                                <--------------------------------------------------                      BooleanResponse
+The server respond with a FirstJoin response.
+                                <--------------------------------------------------                    FirstJoinResponse
 
 Now other players can join:
 
@@ -138,7 +138,6 @@ DISCONNECTIONS:
 Player tries to disconnect sending his own id.
 
 {"name":"Disconnect", "id":"***"}   -------------------------------------------------->
-                                    <--------------------------------------------------                  BooleanResponse
 
 Notes:
 - if the first player disconnect during lobby creation then the lobby is reset.
@@ -154,7 +153,6 @@ A player can reconnect passing his id
 HelloCommand                        -------------------------------------------------->
                                     <--------------------------------------------------                            Hello
 {"name":"Reconnect", "id":"***"}    -------------------------------------------------->
-                                    <--------------------------------------------------                  BooleanResponse
 
 
 PING PONG:
@@ -190,7 +188,6 @@ Client can do three actions:
 {"x":***, "y":***, "type":"***"},
 ***
 ]}
-                                     <--------------------------------------------------                 BooleanResponse
 
 
 2) Put Tiles
@@ -201,7 +198,6 @@ Client can do three actions:
 "tiles":[
 "BOOK", ***
 ]}
-                                     <--------------------------------------------------                 BooleanResponse
 
 
 3) Save Game and make all leave
