@@ -48,17 +48,17 @@
 	}
 ],
 "end_game" : [
-	{"name":"3_ADJACENT",
-		"type":"adjacent", "min_tiles":3, "min_groups":1, "points":"2"
-	},
-	{"name":"4_ADJACENT",
-		"type":"adjacent", "min_tiles":4, "min_groups":1, "points":"3"
+	{"name":"6_ADJACENT",
+		"type":"adjacent", "min_tiles":6, "min_groups":1, "points":"8"
 	},
 	{"name":"5_ADJACENT",
 		"type":"adjacent", "min_tiles":5, "min_groups":1, "points":"5"
 	},
-	{"name":"5_ADJACENT",
-		"type":"adjacent", "min_tiles":6, "min_groups":1, "points":"8"
+	{"name":"4_ADJACENT",
+		"type":"adjacent", "min_tiles":4, "min_groups":1, "points":"3"
+	},
+	{"name":"3_ADJACENT",
+		"type":"adjacent", "min_tiles":3, "min_groups":1, "points":"2"
 	}
 ],
 "personal_cards" : [

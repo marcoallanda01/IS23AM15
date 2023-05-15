@@ -47,13 +47,18 @@ class GoalManagerTest {
         goalManager.updatePointsEnd(players.get(1));
         assertEquals(2, goalManager.getPoints(players.get(1)));
         List<Tile> tiles2 = new ArrayList<>();
-        tiles.add(new Tile(-1, -1, TileType.CAT));
-        tiles.add(new Tile(-1, -1, TileType.CAT));
-        tiles.add(new Tile(-1, -1, TileType.CAT));
+        tiles2.add(new Tile(-1, -1, TileType.CAT));
+        tiles2.add(new Tile(-1, -1, TileType.CAT));
+        tiles2.add(new Tile(-1, -1, TileType.CAT));
         players.get(1).insertTiles(tiles2, 3);
-        players.get(1).insertTiles(tiles2, 4);
+        List<Tile> tiles3 = new ArrayList<>();
+        tiles3.add(new Tile(-1, -1, TileType.CAT));
+        tiles3.add(new Tile(-1, -1, TileType.CAT));
+        tiles3.add(new Tile(-1, -1, TileType.CAT));
+        players.get(1).insertTiles(tiles3, 4);
         goalManager.updatePointsEnd(players.get(1));
-        assertNotEquals(2, goalManager.getPoints(players.get(1))); //TODO
+        assertNotEquals(2, goalManager.getPoints(players.get(1)));
+        assertEquals(10, goalManager.getPoints(players.get(1)));
     }
 
     @Test
