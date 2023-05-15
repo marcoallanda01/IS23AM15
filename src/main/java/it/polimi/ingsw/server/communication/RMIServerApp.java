@@ -1,358 +1,531 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.server.controller.*;
-import it.polimi.ingsw.server.model.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
 import java.io.IOException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class RMIServerApp implements RMIServer {
-    private final List<RMIClient> clients;
+public class RMIServerApp extends ResponseServer implements ServerCommunication, RMIServer {
     private final Map<RMIClient, String> playersIds;
 
-    private final Lobby lobby;
-
-    private ControllerProvider controllerProvider = null;
-    private PlayController playController;
-    private ChatController chatController = null;
-    private final RMIServerCommunication pushNotificationHandler;
-
     private final int port;
-    public RMIServerApp(int port, Lobby lobby, RMIServerCommunication rmiServerCommunication) throws RemoteException {
-        super();
+
+    public RMIServerApp(int port, Lobby lobby, String sharedLock){
+        super(lobby, sharedLock);
         this.port = port;
-        this.lobby = lobby;
-        this.playController = null;
-        this.clients = Collections.synchronizedList(new ArrayList<>());
         this.playersIds = Collections.synchronizedMap(new HashMap<>());
-        this.pushNotificationHandler = rmiServerCommunication;
     }
 
-    public void start() throws RemoteException {
+    /**
+     * Start RMI server on this.port
+     *
+     * @throws RemoteException if something went wrong with the starting of the server
+     */
+    public void start() throws RemoteException, AlreadyBoundException {
         Registry registry = LocateRegistry.createRegistry(this.port);
-        try {
-            registry.bind("ServerRMIApp", this);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        registry.bind("ServerRMIApp", this);
         System.out.println("Server RMI ready");
     }
 
     /**
      * Method for add a playing client
+     *
      * @param client client socket
      */
-    private synchronized void addPlayingClient(RMIClient client, String id){
+    private synchronized void addPlayingClient(RMIClient client, String id) {
         playersIds.put(client, id);
-        pushNotificationHandler.addPlayingClient(client);
     }
 
     /**
      * Method for close a client
+     *
      * @param client client
      */
-    private void closeClient(RMIClient client){
+    private void closeClient(RMIClient client) {
         this.playersIds.remove(client);
-        this.pushNotificationHandler.removeClient(client);
         try {
             UnicastRemoteObject.unexportObject(client, true);
-        }catch (IOException b){
+        } catch (IOException b) {
             b.printStackTrace();
         }
     }
 
     /**
-     * Check if we are in the playing phase of the game
-     * @return true if we are
+     * HelloCommand to server
+     * @return Hello response
+     * @throws RemoteException if something about connection went bad
      */
-    private synchronized boolean isGameActive(){
-        boolean playControllerActive;
-        playControllerActive  = (controllerProvider != null);
-        return playControllerActive;
-    }
-
-    /**
-     * Tries to start game if not started
-     */
-    private synchronized void tryStartGame(){
-        try {
-            controllerProvider = lobby.startGame();
-            playController = controllerProvider.getPlayController();
-            chatController = controllerProvider.getChatController();
-            System.out.println("Player joined, game started!");
-            pushNotificationHandler.gameSetUp();
-        } catch (EmptyLobbyException e) {
-            System.out.println("Player joined, but lobby not full!");
-        }
-    }
-
-    /**
-     * Start the game from the extern
-     */
-    public synchronized void startGame(ControllerProvider controllerProvider){
-        this.controllerProvider = controllerProvider;
-        this.playController = this.controllerProvider.getPlayController();
-        this.chatController = this.controllerProvider.getChatController();
-    }
-
     @Override
     public Hello hello() throws RemoteException {
-        Hello hello;
-        if (!isGameActive()) {
-            try {
-                Optional<String> idfp = lobby.join();
-                if (idfp.isEmpty()) {
-                    hello = new Hello(lobby.getIsCreating(), lobby.isGameLoaded());
-                } else {
-                    hello = new Hello(idfp.get());
-                }
-
-            } catch (WaitLobbyException e) {
-                hello = new Hello(false, false);
-            }
-
-        } else {
-            hello = new Hello(true, false);
-        }
-        return hello;
+        return respondHello(new HelloCommand());
     }
 
+    /**
+     * join as first player in a new game
+     * @param client RMI client that joins
+     * @param player player's name
+     * @param numPlayersGame num of players of new game
+     * @param idFirstPlayer first player's id
+     * @return FirstJoinResponse
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer) throws RemoteException {
-         return joinNewAsFirst(client, player,  numPlayersGame,  idFirstPlayer, false);
+        return joinNewAsFirst(client, player, numPlayersGame, idFirstPlayer, true);
     }
 
-
+    /**
+     * join as first player in a new game
+     * @param client RMI client that joins
+     * @param player player's name
+     * @param numPlayersGame num of players of new game
+     * @param idFirstPlayer first player's id
+     * @param easyRules set true for easy rules game mode
+     * @return FirstJoinResponse
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
-        BooleanResponse br;
-        if(client != null) {
-            boolean res = lobby.joinFirstPlayer(player, numPlayersGame, easyRules, idFirstPlayer);
-            if (res) {
-                addPlayingClient(client, idFirstPlayer);
-            }
-            br = new BooleanResponse(res);
-        }
-        else{
-            br = new BooleanResponse(false);
-        }
-        return new FirstJoinResponse(true);
-        //return br;
+        return respondJoinNewAsFirst(new JoinNewAsFirst(player, numPlayersGame, idFirstPlayer, easyRules), client);
     }
 
-
+    /**
+     * join in a created game
+     *
+     * @param client RMI client that joins
+     * @param player player's name
+     * @return JoinResponse
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public JoinResponse join(RMIClient client, String player) throws RemoteException {
-        JoinResponse joinResponse = null;
-        if(client != null){
-            try {
-                joinResponse = new JoinResponse(lobby.addPlayer(player));
-            } catch (NicknameTakenException e) {
-                joinResponse = new JoinResponse(e);
-            } catch (NicknameException e) {
-                joinResponse = new JoinResponse(e);
-            } catch (FullGameException e) {
-                joinResponse = new JoinResponse(e);
-            } catch (FirstPlayerAbsentException e) {
-                throw new RuntimeException(e);
-            }
-            if(joinResponse.result){
-                addPlayingClient(client, joinResponse.id);
-            }
-            tryStartGame();
+        JoinResponse jr;
+        try {
+            jr = respondJoin(new Join(player), client);
+        } catch (FirstPlayerAbsentException e) {
+            System.out.println(client+" Tried to join without a first player preset!");
+            throw new RemoteException("Tried to join without a first player preset!");
         }
-        return joinResponse;
+        return jr;
     }
 
-
+    /**
+     * Get the game that are saved on the server
+     *
+     * @return SavedGame response
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public SavedGames getSavedGames() throws RemoteException {
-        return new SavedGames(lobby.getSavedGames());
+        return respondGetSavedGames(new GetSavedGames());
     }
 
-
+    /**
+     * load a game from a save
+     *
+     * @param game          game name
+     * @param idFirstPlayer first player's id
+     * @return LoadGameResponse
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public LoadGameResponse loadGame(String game, String idFirstPlayer) throws RemoteException {
-        LoadGameResponse loadGameResponse;
-        try {
-            lobby.loadGame(game, idFirstPlayer);
-            loadGameResponse = new LoadGameResponse();
-        } catch (GameLoadException e) {
-            loadGameResponse = new LoadGameResponse(e);
-        } catch (GameNameException e) {
-            loadGameResponse = new LoadGameResponse(e);
-        } catch (IllegalLobbyException e) {
-            loadGameResponse = new LoadGameResponse(e);
-        }
-        return  loadGameResponse;
+        return respondLoadGame(new LoadGame(idFirstPlayer, game));
     }
 
-
+    /**
+     * Get player's nicknames from the game loaded
+     *
+     * @return LoadedGamePlayers response
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public LoadedGamePlayers getLoadedGamePlayers() throws RemoteException {
-        LoadedGamePlayers lgp;
-        if (!isGameActive()) {
-            Set<String> pns = new HashSet<>(lobby.getLoadedPlayersNames());
-            lgp =  new LoadedGamePlayers(pns);
-        } else {
-            lgp = new LoadedGamePlayers(new HashSet<>());
-        }
-        return lgp;
+        return respondGetLoadedPlayers(new GetLoadedPlayers());
     }
 
-
+    /**
+     * join as first player in a loaded game
+     *
+     * @param client        RMI client that joins
+     * @param player        player's name
+     * @param idFirstPlayer first player's id
+     * @return FirstJoinResponse
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public FirstJoinResponse joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
-        BooleanResponse br;
-        if(client != null) {
-            try {
-                boolean res = lobby.joinLoadedGameFirstPlayer(player, idFirstPlayer);
-                br = new BooleanResponse(res);
-                if (res) {
-                    addPlayingClient(client, idFirstPlayer);
-                }
-            } catch (NicknameException e) {
-                br = new BooleanResponse(false);
-            }
-        }
-        else {
-            br = new BooleanResponse(false);
-        }
-       // return br;
-        return new FirstJoinResponse(true);
+        return respondJoinLoadedAsFirst(new JoinLoadedAsFirst(player,idFirstPlayer), client);
     }
 
-
+    /**
+     * Disconnect from the game
+     *
+     * @param playerId player's id
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void disconnect(String playerId) throws RemoteException {
-        BooleanResponse br;
-        RMIClient client = playersIds.entrySet()
-                .stream()
-                .filter((e)->{return e.getValue().equals(playerId);})
-                .map(Map.Entry::getKey)
-                .findFirst().orElseGet(null);
-        if(client == null){
-           br = new BooleanResponse(false);
-        }
-        else {
-            if (isGameActive()) {
-                boolean res = false;
-                res = playController.leave(playersIds.get(client));
-                if (res) {
-                    // TODO: to finish
-                    //notifyDisconnection(playersIds.get(client));
+        if(this.playersIds.containsValue(playerId)){
+            this.playersIds.forEach((k, v) -> {
+                if(v.equals(playerId)){
+                    respondDisconnect(new Disconnect(playerId), k);
                 }
-                br = new BooleanResponse(res);
-            } else {
-                br = new BooleanResponse(true);
-            }
-            closeClient(client);
+            });
         }
-        //return br;
     }
 
-
+    /**
+     * Reconnect to the game
+     *
+     * @param client client that reconnect
+     * @param playerId player's id
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void reconnect(RMIClient client, String playerId) throws RemoteException {
-        String id = playerId;
-        BooleanResponse br;
-        if(client != null) {
-            if (isGameActive()) {
-                String name = lobby.getNameFromId(id);
-                if (name != null) {
-                    boolean res = playController.reconnect(name);
-                    br = new BooleanResponse(res);
-                    if (res) {
-                        addPlayingClient(client, id);
-                    }
-                } else
-                    br = new BooleanResponse(false);
-            } else {
-                br = new BooleanResponse(false);
-            }
+        if(this.playersIds.containsValue(playerId)){
+            respondReconnect(new Reconnect(playerId), client);
         }
-        else {
-            br = new BooleanResponse(false);
-        }
-        //return br;
     }
 
-
+    /**
+     * Pick tiles command
+     *
+     * @param playerId player's id
+     * @param tiles    tiles to pick
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) throws RemoteException {
-        BooleanResponse br;
-        String namep = lobby.getNameFromId(playerId);
-        if (isGameActive() && namep != null) {
-            br = new BooleanResponse(playController.pickTiles(new ArrayList<>(tiles), namep));
-        } else {
-            br = new BooleanResponse(false);
-        }
-        //return br;
+        respondPickTiles(new PickTilesCommand(playerId, tiles));
     }
 
-
+    /**
+     * Put tiles command
+     *
+     * @param playerId player's id
+     * @param tiles    tiles to put in order
+     * @param column   where to put the tiles
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException {
-        BooleanResponse br;
-        String namep = lobby.getNameFromId(playerId);
-        if (isGameActive() && namep != null) {
-            List<Tile> tilesPut = tiles.stream().map(Tile::new).toList();
-            br = new BooleanResponse(playController.putTiles(tilesPut, column, namep));
-        } else {
-            br = new BooleanResponse(false);
-        }
-        //return br;
+        respondPutTiles(new PutTilesCommand(playerId,tiles, column));
     }
 
+    /**
+     * Save current game command
+     *
+     * @param playerId player's id
+     * @param gameName name of the new save
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void saveGame(String playerId, String gameName) throws RemoteException {
-        if (isGameActive() && lobby.getNameFromId(playerId) != null) {
-            boolean res;
-            try {
-                res = playController.saveGame(gameName);
-            } catch (Exception e) {
-                e.printStackTrace();
-                res = false;
-            }
-            if (res) {
-                // TODO: notify all players
-            }
-        }
+        respondSaveGame(new SaveGame(playerId, gameName));
     }
 
-
+    /**
+     * Send message to a player
+     *
+     * @param playerId         player's id
+     * @param message          actual message
+     * @param receiverNickname receiver's name
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
-    public void sendMessage(String playerId, String player, String message) throws RemoteException {
-        String sender = lobby.getNameFromId(playerId);
-        if (isGameActive() && sender != null) {
-            if (player != null) {
-                try {
-                    chatController.sendMessage(sender, player, message);
-                } catch (PlayerNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public void sendMessage(String playerId, String message, String receiverNickname) throws RemoteException {
+        respondSendMessage(new SendMessage(playerId, message, receiverNickname));
     }
 
+    /**
+     * Send message to all players
+     *
+     * @param playerId player's id
+     * @param message  actual message
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void sendMessage(String playerId, String message) throws RemoteException {
-        // TODO
+        respondSendMessage(new SendMessage(playerId, message));
     }
 
-
+    /**
+     * Respond to a ping
+     *
+     * @param playerId player's id
+     * @throws RemoteException if something about connection went bad
+     */
     @Override
     public void pong(String playerId) throws RemoteException {
-        //TODO: finish
+        if(this.playersIds.containsValue(playerId)){
+            this.playersIds.forEach((k, v) -> {
+                if(v.equals(playerId)){
+                    respondPong(new Pong(playerId), k);
+                }
+            });
+        }
+    }
+
+    /**
+     * Close a client connection
+     *
+     * @param client client object. Cast to RMIClient
+     */
+    @Override
+    protected void closeClient(Object client) {
+        closeClient((RMIClient) client);
+    }
+
+    /**
+     * Get name of a playing client form his connection
+     *
+     * @param client client object. Cast to RMIClient
+     * @return client's nickname. Return null if client is not in game
+     */
+    @Override
+    protected String getPlayerNameFromClient(Object client) {
+        RMIClient rmic = (RMIClient)client;
+        return this.lobby.getNameFromId(this.playersIds.get(rmic));
+    }
+
+    /**
+     * Add a playing client
+     *
+     * @param client object (cast to RMIClient)
+     * @param id     player's id
+     */
+    @Override
+    protected void addPlayingClient(Object client, String id) {
+        addPlayingClient((RMIClient) client, id);
+    }
+
+    /**
+     * Ping a client to keep connection alive
+     *
+     * @param client object (Cast to RMIClient)
+     */
+    @Override
+    protected void ping(Object client) {
+        try {
+            ((RMIClient)client).notifyPing();
+        } catch (RemoteException e) {
+            System.err.println("RMI ping: Remote Exception thrown with client " + this.playersIds.get(client));
+        }
+    }
+
+    //Server Communication methods
+    /**
+     * Send one GameSetUp object to every player
+     */
+    @Override
+    public void gameSetUp() {
+        tryStartGame();
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyGame(new GameSetUp(
+                        playController.getPlayers(),
+                        new ArrayList<>(playController.getEndGameGoals())
+                ));
+            } catch (RemoteException e) {
+                System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
+            }
+        });
+    }
+
+    /**
+     * If in game, function notifies the disconnection of a player to all the others
+     *
+     * @param playerName player that disconnect
+     */
+    @Override
+    public void notifyDisconnection(String playerName) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyDisconnection(playerName);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyDisconnection: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Notify to all clients that a player reconnected
+     *
+     * @param playerName name of the player who reconnected
+     */
+    @Override
+    public void notifyReconnection(String playerName) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyReconnection(playerName);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyReconnection: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Send a message to all players
+     *
+     * @param sender  sender's name
+     * @param date    date of message creation
+     * @param message actual message to be sent
+     */
+    @Override
+    public void notifyMessage(String sender, String date, String message) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyChatMessage(sender, date, message);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyMessage: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Send a message to all players
+     *
+     * @param sender   sender's name
+     * @param date     date of message creation
+     * @param message  actual message to be sent
+     * @param receiver receiver's name
+     */
+    @Override
+    public void notifyMessage(String sender, String date, String message, String receiver) {
+        this.playersIds.entrySet().stream()
+                .filter(e->e.getValue().equals(receiver))
+                .map(Map.Entry::getKey)
+                .findFirst().ifPresent(c-> {
+                    try {
+                        c.notifyChatMessage(sender, message,date);
+                    } catch (RemoteException e) {
+                        System.err.println("RMI notifyMessage: Remote Exception thrown with client "+c);
+                    }
+                });
+    }
+
+    /**
+     * Notify change in the board to all clients in game
+     *
+     * @param tiles board
+     */
+    @Override
+    public void notifyChangeBoard(List<Tile> tiles) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyBoard(new HashSet<>(tiles));
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyChangeBoard: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Notify to all clients change in player's bookshelf
+     *
+     * @param playerName player's name
+     * @param tiles      bookshelf
+     */
+    @Override
+    public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyBookshelf(playerName,new HashSet<>(tiles));
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyChangeBookShelf: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Notify change in point of a player to all clients
+     *
+     * @param playerName player's name
+     * @param points     new points
+     */
+    @Override
+    public void updatePlayerPoints(String playerName, int points) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyPoints(playerName, points);
+            } catch (RemoteException e) {
+                System.err.println("RMI updatePlayerPoints: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Notify to all player whom turn is
+     *
+     * @param playerName current player
+     */
+    @Override
+    public void notifyTurn(String playerName) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyTurn(playerName);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyTurn: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Notify to all clients a change in common goals cards and tokens
+     *
+     * @param cardsAndTokens cards with associated tokens
+     */
+    @Override
+    public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyCommonGoalCards(cardsAndTokens);
+            } catch (RemoteException e) {
+                System.err.println("RMI sendCommonGoalsCards: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
+     * Notify the winner to all playing clients, close all playing clients, reset lobby
+     *
+     * @param playerName name of the winner
+     */
+    @Override
+    public void notifyWinner(String playerName) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyWinner(playerName);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyWinner: Remote Exception thrown with client "+value);
+            }
+        });
+        // Close all playing clients
+        this.playersIds.forEach((key, value) -> {
+            closeClient(key);
+        });
+        //reset
+        reset();
+    }
+
+    /**
+     * Handle the disconnection of the last player terminating the game
+     */
+    @Override
+    public void handleLastPlayerDisconnection() {
+        reset();
     }
 }
