@@ -185,6 +185,9 @@ public class ClientController implements ClientNotificationListener {
     public void getSavedGames() {
         Client.getInstance().getClientCommunication().getSavedGames();
     }
+    public void loadGame(int index) {
+        Client.getInstance().getClientCommunication().loadGame(view.getSavedGames().get(index), view.getNickname());
+    }
     public static void joinLobby() {
 
     }

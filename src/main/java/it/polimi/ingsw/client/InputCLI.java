@@ -5,63 +5,70 @@ import java.util.List;
 import java.util.Scanner;
 
 public class InputCLI {
-    private static boolean global;
+    private static boolean globalCommand;
 
     public static void inputHandler(Scanner inputScanner) {
-        while(inputScanner.hasNext()){
+        while (inputScanner.hasNext()) {
             String input = inputScanner.next();
             input = input.trim();
             String[] inputArray = input.split(" ");
-            if(inputArray[0].equalsIgnoreCase("refresh")){
+            if (inputArray[0].equalsIgnoreCase("refresh")) {
                 Client.getInstance().getView().render();
                 return;
             }
 
-            switch (Client.getInstance().getClientState()){
-                case LOGIN:
-                    loginRequest(inputArray);
-                    break;
-                case CREATE_LOBBY:
-                    createLobbyRequest(inputArray);
-                    break;
-                case LOBBY:
-                    switch (inputArray[0].toLowerCase()){
-                        case "join":
-                            joinLobbyRequest(inputArray);
-                            break;
-                        case "start":
-                            startGameRequest(inputArray);
-                            break;
-                        default:
-                            System.out.println("Invalid input");
-                            break;
-                    }
-                    break;
-                case IN_GAME:
-                    switch (inputArray[0].toLowerCase()){
-                        case "pick":
-                            pickTilesRequest(inputArray);
-                            break;
-                        case "put":
-                            putTilesRequest(inputArray);
-                            break;
-                        case "chat":
-                            sendChatMessageRequest(inputArray);
-                            break;
-                        case "show":
-                            showGoalCardsRequest(inputArray);
-                            break;
-                        default:
-                            System.out.println("Invalid input");
-                            break;
-                    }
-                    break;
+            globalCommand = globalCommand(inputArray);
+
+            if (!globalCommand) {
+                switch (Client.getInstance().getClientState()) {
+                    case LOGIN:
+                        loginRequest(inputArray);
+                        break;
+                    case CREATE_LOBBY:
+                        createLobbyRequest(inputArray);
+                        break;
+                    case CREATE_GAME:
+                        createGameRequest(inputArray);
+                        break;
+                    case LOAD_GAME:
+                        loadGameRequest(inputArray);
+                        break;
+                    case LOBBY:
+                        switch (inputArray[0].toLowerCase()) {
+                            case "join":
+                                joinLobbyRequest(inputArray);
+                                break;
+                            case "start":
+                                startGameRequest(inputArray);
+                                break;
+                            default:
+                                System.out.println("Invalid input");
+                                break;
+                        }
+                        break;
+                    case IN_GAME:
+                        switch (inputArray[0].toLowerCase()) {
+                            case "pick":
+                                pickTilesRequest(inputArray);
+                                break;
+                            case "put":
+                                putTilesRequest(inputArray);
+                                break;
+                            case "chat":
+                                sendChatMessageRequest(inputArray);
+                                break;
+                            default:
+                                System.out.println("Invalid input");
+                                break;
+                        }
+                        break;
+                }
             }
         }
     }
 
-    private static void loginRequest(String[] inputArray){
-        if(inputArray.length != 1){
+    private static void loginRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
             System.out.println("Invalid input");
             return;
         }
@@ -73,11 +80,44 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        ClientController.logout();
+        Client.getInstance().getClientController().logout();
     }
 
     private static void createLobbyRequest(String[] inputArray) {
-        if (inputArray.length < 1 || inputArray.length> 2) {
+        if (inputArray.length != 1) {
+            System.out.println("Invalid input");
+            return;
+        }
+        if (inputArray[0].equals("1")) {
+            Client.getInstance().getClientController().createLobby(true);
+        } else if (inputArray[0].equals("2")) {
+            Client.getInstance().getClientController().createLobby(false);
+        } else {
+            System.out.println("Invalid input");
+        }
+    }
+
+    private static void loadGameRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
+            System.out.println("Invalid input");
+            return;
+        }
+        int choice;
+        try {
+            choice = Integer.parseInt(inputArray[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
+        if (choice < 0 || Client.getInstance().getView().getSavedGames().size() - 1 < choice) {
+            System.out.println("Invalid input");
+            return;
+        }
+        Client.getInstance().getClientController().loadGame(choice);
+    }
+
+    private static void createGameRequest(String[] inputArray) {
+        if (inputArray.length < 1 || inputArray.length > 2) {
             System.out.println("Invalid input");
             return;
         }
@@ -90,12 +130,12 @@ public class InputCLI {
         }
         if (inputArray.length == 2) {
             if (inputArray[1].equalsIgnoreCase("easyRules")) {
-                ClientController.createLobby(numPlayers, true);
-            } else{
+                Client.getInstance().getClientController().createGame(numPlayers, true);
+            } else {
                 System.out.println("Invalid input");
             }
         } else {
-            ClientController.createLobby(numPlayers);
+            Client.getInstance().getClientController().createGame(numPlayers, false);
         }
     }
 
@@ -104,7 +144,7 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        ClientController.joinLobby();
+        Client.getInstance().getClientController().joinLobby();
     }
 
     private static void startGameRequest(String[] inputArray) {
@@ -112,31 +152,31 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        ClientController.startGame();
+        Client.getInstance().getClientController().startGame();
     }
 
     private static void pickTilesRequest(String[] inputArray) {
-        if (inputArray.length <2 || inputArray.length > 4) {
+        if (inputArray.length < 2 || inputArray.length > 4) {
             System.out.println("Invalid input");
             return;
         }
         List<List<Integer>> coordTiles = new ArrayList<>();
         for (int i = 1; i < inputArray.length; i++) {
-            if(inputArray[i].length() != 5 || inputArray[i].charAt(0) != '(' || inputArray[i].charAt(4) != ')' || inputArray[i].charAt(2) != ','){
+            if (inputArray[i].length() != 5 || inputArray[i].charAt(0) != '(' || inputArray[i].charAt(4) != ')' || inputArray[i].charAt(2) != ',') {
                 System.out.println("Invalid input");
                 return;
             }
             List<Integer> coord = new ArrayList<>();
             try {
-                coord.add(Integer.parseInt(inputArray[i].charAt(1)+""));
-                coord.add(Integer.parseInt(inputArray[i].charAt(3)+""));
+                coord.add(Integer.parseInt(inputArray[i].charAt(1) + ""));
+                coord.add(Integer.parseInt(inputArray[i].charAt(3) + ""));
                 coordTiles.add(coord);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input");
                 return;
             }
         }
-        ClientController.pickTiles(coordTiles);
+        Client.getInstance().getClientController().pickTiles(coordTiles);
     }
 
     private static void putTilesRequest(String[] inputArray) {
@@ -151,7 +191,7 @@ public class InputCLI {
             System.out.println("Invalid input");
             return;
         }
-        ClientController.putTiles(column);
+        Client.getInstance().getClientController().putTiles(column);
     }
 
     private static void sendChatMessageRequest(String[] inputArray) {
@@ -163,20 +203,25 @@ public class InputCLI {
         for (int i = 2; i < inputArray.length; i++) {
             message += inputArray[i] + " ";
         }
-        if(inputArray[1].equalsIgnoreCase("all")){
-            ClientController.sendChatMessage(message);
-        } else if(Client.getInstance().getView().getPlayers().contains(inputArray[1])){
-            ClientController.sendChatMessage(inputArray[1], message);
+        if (inputArray[1].equalsIgnoreCase("all")) {
+            Client.getInstance().getClientController().sendChatMessage(message);
+        } else if (Client.getInstance().getView().getPlayers().contains(inputArray[1])) {
+            Client.getInstance().getClientController().sendChatMessage(inputArray[1], message);
         } else {
             System.out.println("Invalid input");
         }
     }
 
-    private static void showGoalCardsRequest(String[] inputArray) {
-        if (inputArray.length != 1) {
-            System.out.println("Invalid input");
-            return;
+    private static boolean globalCommand(String[] command) {
+        switch (command[0].toLowerCase()) {
+            case "logout":
+                if (Client.getInstance().getClientState() == ClientStates.LOGIN) {
+                    System.out.println("Invalid client state");
+                    return true;
+                }
+                logoutRequest(command);
+                return true;
         }
-        // TODO: send show goal cards request
+        return false;
     }
 }
