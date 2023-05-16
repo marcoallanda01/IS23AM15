@@ -12,8 +12,11 @@ class ChatMessageTest {
 
     @Test
     void fromJson() {
-        ChatMessage cm = new ChatMessage(new Message(new Player("test"), "ciao"));
+        Message m = new Message(new Player("test"), "ciao");
+        ChatMessage cm = new ChatMessage(m);
         assertEquals(cm, cm);
+        ChatMessage cm2 = new ChatMessage("test", m.getDate(), "ciao");
+        assertEquals(cm, cm2);
         String json1 = "{\"name\":\"ChatMessage\", \"message\":\"ciao\"," +
                 "\"sender\":\"test\",\"date\":\"2023-05-01T11:32:45.246152\"}";
         String json2 = "{\"name\":\"ChatMessage\", \"message\":\"ciao\"," +

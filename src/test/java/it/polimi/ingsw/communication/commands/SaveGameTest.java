@@ -20,10 +20,10 @@ class SaveGameTest {
 
         assertFalse(new SaveGame("test", "gioco").equals(3));
 
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("kjdsvaskd"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"name\":\"SaveGame\"}"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"name\":\"SaveGame\", \"id\":\"test\"}"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"name\":\"SaveGame\", \"game\":\"gioco\"}"));
-        assertEquals(Optional.empty(),GetSavedGames.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
+        assertEquals(Optional.empty(),SaveGame.fromJson("kjdsvaskd"));
+        assertEquals(Optional.empty(),SaveGame.fromJson("{\"name\":\"SaveGame\"}"));
+        assertEquals(Optional.empty(),SaveGame.fromJson("{\"name\":\"SaveGame\", \"id\":\"test\"}"));
+        assertEquals(Optional.empty(),SaveGame.fromJson("{\"name\":\"SaveGame\", \"game\":\"gioco\"}"));
+        assertEquals(Optional.empty(),SaveGame.fromJson("{\"name\":\"BooleanResponse\", \"result\":true}"));
     }
 }

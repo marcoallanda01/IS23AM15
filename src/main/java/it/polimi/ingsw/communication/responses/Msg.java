@@ -9,9 +9,6 @@ import java.util.Optional;
 
 public abstract class Msg implements Serializable {
     protected String name;
-    public Msg(){
-        this.name = "Msg";
-    }
     public Msg(String name){
         this.name = name;
     }

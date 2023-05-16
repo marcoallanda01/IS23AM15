@@ -74,6 +74,7 @@ public class CommonCardsPointsManager extends CardsPointsManager implements Post
         this.cardsToTokens.putAll(cardsToTokens);
         this.playersToTokens.putAll(playersToTokens);
         this.playersToUnfulfilledCards.putAll(playersToUnfulfilledCards);
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -266,7 +267,7 @@ public class CommonCardsPointsManager extends CardsPointsManager implements Post
     }
 
     /**
-     *
+     * Set Property Change Support
      */
     @Override
     public void gsonPostProcess() {

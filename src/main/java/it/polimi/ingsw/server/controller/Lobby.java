@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.server.communication.ServerCommunication;
 import it.polimi.ingsw.server.model.ArrestGameException;
 import it.polimi.ingsw.server.model.Game;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -64,8 +65,11 @@ public class Lobby {
     private ControllerProvider controllerProvider;
     private boolean isPlaying;
 
-
-    public Lobby(String directory) {
+    /**
+     * Create a lobby
+     * @param directory directory where game are saved
+     */
+    public Lobby(@NotNull String directory) {
         this.pushNotificationController = new PushNotificationController(new ArrayList<>());
         this.numServers = 0;
         this.resets = 0;
@@ -94,6 +98,7 @@ public class Lobby {
     }
 
     /**
+     * Taste join of a player
      * @return an Optional containing a unique id to the first player to connect, else an empty Optional and addPlayer
      * can be called
      * @throws WaitLobbyException if the there is already a first player and the game is in creation
@@ -111,21 +116,34 @@ public class Lobby {
         return uniqueID;
     }
 
+    /**
+     * Get if first player is creating the game
+     * @return true if first player is creating the game
+     */
     public synchronized boolean getIsCreating(){
         return this.isCreating;
     }
 
+    /**
+     * Check if game has been loaded
+     * @return true if game created has been loaded from a  save
+     */
     public synchronized boolean isGameLoaded(){
         return loadingGame != null;
     }
 
     /**
+     * Get all saves
      * @return a Set of the saved games names
      */
     public synchronized Set<String> getSavedGames() {
         return this.games;
     }
 
+    /**
+     * Get the players' names from the loaded game
+     * @return list of names
+     */
     public synchronized List<String> getLoadedPlayersNames(){
         List<String> players = new ArrayList<>();
         if(loadingGame != null){
@@ -135,6 +153,14 @@ public class Lobby {
     }
 
 
+    /**
+     * First player join and creates a new game
+     * @param name future nickname in the game
+     * @param numPlayersGame players in the game. From 2 to 4
+     * @param easyRules set true for easy rule game mode
+     * @param id first player's id
+     * @return true if game creation went well
+     */
     public synchronized boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
         System.out.println("Before joinFirstPlayer: "+this);
         if (this.isCreating && this.loadingGame == null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
@@ -167,6 +193,8 @@ public class Lobby {
                 BufferedReader reader = new BufferedReader(new FileReader(this.directory + "/" + name + ".json"));
                 Game game = gson.fromJson(reader, Game.class);
                 this.loadingGame = game;
+                this.numPlayersGame = game.getPlayers().size();
+                this.easyRules = game.isFirstGame();
                 return new ArrayList<>(game.getPlayers());
             } catch (Exception e) {
                 throw new GameLoadException(name, e);
@@ -176,6 +204,12 @@ public class Lobby {
         }
     }
 
+    /**
+     * First player join a game previously loaded
+     * @param name future nickname in the game from those available
+     * @param id first player's id
+     * @return true if game creation went well
+     */
     public synchronized boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
         System.out.println("Before joinLoadedGameFirstPlayer: "+this);
         if (this.isCreating && this.loadingGame != null && this.firstPlayerId.equals(id)) {
@@ -189,7 +223,16 @@ public class Lobby {
         return false;
     }
 
-    public synchronized String addPlayer(String player) throws FullGameException, NicknameTakenException, NicknameException, FirstPlayerAbsentException {
+    /**
+     * Add a player to the lobby
+     * @param player player name
+     * @return id of the player that joined
+     * @throws FullGameException game is full / game is being played
+     * @throws NicknameTakenException this name was taken from another player
+     * @throws NicknameException if the game is loaded and the player do not take one of the available ones
+     * @throws FirstPlayerAbsentException if there is not a first player yet
+     */
+    public synchronized String addPlayer(@NotNull String player) throws FullGameException, NicknameTakenException, NicknameException, FirstPlayerAbsentException {
         if (this.firstPlayerId == null){
             throw new FirstPlayerAbsentException();
         }
@@ -220,13 +263,9 @@ public class Lobby {
         return id;
     }
 
-
-    private String getIdFromNameNotSync(String name) {
-        return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
-    }
-
     /**
-     * Remove a player from the lobby
+     * Remove a player from the lobby. If first player is removed while them are creating the game than the lobby is
+     * reset
      * @param playerId player's id
      * @return true if remove was successful, false if it wasn't or player didn't exist
      */
@@ -239,14 +278,28 @@ public class Lobby {
         }
     }
 
+    /**
+     * Check if first player is present
+     * @return true if first player is present
+     */
     public synchronized boolean isFistPlayerPresent() {
         return this.firstPlayerId != null;
     }
 
+    /**
+     * Return if the lobby could start
+     * @return true if the lobby is full
+     */
     private boolean isReadyToPlay() {
         return this.players.size() == this.numPlayersGame;
     }
 
+    /**
+     * Start a game
+     * @return ControllerProvider to manage the game
+     * @throws EmptyLobbyException lobby is not full
+     * @throws ArrestGameException something went wrong in the model
+     */
     public synchronized ControllerProvider startGame() throws EmptyLobbyException, ArrestGameException {
         System.out.println("Before startGame: " + this);
         if (!isReadyToPlay()) {
@@ -263,6 +316,7 @@ public class Lobby {
         } else {
             // TODO: brutto così, non si può non usare un costruttore per fare il load?
             System.out.println("Lobby startGame: starting loaded game");
+            this.isPlaying = true;
             this.currentGame.setGame(this.loadingGame);
         }
         System.out.println("Lobby startGame: creating controller provider...");
@@ -288,14 +342,27 @@ public class Lobby {
     }
 
 
+    /**
+     * Get player's id from player's name
+     * @param name player's name
+     * @return player's id . Returns null if there is not such player
+     */
     public synchronized String getIdFromName(String name) {
         return this.players.entrySet().stream().filter(entry -> Objects.equals(entry.getValue(), name)).map(Map.Entry::getKey).findFirst().orElse(null);
     }
 
+    /**
+     * Get player's name from player's id
+     * @param id player's id
+     * @return player's name . Returns null if there is not such player
+     */
     public synchronized String getNameFromId(String id){
         return this.players.get(id);
     }
 
+    /**
+     * Force a reset of the lobby also when the game is not ended
+     */
     private void forceReset(){
         this.firstPlayerId = null;
         this.numPlayersGame = -1;
@@ -325,7 +392,8 @@ public class Lobby {
      * Note MUST CALL when game is ended
      */
     public synchronized void reset(){
-        if(this.resets == 0) {
+        this.resets++;
+        if(this.resets == this.numServers) {
             this.directory = directory;
             this.firstPlayerId = null;
             this.numPlayersGame = -1;
@@ -348,9 +416,7 @@ public class Lobby {
                         .collect(Collectors.toSet());
             }
             this.currentGame = new Game(pushNotificationController);
-        }
-        this.resets++;
-        if(this.resets == this.numServers){
+
             this.resets = 0;
         }
     }
