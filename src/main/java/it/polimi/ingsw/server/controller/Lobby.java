@@ -231,7 +231,7 @@ public class Lobby {
      * @return true if remove was successful, false if it wasn't or player didn't exist
      */
     public synchronized boolean removePlayer(String playerId) {
-        if(playerId.equals(this.firstPlayerId) && this.isCreating){
+        if(Objects.equals(this.firstPlayerId, playerId) && this.isCreating){
             forceReset();
             return true;
         }else {

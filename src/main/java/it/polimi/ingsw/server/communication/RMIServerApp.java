@@ -8,7 +8,6 @@ import it.polimi.ingsw.server.controller.*;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
-import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -16,15 +15,16 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class RMIServerApp extends ResponseServer implements ServerCommunication, RMIServer {
+public class RMIServerApp extends UnicastRemoteObject implements ServerCommunication, RMIServer {
     private final Map<RMIClient, String> playersIds;
-
+    private final RMIRespondServer respondServer;
     private final int port;
 
-    public RMIServerApp(int port, Lobby lobby, String sharedLock){
-        super(lobby, sharedLock);
+    public RMIServerApp(int port, Lobby lobby, String sharedLock) throws RemoteException {
+        super();
         this.port = port;
         this.playersIds = Collections.synchronizedMap(new HashMap<>());
+        respondServer = new RMIRespondServer(lobby, sharedLock, playersIds);
     }
 
     /**
@@ -39,29 +39,6 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
     }
 
     /**
-     * Method for add a playing client
-     *
-     * @param client client socket
-     */
-    private synchronized void addPlayingClient(RMIClient client, String id) {
-        playersIds.put(client, id);
-    }
-
-    /**
-     * Method for close a client
-     *
-     * @param client client
-     */
-    private void closeClient(RMIClient client) {
-        this.playersIds.remove(client);
-        try {
-            UnicastRemoteObject.unexportObject(client, true);
-        } catch (IOException b) {
-            b.printStackTrace();
-        }
-    }
-
-    /**
      * HelloCommand to server
      * @param client RMIClient that says hello
      * @return Hello response
@@ -69,7 +46,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public Hello hello(RMIClient client) throws RemoteException {
-        return respondHello(new HelloCommand(), client);
+        return respondServer.respondHello(new HelloCommand(), client);
     }
 
     /**
@@ -98,7 +75,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
-        return respondJoinNewAsFirst(new JoinNewAsFirst(player, numPlayersGame, idFirstPlayer, easyRules), client);
+        return respondServer.respondJoinNewAsFirst(new JoinNewAsFirst(player, numPlayersGame, idFirstPlayer, easyRules), client);
     }
 
     /**
@@ -113,7 +90,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
     public JoinResponse join(RMIClient client, String player) throws RemoteException {
         JoinResponse jr;
         try {
-            jr = respondJoin(new Join(player), client);
+            jr = respondServer.respondJoin(new Join(player), client);
         } catch (FirstPlayerAbsentException e) {
             System.out.println(client+" Tried to join without a first player preset!");
             throw new RemoteException("Tried to join without a first player preset!");
@@ -129,7 +106,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public SavedGames getSavedGames() throws RemoteException {
-        return respondGetSavedGames(new GetSavedGames());
+        return respondServer.respondGetSavedGames(new GetSavedGames());
     }
 
     /**
@@ -142,7 +119,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public LoadGameResponse loadGame(String game, String idFirstPlayer) throws RemoteException {
-        return respondLoadGame(new LoadGame(idFirstPlayer, game));
+        return respondServer.respondLoadGame(new LoadGame(idFirstPlayer, game));
     }
 
     /**
@@ -153,7 +130,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public LoadedGamePlayers getLoadedGamePlayers() throws RemoteException {
-        return respondGetLoadedPlayers(new GetLoadedPlayers());
+        return respondServer.respondGetLoadedPlayers(new GetLoadedPlayers());
     }
 
     /**
@@ -167,7 +144,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public FirstJoinResponse joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
-        return respondJoinLoadedAsFirst(new JoinLoadedAsFirst(player,idFirstPlayer), client);
+        return respondServer.respondJoinLoadedAsFirst(new JoinLoadedAsFirst(player,idFirstPlayer), client);
     }
 
     /**
@@ -181,7 +158,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
         if(this.playersIds.containsValue(playerId)){
             this.playersIds.forEach((k, v) -> {
                 if(v.equals(playerId)){
-                    respondDisconnect(new Disconnect(playerId), k);
+                    respondServer.respondDisconnect(new Disconnect(playerId), k);
                 }
             });
         }
@@ -197,7 +174,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
     @Override
     public void reconnect(RMIClient client, String playerId) throws RemoteException {
         if(this.playersIds.containsValue(playerId)){
-            respondReconnect(new Reconnect(playerId), client);
+            respondServer.respondReconnect(new Reconnect(playerId), client);
         }
     }
 
@@ -210,7 +187,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) throws RemoteException {
-        respondPickTiles(new PickTilesCommand(playerId, tiles));
+        respondServer.respondPickTiles(new PickTilesCommand(playerId, tiles));
     }
 
     /**
@@ -223,7 +200,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException {
-        respondPutTiles(new PutTilesCommand(playerId,tiles, column));
+        respondServer.respondPutTiles(new PutTilesCommand(playerId,tiles, column));
     }
 
     /**
@@ -235,7 +212,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void saveGame(String playerId, String gameName) throws RemoteException {
-        respondSaveGame(new SaveGame(playerId, gameName));
+        respondServer.respondSaveGame(new SaveGame(playerId, gameName));
     }
 
     /**
@@ -248,7 +225,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void sendMessage(String playerId, String message, String receiverNickname) throws RemoteException {
-        respondSendMessage(new SendMessage(playerId, message, receiverNickname));
+        respondServer.respondSendMessage(new SendMessage(playerId, message, receiverNickname));
     }
 
     /**
@@ -260,7 +237,7 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void sendMessage(String playerId, String message) throws RemoteException {
-        respondSendMessage(new SendMessage(playerId, message));
+        respondServer.respondSendMessage(new SendMessage(playerId, message));
     }
 
     /**
@@ -274,56 +251,9 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
         if(this.playersIds.containsValue(playerId)){
             this.playersIds.forEach((k, v) -> {
                 if(v.equals(playerId)){
-                    respondPong(new Pong(playerId), k);
+                    respondServer.respondPong(new Pong(playerId), k);
                 }
             });
-        }
-    }
-
-    /**
-     * Close a client connection
-     *
-     * @param client client object. Cast to RMIClient
-     */
-    @Override
-    protected void closeClient(Object client) {
-        closeClient((RMIClient) client);
-    }
-
-    /**
-     * Get name of a playing client form his connection
-     *
-     * @param client client object. Cast to RMIClient
-     * @return client's nickname. Return null if client is not in game
-     */
-    @Override
-    protected String getPlayerNameFromClient(Object client) {
-        RMIClient rmic = (RMIClient)client;
-        return this.lobby.getNameFromId(this.playersIds.get(rmic));
-    }
-
-    /**
-     * Add a playing client
-     *
-     * @param client object (cast to RMIClient)
-     * @param id     player's id
-     */
-    @Override
-    protected void addPlayingClient(Object client, String id) {
-        addPlayingClient((RMIClient) client, id);
-    }
-
-    /**
-     * Ping a client to keep connection alive
-     *
-     * @param client object (Cast to RMIClient)
-     */
-    @Override
-    protected void ping(Object client) {
-        try {
-            ((RMIClient)client).notifyPing();
-        } catch (RemoteException e) {
-            System.err.println("RMI ping: Remote Exception thrown with client " + this.playersIds.get(client));
         }
     }
 
@@ -333,17 +263,8 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void gameSetUp() {
-        tryStartGame();
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyGame(new GameSetUp(
-                        playController.getPlayers(),
-                        new ArrayList<>(playController.getEndGameGoals())
-                ));
-            } catch (RemoteException e) {
-                System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
-            }
-        });
+        respondServer.tryStartGame();
+        respondServer.gameSetUp();
     }
 
     /**
@@ -516,10 +437,10 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
         });
         // Close all playing clients
         this.playersIds.forEach((key, value) -> {
-            closeClient(key);
+            respondServer.closeClient(key);
         });
         //reset
-        reset();
+        respondServer.reset();
     }
 
     /**
@@ -527,6 +448,6 @@ public class RMIServerApp extends ResponseServer implements ServerCommunication,
      */
     @Override
     public void handleLastPlayerDisconnection() {
-        reset();
+        respondServer.reset();
     }
 }
