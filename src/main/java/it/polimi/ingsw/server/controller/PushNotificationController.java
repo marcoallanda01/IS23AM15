@@ -16,6 +16,14 @@ public class PushNotificationController{
     private final List<ServerCommunication> servers;
 
     /**
+     * Create controller to witch register to receive notification about the game
+     * @param servers list of the servers
+     */
+    public PushNotificationController(@NotNull List<ServerCommunication> servers){
+        this.servers = servers;
+    }
+
+    /**
      * Register a server to witch notify changes in model
      * @param server server
      * @return true if server was added
@@ -35,14 +43,6 @@ public class PushNotificationController{
      */
     public boolean removeServer(ServerCommunication server){
         return servers.remove(server);
-    }
-
-    /**
-     * Create controller to witch register to receive notification about the game
-     * @param servers list of the servers
-     */
-    public PushNotificationController(@NotNull List<ServerCommunication> servers){
-        this.servers = servers;
     }
 
     /**

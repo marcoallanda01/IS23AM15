@@ -266,7 +266,7 @@ public class Lobby {
             this.currentGame.setGame(this.loadingGame);
         }
         System.out.println("Lobby startGame: creating controller provider...");
-        this.controllerProvider = new ControllerProvider(this.currentGame);
+        this.controllerProvider = new ControllerProvider(this.currentGame, this.directory);
         System.out.println("Lobby startGame: before return, controller provider created");
         return this.controllerProvider;
     }

@@ -267,13 +267,15 @@ public class GoalManager{
      *               updates the points of the player relative to every pointsManager that should be updated every turn
      */
     public void updatePointsTurn(Player player) {
-        Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) :
-                pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_TURN);
-        pointsManagers.stream().filter(toUpdate)
-                .forEach(pointsManager -> {
-                pointsManager.updatePoints(player);
-                player.setPoints(this.getPoints(player));
-        });
+        if(player != null) {
+            Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) :
+                    pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_TURN);
+            pointsManagers.stream().filter(toUpdate)
+                    .forEach(pointsManager -> {
+                        pointsManager.updatePoints(player);
+                        player.setPoints(this.getPoints(player));
+                    });
+        }
     }
 
     /**
@@ -281,7 +283,9 @@ public class GoalManager{
      *               updates the points of the player relative to every pointsManager
      */
     public void updatePointsEnd(Player player) {
-        pointsManagers.forEach(PointsManager -> PointsManager.updatePoints(player));
+        if(player != null){
+            pointsManagers.forEach(PointsManager -> PointsManager.updatePoints(player));
+        }
     }
 
     /**
@@ -303,7 +307,7 @@ public class GoalManager{
      * @param players list of the player among us calculate the winner
      * @return player with most points
      */
-    public String getWinner(List<Player> players){
+    public String getWinner(@NotNull List<Player> players){
         for(Player player : players){
             updatePointsEnd(player);
         }
