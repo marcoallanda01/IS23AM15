@@ -1,14 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.communication.ClientCommunication;
 import it.polimi.ingsw.client.communication.ClientNotificationListener;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
@@ -241,11 +239,24 @@ public class ClientController implements ClientNotificationListener {
     }
 
     public void pickTiles(List<List<Integer>> coordinates) {
-
+        Set<Tile> livingRoomBoard = view.getLivingRoomBoard();
+        Set<Tile> tiles = new HashSet<>();
+        for(List<Integer> coordinate : coordinates) {
+            int x = coordinate.get(0);
+            int y = coordinate.get(1);
+            for(Tile tile : livingRoomBoard) {
+                if(tile.getX() == x && tile.getY() == y) {
+                    tiles.add(tile);
+                }
+            }
+        }
+        view.setPickedTiles(tiles);
+        Client.getInstance().getClientCommunication().pickTiles(Client.getInstance().getId(), tiles);
     }
 
     public void putTiles(Integer column) {
-
+        List<TileType> tiles = view.getPickedTiles().stream().map(Tile::getType).collect(Collectors.toList());
+        Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), tiles, column);
     }
 
     public void sendChatMessage(String message) {

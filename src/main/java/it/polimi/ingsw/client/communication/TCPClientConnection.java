@@ -13,9 +13,9 @@ import java.util.concurrent.*;
  * receives and sends messages from and to the server
  */
 public class TCPClientConnection implements ClientConnection {
-    private ClientNotificationListener clientNotificationListener;
-    private String hostname;
-    private int port;
+    private final ClientNotificationListener clientNotificationListener;
+    private final String hostname;
+    private final int port;
     private Socket socket;
     private Object readLock, writeLock;
     private ExecutorService executorService;
@@ -105,7 +105,9 @@ public class TCPClientConnection implements ClientConnection {
                     // Create output stream for communication with the server
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
-                    System.out.println("Received from server: " + json);
+                    if(!json.contains("Ping")) {
+                        System.out.println("Received from server: " + json);
+                    }
                     executorService.submit(()->dispatchNotification(json));
                 }
                 return null;

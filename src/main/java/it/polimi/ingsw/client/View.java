@@ -10,6 +10,7 @@ public abstract class View {
     private List<String> lobbyPlayers = new ArrayList<>();
     private Map<String,Set<Tile>> bookShelves = new HashMap<>();
     private Set<Tile> livingRoomBoard = new HashSet<>();
+    private Set<Tile> pickedTiles = new HashSet<>();
     private int numberOfPlayers;
     private boolean easyRules;
     private Map<String,Map<String,String>> chat = new HashMap<>();
@@ -63,6 +64,14 @@ public abstract class View {
 
     public void setLivingRoomBoard(Set<Tile> livingRoomBoard) {
         this.livingRoomBoard = livingRoomBoard;
+    }
+
+    public Set<Tile> getPickedTiles() {
+        return pickedTiles;
+    }
+
+    public void setPickedTiles(Set<Tile> pickedTiles) {
+        this.pickedTiles = pickedTiles;
     }
 
     public int getNumberOfPlayers() {

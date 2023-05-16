@@ -75,6 +75,7 @@ public class CLIRenderer {
     }
 
     public static void printLivingRoomBoard(Set<Tile> board) {
+        System.out.println("◻️0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣");
         for (int n = 0; n < 9; n++) {
             printLivingRoomBoardLine(board, n);
             System.out.println();
@@ -92,6 +93,7 @@ public class CLIRenderer {
                 line.set(tile.getX(), tile);
             }
         }
+        System.out.print(n + "\uFE0F⃣");
         for (Tile tile : line) {
             if (tile != null) {
                 System.out.print(tile.getType().getSymbol());
@@ -102,7 +104,11 @@ public class CLIRenderer {
     }
 
     public static void printBookshelves(Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
-        for (int n = 0; n < 6; n++) {
+        for(int i = 0; i < bookshelves.values().size(); i++) {
+            System.out.print("0️⃣1️⃣2️⃣3️⃣4️⃣      ");
+        }
+        System.out.println();
+        for (int n = 5; n >= 0; n--) {
             for (Set<Tile> tiles : bookshelves.values()) {
                 printBookshelfLine(tiles, n);
                 System.out.print("      ");
@@ -113,7 +119,11 @@ public class CLIRenderer {
         for (String name : bookshelves.keySet()) {
             name = name.substring(0, Math.min(name.length(), 8));
             if (name.equals(currentPlayer)) {
-                System.out.print(CliColor.RED_BOLD_BRIGHT + name + CliColor.RESET);
+                if (name.equals(myName)) {
+                    System.out.print(CliColor.RED_UNDERLINED + name + CliColor.RESET);
+                } else {
+                    System.out.print(CliColor.RED_BOLD_BRIGHT + name + CliColor.RESET);
+                }
             } else {
                 if (name.equals(myName)) {
                     System.out.print(CliColor.WHITE_UNDERLINED_BRIGHT + name + CliColor.RESET);
