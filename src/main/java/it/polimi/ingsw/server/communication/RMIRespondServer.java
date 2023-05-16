@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.communication;
 
+import it.polimi.ingsw.communication.responses.GameSaved;
 import it.polimi.ingsw.communication.responses.GameSetUp;
+import it.polimi.ingsw.communication.responses.SavedGames;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.server.controller.Lobby;
 
@@ -43,6 +45,22 @@ public class RMIRespondServer extends ResponseServer{
         } catch (IOException b) {
             b.printStackTrace();
         }
+    }
+
+    /**
+     * Notify all clients that game have been saved
+     *
+     * @param name name of the save
+     */
+    @Override
+    protected void notifyGameSaved(String name) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyGameSaved(name);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyGameSaved: Remote Exception thrown with client " + value);
+            }
+        });
     }
 
     /**

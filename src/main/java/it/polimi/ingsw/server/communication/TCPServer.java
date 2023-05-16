@@ -332,6 +332,20 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     }
 
     /**
+     * Notify all clients that game have been saved
+     *
+     * @param name name of the save
+     */
+    @Override
+    protected void notifyGameSaved(String name) {
+        this.clientsInGame.forEach((c) -> {
+            sendToClient(c,
+                    new GameSaved(name).toJson()
+            );
+        });
+    }
+
+    /**
      * Close a client connection
      *
      * @param client client object. Client is cast to Socket
