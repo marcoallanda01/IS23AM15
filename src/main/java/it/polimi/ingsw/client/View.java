@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.util.*;
 
@@ -10,7 +11,7 @@ public abstract class View {
     private List<String> lobbyPlayers = new ArrayList<>();
     private Map<String,Set<Tile>> bookShelves = new HashMap<>();
     private Set<Tile> livingRoomBoard = new HashSet<>();
-    private Set<Tile> pickedTiles = new HashSet<>();
+    private List<TileType> pickedTiles = new ArrayList<>();
     private int numberOfPlayers;
     private boolean easyRules;
     private Map<String,Map<String,String>> chat = new HashMap<>();
@@ -66,11 +67,11 @@ public abstract class View {
         this.livingRoomBoard = livingRoomBoard;
     }
 
-    public Set<Tile> getPickedTiles() {
+    public List<TileType> getPickedTiles() {
         return pickedTiles;
     }
 
-    public void setPickedTiles(Set<Tile> pickedTiles) {
+    public void setPickedTiles(List<TileType> pickedTiles) {
         this.pickedTiles = pickedTiles;
     }
 

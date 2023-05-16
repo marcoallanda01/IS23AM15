@@ -50,6 +50,7 @@ public class CLI extends View {
         clearScreen();
         switch (Client.getInstance().getClientState()){
             case LOGIN:
+                CLIRenderer.printGame();
                 CLIRenderer.printLogin();
                 break;
             case CREATE_LOBBY:
@@ -68,6 +69,7 @@ public class CLI extends View {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
                 CLIRenderer.printBookshelves(this.getBookShelves(), this.getNickname(), this.getCurrentTurnPlayer());
+                CLIRenderer.printPickedTiles(this.getPickedTiles());
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
                 break;
             case END_GAME:

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,10 +105,6 @@ public class CLIRenderer {
     }
 
     public static void printBookshelves(Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
-        for(int i = 0; i < bookshelves.values().size(); i++) {
-            System.out.print("0️⃣1️⃣2️⃣3️⃣4️⃣      ");
-        }
-        System.out.println();
         for (int n = 5; n >= 0; n--) {
             for (Set<Tile> tiles : bookshelves.values()) {
                 printBookshelfLine(tiles, n);
@@ -115,6 +112,12 @@ public class CLIRenderer {
             }
             System.out.println();
         }
+
+        for (int i = 0; i < bookshelves.values().size(); i++) {
+            System.out.print("0️⃣1️⃣2️⃣3️⃣4️⃣      ");
+        }
+        System.out.println();
+
         System.out.print("  ");
         for (String name : bookshelves.keySet()) {
             name = name.substring(0, Math.min(name.length(), 8));
@@ -155,6 +158,21 @@ public class CLIRenderer {
                 System.out.print("\uD83D\uDD33");
             }
         }
+    }
+
+    public static void printPickedTiles(List<TileType> tiles) {
+        if (!tiles.isEmpty()) {
+            System.out.println("Picked tiles: ");
+            for (int i = 0; i < tiles.size(); i++) {
+                System.out.print(i + "\uFE0F⃣");
+            }
+            System.out.println();
+            for (TileType tile : tiles) {
+                System.out.print(tile.getSymbol() + " ");
+            }
+            System.out.println();
+        }
+
     }
 
     public static void printChat(Map<String, Map<String, String>> chat) {

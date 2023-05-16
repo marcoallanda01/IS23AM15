@@ -20,6 +20,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().setClientState(ClientStates.IN_GAME);
         view.setPlayers(gameSetUp.players);
         view.setCommonGoals(gameSetUp.goals);
+        view.setPersonalGoal(gameSetUp.personal);
         view.render();
     }
 
@@ -207,7 +208,10 @@ public class ClientController implements ClientNotificationListener {
 
     @Override
     public void notifyPickedTiles(String nickname, List<TileType> tiles) {
-
+        if(nickname.equals(view.getNickname())) {
+            view.setPickedTiles(tiles);
+            view.render();
+        }
     }
 
     public void login(String nickname) {
@@ -255,13 +259,17 @@ public class ClientController implements ClientNotificationListener {
                 }
             }
         }
-        view.setPickedTiles(tiles);
         Client.getInstance().getClientCommunication().pickTiles(Client.getInstance().getId(), tiles);
     }
 
-    public void putTiles(Integer column) {
-        List<TileType> tiles = view.getPickedTiles().stream().map(Tile::getType).collect(Collectors.toList());
+    public void putTiles(Integer column, List<Integer> order) {
+        List<TileType> tiles = view.getPickedTiles();
+        List<TileType> orderedTiles = new ArrayList<>();
+        for(Integer index : order) {
+            orderedTiles.add(tiles.get(index));
+        }
         Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), tiles, column);
+        view.setPickedTiles(new ArrayList<>());
     }
 
     public void sendChatMessage(String message) {
@@ -272,7 +280,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().sendMessage(Client.getInstance().getId(), message, receiver);
     }
 
-    public void saveGame() {
-        //Client.getInstance().getClientCommunication().saveGame();
+    public void saveGame(String gameName) {
+        Client.getInstance().getClientCommunication().saveGame(Client.getInstance().getId(), gameName);
     }
 }

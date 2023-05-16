@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -110,7 +111,7 @@ public class InputCLI {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        //Client.getInstance().getClientController().saveGame(inputArray[0]);
+        Client.getInstance().getClientController().saveGame(inputArray[0]);
     }
 
     private static void createGameRequest(String[] inputArray) {
@@ -159,14 +160,14 @@ public class InputCLI {
         }
         List<List<Integer>> coordTiles = new ArrayList<>();
         for (int i = 1; i < inputArray.length; i++) {
-            if (inputArray[i].length() != 5 || inputArray[i].charAt(0) != '(' || inputArray[i].charAt(4) != ')' || inputArray[i].charAt(2) != ',') {
+            if (inputArray[i].length() != 3 || inputArray[i].charAt(1) != ',') {
                 Client.getInstance().getView().showError("Invalid input");
                 return;
             }
             List<Integer> coord = new ArrayList<>();
             try {
-                coord.add(Integer.parseInt(inputArray[i].charAt(1) + ""));
-                coord.add(Integer.parseInt(inputArray[i].charAt(3) + ""));
+                coord.add(Integer.parseInt(String.valueOf(inputArray[i].charAt(0))));
+                coord.add(Integer.parseInt(String.valueOf(inputArray[i].charAt(2))));
                 coordTiles.add(coord);
             } catch (NumberFormatException e) {
                 Client.getInstance().getView().showError("Invalid input");
@@ -177,18 +178,27 @@ public class InputCLI {
     }
 
     private static void putTilesRequest(String[] inputArray) {
-        if (inputArray.length != 2) {
+        if (inputArray.length < 3 || inputArray.length != Client.getInstance().getView().getPickedTiles().size() + 2) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
         int column;
+        List<Integer> order = new ArrayList<>();
         try {
             column = Integer.parseInt(inputArray[1]);
+            for (int i = 2; i < inputArray.length; i++) {
+                order.add(Integer.parseInt(inputArray[i]));
+            }
         } catch (NumberFormatException e) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        Client.getInstance().getClientController().putTiles(column);
+        //if order contains duplicates or numbers out of range
+        if (order.size() != new HashSet<>(order).size() || order.stream().anyMatch(i -> i < 0 || i > Client.getInstance().getView().getPickedTiles().size() - 1)) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        Client.getInstance().getClientController().putTiles(column, order);
     }
 
     private static void sendChatMessageRequest(String[] inputArray) {
