@@ -20,26 +20,32 @@ class GameSetUpTest {
         p.add("p1");
         p.add("p2");
         p.add("p3");
+        String personal = "personal";
 
-        System.out.println(new GameSetUp(p, g).toJson());
+        System.out.println(new GameSetUp(p, g, personal).toJson());
         System.out.println("{\"name\":\"GameSetUp\"," +
-                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]}");
-        assertEquals(Optional.of(new GameSetUp(p, g)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]}"));
-        assertNotEquals(Optional.of(new GameSetUp(p, g)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Stai\",\"Come\"]}"));
-        assertEquals(Optional.of(new GameSetUp(p, new ArrayList<String>())),
+                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]," +
+                "\"personal\":\"personal\"}");
+        assertEquals(Optional.of(new GameSetUp(p, g, personal)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
+                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]," +
+                "\"personal\":\"personal\"}"));
+        assertNotEquals(Optional.of(new GameSetUp(p, g, personal)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
+                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Stai\",\"Come\"], " +
+                "\"personal\":\"notEqual\"}"));
+        assertEquals(Optional.of(new GameSetUp(p, new ArrayList<String>(), personal)),
                 GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                        "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[]}"));
-        assertEquals(Optional.of(new GameSetUp(new ArrayList<String>(), g)),
+                        "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[], \"personal\":\"personal\"}"));
+        assertEquals(Optional.of(new GameSetUp(new ArrayList<String>(), g, personal)),
                 GameSetUp.fromJson("{\"name\":\"GameSetUp\", \"players\":[]," +
-                        "\"goals\":[\"Ciao\",\"Come\",\"Stai\"]}"));
+                        "\"goals\":[\"Ciao\",\"Come\",\"Stai\"], \"personal\":\"personal\"}"));
 
 
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"players\":[\"p1\",\"p2\",\"p3\"]"));
+                "\"players\":[\"p1\",\"p2\",\"p3]\", \"personal\":\"personal\"}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"goals\":[\"Ciao\",\"Come\",\"Stai\"]}"));
+                "\"goals\":[\"Ciao\",\"Come\",\"Stai\"],\"personal\":\"personal\"}"));
+        assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
+                "\"players\":[\"p1\",\"p2\",\"p3]\",\"goals\":[\"Ciao\",\"Come\",\"Stai\"]}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("kjdsvaskd"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"answer\":true}"));

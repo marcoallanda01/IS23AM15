@@ -17,12 +17,14 @@ import java.util.Optional;
 public class GameSetUp extends Msg{
     public List<String> players;
     public List<String> goals;
+    public String personal;
 
 
-    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals){
+    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals, @NotNull String personal){
         super("GameSetUp");
         this.players = new ArrayList<>(players);
         this.goals = new ArrayList<>(goals);
+        this.personal = new String(personal);
     }
 
 
@@ -34,7 +36,7 @@ public class GameSetUp extends Msg{
         }catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"GameSetUp".equals(gsu.name) || gsu.players == null || gsu.goals == null){
+        if(!"GameSetUp".equals(gsu.name) || gsu.players == null || gsu.goals == null || gsu.personal == null){
             return Optional.empty();
         }
         return Optional.of(gsu);
@@ -45,6 +47,7 @@ public class GameSetUp extends Msg{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameSetUp gameSetUp = (GameSetUp) o;
-        return Objects.equals(players, gameSetUp.players) && Objects.equals(goals, gameSetUp.goals);
+        return Objects.equals(players, gameSetUp.players) && Objects.equals(goals, gameSetUp.goals)
+                && Objects.equals(personal, gameSetUp.personal);
     }
 }

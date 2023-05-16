@@ -245,12 +245,14 @@ Client does not respond to notifications. The right delivery of it relies on the
 - Sending game set up.
 players = list of strings of players' names ordered by turn
 goals = list of strings of common goals' name
+personal = list of personal cards
 Other setting as boards, and considering loaded game settings as bookshelf and points, are sent using the others
 notifications
 
 {"name":"GameSetUp",
 "players":["***", ***]                  -------------------------------------------------->
 "goals":["***", ***]
+"personal":["***", ***]
 }
 
 
@@ -308,7 +310,6 @@ It's the client turn if he reads his name
 
 
 - Saved game notification
-The connection is closed
 game = name of the save
 
 {"name":"GameSaved"

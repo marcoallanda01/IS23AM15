@@ -1,10 +1,9 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.communication.responses.GameSaved;
 import it.polimi.ingsw.communication.responses.GameSetUp;
-import it.polimi.ingsw.communication.responses.SavedGames;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.server.controller.Lobby;
+import it.polimi.ingsw.server.model.PlayerNotFoundException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -110,16 +109,24 @@ public class RMIRespondServer extends ResponseServer{
         }
     }
 
+    /**
+     * Send one GameSetUp object to every player
+     */
     protected void gameSetUp(){
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyGame(new GameSetUp(
-                        playController.getPlayers(),
-                        new ArrayList<>(playController.getEndGameGoals())
-                ));
-            } catch (RemoteException e) {
-                System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
-            }
-        });
+        synchronized (playLock) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyGame(new GameSetUp(
+                            playController.getPlayers(),
+                            new ArrayList<>(playController.getEndGameGoals()),
+                            playController.getPersonalGoalCard(getPlayerNameFromClient(key))
+                    ));
+                } catch (RemoteException e) {
+                    System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
+                } catch (PlayerNotFoundException e) {
+                    System.out.println("GameSetUp: This player do not exists " + getPlayerNameFromClient(key));
+                }
+            });
+        }
     }
 }

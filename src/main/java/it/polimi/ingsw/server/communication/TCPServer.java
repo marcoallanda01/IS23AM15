@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.model.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
@@ -383,13 +384,21 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void gameSetUp() {
         tryStartGame();
-        this.clientsInGame.forEach((c) -> {
-            sendToClient(c,
-                    new GameSetUp(
-                            playController.getPlayers(),
-                            new ArrayList<>(playController.getEndGameGoals())
-                    ).toJson());
-        });
+        synchronized (playLock){
+            this.clientsInGame.forEach((c) -> {
+                try {
+                    sendToClient(c,
+                            new GameSetUp(
+                                    playController.getPlayers(),
+                                    new ArrayList<>(playController.getEndGameGoals()),
+                                    playController.getPersonalGoalCard(getPlayerNameFromClient(c))
+                            ).toJson()
+                    );
+                } catch (PlayerNotFoundException e) {
+                    System.out.println("GameSetUp: This player do not exists " + getPlayerNameFromClient(c));
+                }
+            });
+        }
     }
 
     /**
