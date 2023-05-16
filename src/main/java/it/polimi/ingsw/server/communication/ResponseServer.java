@@ -359,7 +359,7 @@ public abstract class ResponseServer{
     protected void respondPong(Pong pong, Object client){
         if(this.pingPongMap.get(client) != null){
             this.pingPongMap.put(client, true);
-            System.out.println("Pong received by "+pong.getId());
+            System.out.println("\u001B[94mPong received by "+pong.getId() +"\u001B[0m");
         }
     }
 
@@ -373,10 +373,11 @@ public abstract class ResponseServer{
             TimerTask PingTask = new TimerTask() {
                 public void run() {
                     Boolean responded = pingPongMap.get(client);
+                    System.out.println("\u001B[94mping pong:"+pingPongMap+"\u001B[0m");
                     if (responded == null) {
                         //If res is null means that client disconnected
                         this.cancel();
-                    } else if (!responded) {
+                    } else if (responded.equals(false)) {
                         disconnectPlayer(lobby.getIdFromName(getPlayerNameFromClient(client)), client);
                         this.cancel();
                     } else {

@@ -101,6 +101,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
             in.close();
             client.close();
         }catch (IOException b){
+            System.out.println("Socket was already closed:");
             b.printStackTrace();
         }
     }
@@ -309,6 +310,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 }
                 case "Pong" -> {
                     Optional<Pong> po = Pong.fromJson(json);
+                    System.out.println("\u001B[94mPong Optional received from "+client+"\u001B[0m");
                     if (po.isPresent()) {
                         respondPong(po.get(), client);
                         return true;

@@ -159,6 +159,7 @@ public class TestingView implements ClientNotificationListener {
     @Override
     public void notifyPing() {
         System.out.println("Ping received");
+        clientCommunication.pong(myId);
     }
 
     @Override
