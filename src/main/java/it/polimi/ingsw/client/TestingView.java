@@ -202,4 +202,9 @@ public class TestingView implements ClientNotificationListener {
     public void notifyError(String message) {
         System.out.println("Error received: " + message);
     }
+
+    @Override
+    public void notifyPickedTiles(String nickname, List<TileType> tiles) {
+        System.out.println("Player: " + nickname + ", Picked: " + tiles);
+    }
 }

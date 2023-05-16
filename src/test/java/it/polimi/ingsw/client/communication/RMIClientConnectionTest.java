@@ -156,6 +156,11 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
             public void notifyError(String message) {
 
             }
+
+            @Override
+            public void notifyPickedTiles(String nickname, List<TileType> tiles) {
+
+            }
         };
         rmiClientConnection = new RMIClientConnection("localhost", 1002, clientNotificationListener);
         rmiClientConnection.openConnection();

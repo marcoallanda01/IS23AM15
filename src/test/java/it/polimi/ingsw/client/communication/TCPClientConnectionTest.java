@@ -161,6 +161,11 @@ class TCPClientConnectionTest {
                 public void notifyError(String message) {
 
                 }
+
+                @Override
+                public void notifyPickedTiles(String nickname, List<TileType> tiles) {
+
+                }
             };
             tcpClientConnection = new TCPClientConnection("localhost", 1001, clientNotificationListener);
             tcpClientConnection.openConnection();

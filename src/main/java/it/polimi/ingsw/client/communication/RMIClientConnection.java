@@ -4,6 +4,7 @@ import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -117,6 +118,11 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
     @Override
     public void notifyError(String message) throws RemoteException {
         clientNotificationListener.notifyError(message);
+    }
+
+    @Override
+    public void notifyPickedTiles(String nickname, List<TileType> tiles) throws RemoteException {
+        clientNotificationListener.notifyPickedTiles(nickname, tiles);
     }
 
 

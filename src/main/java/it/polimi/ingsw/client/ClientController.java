@@ -205,6 +205,11 @@ public class ClientController implements ClientNotificationListener {
         view.showError(message);
     }
 
+    @Override
+    public void notifyPickedTiles(String nickname, List<TileType> tiles) {
+
+    }
+
     public void login(String nickname) {
         view.setNickname(nickname);
         Client.getInstance().getClientCommunication().hello();

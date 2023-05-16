@@ -2,6 +2,7 @@ package it.polimi.ingsw.communication.rmi;
 
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -25,4 +26,5 @@ public interface RMIClient extends Remote {
     void notifyPing() throws RemoteException;
     void notifyReconnection(String nickname) throws RemoteException;
     void notifyError(String message) throws RemoteException;
+    void notifyPickedTiles(String nickname, List<TileType> tiles) throws RemoteException;
 }

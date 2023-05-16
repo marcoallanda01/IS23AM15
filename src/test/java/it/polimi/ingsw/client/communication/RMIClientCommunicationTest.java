@@ -162,6 +162,11 @@ class RMIClientCommunicationTest extends UnicastRemoteObject implements RMIServe
             public synchronized void notifyError(String message) {
                 notificationsSentToTheListener.add(message);
             }
+
+            @Override
+            public void notifyPickedTiles(String nickname, List<TileType> tiles) {
+
+            }
         };
         rmiClientConnection = new RMIClientConnection("localhost", 1002, clientNotificationListener);
         rmiClientCommunication = new RMIClientCommunication(rmiClientConnection);

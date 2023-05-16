@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.communication;
 
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.util.List;
 import java.util.Map;
@@ -34,4 +35,5 @@ public interface ClientNotificationListener {
     void notifyJoinResponse(boolean result, String error, String id);
     void notifyLoadGameResponse(boolean result, String error);
     void notifyError(String message);
+    void notifyPickedTiles(String nickname, List<TileType> tiles);
 }
