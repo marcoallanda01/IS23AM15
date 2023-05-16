@@ -27,6 +27,7 @@ public class PersonalCardsPointsManager extends CardsPointsManager {
      * @param player the player to update
      */
     public void updatePoints(Player player) {
+        if (!canBeUpdated(player)) return;
         Integer newPoints = this.playersToCards.get(player).getPatternFunction().apply(player.getBookShelf().getState());
         this.playersToPoints.put(player, newPoints);
     }
@@ -45,5 +46,12 @@ public class PersonalCardsPointsManager extends CardsPointsManager {
     public Map<Player, Pattern> getPlayersToCards() {
         return playersToCards;
     }
-
+    /**
+     * @param player the player to check
+     * @return true if the player can be updated
+     */
+    protected boolean canBeUpdated(Player player) {
+        if(this.players.contains(player) && this.playersToCards.containsKey(player)) return true;
+        return false;
+    }
 }

@@ -26,6 +26,7 @@ public class CommonGoalsPointsManager extends PointsManager {
      * @param player the player to update
      */
     public void updatePoints(Player player) {
+        if (!canBeUpdated(player)) return;
         List<List<Optional<Tile>>> bookshelf = player.getBookShelf().getState();
         Integer newPoints = this.patterns.stream().map(pattern -> pattern.getPatternFunction().apply(bookshelf)).reduce(0, Integer::sum);
         this.playersToPoints.put(player, newPoints);
@@ -33,5 +34,13 @@ public class CommonGoalsPointsManager extends PointsManager {
 
     public Set<Pattern> getPatterns() {
         return new HashSet<>(this.patterns);
+    }
+    /**
+     * @param player the player to check
+     * @return true if the player can be updated
+     */
+    protected boolean canBeUpdated(Player player) {
+        if(this.players.contains(player)) return true;
+        return false;
     }
 }

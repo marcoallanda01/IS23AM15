@@ -39,13 +39,15 @@ public abstract class PointsManager {
      */
     public UpdateRule getUpdateRule() { return updateRule; }
 
-
-
     /**
      * Used for serialization
      */
     public Map<Player, Integer> getPlayersToPoints() {
         return playersToPoints;
     }
-
+    /**
+     * @param player the player to check
+     * @return true if the player can be updated
+     */
+    protected abstract boolean canBeUpdated(Player player);
 }

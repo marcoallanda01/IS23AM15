@@ -226,4 +226,13 @@ public class RMIClientCommunication implements ClientCommunication {
             throw new ClientCommunicationException();
         }
     }
+
+    @Override
+    public void saveGame(String playerId, String gameName) {
+        try {
+            rmiClientConnection.getServer().saveGame(playerId, gameName);
+        } catch (RemoteException e) {
+            throw new ClientCommunicationException();
+        }
+    }
 }

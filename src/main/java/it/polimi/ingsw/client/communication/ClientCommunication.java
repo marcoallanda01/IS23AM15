@@ -46,9 +46,7 @@ public interface ClientCommunication {
     public void pickTiles(String playerId, Set<Tile> tiles);
     public void putTiles(String playerId, List<TileType> tiles, int column);
     public void sendMessage(String playerId, String message, String receiverNickname);
-
     void sendMessage(String playerId, String message);
-
     public void pong(String playerId);
-
+    public void saveGame(String playerId, String gameName);
 }

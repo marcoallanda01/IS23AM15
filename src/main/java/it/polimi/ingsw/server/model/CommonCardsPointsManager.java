@@ -139,6 +139,7 @@ public class CommonCardsPointsManager extends CardsPointsManager implements Post
      * @param player the player to update
      */
     public void updatePoints(Player player) {
+        if (!this.canBeUpdated(player)) return;
         update(player);
         Integer newPoints = this.getPlayersToTokens().get(player).stream().reduce(0, Integer::sum);
         this.playersToPoints.put(player, newPoints);
@@ -194,7 +195,14 @@ public class CommonCardsPointsManager extends CardsPointsManager implements Post
     private Consumer<Pattern> moveTokenFromCardToPlayer(Player player) {
         return (card) -> playersToTokens.get(player).add(cardsToTokens.get(card).pop());
     }
-
+    /**
+     * @param player the player to check
+     * @return true if the player can be updated
+     */
+    protected boolean canBeUpdated(Player player) {
+        if(this.players.contains(player) && this.playersToTokens.containsKey(player) && this.playersToUnfulfilledCards.containsKey(player)) return true;
+        return false;
+    }
     // good for now, might want to clone and/or send a simplified version of these objects for security reasons
 
     /**

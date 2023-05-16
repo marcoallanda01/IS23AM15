@@ -125,4 +125,9 @@ public class TCPClientCommunication implements ClientCommunication {
         tcpClientConnection.sendToServer((new Pong(playerId)).toJson());
     }
 
+    @Override
+    public void saveGame(String playerId, String gameName) {
+        tcpClientConnection.sendToServer((new SaveGame(playerId, gameName)).toJson());
+    }
+
 }
