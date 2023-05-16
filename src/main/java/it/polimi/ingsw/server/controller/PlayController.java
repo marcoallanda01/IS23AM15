@@ -120,14 +120,6 @@ public class PlayController {
     }
 
     /**
-     * Check if there is a winner
-     * @return true if there is a winner
-     */
-    public synchronized boolean isWinnerPresent() {
-        return game.getWinner() != null;
-    }
-
-    /**
      * Get winner name if present
      * @return winner name; if winner is not present null
      */
