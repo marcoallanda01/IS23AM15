@@ -9,9 +9,9 @@ public class ControllerProvider {
     private final ChatController chatController;
     private final PlayController playController;
 
-    public ControllerProvider(Game game) {
+    public ControllerProvider(Game game, String directory) {
         this.chatController = new ChatController(game);
-        this.playController = new PlayController(game, "saves");
+        this.playController = new PlayController(game, directory);
     }
 
     public ChatController getChatController() {

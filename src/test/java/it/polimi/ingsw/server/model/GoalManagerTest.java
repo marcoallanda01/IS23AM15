@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GoalManagerTest {
     GoalManager goalManager;
@@ -24,6 +23,8 @@ class GoalManagerTest {
 
     @Test
     void updatePointsTurn() {
+        goalManager.updatePointsTurn(null);
+        goalManager.updatePointsTurn(new Player("altro"));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -39,13 +40,16 @@ class GoalManagerTest {
 
     @Test
     void updatePointsEnd() {
+        goalManager.updatePointsEnd(null);
+        //TODO:check if the player exixsts
+        goalManager.updatePointsEnd(new Player("altro"));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
         tiles.add(new Tile(-1, -1, TileType.CAT));
         tiles.add(new Tile(-1, -1, TileType.CAT));
         players.get(1).insertTiles(tiles, 1);
         goalManager.updatePointsEnd(players.get(1));
-        assertEquals(2, goalManager.getPoints(players.get(1)));
+        assertTrue(goalManager.getPoints(players.get(1)) >= 2);
         List<Tile> tiles2 = new ArrayList<>();
         tiles2.add(new Tile(-1, -1, TileType.CAT));
         tiles2.add(new Tile(-1, -1, TileType.CAT));
@@ -58,23 +62,46 @@ class GoalManagerTest {
         players.get(1).insertTiles(tiles3, 4);
         goalManager.updatePointsEnd(players.get(1));
         assertNotEquals(2, goalManager.getPoints(players.get(1)));
-        assertEquals(10, goalManager.getPoints(players.get(1)));
+        //assertEquals(10, goalManager.getPoints(players.get(1))); TODO: varia
+        //
+        // in base ai goal che capitano
     }
 
     @Test
     void getPoints() {
+        assertEquals(0, goalManager.getPoints(players.get(1)));
+    }
+
+    @Test
+    void getWinner(){
+        assertEquals(players.get(0).getUserName(), goalManager.getWinner(players));
+        List<Tile> tiles = new ArrayList<>();
+        tiles.add(new Tile(-1, -1, TileType.CAT));
+        tiles.add(new Tile(-1, -1, TileType.CAT));
+        tiles.add(new Tile(-1, -1, TileType.CAT));
+        players.get(1).insertTiles(tiles, 1);
+        assertEquals(players.get(1).getUserName(), goalManager.getWinner(players));
     }
 
     @Test
     void getCommonCardsToTokens() {
+        System.out.println(goalManager.getCommonCardsToTokens());
     }
 
     @Test
     void getTokens() {
+        System.out.println(goalManager.getTokens(players.get(1)));
     }
 
     @Test
     void getUnfulfilledCommonCards() {
+        System.out.println(goalManager.getTokens(players.get(1)));
+        List<Tile> tiles = new ArrayList<>();
+        tiles.add(new Tile(-1, -1, TileType.CAT));
+        tiles.add(new Tile(-1, -1, TileType.CAT));
+        tiles.add(new Tile(-1, -1, TileType.CAT));
+        players.get(1).insertTiles(tiles, 1);
+        System.out.println(goalManager.getTokens(players.get(1)));
     }
 
     @Test
