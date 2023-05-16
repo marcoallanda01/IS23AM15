@@ -49,6 +49,13 @@ class BookShelfUpdateTest {
                 "{\"x\":3,\"y\":1,\"type\":\"TROPHY\"}" +
                 "]}"));
 
+        assertEquals(Optional.empty(), BookShelfUpdate.fromJson("{\"name\":\"BookShelfUpdate\"," +
+                "\"tiles\":[" +
+                "{\"x\":3,\"y\":4,\"type\":\"BOOK\"}," +
+                "{\"x\":4,\"y\":1,\"type\":\"CAT\"}," +
+                "{\"x\":3,\"y\":1,\"type\":\"TROPHY\"}" +
+                "]}"));
+
         assertNotEquals(Optional.of(bsu), BookShelfUpdate.fromJson("{\"name\":\"BookShelfUpdate\"," +
                 "\"player\":\"test\"," +
                 "\"tiles\":[" +
