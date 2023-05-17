@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.server.communication.ServerCommunication;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -140,5 +141,14 @@ public class PushNotificationController{
      */
     public void notifyLastPlayerDisconnection(){
         servers.forEach(ServerCommunication::handleLastPlayerDisconnection);
+    }
+
+    /**
+     * Notify servers tiles picked from a player
+     * @param player player's name who picked
+     * @param tiles list of picked tiles
+     */
+    public void notifyPickedTiles(String player, List<TileType> tiles){
+        servers.forEach((s) -> s.notifyPickedTiles(player, tiles));
     }
 }

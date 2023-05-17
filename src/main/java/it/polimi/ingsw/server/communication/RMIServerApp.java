@@ -445,6 +445,23 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     }
 
     /**
+     * Send notification of tiles picked to all players
+     *
+     * @param player player's name who picked
+     * @param tiles  list of picked tiles
+     */
+    @Override
+    public void notifyPickedTiles(String player, List<TileType> tiles) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyPickedTiles(player, tiles);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyPickedTiles: Remote Exception thrown with client "+value);
+            }
+        });
+    }
+
+    /**
      * Handle the disconnection of the last player terminating the game
      */
     @Override

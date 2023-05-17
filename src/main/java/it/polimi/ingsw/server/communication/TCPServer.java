@@ -4,6 +4,7 @@ import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
 import it.polimi.ingsw.server.controller.exceptions.FirstPlayerAbsentException;
+import it.polimi.ingsw.server.model.TileType;
 import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -536,6 +537,19 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         this.clientsInGame.forEach(this::closeClient);
         // Reset lobby
         reset();
+    }
+
+    /**
+     * Send notification of tiles picked to all players
+     *
+     * @param player player's name who picked
+     * @param tiles  list of picked tiles
+     */
+    @Override
+    public void notifyPickedTiles(String player, List<TileType> tiles) {
+        this.clientsInGame.forEach(c->{
+            sendToClient(c, new TilesPicked(player, tiles).toJson());
+        });
     }
 
     /**

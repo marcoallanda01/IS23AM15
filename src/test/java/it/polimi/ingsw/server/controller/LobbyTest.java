@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.communication.ServerCommunication;
 import it.polimi.ingsw.server.controller.exceptions.*;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -129,6 +130,17 @@ class LobbyTest {
          */
         @Override
         public void notifyWinner(String playerName) {
+
+        }
+
+        /**
+         * Send notification of tiles picked to all players
+         *
+         * @param player player's name who picked
+         * @param tiles  list of picked tiles
+         */
+        @Override
+        public void notifyPickedTiles(String player, List<TileType> tiles) {
 
         }
 
@@ -483,131 +495,6 @@ class LobbyTest {
         for(String p : playersLoaded){
             lobby.addPlayer(p);
             System.out.println(p);
-        }
-        class ServerCommunicationInstance implements ServerCommunication{
-
-            /**
-             * Send one GameSetUp object to every player
-             */
-            @Override
-            public void gameSetUp() {
-
-            }
-
-            /**
-             * If in game, function notifies the disconnection of a player to all the others
-             *
-             * @param playerName player that disconnect
-             */
-            @Override
-            public void notifyDisconnection(String playerName) {
-
-            }
-
-            /**
-             * Notify to all clients that a player reconnected
-             *
-             * @param playerName name of the player who reconnected
-             */
-            @Override
-            public void notifyReconnection(String playerName) {
-
-            }
-
-            /**
-             * Send a message to all players
-             *
-             * @param sender  sender's name
-             * @param date    date of message creation
-             * @param message actual message to be sent
-             */
-            @Override
-            public void notifyMessage(String sender, String date, String message) {
-
-            }
-
-            /**
-             * Send a message to all players
-             *
-             * @param sender   sender's name
-             * @param date     date of message creation
-             * @param message  actual message to be sent
-             * @param receiver receiver's name
-             */
-            @Override
-            public void notifyMessage(String sender, String date, String message, String receiver) {
-
-            }
-
-            /**
-             * Notify change in the board to all clients in game
-             *
-             * @param tiles board
-             */
-            @Override
-            public void notifyChangeBoard(List<Tile> tiles) {
-
-            }
-
-            /**
-             * Notify to all clients change in player's bookshelf
-             *
-             * @param playerName player's name
-             * @param tiles      bookshelf
-             */
-            @Override
-            public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-
-            }
-
-            /**
-             * Notify change in point of a player to all clients
-             *
-             * @param playerName player's name
-             * @param points     new points
-             */
-            @Override
-            public void updatePlayerPoints(String playerName, int points) {
-
-            }
-
-            /**
-             * Notify to all player whom turn is
-             *
-             * @param playerName current player
-             */
-            @Override
-            public void notifyTurn(String playerName) {
-
-            }
-
-            /**
-             * Notify to all clients a change in common goals cards and tokens
-             *
-             * @param cardsAndTokens cards with associated tokens
-             */
-            @Override
-            public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-
-            }
-
-            /**
-             * Send notification of the winner to all players
-             *
-             * @param playerName name of the winner
-             */
-            @Override
-            public void notifyWinner(String playerName) {
-
-            }
-
-            /**
-             * Handle the disconnection of the last player terminating the game
-             */
-            @Override
-            public void handleLastPlayerDisconnection() {
-
-            }
         }
         ServerCommunication s1 = new ServerCommunicationInstance();
         ServerCommunication s2 = new ServerCommunicationInstance();

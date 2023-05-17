@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.listeners;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.turn.Turn;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.stream.Collectors;
 
 public class GameListener extends StandardListener implements PropertyChangeListener {
 
@@ -35,6 +38,13 @@ public class GameListener extends StandardListener implements PropertyChangeList
             String player = (String) evt.getNewValue();
             System.out.println("\u001B[33m"+"GameListener: last player " + player +" disconnected!" + "\u001B[0m");
             pnc.notifyLastPlayerDisconnection();
+        }
+        else if(proprietyName.equals("pickedTiles")){
+            Turn turn = (Turn) evt.getNewValue();
+            System.out.println("\u001B[33m"+"GameListener: player " + turn.getCurrentPlayer().getUserName() +
+                    " picked tiles " + turn.getPickedTiles() + "\u001B[0m");
+            pnc.notifyPickedTiles(turn.getCurrentPlayer().getUserName(),
+                    turn.getPickedTiles().stream().map(Tile::getType).collect(Collectors.toList()));
         }
         else{
             System.err.println("\u001B[33m"+"GameListener: propriety name "+proprietyName+" not known"+"\u001B[0m");

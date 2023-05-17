@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.LivingRoomBoard;
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Turn {
@@ -22,6 +23,7 @@ public class Turn {
         this.currentPlayer = player;
         this.board = board;
         this.state = new PickTilesState(this);
+        this.pickedTiles = null;
     }
 
     /**
@@ -89,6 +91,6 @@ public class Turn {
     }
 
     public List<Tile> getPickedTiles() {
-        return pickedTiles;
+        return pickedTiles == null ? null : new ArrayList<>(pickedTiles);
     }
 }
