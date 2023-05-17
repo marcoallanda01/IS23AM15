@@ -75,7 +75,8 @@ class LivingRoomBoardTest {
             }));
         }
         LivingRoomBoard board = new LivingRoomBoard(4);
-        for(int i = 0; i < 4; i++) { // test for bag empty
+        int i;
+        for(i = 0; i < 4; i++) { // test for bag empty
             try{
                 board.fillBoard();
                 board.getBoard().values().stream().flatMap(map -> map.values().stream()).forEach(tile -> {
@@ -87,10 +88,8 @@ class LivingRoomBoardTest {
                 assertTrue(e instanceof ArrestGameException);
                 break;
             }
-            if(i > 2){
-                fail("fillBoard() should throw IllegalStateException");
-            }
         }
+        assertFalse(i > 2);
     }
 
     @Test
