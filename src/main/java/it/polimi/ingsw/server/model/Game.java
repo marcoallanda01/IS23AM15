@@ -99,8 +99,8 @@ public class Game{
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
-        //Notify picked tiles if turn is in picked tiles
-        if(this.currentTurn.getState().getClass() == PickTilesState.class){
+        //Notify picked tiles if turn is in put tiles (state next pickTiles)
+        if(this.currentTurn.getState().getClass() == PutTilesState.class && this.currentTurn.getPickedTiles() != null){
             GameChangeSupport.firePropertyChange("pickedTiles",
                     null,
                     new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
