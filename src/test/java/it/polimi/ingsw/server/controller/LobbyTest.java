@@ -13,6 +13,132 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LobbyTest {
+
+    class ServerCommunicationInstance implements ServerCommunication{
+
+        /**
+         * Send one GameSetUp object to every player
+         */
+        @Override
+        public void gameSetUp() {
+
+        }
+
+        /**
+         * If in game, function notifies the disconnection of a player to all the others
+         *
+         * @param playerName player that disconnect
+         */
+        @Override
+        public void notifyDisconnection(String playerName) {
+
+        }
+
+        /**
+         * Notify to all clients that a player reconnected
+         *
+         * @param playerName name of the player who reconnected
+         */
+        @Override
+        public void notifyReconnection(String playerName) {
+
+        }
+
+        /**
+         * Send a message to all players
+         *
+         * @param sender  sender's name
+         * @param date    date of message creation
+         * @param message actual message to be sent
+         */
+        @Override
+        public void notifyMessage(String sender, String date, String message) {
+
+        }
+
+        /**
+         * Send a message to all players
+         *
+         * @param sender   sender's name
+         * @param date     date of message creation
+         * @param message  actual message to be sent
+         * @param receiver receiver's name
+         */
+        @Override
+        public void notifyMessage(String sender, String date, String message, String receiver) {
+
+        }
+
+        /**
+         * Notify change in the board to all clients in game
+         *
+         * @param tiles board
+         */
+        @Override
+        public void notifyChangeBoard(List<Tile> tiles) {
+
+        }
+
+        /**
+         * Notify to all clients change in player's bookshelf
+         *
+         * @param playerName player's name
+         * @param tiles      bookshelf
+         */
+        @Override
+        public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
+
+        }
+
+        /**
+         * Notify change in point of a player to all clients
+         *
+         * @param playerName player's name
+         * @param points     new points
+         */
+        @Override
+        public void updatePlayerPoints(String playerName, int points) {
+
+        }
+
+        /**
+         * Notify to all player whom turn is
+         *
+         * @param playerName current player
+         */
+        @Override
+        public void notifyTurn(String playerName) {
+
+        }
+
+        /**
+         * Notify to all clients a change in common goals cards and tokens
+         *
+         * @param cardsAndTokens cards with associated tokens
+         */
+        @Override
+        public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
+
+        }
+
+        /**
+         * Send notification of the winner to all players
+         *
+         * @param playerName name of the winner
+         */
+        @Override
+        public void notifyWinner(String playerName) {
+
+        }
+
+        /**
+         * Handle the disconnection of the last player terminating the game
+         */
+        @Override
+        public void handleLastPlayerDisconnection() {
+
+        }
+    }
     Lobby lobby;
     @BeforeEach
     void initialize(){
@@ -289,189 +415,9 @@ class LobbyTest {
 
     @Test
     public void registerRemoveServers(){
-        ServerCommunication s1 = new ServerCommunication() {
-            @Override
-            public void gameSetUp() {
-
-            }
-
-            @Override
-            public void notifyDisconnection(String playerName) {
-
-            }
-
-            @Override
-            public void notifyReconnection(String playerName) {
-
-            }
-
-            @Override
-            public void notifyMessage(String sender, String date, String message) {
-
-            }
-
-            @Override
-            public void notifyMessage(String sender, String date, String message, String receiver) {
-
-            }
-
-            @Override
-            public void notifyChangeBoard(List<Tile> tiles) {
-
-            }
-
-            @Override
-            public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-
-            }
-
-            @Override
-            public void updatePlayerPoints(String playerName, int points) {
-
-            }
-
-            @Override
-            public void notifyTurn(String playerName) {
-
-            }
-
-            @Override
-            public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-
-            }
-
-            @Override
-            public void notifyWinner(String playerName) {
-
-            }
-
-            @Override
-            public void handleLastPlayerDisconnection() {
-
-            }
-        };
-        ServerCommunication s2 = new ServerCommunication() {
-            @Override
-            public void gameSetUp() {
-
-            }
-
-            @Override
-            public void notifyDisconnection(String playerName) {
-
-            }
-
-            @Override
-            public void notifyReconnection(String playerName) {
-
-            }
-
-            @Override
-            public void notifyMessage(String sender, String date, String message) {
-
-            }
-
-            @Override
-            public void notifyMessage(String sender, String date, String message, String receiver) {
-
-            }
-
-            @Override
-            public void notifyChangeBoard(List<Tile> tiles) {
-
-            }
-
-            @Override
-            public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-
-            }
-
-            @Override
-            public void updatePlayerPoints(String playerName, int points) {
-
-            }
-
-            @Override
-            public void notifyTurn(String playerName) {
-
-            }
-
-            @Override
-            public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-
-            }
-
-            @Override
-            public void notifyWinner(String playerName) {
-
-            }
-
-            @Override
-            public void handleLastPlayerDisconnection() {
-
-            }
-        };
-        ServerCommunication s3 = new ServerCommunication() {
-            @Override
-            public void gameSetUp() {
-
-            }
-
-            @Override
-            public void notifyDisconnection(String playerName) {
-
-            }
-
-            @Override
-            public void notifyReconnection(String playerName) {
-
-            }
-
-            @Override
-            public void notifyMessage(String sender, String date, String message) {
-
-            }
-
-            @Override
-            public void notifyMessage(String sender, String date, String message, String receiver) {
-
-            }
-
-            @Override
-            public void notifyChangeBoard(List<Tile> tiles) {
-
-            }
-
-            @Override
-            public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-
-            }
-
-            @Override
-            public void updatePlayerPoints(String playerName, int points) {
-
-            }
-
-            @Override
-            public void notifyTurn(String playerName) {
-
-            }
-
-            @Override
-            public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-
-            }
-
-            @Override
-            public void notifyWinner(String playerName) {
-
-            }
-
-            @Override
-            public void handleLastPlayerDisconnection() {
-
-            }
-        };
+        ServerCommunication s1 = new ServerCommunicationInstance();
+        ServerCommunication s2 = new ServerCommunicationInstance();
+        ServerCommunication s3 = new ServerCommunicationInstance();
 
         //Print 1 server registered
         lobby.registerServer(s1);
@@ -492,131 +438,6 @@ class LobbyTest {
         for(String p : playersLoaded){
             lobby.addPlayer(p);
             System.out.println(p);
-        }
-        class ServerCommunicationInstance implements ServerCommunication{
-
-            /**
-             * Send one GameSetUp object to every player
-             */
-            @Override
-            public void gameSetUp() {
-
-            }
-
-            /**
-             * If in game, function notifies the disconnection of a player to all the others
-             *
-             * @param playerName player that disconnect
-             */
-            @Override
-            public void notifyDisconnection(String playerName) {
-
-            }
-
-            /**
-             * Notify to all clients that a player reconnected
-             *
-             * @param playerName name of the player who reconnected
-             */
-            @Override
-            public void notifyReconnection(String playerName) {
-
-            }
-
-            /**
-             * Send a message to all players
-             *
-             * @param sender  sender's name
-             * @param date    date of message creation
-             * @param message actual message to be sent
-             */
-            @Override
-            public void notifyMessage(String sender, String date, String message) {
-
-            }
-
-            /**
-             * Send a message to all players
-             *
-             * @param sender   sender's name
-             * @param date     date of message creation
-             * @param message  actual message to be sent
-             * @param receiver receiver's name
-             */
-            @Override
-            public void notifyMessage(String sender, String date, String message, String receiver) {
-
-            }
-
-            /**
-             * Notify change in the board to all clients in game
-             *
-             * @param tiles board
-             */
-            @Override
-            public void notifyChangeBoard(List<Tile> tiles) {
-
-            }
-
-            /**
-             * Notify to all clients change in player's bookshelf
-             *
-             * @param playerName player's name
-             * @param tiles      bookshelf
-             */
-            @Override
-            public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-
-            }
-
-            /**
-             * Notify change in point of a player to all clients
-             *
-             * @param playerName player's name
-             * @param points     new points
-             */
-            @Override
-            public void updatePlayerPoints(String playerName, int points) {
-
-            }
-
-            /**
-             * Notify to all player whom turn is
-             *
-             * @param playerName current player
-             */
-            @Override
-            public void notifyTurn(String playerName) {
-
-            }
-
-            /**
-             * Notify to all clients a change in common goals cards and tokens
-             *
-             * @param cardsAndTokens cards with associated tokens
-             */
-            @Override
-            public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-
-            }
-
-            /**
-             * Send notification of the winner to all players
-             *
-             * @param playerName name of the winner
-             */
-            @Override
-            public void notifyWinner(String playerName) {
-
-            }
-
-            /**
-             * Handle the disconnection of the last player terminating the game
-             */
-            @Override
-            public void handleLastPlayerDisconnection() {
-
-            }
         }
         ServerCommunication s1 = new ServerCommunicationInstance();
         ServerCommunication s2 = new ServerCommunicationInstance();

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-public enum TileType {
+import java.io.Serializable;
+
+public enum TileType implements Serializable {
     CAT,
     BOOK,
     GAME,

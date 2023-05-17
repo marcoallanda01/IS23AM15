@@ -136,10 +136,12 @@ public class Game{
      * Method to notify listeners about turn changes
      */
     private void notifyListeners(){
-        this.GameChangeSupport.firePropertyChange("gameStarted", null,
-                this);
-        this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
-                this.currentTurn.getCurrentPlayer().getUserName());
+        if(this.GameChangeSupport != null) {
+            this.GameChangeSupport.firePropertyChange("gameStarted", null,
+                    this);
+            this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
+                    this.currentTurn.getCurrentPlayer().getUserName());
+        }
     }
 
     /**
