@@ -227,7 +227,7 @@ public class Game{
         return goalManager.getCommonGoals().stream().map(Pattern::getName).collect(Collectors.toSet());
     }
 
-    private Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
+    public Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
         try {
             return players.stream().filter(player -> player.getUserName().equals(nickname)).findAny().get();
         } catch (Exception e) {

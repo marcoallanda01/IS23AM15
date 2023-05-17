@@ -20,6 +20,8 @@ public class PutTilesState extends State{
      */
     @Override
     public boolean putTiles(List<Tile> tiles, int column) {
+        if(!this.turn.getPickedTiles().equals(tiles))
+            return false;
         return this.turn.getCurrentPlayer().insertTiles(tiles, column);
     }
 
