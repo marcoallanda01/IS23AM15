@@ -31,7 +31,7 @@ class BookShelfTest {
                 assertEquals(tile, bookShelf.getTile(i, j));
             }
         }
-        //System.out.println(bookShelf);
+        System.out.println(bookShelf);
     }
 
     @Test
@@ -81,10 +81,12 @@ class BookShelfTest {
         assertEquals(6, bookShelf.getMaxColumnSpace());
         bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 2);
         assertEquals(6, bookShelf.getMaxColumnSpace());
+        System.out.println(bookShelf);
         bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
         bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 1);
         bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 3);
         bookShelf.insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 4);
         assertEquals(3, bookShelf.getMaxColumnSpace());
+        System.out.println(bookShelf);
     }
 }

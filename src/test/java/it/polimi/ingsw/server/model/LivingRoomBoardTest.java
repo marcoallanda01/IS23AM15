@@ -36,21 +36,23 @@ class LivingRoomBoardTest {
     @Test
     void isToFill() {
         fillMask();
+        LivingRoomBoard board = null;
         for (int i = 0; i < 100; i++) {
-            LivingRoomBoard board = new LivingRoomBoard(4);
+            board = new LivingRoomBoard(4);
             board.fillBoard();
             //System.out.println("board = " + board);
+            LivingRoomBoard finalBoard = board;
             board.getBoard().forEach((row, map) -> map.forEach((col, tile) -> {
                 if (mask.get(row).get(col) != TileRule.BLOCK) {
                     if (Math.random() < 0.5)
-                        board.removeFromBoard(List.of(tile));
+                        finalBoard.removeFromBoard(List.of(tile));
                 }
             }));
             //System.out.println("board = " + board);
             //System.out.println("board.isToFill() = " + board.isToFill());
             assertFalse(board.isToFill());
         }
-
+        System.out.println("board = " + board);
     }
 
     @Test
@@ -113,7 +115,9 @@ class LivingRoomBoardTest {
     void checkPick() {
         fillMask();
         LivingRoomBoard board = new LivingRoomBoard(4);
+        System.out.println("board = " + board);
         board.fillBoard();
+        System.out.println("board = " + board);
         assertFalse(board.checkPick(List.of(board.getBoard().get(0).get(3), board.getBoard().get(1).get(3), board.getBoard().get(2).get(3))));
         assertTrue(board.checkPick(List.of(board.getBoard().get(0).get(3), board.getBoard().get(0).get(4))));
         assertFalse(board.checkPick(List.of(board.getBoard().get(0).get(3), board.getBoard().get(1).get(4))));
