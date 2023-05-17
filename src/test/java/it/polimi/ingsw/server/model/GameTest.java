@@ -43,21 +43,19 @@ class GameTest {
     }
 
     @Test
-    void sendMessage() {
+    void sendMessage() throws PlayerNotFoundException {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         Player p3 = new Player("p3");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName(), p3.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(playersName,false);
-        try {
-            game.sendMessage(p1.getUserName(), p2.getUserName(), "ciao p2");
-            game.sendMessage(p2.getUserName(), p1.getUserName(), "ciao p1");
-            game.sendMessage(p3.getUserName(), p1.getUserName(), "ciao p1");
-            game.sendMessage(p1.getUserName(), "ciao a tutti");
-        } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        }
+        game.sendMessage(p1.getUserName(), p2.getUserName(), "ciao p2");
+        game.sendMessage(p2.getUserName(), p1.getUserName(), "ciao p1");
+        game.sendMessage(p3.getUserName(), p1.getUserName(), "ciao p1");
+        assertThrows(PlayerNotFoundException.class, ()->game.sendMessage(p3.getUserName(), "nonPresente", "ciao p1"));
+        assertThrows(PlayerNotFoundException.class, ()->game.sendMessage("nonPresente",  p1.getUserName(), "ciao p1"));
+        game.sendMessage(p1.getUserName(), "ciao a tutti");
         assertEquals(game.getChat().getMessages(p1).size(), 3);
         assertEquals(game.getChat().getMessages(p2).size(), 2);
         assertEquals(game.getChat().getMessages(p3).size(), 1);
@@ -67,42 +65,29 @@ class GameTest {
     }
 
     @Test
-    void disconnectPlayer() {
+    void disconnectPlayer() throws PlayerNotFoundException {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(playersName,false);
         assertTrue(game.disconnectPlayer(p1.getUserName()));
-        try {
-            assertFalse(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
-            assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
-        } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertFalse(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
+        assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
     }
 
     @Test
-    void reconnectPlayer() {
+    void reconnectPlayer() throws PlayerNotFoundException {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(playersName,false);
         assertTrue(game.disconnectPlayer(p1.getUserName()));
-        try {
-            assertFalse(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
-            assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
-
-        } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertFalse(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
+        assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
         assertTrue(game.reconnectPlayer(p1.getUserName()));
-        try {
-            assertTrue(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
-            assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
-        } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertTrue(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
+        assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
     }
 }
