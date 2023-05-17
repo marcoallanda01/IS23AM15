@@ -22,6 +22,12 @@ public class PlayController {
         this.directory = directory;
     }
 
+    /**
+     * Perform pick tiles action in game
+     * @param tiles list of tiles to pick
+     * @param player player who is picking
+     * @return true if the pick was successful
+     */
     public synchronized boolean pickTiles(List<Tile> tiles, String player) {
         if(game.getCurrentPlayer().equals(player))
             return game.pickTiles(tiles);
@@ -29,14 +35,28 @@ public class PlayController {
             return false;
     }
 
+    /**
+     * Perform put tiles action in game
+     * @param tiles list of tiles to put in player's bookshelf
+     * @param column bookshelf column where to put the tiles
+     * @param player player who is performing the action
+     * @return true if the put was successful
+     */
     public synchronized boolean putTiles(List<Tile> tiles, int column, String player){
         if(game.getCurrentPlayer().equals(player))
             return game.putTiles(tiles, column);
         return false;
     }
 
+    /**
+     * Save the game
+     * @param name future name of the save
+     * @return true if it was successful
+     * @throws SaveException
+     * @throws IOException
+     */
     public synchronized boolean saveGame(String name) throws SaveException, IOException {
-        return saveGame(name, false);
+        return saveGame(name, false); //TODO: write  why exception are thrown
     }
 
     public synchronized boolean saveGame(String name, boolean overwrite) throws IOException, SaveException {
@@ -73,30 +93,68 @@ public class PlayController {
         return true;
     }
 
+    /**
+     * Get player's points
+     * @param nickname player's nickname
+     * @return points
+     * @throws PlayerNotFoundException if there is no player with such nickname
+     */
     public synchronized Integer getPoints(String nickname) throws PlayerNotFoundException {
         return game.getPoints(nickname);
     }
 
+    /**
+     * Get common goals carts with their tokens from game
+     * @return names of common goals carts with their tokens
+     */
     public synchronized Map<String, List<Integer>> getCommonGoalCardsToTokens() {
         return game.getCommonGoalCardsToTokens();
     }
 
+    /**
+     * Get end goals from game
+     * @return end game goals names
+     */
     public synchronized Set<String> getEndGameGoals() {
         return game.getEndGameGoals();
     }
 
+    /**
+     * Get common goals cards that player hasn't completed yet
+     * @param nickname player's nickname
+     * @return common goals cards list
+     * @throws PlayerNotFoundException if there is no player with such nickname
+     */
     public synchronized Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         return game.getUnfulfilledCommonGoalCards(nickname);
     }
 
+    /**
+     * Get common goals cards that player has completed
+     * @param nickname player's nickname
+     * @return common goals cards list
+     * @throws PlayerNotFoundException if there is no player with such nickname
+     */
     public synchronized Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         return game.getFulfilledCommonGoalCards(nickname);
     }
 
+    /**
+     * Get personal card of a player
+     * @param nickname player's nickname
+     * @return name of the personal card
+     * @throws PlayerNotFoundException if there is no player with such nickname
+     */
     public synchronized String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         return game.getPersonalGoalCard(nickname);
     }
 
+    /**
+     * Get tokens tha a player has gained
+     * @param nickname player's nickname
+     * @return list of tokens
+     * @throws PlayerNotFoundException if there is no player with such nickname
+     */
     public synchronized List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
         return game.getTokens(nickname);
     }
