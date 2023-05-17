@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.communication;
 
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,13 @@ public interface ServerCommunication {
      * @param playerName name of the winner
      */
     public void notifyWinner(String playerName);
+
+    /**
+     * Send notification of tiles picked to all players
+     * @param player player's name who picked
+     * @param tiles list of picked tiles
+     */
+    public void notifyPickedTiles(String player, List<TileType> tiles);
 
     /**
      * Handle the disconnection of the last player terminating the game
