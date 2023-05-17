@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.communication;
 
-import it.polimi.ingsw.server.model.Message;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.List;

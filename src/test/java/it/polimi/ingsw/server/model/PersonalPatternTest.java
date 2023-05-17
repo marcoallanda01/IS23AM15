@@ -1,9 +1,11 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException;
+import it.polimi.ingsw.server.model.managers.patterns.Pattern;
+import it.polimi.ingsw.server.model.managers.patterns.PersonalPattern;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

@@ -2,9 +2,9 @@ package it.polimi.ingsw.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.server.controller.GameLoadException;
-import it.polimi.ingsw.server.controller.GameNameException;
-import it.polimi.ingsw.server.controller.IllegalLobbyException;
+import it.polimi.ingsw.server.controller.exceptions.GameLoadException;
+import it.polimi.ingsw.server.controller.exceptions.GameNameException;
+import it.polimi.ingsw.server.controller.exceptions.IllegalLobbyException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

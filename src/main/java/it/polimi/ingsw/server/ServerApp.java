@@ -27,7 +27,7 @@ public class ServerApp {
         executorService.submit(serverTcp::listenForConnections);
 
         try {
-            RMIServerApp serverRMI = new RMIServerApp(7000, lobby, sharedLock);
+            RMIServerApp serverRMI = new RMIServerApp(7001, lobby, sharedLock);
             serverRMI.start();
             lobby.registerServer(serverRMI);
         } catch (AlreadyBoundException | RemoteException e) {

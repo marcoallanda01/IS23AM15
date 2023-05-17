@@ -1,6 +1,6 @@
 package it.polimi.ingsw.communication.responses;
 
-import it.polimi.ingsw.server.model.Message;
+import it.polimi.ingsw.server.model.chat.Message;
 import it.polimi.ingsw.server.model.Player;
 import org.junit.jupiter.api.Test;
 

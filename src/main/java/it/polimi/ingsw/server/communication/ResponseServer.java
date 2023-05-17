@@ -3,8 +3,9 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.server.controller.*;
-import it.polimi.ingsw.server.model.ArrestGameException;
-import it.polimi.ingsw.server.model.PlayerNotFoundException;
+import it.polimi.ingsw.server.controller.exceptions.*;
+import it.polimi.ingsw.server.model.exceptions.ArrestGameException;
+import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.Tile;
 
 import java.util.*;

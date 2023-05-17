@@ -2,6 +2,15 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
 import it.polimi.ingsw.server.listeners.GameListener;
+import it.polimi.ingsw.server.model.chat.Chat;
+import it.polimi.ingsw.server.model.chat.Message;
+import it.polimi.ingsw.server.model.exceptions.ArrestGameException;
+import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
+import it.polimi.ingsw.server.model.managers.GoalManager;
+import it.polimi.ingsw.server.model.managers.patterns.Pattern;
+import it.polimi.ingsw.server.model.turn.EndState;
+import it.polimi.ingsw.server.model.turn.PutTilesState;
+import it.polimi.ingsw.server.model.turn.Turn;
 import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
@@ -38,7 +47,7 @@ public class Game{
      * @param players list of players' names
      * @param isFirstGame easy rules game rule
      */
-    public void setGame(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException{
+    public void setGame(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
         int numberOfPlayers = players.size();

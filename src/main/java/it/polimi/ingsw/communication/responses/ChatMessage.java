@@ -2,7 +2,7 @@ package it.polimi.ingsw.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.server.model.Message;
+import it.polimi.ingsw.server.model.chat.Message;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

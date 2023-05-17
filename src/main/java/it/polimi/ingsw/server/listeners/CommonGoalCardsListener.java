@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.listeners;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
-import it.polimi.ingsw.server.model.Pattern;
+import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

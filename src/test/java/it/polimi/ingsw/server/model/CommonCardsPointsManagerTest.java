@@ -1,5 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException;
+import it.polimi.ingsw.server.model.managers.CommonCardsPointsManager;
+import it.polimi.ingsw.server.model.managers.patterns.Pattern;
+import it.polimi.ingsw.server.model.managers.patterns.SpecificPattern;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

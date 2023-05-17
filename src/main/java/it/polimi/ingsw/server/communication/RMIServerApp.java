@@ -5,6 +5,7 @@ import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.controller.exceptions.FirstPlayerAbsentException;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 

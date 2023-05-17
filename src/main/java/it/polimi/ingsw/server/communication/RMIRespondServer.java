@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.communication;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.server.controller.Lobby;
-import it.polimi.ingsw.server.model.PlayerNotFoundException;
+import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;

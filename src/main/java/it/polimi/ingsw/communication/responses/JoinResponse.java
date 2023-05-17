@@ -3,9 +3,9 @@ package it.polimi.ingsw.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.server.controller.NicknameException;
-import it.polimi.ingsw.server.controller.NicknameTakenException;
-import it.polimi.ingsw.server.controller.FullGameException;
+import it.polimi.ingsw.server.controller.exceptions.NicknameException;
+import it.polimi.ingsw.server.controller.exceptions.NicknameTakenException;
+import it.polimi.ingsw.server.controller.exceptions.FullGameException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.controller.serialization.PostProcessable;
 import it.polimi.ingsw.server.listeners.PlayerListener;
 import it.polimi.ingsw.server.listeners.StandardListenable;
 

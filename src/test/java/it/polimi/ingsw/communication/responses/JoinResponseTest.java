@@ -1,9 +1,8 @@
 package it.polimi.ingsw.communication.responses;
 
-import it.polimi.ingsw.communication.responses.JoinResponse;
-import it.polimi.ingsw.server.controller.FullGameException;
-import it.polimi.ingsw.server.controller.NicknameException;
-import it.polimi.ingsw.server.controller.NicknameTakenException;
+import it.polimi.ingsw.server.controller.exceptions.FullGameException;
+import it.polimi.ingsw.server.controller.exceptions.NicknameException;
+import it.polimi.ingsw.server.controller.exceptions.NicknameTakenException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

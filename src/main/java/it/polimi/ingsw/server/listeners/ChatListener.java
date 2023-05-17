@@ -1,12 +1,10 @@
 package it.polimi.ingsw.server.listeners;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
-import it.polimi.ingsw.server.model.Message;
-import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.chat.Message;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 public class ChatListener extends StandardListener implements PropertyChangeListener {
     public ChatListener(PushNotificationController pushNotificationController) {

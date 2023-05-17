@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.listeners;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
-import it.polimi.ingsw.server.controller.SaveException;
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Tile;
 
@@ -9,8 +8,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class PlayerListener extends StandardListener implements PropertyChangeListener {
     public PlayerListener(PushNotificationController pnc){

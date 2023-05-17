@@ -1,9 +1,8 @@
 package it.polimi.ingsw.communication.responses;
 
-import it.polimi.ingsw.communication.responses.LoadGameResponse;
-import it.polimi.ingsw.server.controller.GameLoadException;
-import it.polimi.ingsw.server.controller.GameNameException;
-import it.polimi.ingsw.server.controller.IllegalLobbyException;
+import it.polimi.ingsw.server.controller.exceptions.GameLoadException;
+import it.polimi.ingsw.server.controller.exceptions.GameNameException;
+import it.polimi.ingsw.server.controller.exceptions.IllegalLobbyException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

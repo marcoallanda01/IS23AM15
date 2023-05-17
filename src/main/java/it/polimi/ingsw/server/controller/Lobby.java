@@ -3,7 +3,9 @@ package it.polimi.ingsw.server.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.server.communication.ServerCommunication;
-import it.polimi.ingsw.server.model.ArrestGameException;
+import it.polimi.ingsw.server.controller.exceptions.*;
+import it.polimi.ingsw.server.controller.serialization.GameTypeAdapter;
+import it.polimi.ingsw.server.model.exceptions.ArrestGameException;
 import it.polimi.ingsw.server.model.Game;
 import org.jetbrains.annotations.NotNull;
 

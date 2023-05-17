@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.server.communication.ServerCommunication;
+import it.polimi.ingsw.server.controller.exceptions.*;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Tile;
 import org.junit.jupiter.api.BeforeEach;
@@ -357,7 +358,7 @@ class LobbyTest {
             System.out.println(p);
         }
         assertFalse(lobby.isPlaying());
-        assertNotNull(lobby.startGame()); //TODO: CommonCardsPointsManager gsonPostProcess do not work properly
+        assertNotNull(lobby.startGame());
         assertTrue(lobby.isGameLoaded());
         assertTrue(lobby.isPlaying());
     }

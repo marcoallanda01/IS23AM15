@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.controller;
 import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.PlayerNotFoundException;
+import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 
 public class ChatController {
     private final Game game;
