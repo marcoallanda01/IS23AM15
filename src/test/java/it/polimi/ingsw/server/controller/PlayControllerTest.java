@@ -45,7 +45,7 @@ class PlayControllerTest {
     }
 
     @Test
-    void saveGameExceptions() throws SaveException, IOException {
+    void saveGameExceptions() {
         List<String> players = new ArrayList<>();
         players.add("player1");
         players.add("player2");
@@ -53,7 +53,8 @@ class PlayControllerTest {
         Game game = new Game(players, false);
         PlayController playController = new PlayController(game, "/");
         assertThrows(IOException.class, () -> playController.saveGame("SaveGameTest"));
-        //TODO: save Exception is missing
+        PlayController playController1 = new PlayController(game, "saves");
+        assertThrows(SaveException.class, () -> playController1.saveGame("SaveGameTest", false));
     }
 
     @Test
