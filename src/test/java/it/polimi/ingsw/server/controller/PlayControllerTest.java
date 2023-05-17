@@ -60,6 +60,15 @@ class PlayControllerTest {
         players.add(new Player("pluto"));
         Player player = players.get(0);
         LivingRoomBoard livingRoomBoard = new LivingRoomBoard(players.size());
+        game = new Game(players, player.getUserName(), false, livingRoomBoard, new Turn(player, livingRoomBoard),
+                new Chat(players), new GoalManager(players, "data/goals.json"));
+
+        playController = new PlayController(game, directory);
+
+        assertFalse(player.isFirstToFinish());
+        assertEquals(playController.getPoints(player.getUserName()),
+                playController.getPoints(players.get(1).getUserName()));
+
         game = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
                 new Chat(players), new GoalManager(players, "data/goals.json"));
         List<Tile> tiles = new ArrayList<>();
