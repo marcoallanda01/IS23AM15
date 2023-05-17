@@ -1,4 +1,7 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.cli;
+
+import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.View;
 
 import java.util.Scanner;
 
@@ -48,36 +51,24 @@ public class CLI extends View {
 
     public void render(){
         clearScreen();
-        switch (Client.getInstance().getClientState()){
-            case LOGIN:
+        switch (Client.getInstance().getClientState()) {
+            case LOGIN -> {
                 CLIRenderer.printGame();
                 CLIRenderer.printLogin();
-                break;
-            case CREATE_LOBBY:
-                CLIRenderer.printCreateLobby();
-                break;
-            case CREATE_GAME:
-                CLIRenderer.printCreateGame();
-                break;
-            case LOAD_GAME:
-                CLIRenderer.printSavedGames(this.getSavedGames());
-                break;
-            case LOBBY:
-                CLIRenderer.printLobby(this.getPlayers(), this.getNumberOfPlayers(), this.isEasyRules());
-                break;
-            case IN_GAME:
+            }
+            case CREATE_LOBBY -> CLIRenderer.printCreateLobby();
+            case CREATE_GAME -> CLIRenderer.printCreateGame();
+            case LOAD_GAME -> CLIRenderer.printSavedGames(this.getSavedGames());
+            case LOBBY -> CLIRenderer.printLobby(this.getPlayers(), this.getNumberOfPlayers(), this.isEasyRules());
+            case IN_GAME -> {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
                 CLIRenderer.printBookshelves(this.getBookShelves(), this.getNickname(), this.getCurrentTurnPlayer());
                 CLIRenderer.printPickedTiles(this.getPickedTiles());
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
-                break;
-            case END_GAME:
-                CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
-                break;
-            default:
-                System.out.println("Invalid state");
-                break;
+            }
+            case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
+            default -> System.out.println("Invalid state");
         }
     }
     public void showError(String message){

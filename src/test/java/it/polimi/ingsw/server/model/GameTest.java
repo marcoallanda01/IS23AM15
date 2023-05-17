@@ -1,7 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.communication.ServerCommunication;
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
+import it.polimi.ingsw.server.model.turn.PutTilesState;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ class GameTest {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         List<String> players = List.of(p1.getUserName(), p2.getUserName());
-        Game game = new Game(new PushNotificationController(new ArrayList<ServerCommunication>()));
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(players,false);
         game.getBoard().fillBoard();
         List<Tile> tiles = List.of(game.getBoard().getBoard().get(1).get(3), game.getBoard().getBoard().get(1).get(4));
@@ -30,7 +31,7 @@ class GameTest {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         List<String> players = List.of(p1.getUserName(), p2.getUserName());
-        Game game = new Game(new PushNotificationController(new ArrayList<ServerCommunication>()));
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(players,false);
         game.getBoard().fillBoard();
         Player player = game.getCurrentTurn().getCurrentPlayer();
@@ -47,7 +48,7 @@ class GameTest {
         Player p2 = new Player("p2");
         Player p3 = new Player("p3");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName(), p3.getUserName());
-        Game game = new Game(new PushNotificationController(new ArrayList<ServerCommunication>()));
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(playersName,false);
         try {
             game.sendMessage(p1.getUserName(), p2.getUserName(), "ciao p2");
@@ -70,7 +71,7 @@ class GameTest {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
-        Game game = new Game(new PushNotificationController(new ArrayList<ServerCommunication>()));
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(playersName,false);
         assertTrue(game.disconnectPlayer(p1.getUserName()));
         try {
@@ -86,7 +87,7 @@ class GameTest {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
-        Game game = new Game(new PushNotificationController(new ArrayList<ServerCommunication>()));
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
         game.setGame(playersName,false);
         assertTrue(game.disconnectPlayer(p1.getUserName()));
         try {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.communication.*;
 import it.polimi.ingsw.client.communication.ClientCommunication;
 
@@ -8,8 +9,8 @@ public class Client {
     private ClientStates state;
     private View view;
     private ClientNotificationListener clientController;
-    private String hostname;
-    private int port;
+    private final String hostname;
+    private final int port;
     private String id;
     private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;
@@ -28,7 +29,7 @@ public class Client {
         return clientConnection;
     }
 
-    public void setupNetworkRMI() throws Exception {
+    public void setupNetworkRMI() throws RuntimeException {
         try {
             System.out.println("RMI setup");
             RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
@@ -50,7 +51,7 @@ public class Client {
         }
     }
 
-    public static void main(String args[])  //static method
+    public static void main(String[] args)  //static method
     {
         String hostname = parseArg(args, "-a", "--address");
         String port = parseArg(args, "-p", "--port");

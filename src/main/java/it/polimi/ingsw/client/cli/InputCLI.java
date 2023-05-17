@@ -1,4 +1,7 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.cli;
+
+import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.ClientStates;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class InputCLI {
-    private static boolean globalCommand;
 
     public static void inputHandler(Scanner inputScanner) {
         while (inputScanner.hasNext()) {
@@ -18,23 +20,15 @@ public class InputCLI {
                 return;
             }
 
-            globalCommand = globalCommand(inputArray);
+            boolean globalCommand = globalCommand(inputArray);
 
             if (!globalCommand) {
                 switch (Client.getInstance().getClientState()) {
-                    case LOGIN:
-                        loginRequest(inputArray);
-                        break;
-                    case CREATE_LOBBY:
-                        createLobbyRequest(inputArray);
-                        break;
-                    case CREATE_GAME:
-                        createGameRequest(inputArray);
-                        break;
-                    case LOAD_GAME:
-                        loadGameRequest(inputArray);
-                        break;
-                    case IN_GAME:
+                    case LOGIN -> loginRequest(inputArray);
+                    case CREATE_LOBBY -> createLobbyRequest(inputArray);
+                    case CREATE_GAME -> createGameRequest(inputArray);
+                    case LOAD_GAME -> loadGameRequest(inputArray);
+                    case IN_GAME -> {
                         switch (inputArray[0].toLowerCase()) {
                             case "pick":
                                 pickTilesRequest(inputArray);
@@ -51,7 +45,7 @@ public class InputCLI {
                                 System.out.println("Invalid input");
                                 break;
                         }
-                        break;
+                    }
                 }
             }
         }
@@ -206,28 +200,27 @@ public class InputCLI {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for (int i = 2; i < inputArray.length; i++) {
-            message += inputArray[i] + " ";
+            message.append(inputArray[i]).append(" ");
         }
         if (inputArray[1].equalsIgnoreCase("all")) {
-            Client.getInstance().getClientController().sendChatMessage(message);
+            Client.getInstance().getClientController().sendChatMessage(message.toString());
         } else if (Client.getInstance().getView().getPlayers().contains(inputArray[1])) {
-            Client.getInstance().getClientController().sendChatMessage(inputArray[1], message);
+            Client.getInstance().getClientController().sendChatMessage(inputArray[1], message.toString());
         } else {
             Client.getInstance().getView().showError("Invalid input");
         }
     }
 
     private static boolean globalCommand(String[] command) {
-        switch (command[0].toLowerCase()) {
-            case "logout":
-                if (Client.getInstance().getClientState() == ClientStates.LOGIN) {
-                    Client.getInstance().getView().showError("Invalid client state");
-                    return true;
-                }
-                logoutRequest(command);
+        if (command[0].equalsIgnoreCase("logout")) {
+            if (Client.getInstance().getClientState() == ClientStates.LOGIN) {
+                Client.getInstance().getView().showError("Invalid client state");
                 return true;
+            }
+            logoutRequest(command);
+            return true;
         }
         return false;
     }

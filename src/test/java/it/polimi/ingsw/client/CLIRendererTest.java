@@ -1,16 +1,14 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.CLIRenderer;
 import it.polimi.ingsw.server.model.BookShelf;
 import it.polimi.ingsw.server.model.LivingRoomBoard;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import org.junit.jupiter.api.Test;
 
-import java.awt.print.Book;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CLIRendererTest {
 

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.cli;
 
 public class CliColor {
     // Reset
