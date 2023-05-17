@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.managers.GoalManager;
 import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import it.polimi.ingsw.server.model.turn.EndState;
-import it.polimi.ingsw.server.model.turn.PickTilesState;
 import it.polimi.ingsw.server.model.turn.PutTilesState;
 import it.polimi.ingsw.server.model.turn.Turn;
 import org.jetbrains.annotations.NotNull;
@@ -99,12 +98,6 @@ public class Game{
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
-        //Notify picked tiles if turn is in put tiles (state next pickTiles)
-        if(this.currentTurn.getState().getClass() == PutTilesState.class && this.currentTurn.getPickedTiles() != null){
-            GameChangeSupport.firePropertyChange("pickedTiles",
-                    null,
-                    new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
-        }
 
         this.board.notifyListeners();
         //Force notifications
@@ -156,6 +149,11 @@ public class Game{
                     this);
             this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
                     this.currentTurn.getCurrentPlayer().getUserName());
+            if(this.currentTurn.getState().getClass() == PutTilesState.class && this.currentTurn.getPickedTiles() != null){
+                GameChangeSupport.firePropertyChange("pickedTiles",
+                        null,
+                        new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
+            }
         }
     }
 
@@ -207,7 +205,6 @@ public class Game{
             }
             currentTurn.changeState(new EndState(currentTurn));
             nextTurn(player);
-            notifyListeners();
             return true;
         } else {
             return false;
@@ -271,7 +268,8 @@ public class Game{
             if (this.currentTurn.getState() instanceof EndState) {
                 this.currentTurn = new Turn(nextPlayer, this.board);
 
-                notifyListeners();
+                this.GameChangeSupport.firePropertyChange("currentTurn" ,
+                        null, this.currentTurn.getCurrentPlayer().getUserName());
                 return true;
             }
         }
