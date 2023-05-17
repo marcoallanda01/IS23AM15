@@ -113,6 +113,17 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     public void listenForConnections(){
         System.out.println("TCP Server listening to new connections...");
+
+        TimerTask closeInactiveClientsTask = new TimerTask() {
+            public void run() {
+                System.out.println("TCPServer: Cleaning inactive sockets...");
+                clients.stream()
+                        .filter(Socket::isClosed)
+                        .forEach(socket -> closeClient(socket));
+            }
+        };
+        new Timer().scheduleAtFixedRate(closeInactiveClientsTask, 20000, 100000);
+
         while(true) {
             try {
                 Socket clientSocket = serverSocket.accept();
