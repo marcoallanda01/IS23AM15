@@ -189,7 +189,7 @@ public class InputCLI {
         }
         //if order contains duplicates or numbers out of range
         if (order.size() != new HashSet<>(order).size() || order.stream().anyMatch(i -> i < 0 || i > Client.getInstance().getView().getPickedTiles().size() - 1)) {
-            Client.getInstance().getView().showError("Invalid input");
+            Client.getInstance().getView().showError("Tiles order is invalid");
             return;
         }
         Client.getInstance().getClientController().putTiles(column, order);
