@@ -77,6 +77,7 @@ public class TestingView implements ClientNotificationListener {
                     clientCommunication.disconnect(myId);
                     break;
                 case "reconnect":
+                    myId ="7bd38be3-9442-4871-afcb-144371af6302";
                     clientCommunication.reconnect(myId);
                     break;
                 case "pick tiles":
@@ -191,6 +192,7 @@ public class TestingView implements ClientNotificationListener {
     @Override
     public void notifyJoinResponse(boolean result, String error, String id) {
         System.out.println("Join response received: " + result + ", Error: " + error + ", ID: " + id);
+        this.myId = id;
     }
 
     @Override

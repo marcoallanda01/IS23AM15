@@ -20,7 +20,8 @@ public class BoardListener extends StandardListener implements PropertyChangeLis
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String proprietyName = evt.getPropertyName();
+        String proprietyName = safePropertyName(evt.getPropertyName());
+
         System.out.println("\u001B[33m"+"BoardLister: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("removedTiles")) {
             pnc.notifyChangeBoard((List<Tile>)evt.getNewValue());

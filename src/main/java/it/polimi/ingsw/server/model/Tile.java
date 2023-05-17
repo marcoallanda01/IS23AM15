@@ -48,6 +48,11 @@ public class Tile implements  Serializable{
         return "Tile{" + "x=" + x + ", y=" + y + ", type=" + type + '}';
     }
 
+    /**
+     * Check if two tiles have the same type
+     * @param t Other Tile
+     * @return true if this Tile and t have the same TileType
+     */
     public boolean equalsType(Tile t){
         return this.type == t.type;
     }

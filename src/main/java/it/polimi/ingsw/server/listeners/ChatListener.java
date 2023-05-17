@@ -19,7 +19,7 @@ public class ChatListener extends StandardListener implements PropertyChangeList
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String proprietyName = evt.getPropertyName();
+        String proprietyName = safePropertyName(evt.getPropertyName());
         System.out.println("\u001B[33m"+"ChatLister: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("messageSent")) {
             Message m = (Message) evt.getNewValue();

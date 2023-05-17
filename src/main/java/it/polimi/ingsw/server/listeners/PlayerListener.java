@@ -22,7 +22,7 @@ public class PlayerListener extends StandardListener implements PropertyChangeLi
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String proprietyName = evt.getPropertyName();
+        String proprietyName = safePropertyName(evt.getPropertyName());
         System.out.println("\u001B[33m"+"PlayerLister: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("playingState")) {
             String playerName = ((Player) evt.getSource()).getUserName();
