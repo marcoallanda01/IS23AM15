@@ -249,9 +249,12 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void pong(String playerId) throws RemoteException {
+        System.out.println("Pong received from: " + playerId);
         if(this.playersIds.containsValue(playerId)){
+            System.out.println("Player Id registered correctly: " + playerId);
             this.playersIds.forEach((k, v) -> {
                 if(v.equals(playerId)){
+                    System.out.println("Pong responding to: " + playerId);
                     respondServer.respondPong(new Pong(playerId), k);
                 }
             });

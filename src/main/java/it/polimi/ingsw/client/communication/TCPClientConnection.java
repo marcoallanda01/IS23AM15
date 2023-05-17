@@ -188,7 +188,10 @@ public class TCPClientConnection implements ClientConnection {
         } else if (SavedGames.fromJson(json).isPresent()) {
             SavedGames savedGames = SavedGames.fromJson(json).get();
             clientNotificationListener.notifySavedGames(savedGames.names);
-        } else if (TurnNotify.fromJson(json).isPresent()) {
+        } else if (TilesPicked.fromJson(json).isPresent()) {
+            TilesPicked tilesPicked = TilesPicked.fromJson(json).get();
+            clientNotificationListener.notifyPickedTiles(tilesPicked.player, tilesPicked.tiles);
+        }  else if (TurnNotify.fromJson(json).isPresent()) {
             TurnNotify turnNotify = TurnNotify.fromJson(json).get();
             clientNotificationListener.notifyTurn(turnNotify.player);
         } else if (Winner.fromJson(json).isPresent()) {
