@@ -101,11 +101,11 @@ public class InputCLI {
     }
 
     private static void saveGameRequest(String[] inputArray) {
-        if (inputArray.length != 1) {
+        if (inputArray.length != 2) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        Client.getInstance().getClientController().saveGame(inputArray[0]);
+        Client.getInstance().getClientController().saveGame(inputArray[1]);
     }
 
     private static void createGameRequest(String[] inputArray) {

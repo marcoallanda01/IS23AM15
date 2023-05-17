@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
@@ -149,6 +148,7 @@ public class ClientController implements ClientNotificationListener {
     public void notifyLoadedGamePlayers(Set<String> nicknames) {
         List<String> players = new ArrayList<>(nicknames);
         view.setLobbyPlayers(players);
+        view.setNumberOfPlayers(players.size());
         Client.getInstance().getClientCommunication().joinLoadedAsFirst(view.getNickname(), Client.getInstance().getId());
     }
 
@@ -244,7 +244,7 @@ public class ClientController implements ClientNotificationListener {
     }
 
     public void loadGame(int index) {
-        Client.getInstance().getClientCommunication().loadGame(view.getSavedGames().get(index), view.getNickname());
+        Client.getInstance().getClientCommunication().loadGame(view.getSavedGames().get(index), Client.getInstance().getId());
     }
 
     public void pickTiles(List<List<Integer>> coordinates) {
@@ -268,7 +268,7 @@ public class ClientController implements ClientNotificationListener {
         for(Integer index : order) {
             orderedTiles.add(tiles.get(index));
         }
-        Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), tiles, column);
+        Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), orderedTiles, column);
         view.setPickedTiles(new ArrayList<>());
     }
 
