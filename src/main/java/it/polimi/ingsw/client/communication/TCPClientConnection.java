@@ -22,9 +22,11 @@ public class TCPClientConnection implements ClientConnection {
     private Future<Void> notificationListener;
 
     private Integer waitingResponses;
-    public  Socket getSocket() {
+
+    public Socket getSocket() {
         return socket;
     }
+
     /**
      * @param clientNotificationListener the clientNotificationListener
      */
@@ -33,6 +35,7 @@ public class TCPClientConnection implements ClientConnection {
         this.hostname = hostname;
         this.port = port;
     }
+
     /**
      * this method opens the TCP connection,
      * initializes the executorService
@@ -55,6 +58,7 @@ public class TCPClientConnection implements ClientConnection {
             e.printStackTrace();
         }
     }
+
     /**
      * this method closes the TCP connection
      * closes the executorService
@@ -72,15 +76,17 @@ public class TCPClientConnection implements ClientConnection {
             e.printStackTrace();
         }
     }
+
     /**
      * this method submits sendStringToServer to an executor service
      */
     public void sendToServer(String json) {
-        executorService.submit(()->sendStringToServer(json));
+        executorService.submit(() -> sendStringToServer(json));
     }
 
     /**
      * this method sends a message to the server, it locks the writeLock
+     *
      * @param json the message to be sent to the server
      */
     private void sendStringToServer(String json) {
@@ -95,6 +101,7 @@ public class TCPClientConnection implements ClientConnection {
             writeLock.notifyAll();
         }
     }
+
     /**
      * this method listen for messages and writes them in the buffer all the time, unless interrupted
      */
@@ -105,10 +112,10 @@ public class TCPClientConnection implements ClientConnection {
                     // Create output stream for communication with the server
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
-                    if(!json.contains("Ping")) {
+                    if (!json.contains("Ping")) {
                         System.out.println("Received from server: " + json);
                     }
-                    executorService.submit(()->dispatchNotification(json));
+                    executorService.submit(() -> dispatchNotification(json));
                 }
                 return null;
             } catch (IOException e) {
@@ -116,8 +123,10 @@ public class TCPClientConnection implements ClientConnection {
             }
         }
     }
+
     /**
      * this method handles the received message by calling the appropriate view method
+     *
      * @param json the notification string received from the server
      * @return true if the response has been handled correctly by the view, false otherwise
      */
@@ -125,6 +134,9 @@ public class TCPClientConnection implements ClientConnection {
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
             clientNotificationListener.notifyBoard(boardUpdate.tiles);
+        } else if (TilesPicked.fromJson(json).isPresent()) {
+            TilesPicked tilesPicked = TilesPicked.fromJson(json).get();
+            clientNotificationListener.notifyPickedTiles(tilesPicked.player, tilesPicked.tiles);
         } else if (BookShelfUpdate.fromJson(json).isPresent()) {
             BookShelfUpdate bookShelfUpdate = BookShelfUpdate.fromJson(json).get();
             clientNotificationListener.notifyBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);
@@ -152,10 +164,10 @@ public class TCPClientConnection implements ClientConnection {
         } else if (GameSetUp.fromJson(json).isPresent()) {
             GameSetUp gameSetUp = GameSetUp.fromJson(json).get();
             clientNotificationListener.notifyGame(gameSetUp);
-        }  else if (Hello.fromJson(json).isPresent()) {
+        } else if (Hello.fromJson(json).isPresent()) {
             Hello hello = Hello.fromJson(json).get();
             clientNotificationListener.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
-        }  else if (JoinResponse.fromJson(json).isPresent()) {
+        } else if (JoinResponse.fromJson(json).isPresent()) {
             JoinResponse joinResponse = JoinResponse.fromJson(json).get();
             clientNotificationListener.notifyJoinResponse(joinResponse.result, joinResponse.error, joinResponse.id);
         } else if (LoadedGamePlayers.fromJson(json).isPresent()) {
@@ -176,7 +188,7 @@ public class TCPClientConnection implements ClientConnection {
         } else if (SavedGames.fromJson(json).isPresent()) {
             SavedGames savedGames = SavedGames.fromJson(json).get();
             clientNotificationListener.notifySavedGames(savedGames.names);
-        }  else if (TurnNotify.fromJson(json).isPresent()) {
+        } else if (TurnNotify.fromJson(json).isPresent()) {
             TurnNotify turnNotify = TurnNotify.fromJson(json).get();
             clientNotificationListener.notifyTurn(turnNotify.player);
         } else if (Winner.fromJson(json).isPresent()) {

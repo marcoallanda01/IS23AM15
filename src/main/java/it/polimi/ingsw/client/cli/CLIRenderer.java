@@ -164,7 +164,7 @@ public class CLIRenderer {
         if (!tiles.isEmpty()) {
             System.out.println("Picked tiles: ");
             for (int i = 0; i < tiles.size(); i++) {
-                System.out.print(i + "\uFE0F⃣");
+                System.out.print(i + "\uFE0F⃣ ");
             }
             System.out.println();
             for (TileType tile : tiles) {

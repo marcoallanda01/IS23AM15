@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.model.turn;
 
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.TileType;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PutTilesState extends State {
     public PutTilesState(Turn turn) {
@@ -22,7 +25,9 @@ public class PutTilesState extends State {
      */
     @Override
     public boolean putTiles(List<Tile> tiles, int column) {
-        if(!this.turn.getPickedTiles().equals(tiles))
+        Set<TileType> pickedTileTypes = this.turn.getPickedTiles().stream().map(Tile::getType).collect(Collectors.toSet());
+        Set<TileType> putTileTypes = tiles.stream().map(Tile::getType).collect(Collectors.toSet());
+        if(!pickedTileTypes.equals(putTileTypes))
             return false;
         return this.turn.getCurrentPlayer().insertTiles(tiles, column);
     }
