@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.managers.GoalManager;
 import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import it.polimi.ingsw.server.model.turn.EndState;
-import it.polimi.ingsw.server.model.turn.PickTilesState;
 import it.polimi.ingsw.server.model.turn.PutTilesState;
 import it.polimi.ingsw.server.model.turn.Turn;
 import org.jetbrains.annotations.NotNull;
@@ -99,8 +98,8 @@ public class Game{
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
-        //Notify picked tiles if turn is in picked tiles
-        if(this.currentTurn.getState().getClass() == PickTilesState.class){
+        //Notify picked tiles if turn is in put tiles (state next pickTiles)
+        if(this.currentTurn.getState().getClass() == PutTilesState.class && this.currentTurn.getPickedTiles() != null){
             GameChangeSupport.firePropertyChange("pickedTiles",
                     null,
                     new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
