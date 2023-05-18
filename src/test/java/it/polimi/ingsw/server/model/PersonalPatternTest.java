@@ -5,9 +5,7 @@ import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import it.polimi.ingsw.server.model.managers.patterns.PersonalPattern;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,8 +19,8 @@ class PersonalPatternTest {
         // | - | - | - | - | B |
         // | - | - | - | - | B |
         // | - | - | - | - | P |
-        List<Tile> checks =
-                List.of(new Tile(4,0,TileType.PLANT), new Tile(4,1,TileType.BOOK),
+        Set<Tile> checks =
+                Set.of(new Tile(4,0,TileType.PLANT), new Tile(4,1,TileType.BOOK),
                         new Tile(4,2,TileType.BOOK), new Tile(4,3,TileType.BOOK),
                         new Tile(4,4,TileType.BOOK), new Tile(4,5,TileType.PLANT));
         ArrayList<int[]> list = new ArrayList<>();
@@ -65,8 +63,8 @@ class PersonalPatternTest {
         // | - | - | T | - | - |
         // | G | - | - | - | - |
         // | - | P | - | F | - |
-        List<Tile> checks =
-                List.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
                         new Tile(1, 3, TileType.TROPHY), new Tile(2,2,TileType.TROPHY),
                         new Tile(3,0,TileType.FRAME), new Tile(4,5,TileType.GAME));
         ArrayList<int[]> list = new ArrayList<>();
@@ -109,8 +107,8 @@ class PersonalPatternTest {
         // | - | - | B | - | - |
         // | G | - | - | - | - |
         // | - | P | - | F | - |
-        List<Tile> checks =
-                List.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
                         new Tile(1, 3, TileType.TROPHY), new Tile(2,2,TileType.BOOK),
                         new Tile(3,0,TileType.FRAME), new Tile(4,5,TileType.GAME));
         ArrayList<int[]> list = new ArrayList<>();
@@ -153,8 +151,8 @@ class PersonalPatternTest {
         // | - | - | B | - | - |
         // | G | - | - | - | - |
         // | - | P | - | F | - |
-        List<Tile> checks =
-                List.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,0,TileType.FRAME), new Tile(4,5,TileType.GAME));
         ArrayList<int[]> list = new ArrayList<>();
@@ -197,8 +195,8 @@ class PersonalPatternTest {
         // | - | - | B | - | - |
         // | G | - | - | - | - |
         // | - | P | - | - | - |
-        List<Tile> checks =
-                List.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.GAME));
         ArrayList<int[]> list = new ArrayList<>();
@@ -241,8 +239,8 @@ class PersonalPatternTest {
         // | - | - | B | - | - |
         // | G | - | - | - | - |
         // | - | P | - | - | - |
-        List<Tile> checks =
-                List.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.PLANT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
         ArrayList<int[]> list = new ArrayList<>();
@@ -285,8 +283,8 @@ class PersonalPatternTest {
         // | - | - | B | - | - |
         // | G | - | - | - | - |
         // | - | C | - | - | - |
-        List<Tile> checks =
-                List.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,1,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
         ArrayList<int[]> list = new ArrayList<>();
@@ -329,8 +327,8 @@ class PersonalPatternTest {
         // | - | - | B | - | - |
         // | - | - | - | - | - |
         // | G | C | - | - | - |
-        List<Tile> checks =
-                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
         ArrayList<int[]> list = new ArrayList<>();
@@ -384,8 +382,8 @@ class PersonalPatternTest {
     }
     @Test
     void testNullInTiles() {
-        List<Tile> checks =
-                new ArrayList<>(List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                new HashSet<>(Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(4,5,TileType.PLANT)));
         checks.add(null);
@@ -406,8 +404,8 @@ class PersonalPatternTest {
     }
     @Test
     void testNullCheckToPoints() {
-        List<Tile> checks =
-                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
 
@@ -420,8 +418,8 @@ class PersonalPatternTest {
     }
     @Test
     void testNullInCheckToPoints() {
-        List<Tile> checks =
-                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
         ArrayList<int[]> list = new ArrayList<>();
@@ -441,8 +439,8 @@ class PersonalPatternTest {
     }
     @Test
     void testNegativeChecks() {
-        List<Tile> checks =
-                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
         ArrayList<int[]> list = new ArrayList<>();
@@ -462,8 +460,8 @@ class PersonalPatternTest {
     }
     @Test
     void testInvalidSize() {
-        List<Tile> checks =
-                List.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+        Set<Tile> checks =
+                Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
                         new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
                         new Tile(3,4,TileType.FRAME));
         ArrayList<int[]> list = new ArrayList<>();

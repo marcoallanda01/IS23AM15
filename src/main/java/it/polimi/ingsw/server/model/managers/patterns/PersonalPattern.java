@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import java.util.*;
 import java.util.function.Function;
 public class PersonalPattern extends Pattern {
-    private final List<Tile> tiles;
+    private final Set<Tile> tiles;
     private final List<int[]> checkToPoints;
 
     /**
@@ -15,7 +15,7 @@ public class PersonalPattern extends Pattern {
      * @param tiles tiles in the pattern, must be immutable
      * @param checkToPoints list of couple [num of corrects, points], must be immutable
      */
-    public PersonalPattern(String name, List<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
+    public PersonalPattern(String name, Set<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
         super(name);
         this.tiles = tiles;
         this.checkToPoints = checkToPoints;
@@ -30,8 +30,8 @@ public class PersonalPattern extends Pattern {
         if (this.tiles == null) {
             throw new InvalidPatternParameterException("tiles cannot be null");
         }
-        for (int i = 0; i< this.tiles.size(); i++) {
-            if (this.tiles.get(i) == null) {
+        for (Tile tile : tiles) {
+            if (tile == null) {
                 throw new InvalidPatternParameterException("tiles cannot contain a null element");
             }
         }
@@ -50,9 +50,6 @@ public class PersonalPattern extends Pattern {
         }
         if (this.tiles.size() < this.checkToPoints.size()) {
             throw new InvalidPatternParameterException("checkToPoints must have the same size or less than tiles");
-        }
-        if(new HashSet<>(tiles).size() != tiles.size()){
-            throw new InvalidPatternParameterException("tiles must be uniques");
         }
     }
     private void sortCheckToPoints() {
