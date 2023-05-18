@@ -47,22 +47,6 @@ public class RMIRespondServer extends ResponseServer{
     }
 
     /**
-     * Notify all clients that game have been saved
-     *
-     * @param name name of the save
-     */
-    @Override
-    protected void notifyGameSaved(String name) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyGameSaved(name);
-            } catch (RemoteException e) {
-                System.err.println("RMI notifyGameSaved: Remote Exception thrown with client " + value);
-            }
-        });
-    }
-
-    /**
      * Close a client connection
      *
      * @param client client object. Cast to RMIClient

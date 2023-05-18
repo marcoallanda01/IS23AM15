@@ -244,7 +244,7 @@ public abstract class ResponseServer{
     }
 
     /**
-     * Respond to a save game command and save the game if was sent from a playing player
+     * Respond to a save game command
      * @param sg command
      */
     protected void respondSaveGame(SaveGame sg){
@@ -252,23 +252,14 @@ public abstract class ResponseServer{
             if (isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
                 boolean res;
                 try {
-                    res = playController.saveGame(sg.game);
+                    playController.saveGame(sg.game);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    res = false;
-                }
-                if (res) {
-                    notifyGameSaved(sg.game);
+                    //TODO send error message
                 }
             }
         }
     }
-
-    /**
-     * Notify all clients that game have been saved
-     * @param name name of the save
-     */
-    protected abstract void notifyGameSaved(String name);
 
     /**
      * Respond to a send message command

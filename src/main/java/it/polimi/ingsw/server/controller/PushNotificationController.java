@@ -151,4 +151,12 @@ public class PushNotificationController{
     public void notifyPickedTiles(String player, List<TileType> tiles){
         servers.forEach((s) -> s.notifyPickedTiles(player, tiles));
     }
+
+    /**
+     * Notify to all servers that game has been saved
+     * @param name name of the save
+     */
+    public void notifyGameSaved(String name){
+        servers.forEach((s) -> s.notifyGameSaved(name));
+    }
 }

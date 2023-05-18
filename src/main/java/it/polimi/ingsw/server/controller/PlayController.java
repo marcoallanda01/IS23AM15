@@ -22,9 +22,12 @@ import java.util.*;
 public class PlayController {
     private final Game game;
     private final String directory;
-    public PlayController(Game game, String directory) {
+    private final PushNotificationController pushNotificationController;
+
+    public PlayController(Game game, String directory, PushNotificationController pushNotificationController) {
         this.game = game;
         this.directory = directory;
+        this.pushNotificationController = pushNotificationController;
     }
 
     /**
@@ -95,6 +98,7 @@ public class PlayController {
         } catch (Exception e) {
             throw new IOException("Cannot save game");
         }
+        pushNotificationController.notifyGameSaved(name);
         return true;
     }
 

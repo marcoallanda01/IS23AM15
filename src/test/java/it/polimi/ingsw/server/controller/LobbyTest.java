@@ -134,6 +134,16 @@ class LobbyTest {
         }
 
         /**
+         * Send notification to all players that game has been saved
+         *
+         * @param name name of the save
+         */
+        @Override
+        public void notifyGameSaved(String name) {
+
+        }
+
+        /**
          * Send notification of tiles picked to all players
          *
          * @param player player's name who picked

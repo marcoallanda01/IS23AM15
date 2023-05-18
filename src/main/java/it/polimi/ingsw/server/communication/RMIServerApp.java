@@ -50,10 +50,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * HelloCommand to server
      * @param client RMIClient that says hello
      * @return Hello response
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if client null
      */
     @Override
     public Hello hello(RMIClient client) throws RemoteException {
+        if(client == null){
+            throw new RemoteException("Client passed is null");
+        }
         Hello hello = respondServer.respondHello(new HelloCommand(), client);
         if(!hello.firstPlayerId.equals("NoFirst")){
             this.firstPlayerClient = client;
@@ -69,10 +72,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param numPlayersGame num of players of new game
      * @param idFirstPlayer first player's id
      * @return FirstJoinResponse
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if any parameter is null
      */
     @Override
     public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer) throws RemoteException {
+        if(client == null || player == null || idFirstPlayer == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         return joinNewAsFirst(client, player, numPlayersGame, idFirstPlayer, true);
     }
 
@@ -84,10 +90,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param idFirstPlayer first player's id
      * @param easyRules set true for easy rules game mode
      * @return FirstJoinResponse
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if any parameter is null
      */
     @Override
     public FirstJoinResponse joinNewAsFirst(RMIClient client, String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) throws RemoteException {
+        if(client == null || player == null || idFirstPlayer == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         return respondServer.respondJoinNewAsFirst(new JoinNewAsFirst(player, numPlayersGame, idFirstPlayer, easyRules), client);
     }
 
@@ -97,10 +106,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param client RMI client that joins
      * @param player player's name
      * @return JoinResponse
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public JoinResponse join(RMIClient client, String player) throws RemoteException {
+        if(client == null || player == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         JoinResponse jr;
         try {
             jr = respondServer.respondJoin(new Join(player), client);
@@ -128,10 +140,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param game          game name
      * @param idFirstPlayer first player's id
      * @return LoadGameResponse
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public LoadGameResponse loadGame(String game, String idFirstPlayer) throws RemoteException {
+        if(game == null || idFirstPlayer == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         return respondServer.respondLoadGame(new LoadGame(idFirstPlayer, game));
     }
 
@@ -153,10 +168,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param player        player's name
      * @param idFirstPlayer first player's id
      * @return FirstJoinResponse
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public FirstJoinResponse joinLoadedAsFirst(RMIClient client, String player, String idFirstPlayer) throws RemoteException {
+        if(client == null || player == null || idFirstPlayer == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         return respondServer.respondJoinLoadedAsFirst(new JoinLoadedAsFirst(player,idFirstPlayer), client);
     }
 
@@ -164,10 +182,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * Disconnect from the game
      *
      * @param playerId player's id
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if playerId is null
      */
     @Override
     public void disconnect(String playerId) throws RemoteException {
+        if(playerId == null){
+            throw new RemoteException("playerId is null");
+        }
         if(this.playersIds.containsValue(playerId)){
             this.playersIds.forEach((k, v) -> {
                 if(v.equals(playerId)){
@@ -182,10 +203,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      *
      * @param client client that reconnect
      * @param playerId player's id
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public void reconnect(RMIClient client, String playerId) throws RemoteException {
+        if(client == null || playerId == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         if(this.playersIds.containsValue(playerId)){
             respondServer.respondReconnect(new Reconnect(playerId), client);
         }
@@ -196,13 +220,14 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      *
      * @param playerId player's id
      * @param tiles    tiles to pick
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null or tiles.size() is 0
      */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) throws RemoteException {
-        if(playerId != null && tiles != null && tiles.size() > 0){
-            respondServer.respondPickTiles(new PickTilesCommand(playerId, tiles));
+        if(playerId == null || tiles == null || tiles.size() == 0){
+            throw new RemoteException("A parameter passed is null or tiles.size() is 0");
         }
+        respondServer.respondPickTiles(new PickTilesCommand(playerId, tiles));
     }
 
     /**
@@ -211,10 +236,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param playerId player's id
      * @param tiles    tiles to put in order
      * @param column   where to put the tiles
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null or tiles.size() is 0
      */
     @Override
     public void putTiles(String playerId, List<TileType> tiles, int column) throws RemoteException {
+        if(playerId == null || tiles == null || tiles.size() == 0){
+            throw new RemoteException("A parameter passed is null or tiles.size() is 0");
+        }
         respondServer.respondPutTiles(new PutTilesCommand(playerId,tiles, column));
     }
 
@@ -223,10 +251,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      *
      * @param playerId player's id
      * @param gameName name of the new save
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public void saveGame(String playerId, String gameName) throws RemoteException {
+        if(playerId == null || gameName == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         respondServer.respondSaveGame(new SaveGame(playerId, gameName));
     }
 
@@ -236,10 +267,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * @param playerId         player's id
      * @param message          actual message
      * @param receiverNickname receiver's name
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public void sendMessage(String playerId, String message, String receiverNickname) throws RemoteException {
+        if(playerId == null || message == null || receiverNickname == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         respondServer.respondSendMessage(new SendMessage(playerId, message, receiverNickname));
     }
 
@@ -248,10 +282,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      *
      * @param playerId player's id
      * @param message  actual message
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if a parameter passed is null
      */
     @Override
     public void sendMessage(String playerId, String message) throws RemoteException {
+        if(playerId == null || message == null){
+            throw new RemoteException("A parameter passed is null");
+        }
         respondServer.respondSendMessage(new SendMessage(playerId, message));
     }
 
@@ -259,10 +296,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      * Respond to a ping
      *
      * @param playerId player's id
-     * @throws RemoteException if something about connection went bad
+     * @throws RemoteException if playerId is null
      */
     @Override
     public void pong(String playerId) throws RemoteException {
+        if(playerId == null){
+            throw new RemoteException("playerId is null");
+        }
         System.out.println("Pong received from: " + playerId);
         if(this.playersIds.containsValue(playerId)){
             this.playersIds.forEach((k, v) -> {
@@ -462,6 +502,22 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
         });
         //reset
         respondServer.reset();
+    }
+
+    /**
+     * Send notification to all players that game has been saved
+     *
+     * @param name name of the save
+     */
+    @Override
+    public void notifyGameSaved(String name) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyGameSaved(name);
+            } catch (RemoteException e) {
+                System.err.println("RMI notifyGameSaved: Remote Exception thrown with client " + value);
+            }
+        });
     }
 
     /**

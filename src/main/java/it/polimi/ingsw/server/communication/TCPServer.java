@@ -355,7 +355,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      * @param name name of the save
      */
     @Override
-    protected void notifyGameSaved(String name) {
+    public void notifyGameSaved(String name) {
         this.clientsInGame.forEach((c) -> {
             sendToClient(c,
                     new GameSaved(name).toJson()
