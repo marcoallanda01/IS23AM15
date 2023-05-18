@@ -3,6 +3,9 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.communication.*;
 import it.polimi.ingsw.client.communication.ClientCommunication;
+import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.client.gui.GUIApplication;
+import javafx.application.Application;
 
 public class Client {
     private static Client singleton;
@@ -11,14 +14,20 @@ public class Client {
     private ClientNotificationListener clientController;
     private final String hostname;
     private final int port;
+    private final Protocols protocolSetting;
+    private final Views viewSetting;
+    private final Modes modeSetting;
     private String id;
     private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;
 
-    public Client(String hostname, int port) {
+    public Client(String hostname, int port, Protocols protocol, Views view, Modes mode) {
         this.hostname = hostname;
         this.port = port;
         this.id = "NoId";
+        this.protocolSetting = protocol;
+        this.viewSetting = view;
+        this.modeSetting = mode;
         state = ClientStates.LOGIN;
     }
 
@@ -58,10 +67,10 @@ public class Client {
         String port = parseArg(args, "-p", "--port");
         Protocols protocol = parseProtocol(args);
         Views view = parseView(args);
-        Modes modes = parseMode(args);
+        Modes mode = parseMode(args);
 
         try {
-            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port));
+            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), protocol, view, mode);
         } catch (NumberFormatException e) {
             System.out.println("Invalid port number");
         } catch (Exception e) {
@@ -69,7 +78,7 @@ public class Client {
         }
 
         try {
-            if (modes.equals(Modes.TESTING)) {
+            if (mode.equals(Modes.TESTING)) {
                 // I am in testing, setup is easier
                 TestingView testingView = new TestingView();
                 singleton.clientController = testingView;
@@ -83,18 +92,11 @@ public class Client {
                 testingView.start();
             } else {
                 if (view.equals(Views.CLI)) {
-                    singleton.view = new CLI();
+                    Client.getInstance().init(new CLI());
                 } else if (view.equals(Views.GUI)) {
-                    //singleton.view = new GUI();
-                }
-                singleton.clientController = new ClientController();
-                if (protocol.equals(Protocols.RMI)) {
-                    singleton.setupNetworkRMI();
-                } else if (protocol.equals(Protocols.TCP)) {
-                    singleton.setupNetworkTCP();
+                    Application.launch(GUIApplication.class, args);
                 }
             }
-            singleton.clientConnection.openConnection();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -180,5 +182,21 @@ public class Client {
 
     public ClientCommunication getClientCommunication() {
         return clientCommunication;
+    }
+
+    public void init(View view) {
+        this.view = view;
+        if (protocolSetting.equals(Protocols.RMI)) {
+            singleton.setupNetworkRMI();
+        } else if (protocolSetting.equals(Protocols.TCP)) {
+            singleton.setupNetworkTCP();
+        }
+        try {
+            singleton.clientConnection.openConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        singleton.clientController = new ClientController();
+
     }
 }
