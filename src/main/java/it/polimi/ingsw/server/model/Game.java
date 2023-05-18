@@ -28,8 +28,11 @@ public class Game{
     private Chat chat;
     private GoalManager goalManager;
     private PropertyChangeSupport GameChangeSupport;
-    private static final String PROPERTY_NAME = "currentTurn";
-
+    private static final String TURN_PROPRIETY_NAME = "currentTurn";
+    private static final String PICKED_TILES_PROPRIETY_NAME = "pickedTiles";
+    private static final String GAME_PROPRIETY_NAME = "gameStarted";
+    private static final String WINNER_PROPRIETY_NAME = "gameWon";
+    private static final String goalPath= "data/goals.json";
     private transient PushNotificationController pushNotificationController;
 
     /**
@@ -61,13 +64,12 @@ public class Game{
 
         this.chat = new Chat(this.players);
         this.chat.setStandardListener(pushNotificationController);
-        String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
         notifyListeners();
         //FirstFill
         this.board.fillBoard();
-        this.goalManager = new GoalManager(this.players, goalPath);
+        this.goalManager = new GoalManager(this.players, goalPath, isFirstGame);
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
 
@@ -121,8 +123,7 @@ public class Game{
         this.currentTurn = new Turn(this.players.get(0), board);
 
         this.chat = new Chat(this.players);
-        String goalPath = isFirstGame ? "data/goalsFirstGame.json" : "data/goals.json";
-        this.goalManager = new GoalManager(this.players, goalPath);
+        this.goalManager = new GoalManager(this.players, goalPath, isFirstGame);
 
     }
 
@@ -144,12 +145,12 @@ public class Game{
      */
     private void notifyListeners(){
         if(this.GameChangeSupport != null) {
-            this.GameChangeSupport.firePropertyChange("gameStarted", null,
+            this.GameChangeSupport.firePropertyChange(GAME_PROPRIETY_NAME, null,
                     this);
-            this.GameChangeSupport.firePropertyChange(PROPERTY_NAME, null,
+            this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME, null,
                     this.currentTurn.getCurrentPlayer().getUserName());
             if(this.currentTurn.getState().getClass() == PutTilesState.class && this.currentTurn.getPickedTiles() != null){
-                GameChangeSupport.firePropertyChange("pickedTiles",
+                GameChangeSupport.firePropertyChange(PICKED_TILES_PROPRIETY_NAME,
                         null,
                         new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
             }
@@ -174,7 +175,7 @@ public class Game{
 
     public boolean pickTiles(List<Tile> tiles) {
         if (currentTurn.pickTiles(tiles)) {
-            GameChangeSupport.firePropertyChange("pickedTiles",
+            GameChangeSupport.firePropertyChange(PICKED_TILES_PROPRIETY_NAME,
                     null,
                     new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
             currentTurn.changeState(new PutTilesState(currentTurn));
@@ -258,6 +259,9 @@ public class Game{
      * @return true if the turn has been advanced, false if not
      */
     private boolean nextTurn(Player currentPlayer) {
+        if(winner != null){
+            GameChangeSupport.firePropertyChange(WINNER_PROPRIETY_NAME, null, this.winner);
+        }
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
         int playingPlayers = this.players.stream().mapToInt(player -> {return player.isPlaying() ? 1 : 0;}).sum();
         if (playingPlayers > 1){
@@ -267,7 +271,7 @@ public class Game{
             if (this.currentTurn.getState() instanceof EndState) {
                 this.currentTurn = new Turn(nextPlayer, this.board);
 
-                this.GameChangeSupport.firePropertyChange("currentTurn" ,
+                this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME ,
                         null, this.currentTurn.getCurrentPlayer().getUserName());
                 return true;
             }

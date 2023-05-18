@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.exceptions.ArrestGameException;
 import it.polimi.ingsw.server.model.managers.GoalManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,17 +14,17 @@ class GoalManagerTest {
     GoalManager goalManager;
     List<Player> players;
     @BeforeEach
-    void constructorTest(){
+    void setPlayers(){
         players = new ArrayList<>();
         players.add(new Player("user1"));
         players.add(new Player("user2"));
         players.add(new Player("user3"));
-        goalManager = new GoalManager(players, "data/goals.json");
     }
 
 
     @Test
     void updatePointsTurn() {
+        goalManager = new GoalManager(players, "data/goals.json", true);
         goalManager.updatePointsTurn(null);
         goalManager.updatePointsTurn(new Player("altro"));
         List<Tile> tiles = new ArrayList<>();
@@ -41,8 +42,9 @@ class GoalManagerTest {
 
     @Test
     void updatePointsEnd() {
+        goalManager = new GoalManager(players, "data/goals.json", true);
         goalManager.updatePointsEnd(null);
-        //TODO:check if the player exixsts
+        // If I do the update points of a player that not exists managers do nothing
         goalManager.updatePointsEnd(new Player("altro"));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -63,18 +65,17 @@ class GoalManagerTest {
         players.get(1).insertTiles(tiles3, 4);
         goalManager.updatePointsEnd(players.get(1));
         assertNotEquals(2, goalManager.getPoints(players.get(1)));
-        //assertEquals(10, goalManager.getPoints(players.get(1))); TODO: varia
-        //
-        // in base ai goal che capitano
     }
 
     @Test
     void getPoints() {
+        goalManager = new GoalManager(players, "data/goals.json", true);
         assertEquals(0, goalManager.getPoints(players.get(1)));
     }
 
     @Test
     void getWinner(){
+        goalManager = new GoalManager(players, "data/goals.json", true);
         assertEquals(players.get(0).getUserName(), goalManager.getWinner(players));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -86,16 +87,19 @@ class GoalManagerTest {
 
     @Test
     void getCommonCardsToTokens() {
+        goalManager = new GoalManager(players, "data/goals.json", true);
         System.out.println(goalManager.getCommonCardsToTokens());
     }
 
     @Test
     void getTokens() {
+        goalManager = new GoalManager(players, "data/goals.json", true);
         System.out.println(goalManager.getTokens(players.get(1)));
     }
 
     @Test
     void getUnfulfilledCommonCards() {
+        goalManager = new GoalManager(players, "data/goals.json", true);
         System.out.println(goalManager.getTokens(players.get(1)));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -106,30 +110,148 @@ class GoalManagerTest {
     }
 
     @Test
-    void getFulfilledCommonCards() {
+    void personalCardsXY(){
+        goalManager = new GoalManager(players, "tests/test_personalCardsXYRight.json", true);
+        Player player = players.get(0);
+        // [0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]
+        List<Tile> personalCard = new ArrayList<>();
+        personalCard.add(new Tile(0, 1, TileType.BOOK));
+        personalCard.add(new Tile(0, 1, TileType.PLANT));
+        player.insertTiles(personalCard, 0);
+        System.out.println(player.getBookShelf());
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "tests/test_personalCardsXYWrong.json", true));
+        // expected a sting as name
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "tests/test_personalCardsXYWrong.json", true));
+
     }
 
     @Test
-    void getPersonalCard() {
+    void noEnoughPersonalCards(){
+        //0 cards
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "tests/test_personalCardsNoCards.json", true));
+        // 2 cards only with 3 players
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "tests/test_personalCards2Cards.json", true));
+
+    }
+
+
+    @Test
+    void noEnoughCommonCards(){
+        // there are three cards wrong
+        //1 card needed
+        new GoalManager(players, "tests/test_commonCardsNotEnough.json", true);
+        //1 card needed 2
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "tests/test_commonCardsNotEnough.json", false));
+
     }
 
     @Test
-    void getEndGameGoals() {
+    void noEndGoals(){
+        //EndGoals are not mandatory
+        new GoalManager(players, "tests/test_noEndGoals.json", true);
     }
 
     @Test
-    void getCommonGoalCardManager() {
+    void errorsInEndGoals(){
+        //If and end goals is wrong no problems
+        //Only 4_ADJACENT should be printed for endGoals
+        new GoalManager(players, "tests/test_errorsInEnd.json", true);
+    }
+
+    private GoalManager setGoalMangerForCommonCardsSafeTest(String file){
+        return new GoalManager(players, file, true);
+    }
+
+
+    @Test
+    void FailedToOpenException(){
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "fileNonEsistente", true));
     }
 
     @Test
-    void getPersonalGoalCardManager() {
+    void wrongFormatted(){
+        assertThrows(ArrestGameException.class,
+                () -> new GoalManager(players, "tests/test_wrongFormatted.json", true));
     }
 
-    @Test
-    void getEndGamePointsManager() {
-    }
 
     @Test
-    void getFrequentUpdates() {
+    void testCommonCardsAreSafe(){
+        Player player = players.get(0);
+        // [0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]
+        List<Tile> personalCard = new ArrayList<>();
+        personalCard.add(new Tile(0, 1, TileType.BOOK));
+        personalCard.add(new Tile(0, 1, TileType.PLANT));
+        player.insertTiles(personalCard, 0);
+        System.out.println(player.getBookShelf());
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_1.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_2.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_3.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_4.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_5.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_6.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_7.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_8.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_9.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_10.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_12.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
+
+        goalManager = setGoalMangerForCommonCardsSafeTest("tests/test_CommonCardsSafe_11.json");
+        goalManager.updatePointsTurn(player);
+        goalManager.updatePointsEnd(player);
+        assertEquals(1, goalManager.getPoints(player));
     }
 }

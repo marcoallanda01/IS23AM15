@@ -1,0 +1,57 @@
+{
+"common_cards" : [
+	{"name":"6_GROUPS_2_TILES",
+		"type":"adjacent", "min_tiles":2, "min_groups":6, "points":"1"
+	},
+	{"name":"DIAGONAL",
+		"type":"specific", "masks": [[[1,0,0,0,1],[0,1,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,0,0,0,1]], [[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0]]],
+		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "N"
+	},
+	{"name":"4_GROUPS_4_TILES",
+		"type":"adjacent", "min_tiles":4, "min_groups":4, "points":"1"
+	},
+	{"name":"4_ROWS_3_COLOR",
+		"type":"specific", "masks": [[[1,1,1,1,1]]],
+		"group_num":4, "sgc":"N","max":3,"min":1, "fe": "N"
+	},
+	{"name":"CORNERS",
+		"type":"specific", "masks":[[[1,0,0,0,1],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[1,0,0,0,1]]],
+		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "N"
+	},
+	{"name":"2_COLUMNS_COLOURFUL",
+		"type":"specific", "masks": [[[1],[1],[1],[1],[1],[1]]],
+		"group_num":2, "sgc":"N","max":6,"min":6, "fe": "N"
+	},
+	{"name":"SQUARE",
+		"type":"specific", "masks":[[[1,1],[1,1]]],
+		"group_num":2, "sgc":"N","max":1,"min":1, "fe": "N"
+	},
+	{"name":"2_ROWS_COLOURFUL",
+		"type":"specific", "masks": [[[1,1,1,1,1]]],
+		"group_num":2, "sgc":"N","max":5,"min":5, "fe": "N"
+	},
+	{"name":"3_COLUMNS_3_COLOR",
+		"type":"specific", "masks": [[[1],[1],[1],[1],[1],[1]]],
+		"group_num":3, "sgc":"N","max":3,"min":1, "fe": "N"
+	},
+	{"name":"X",
+		"type":"specific", "masks": [[[1,0,1],[0,1,0],[1,0,1]]],
+		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "N"
+	},
+	{"name":"8_SAME",
+		"type":"specific", "masks": [[[1]]],
+		"group_num":1, "sgc":"Y","max":1,"min":1, "fe": "N"
+	},
+	{"name":"STAIRS",
+		"type":"specific", "masks":[[[1,0,0,0,0],[1,1,0,0,0],[1,1,1,0,0],[1,1,1,1,0],[1,1,1,1,1]]],
+		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "Y"
+	}
+],
+"end_game" : [
+],
+"personal_cards" : [
+	{"name":"Personal_Goals", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] },
+	{"name":"Personal_Goals1", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] },
+	{"name":"Personal_Goals2", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] }
+]
+}

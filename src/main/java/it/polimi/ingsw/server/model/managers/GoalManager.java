@@ -24,7 +24,8 @@ public class GoalManager{
     private final CommonCardsPointsManager commonCardsPointsManager;
     private final PersonalCardsPointsManager personalCardsPointsManager;
     private final CommonGoalsPointsManager commonGoalsPointsManager;
-    //private List<List<Pattern>> patterns;
+
+    private int CommonCardsToDraw = 2;
     /**
      * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
      * if set to true only pointsManagers with updateRule set to END_GAME will NOT be updated every turn
@@ -57,10 +58,16 @@ public class GoalManager{
         for (int i = 0; i < commonCards.size(); i++) {
             try {
                 patterns.add(readPattern(commonCards.get(i)));
-            } catch (RuntimeException e) {
+            } catch (NullPointerException e){
+                System.err.printf(
+                        "NullPointerException: The loading of the %d pattern in %s is failed. This is probably"
+                                + " caused by absent files in the card.\nException Message: %s", i,
+                        cardsType, e.getMessage());
+            }catch (RuntimeException e) {
                 // Here I can go on with the loading of others cards
                 System.err.printf(
-                        "RuntimeException: The loading of the %d pattern in %s is failed. This is probably" + " caused by wrong formatting of the file.\nException Message: %s", i,
+                        "RuntimeException: The loading of the %d pattern in %s is failed. This is probably"
+                                + " caused by wrong formatting of the file.\nException Message: %s", i,
                         cardsType, e.getMessage());
             }
         }
@@ -74,13 +81,20 @@ public class GoalManager{
      * @throws RuntimeException if there is bad formatting in the file, but we must throw so the GoalManager can try to
      *                          read the other patterns
      */
-    private Pattern readPattern(JsonElement cardJson) throws RuntimeException {
+    private Pattern readPattern(JsonElement cardJson) throws RuntimeException, NullPointerException {
         Pattern pattern = null;
 
         JsonObject patternJ = cardJson.getAsJsonObject();
-        String name = patternJ.get("name").getAsString();
-        String type = patternJ.get("type").getAsString();
-        // TODO: funzioni separate
+        JsonElement nameElement = patternJ.get("name");
+        if(nameElement == null){
+            throw new JsonParseException("name parameter absent");
+        }
+        JsonElement typeElement = patternJ.get("type");
+        if(typeElement == null){
+            throw new JsonParseException("type parameter absent");
+        }
+        String name = nameElement.getAsString();
+        String type = typeElement.getAsString();
         switch (type) {
             case "specific" -> {
                 /*
@@ -148,12 +162,16 @@ public class GoalManager{
                     JsonArray tileJ = tilesJ.get(i).getAsJsonArray();
                     int x = tileJ.get(0).getAsInt();
                     int y = tileJ.get(1).getAsInt();
-                    String tileTypeName = tileJ.get(1).getAsString();
+                    String tileTypeName = tileJ.get(2).getAsString();
                     if (tileTypeName == null) {
                         System.err.println("Invalid tileType in personal");
-                        throw new IllegalStateException("Invalid tileType in personal");
+                        throw new IllegalStateException("Invalid tileType in personal(null)");
                     }
-                    Tile t = new Tile(x, y, TileType.tileTypeFromName(tileTypeName));
+                    TileType tileType = TileType.tileTypeFromName(tileTypeName);
+                    if(tileType == null){
+                        throw new IllegalStateException("Invalid tileType in personal("+tileTypeName+")");
+                    }
+                    Tile t = new Tile(x, y, tileType);
                     tiles.add(t);
                 }
                 JsonArray checkToPointsJ = patternJ.get("check_to_points").getAsJsonArray();
@@ -168,8 +186,11 @@ public class GoalManager{
                 try {
                     pattern = new PersonalPattern(name, tiles, checkToPoints);
                 } catch (InvalidPatternParameterException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e.getMessage());
                 }
+            }
+            default -> {
+                throw new RuntimeException("No card exists with type: "+type);
             }
         }
 
@@ -182,7 +203,8 @@ public class GoalManager{
      * @param setUpFile file json where there are the patterns associated with card type
      * @throws ArrestGameException if occurred very bad errors in parsing or json stream
      */
-    public GoalManager(List<Player> players, String setUpFile) throws ArrestGameException {
+    public GoalManager(List<Player> players, String setUpFile, boolean isFirstGame) throws ArrestGameException {
+        this.CommonCardsToDraw = isFirstGame ? 1 : 2;
 
         // I use list and not set because I could choose to have to same card so the probability increase
         Set<Pattern> patternsCommonGoals = new HashSet<>();
@@ -220,9 +242,15 @@ public class GoalManager{
             for(Pattern p : patternsCommonGoals){
                 System.out.println("Pattern: "+p.toString());
             }
+            if(patternsCommonGoals.size() < CommonCardsToDraw){
+                throw new ArrestGameException("Not enough common cards as game rules are set");
+            }
 
             JsonReader reader3 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
             patternsPersonalGoals.addAll(readCards(reader3, "personal_cards"));
+            if(patternsPersonalGoals.size() < players.size()){
+                throw new ArrestGameException("Not enough personal cards form all players");
+            }
             reader3.close();
 
         } catch (JsonIOException e) {
@@ -240,16 +268,12 @@ public class GoalManager{
             throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the closing of the JsonReader", e);
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new ArrestGameException("URISyntaxException occurred!");
         }
-        /*catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }*/
 
 
         // creating default managers, in future to add another manager add it here
-        this.commonCardsPointsManager = new CommonCardsPointsManager(players, new Deck(patternsCommonGoals));
+        this.commonCardsPointsManager = new CommonCardsPointsManager(players, new Deck(patternsCommonGoals), this.CommonCardsToDraw);
         this.personalCardsPointsManager = new PersonalCardsPointsManager(players, new Deck(patternsPersonalGoals));
         this.commonGoalsPointsManager = new CommonGoalsPointsManager(players, patternsEndGoals);
 
@@ -260,6 +284,7 @@ public class GoalManager{
 
     public GoalManager(CommonCardsPointsManager commonCardsPointsManager, PersonalCardsPointsManager personalCardsPointsManager, CommonGoalsPointsManager commonGoalsPointsManager,
                        Boolean frequentUpdates) {
+        //TODO: CommonCardsToDraw da aggiungere qui
         this.commonCardsPointsManager = commonCardsPointsManager;
         this.personalCardsPointsManager = personalCardsPointsManager;
         this.commonGoalsPointsManager = commonGoalsPointsManager;

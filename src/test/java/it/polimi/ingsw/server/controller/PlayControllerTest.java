@@ -69,7 +69,7 @@ class PlayControllerTest {
         Player player = players.get(0);
         LivingRoomBoard livingRoomBoard = new LivingRoomBoard(players.size());
         game = new Game(players, player.getUserName(), false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json"));
+                new Chat(players), new GoalManager(players, "data/goals.json", true));
 
         playController = new PlayController(game, directory);
 
@@ -78,7 +78,7 @@ class PlayControllerTest {
                 playController.getPoints(players.get(1).getUserName()));
 
         game = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json"));
+                new Chat(players), new GoalManager(players, "data/goals.json", false));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -109,7 +109,7 @@ class PlayControllerTest {
         );
 
         game.setGame( new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json")) );
+                new Chat(players), new GoalManager(players, "data/goals.json", true)) );
         assertTrue(playController.pickTiles(tileToPick, player.getUserName()));
         assertFalse(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
         player.gsonPostProcess();
@@ -140,7 +140,7 @@ class PlayControllerTest {
         tileToPut.add(new Tile(typesToPut.get(0)));
 
         game.setGame( new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json")));
+                new Chat(players), new GoalManager(players, "data/goals.json", true)));
         assertTrue(playController.pickTiles(tileToPick, player.getUserName()));
         assertFalse(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
         player.gsonPostProcess();
@@ -167,7 +167,7 @@ class PlayControllerTest {
         );
 
         Game game2 = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json"));
+                new Chat(players), new GoalManager(players, "data/goals.json", true));
         game.setGame(game2);
         playController = new PlayController(game, directory);
         assertTrue(playController.pickTiles(tileToPick, player.getUserName()));
@@ -200,7 +200,7 @@ class PlayControllerTest {
         System.out.println(tileToPick);
 
         game = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json"));
+                new Chat(players), new GoalManager(players, "data/goals.json", true));
         playController = new PlayController(game, directory);
         assertFalse(playController.pickTiles(tileToPick, player.getUserName()));
         assertTrue(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
@@ -225,7 +225,7 @@ class PlayControllerTest {
         );
 
         game = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
-                new Chat(players), new GoalManager(players, "data/goals.json"));
+                new Chat(players), new GoalManager(players, "data/goals.json", true));
         playController = new PlayController(game, directory);
         //Wrong turn
         assertFalse(playController.pickTiles(tileToPick, players.get(1).getUserName()));
@@ -341,7 +341,7 @@ class PlayControllerTest {
         String winner = players.get(1);
         List<Player> Players = players.stream().map(Player::new).toList();
         game = new Game(Players, winner, false, game.getBoard(), new Turn(Players.get(1), game.getBoard()),
-                new Chat(Players), new GoalManager(Players, "data/goals.json"));
+                new Chat(Players), new GoalManager(Players, "data/goals.json", true));
         playController = new PlayController(game, directory);
         assertEquals(winner, playController.getWinner());
         assertEquals(winner, game.getWinner());

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model.managers.patterns;
 
 import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public abstract class Pattern {
      *
      * @param name name of the pattern
      */
-    public Pattern(String name) {
+    public Pattern(String name){
         this.name = name;
     }
 

@@ -51,6 +51,9 @@ public class PersonalPattern extends Pattern {
         if (this.tiles.size() < this.checkToPoints.size()) {
             throw new InvalidPatternParameterException("checkToPoints must have the same size or less than tiles");
         }
+        if(new HashSet<>(tiles).size() != tiles.size()){
+            throw new InvalidPatternParameterException("tiles must be uniques");
+        }
     }
     private void sortCheckToPoints() {
         Comparator<int[]> cmp = new Comparator<int[]>() {

@@ -1,0 +1,28 @@
+{
+"common_cards" : [
+	{"name":"DIAGONAL",
+		"type":"specific", "masks": [[[1,0,0,0,1],[0,1,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,0,0,0,1]], [[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0]]],
+		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "N"
+	}
+],
+"end_game" : [
+	{"name":"6_ADJACENT",
+		"type":"adjacent", "min_tiles":6, "min_groups":1, "points":"8"
+	},
+	{"name":"5_ADJACENT",
+		"type":"adjacent", "min_tiles":5, "min_groups":1, "points":"5"
+	},
+	{"name":"4_ADJACENT",
+		"type":"adjacent", "min_tiles":4, "min_groups":1, "points":"3"
+	},
+	{"name":"3_ADJACENT",
+		"type":"adjacent", "min_tiles":3, "min_groups":1, "points":"2"
+	}
+],
+"personal_cards" : [
+	{"name":"Personal_Goals", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] },
+	{"name":"Personal_Goals1", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] },
+	{"name":"Personal_Goals2", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] }
+
+]
+}

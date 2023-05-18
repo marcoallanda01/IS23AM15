@@ -231,6 +231,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     chat = gson.fromJson(in, Chat.class);
                 }
                 case "goalManager" -> {
+                    //TODO: aggiunt campo CommonCardsToDraw a GoalManager
                     in.beginObject();
 
                     List<Player> finalPlayers = players;
