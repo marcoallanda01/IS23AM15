@@ -264,11 +264,11 @@ public class Game{
         }
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
         int playingPlayers = this.players.stream().mapToInt(player -> {return player.isPlaying() ? 1 : 0;}).sum();
-        if (playingPlayers > 1){
+        if (playingPlayers >= 1){
             if (!nextPlayer.isPlaying()) {
                 return nextTurn(nextPlayer);
             }
-            if (this.currentTurn.getState() instanceof EndState) {
+            if (this.currentTurn.getState() instanceof EndState || !currentPlayer.isPlaying()) {
                 this.currentTurn = new Turn(nextPlayer, this.board);
 
                 this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME ,

@@ -4,14 +4,14 @@
 ## Implemented Functionalities
 | Functionality                | State |
 |:-----------------------------|:-----:|
-| Basic rules                  |  🟡   |
-| Complete rules               |  🟡   |
-| RMI                          |  🟡   |
-| Socket                       |  🟡   |
-| CLI                          |  🔴   |
+| Basic rules                  |  🟢   |
+| Complete rules               |  🟢   |
+| RMI                          |  🟢   |
+| Socket                       |  🟢   |
+| CLI                          |  🟡   |
 | GUI                          |  🔴   |
 | Persistence                  |  🟡   |
-| Resilience to disconnections |  🟡   |
+| Resilience to disconnections |  🟢   |
 | Chat                         |  🟡   |
 | Multiple games               |  🔴   |
 
