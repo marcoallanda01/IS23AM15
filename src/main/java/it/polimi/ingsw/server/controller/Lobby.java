@@ -310,24 +310,19 @@ public class Lobby {
         }
         if (loadingGame == null) {
             System.out.println("Lobby startGame: starting new game");
-            System.out.println("Lobby startGame: creating controller provider before start new game...");
-            this.controllerProvider = new ControllerProvider(this.currentGame, this.directory);
             try {
                 this.isPlaying = true;
                 this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
             } catch (Exception e) {
-                this.controllerProvider = null;
                 e.printStackTrace();
             }
         } else {
-            // TODO: brutto così, non si può non usare un costruttore per fare il load?
             System.out.println("Lobby startGame: starting loaded game");
             this.isPlaying = true;
-            System.out.println("Lobby startGame: creating controller provider before start loading game...");
-            this.controllerProvider = new ControllerProvider(this.currentGame, this.directory);
             this.currentGame.setGame(this.loadingGame);
         }
         System.out.println("Lobby startGame: before return, controller provider created");
+        this.controllerProvider = new ControllerProvider(this.currentGame, this.directory);
         return this.controllerProvider;
     }
 

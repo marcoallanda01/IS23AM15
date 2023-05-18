@@ -97,13 +97,12 @@ public class Game{
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
+        notifyListeners();
         this.board.notifyListeners();
         //Force notifications
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
-
-        notifyListeners();
     }
 
     /**

@@ -50,7 +50,6 @@ public class Turn {
      * @return true if the tiles were picked, false otherwise
      */
     public boolean pickTiles(List<Tile> tiles) {
-        System.out.println("State:" + state); //TODO: state è null
         return this.state.pickTiles(tiles);
     }
 
