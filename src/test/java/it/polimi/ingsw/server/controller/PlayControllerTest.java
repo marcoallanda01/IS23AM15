@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -269,5 +270,87 @@ class PlayControllerTest {
         assertTrue(playController.reconnect("player1"));
         assertEquals(0, game.getPlayersList().stream().filter(p -> !p.isPlaying()).count());
         assertFalse(playController.reconnect("player4"));
+    }
+
+    @Test
+    void getCommonGoalCardsToTokens(){
+        assertEquals(playController.getCommonGoalCardsToTokens(), game.getCommonGoalCardsToTokens());
+    }
+
+    @Test
+    void getEndGameGoals(){
+        assertEquals(playController.getEndGameGoals(), game.getEndGameGoals());
+    }
+
+    @Test
+    void getUnfulfilledCommonGoalCards() throws PlayerNotFoundException {
+        String player = players.get(1);
+        String noPlayer = "throw";
+        assertFalse(player.contains(noPlayer));
+        assertThrows(PlayerNotFoundException.class, () -> playController.getUnfulfilledCommonGoalCards(noPlayer));
+        assertEquals(playController.getUnfulfilledCommonGoalCards(player), game.getUnfulfilledCommonGoalCards(player));
+    }
+
+    @Test
+    void getFulfilledCommonGoalCards() throws PlayerNotFoundException {
+        String player = players.get(1);
+        String noPlayer = "throw";
+        assertFalse(player.contains(noPlayer));
+        assertThrows(PlayerNotFoundException.class, () -> playController.getFulfilledCommonGoalCards(noPlayer));
+        assertEquals(playController.getFulfilledCommonGoalCards(player), game.getFulfilledCommonGoalCards(player));
+    }
+
+    @Test
+    void getPersonalGoalCard() throws PlayerNotFoundException {
+        String player = players.get(1);
+        String player2 = players.get(2);
+        String noPlayer = "throw";
+        assertFalse(player.contains(noPlayer));
+        assertThrows(PlayerNotFoundException.class, () -> playController.getPersonalGoalCard(noPlayer));
+        assertEquals(playController.getPersonalGoalCard(player), game.getPersonalGoalCard(player));
+        assertNotEquals(playController.getPersonalGoalCard(player), playController.getPersonalGoalCard(player2));
+    }
+
+    @Test
+    void getTokens() throws PlayerNotFoundException {
+        String player = players.get(1);
+        String noPlayer = "throw";
+        assertFalse(player.contains(noPlayer));
+        assertThrows(PlayerNotFoundException.class, () -> playController.getTokens(noPlayer));
+        assertEquals(playController.getTokens(player), game.getTokens(player));
+        assertEquals(playController.getTokens(player).size(), playController.getFulfilledCommonGoalCards(player).size());
+        LivingRoomBoard livingRoomBoard = game.getBoard();
+        List<Tile> tileToPick = new ArrayList<>();
+        tileToPick.add(
+                livingRoomBoard.getAllTiles().stream()
+                        .filter((t)->{
+                            List<Tile> tiles = new ArrayList<>();
+                            tiles.add(t);
+                            return livingRoomBoard.checkPick(tiles);
+                        }).findFirst().get()
+        );
+        playController.pickTiles(tileToPick, player);
+        assertEquals(playController.getTokens(player).size(), playController.getFulfilledCommonGoalCards(player).size());
+    }
+
+    @Test
+    void getWinner(){
+
+        assertNull(playController.getWinner());
+
+        String winner = players.get(1);
+        List<Player> Players = players.stream().map(Player::new).toList();
+        game = new Game(Players, winner, false, game.getBoard(), new Turn(Players.get(1), game.getBoard()),
+                new Chat(Players), new GoalManager(Players, "data/goals.json"));
+        playController = new PlayController(game, directory);
+        assertEquals(winner, playController.getWinner());
+        assertEquals(winner, game.getWinner());
+    }
+
+    @Test
+    void getPlayers(){
+        assertTrue(playController.getPlayers().containsAll(players));
+        assertTrue(players.containsAll(playController.getPlayers()));
+        assertEquals(playController.getPlayers(), game.getPlayers());
     }
 }
