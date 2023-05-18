@@ -14,5 +14,4 @@ public abstract class State {
     abstract public boolean pickTiles(List<Tile> tiles);
 
     abstract public  boolean putTiles(List<Tile> tiles, int column);
-
 }

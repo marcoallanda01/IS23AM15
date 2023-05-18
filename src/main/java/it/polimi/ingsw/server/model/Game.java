@@ -222,7 +222,7 @@ public class Game{
 
     public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
-        return goalManager.getFulfilledCommonCards(player).stream().map(Pattern::getName).collect(Collectors.toSet());
+        return goalManager.getUnfulfilledCommonCards(player).stream().map(Pattern::getName).collect(Collectors.toSet());
     }
 
     public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
@@ -358,18 +358,13 @@ public class Game{
             e.printStackTrace();
             return false;
         }
-        /*
-            Not needed anymore --> games blocks until 1 player is playing
-            if (players.stream().filter(p -> !p.isPlaying()).count() == players.size()-1) {
-                // handle disconnection of last player
-            }
-
-         */
-        // but now is needed(also before) a TODO if no one is playing
         if(players.stream().filter(p -> !p.isPlaying()).count() == players.size()){
             this.GameChangeSupport.firePropertyChange("lastPlayerDisconnected", null, player);
         }
         if (this.getCurrentPlayer().equals(player)) {
+            if(this.currentTurn.getState().getClass().equals(PutTilesState.class)){
+                this.board.putBackInBad(this.currentTurn.getPickedTiles());
+            }
             this.nextTurn(this.currentTurn.getCurrentPlayer());
         }
         return true;

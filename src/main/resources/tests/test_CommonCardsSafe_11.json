@@ -2,7 +2,7 @@
 "common_cards" : [
 	{"name":"8_SAME",
 		"type":"specific", "masks": [[[1]]],
-		"group_num":1, "sgc":"Y","max":1,"min":1, "fe": "N"
+		"group_num":8, "sgc":"Y","max":1,"min":1, "fe": "N"
 	}
 ],
 "end_game" : [

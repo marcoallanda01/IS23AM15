@@ -163,10 +163,6 @@ public class GoalManager{
                     int x = tileJ.get(0).getAsInt();
                     int y = tileJ.get(1).getAsInt();
                     String tileTypeName = tileJ.get(2).getAsString();
-                    if (tileTypeName == null) {
-                        System.err.println("Invalid tileType in personal");
-                        throw new IllegalStateException("Invalid tileType in personal(null)");
-                    }
                     TileType tileType = TileType.tileTypeFromName(tileTypeName);
                     if(tileType == null){
                         throw new IllegalStateException("Invalid tileType in personal("+tileTypeName+")");

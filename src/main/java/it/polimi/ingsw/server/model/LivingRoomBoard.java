@@ -153,6 +153,16 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
     }
 
     /**
+     * Put tiles back in the bag
+     * @param tiles list of tiles
+     */
+    protected void putBackInBad(List<Tile> tiles){
+        bag.forEach((tt, num) -> {
+            bag.put(tt, (int) (num + tiles.stream().filter(t -> tt.equals(t.getType())).count()));
+        });
+    }
+
+    /**
      * Checks if the tiles can be picked based on 3 rules:
      * <p>
      * 1. The tiles must be present on the board

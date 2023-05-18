@@ -62,6 +62,8 @@
 	}
 ],
 "personal_cards" : [
+	{"name":"Personal_Goa1s", "type":"personal", "tiles":[[0,1,null]],"check_to_points" : [[1,1]] },
+	{"name":"Personal_Goa1s", "type":"personal", "tiles":[[0,1,null]],"check_to_points" : [] },
 	{"name":"Personal_Goals", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] },
 	{"name":"Personal_Goals1", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] },
 	{"name":"Personal_Goals2", "type":"personal", "tiles":[[0,1,"PLANT"]],"check_to_points" : [[1,1]] }
