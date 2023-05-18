@@ -19,13 +19,20 @@ import java.util.*;
 public class RMIServerApp extends UnicastRemoteObject implements ServerCommunication, RMIServer {
     private final Map<RMIClient, String> playersIds;
     private final RMIRespondServer respondServer;
+
+    private RMIClient firstPlayerClient;
+    private String firstPlayerId;
+                                               //TODO togliere client in hello
+                                              // tranne se sei il first player e metterlo solo in join
     private final int port;
 
     public RMIServerApp(int port, Lobby lobby, String sharedLock) throws RemoteException {
         super();
         this.port = port;
         this.playersIds = Collections.synchronizedMap(new HashMap<>());
-        respondServer = new RMIRespondServer(lobby, sharedLock, playersIds);
+        this.firstPlayerClient = null;
+        this.firstPlayerId = null;
+        this.respondServer = new RMIRespondServer(lobby, sharedLock, playersIds);
     }
 
     /**
@@ -47,7 +54,12 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public Hello hello(RMIClient client) throws RemoteException {
-        return respondServer.respondHello(new HelloCommand(), client);
+        Hello hello = respondServer.respondHello(new HelloCommand(), client);
+        if(!hello.firstPlayerId.equals("NoFirst")){
+            this.firstPlayerClient = client;
+            this.firstPlayerId = hello.firstPlayerId;
+        }
+        return hello;
     }
 
     /**
@@ -251,13 +263,16 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void pong(String playerId) throws RemoteException {
         System.out.println("Pong received from: " + playerId);
         if(this.playersIds.containsValue(playerId)){
-            System.out.println("Player Id registered correctly: " + playerId);
             this.playersIds.forEach((k, v) -> {
                 if(v.equals(playerId)){
                     System.out.println("Pong responding to: " + playerId);
                     respondServer.respondPong(new Pong(playerId), k);
                 }
             });
+            // TODO in questo modo in RMI solo chi gioca riceve i ping è giusro?
+        }else if(this.firstPlayerClient != null && this.firstPlayerId.equals(playerId)){
+            System.out.println("RMI Server: First player pong");
+            respondServer.respondPong(new Pong(playerId), firstPlayerClient);
         }
     }
 

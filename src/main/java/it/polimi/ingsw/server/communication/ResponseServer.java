@@ -24,10 +24,12 @@ public abstract class ResponseServer{
 
     protected final String playLock;
     private final Timer pingPongService;
+    protected final String ANONYMOUS_PING_ID = "NoId";
     /**
      * Map to check if the last ping pong was answered. Map client to boolean.
      */
-    private Map<Object, Boolean> pingPongMap;
+    private final Map<Object, Boolean> pingPongMap;
+    private final Map<Object, TimerTask> pingPongTasks;
 
     /**
      * Create a RespondServer. Its use is to implement methods to answer a client request.
@@ -42,6 +44,7 @@ public abstract class ResponseServer{
         this.chatController = null;
         this.pingPongService = new Timer();
         this.pingPongMap = Collections.synchronizedMap(new HashMap<>());
+        this.pingPongTasks  = Collections.synchronizedMap(new HashMap<>());
     }
 
     /**
@@ -51,7 +54,6 @@ public abstract class ResponseServer{
      */
     protected Hello respondHello(HelloCommand hc, Object client){
         Hello hello;
-        startPingPong(client);
         if (!isGameActive()) {
             try {
                 Optional<String> idfp = lobby.join();
@@ -59,8 +61,8 @@ public abstract class ResponseServer{
                     hello = new Hello(!lobby.getIsCreating(), lobby.isGameLoaded());
                 } else {
                     hello = new Hello(idfp.get());
+                    startPingPong(client, idfp.get());
                 }
-
             } catch (WaitLobbyException e) {
                 hello = new Hello(false, false);
             }
@@ -93,7 +95,6 @@ public abstract class ResponseServer{
      */
     protected JoinResponse respondJoin(Join j, Object client) throws FirstPlayerAbsentException {
         JoinResponse joinResponse;
-        startPingPong(client);
         System.out.println("\u001B[38;5;202m respond join called \u001B[0m");
         try {
             synchronized (playLock){
@@ -109,6 +110,7 @@ public abstract class ResponseServer{
         if(joinResponse.result){
             System.out.println("\u001B[38;5;202m respond join: adding client \u001B[0m");
             addPlayingClient(client, joinResponse.id);
+            startPingPong(client, joinResponse.id);
         }
 
         ResponseServer rs = this;
@@ -375,28 +377,37 @@ public abstract class ResponseServer{
     /**
      * Starts ping pong between client and server
      * @param client client's object
+     * @param id player's id
      */
-    protected void startPingPong(Object client){
-        if(!pingPongMap.containsKey(client)) {
-            this.pingPongMap.put(client, true);
-            TimerTask PingTask = new TimerTask() {
-                public void run() {
-                    Boolean responded = pingPongMap.get(client);
-                    System.out.println("\u001B[94mping pong:"+pingPongMap+"\u001B[0m");
-                    if (responded == null) {
-                        //If res is null means that client disconnected
-                        this.cancel();
-                    } else if (responded.equals(false)) {
-                        disconnectPlayer(lobby.getIdFromName(getPlayerNameFromClient(client)), client);
-                        this.cancel();
-                    } else {
-                        ping(client);
-                        pingPongMap.put(client, false);
-                    }
-                }
-            };
-            this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 10000);
+    protected void startPingPong(Object client, String id){
+        if(id == null){
+            System.err.println("startPingPong id null from "+client+"!");
+            return;
         }
+        if(pingPongTasks.containsKey(client) && !ANONYMOUS_PING_ID.equals(id)){
+            System.out.println("\u001B[94mAnonymous client "+client+" changed in "+id+"\u001B[0m");
+            pingPongTasks.get(client).cancel();
+            pingPongTasks.remove(client);
+        }
+        this.pingPongMap.put(client, true);
+        TimerTask PingTask = new TimerTask() {
+            public void run() {
+                Boolean responded = pingPongMap.get(client);
+                System.out.println("\u001B[94mping pong:"+pingPongMap+"\u001B[0m");
+                if (responded == null) {
+                    //If res is null means that client disconnected
+                    this.cancel();
+                } else if (responded.equals(false)) {
+                    disconnectPlayer(id, client);
+                    this.cancel();
+                } else {
+                    pingPongMap.put(client, false);
+                    ping(client);
+                }
+            }
+        };
+        this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 15000);
+        this.pingPongTasks.put(client, PingTask);
     }
 
     /**

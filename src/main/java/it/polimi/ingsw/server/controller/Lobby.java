@@ -166,7 +166,7 @@ public class Lobby {
     public synchronized boolean joinFirstPlayer(String name, int numPlayersGame, boolean easyRules, String id) {
         System.out.println("Before joinFirstPlayer: "+this);
         if (this.isCreating && this.loadingGame == null && numPlayersGame <= this.maxNumPlayers && numPlayersGame >= this.minNumPlayers &&
-                this.firstPlayerId.equals(id)) { // this.isCreating can be true only when fistPlayer.isPresent()
+                this.firstPlayerId != null && this.firstPlayerId.equals(id)) { // this.isCreating can be true only when fistPlayer.isPresent()
             this.isCreating = false;
             this.easyRules = easyRules;
             this.players.put(this.firstPlayerId, name);

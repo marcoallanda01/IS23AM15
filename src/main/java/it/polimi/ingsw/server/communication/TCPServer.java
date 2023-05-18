@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class TCPServer extends ResponseServer implements ServerCommunication{
     private final List<Socket> clients;
@@ -51,6 +52,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     private boolean addClient(Socket client) throws IOException {
         boolean res = clients.add(client);
+        startPingPong(client, ANONYMOUS_PING_ID);
         clientsToOut.put(client, new PrintWriter(client.getOutputStream(), true));
         synchronized (lockOnLocks){
             clientsToLockOut.put(client, client.toString());
@@ -114,17 +116,19 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     public void listenForConnections(){
         System.out.println("TCP Server listening to new connections...");
-
+        /*
         TimerTask closeInactiveClientsTask = new TimerTask() {
             public void run() {
                 System.out.println("TCPServer: Cleaning inactive sockets...");
-                clients.stream()
-                        .filter(Socket::isClosed)
-                        .forEach(socket -> closeClient(socket));
+                List<Socket> toClose = clients.stream()
+                            .filter(Socket::isInputShutdown).toList();
+                int closed = toClose.size();
+                System.out.println("TCPServer: Trying to close "+closed+" inactive clients...");
+                toClose.forEach(socket -> {closeClient(socket);});
             }
         };
-        new Timer().scheduleAtFixedRate(closeInactiveClientsTask, 20000, 100000);
-
+        new Timer().scheduleAtFixedRate(closeInactiveClientsTask, 20000, 30000);
+        */
         while(true) {
             try {
                 Socket clientSocket = serverSocket.accept();
@@ -337,7 +341,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
             }
             if(wrongFormatted){
                 System.err.println("GameCommand from "+client.toString()+
-                        " cannot be understood because wrong formatted");
+                        " cannot be understood because wrong formatted: "+json);
             }
         }else{
             System.err.println("GameCommand from "+client.toString()+" empty");

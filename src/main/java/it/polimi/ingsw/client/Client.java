@@ -18,6 +18,7 @@ public class Client {
     public Client(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
+        this.id = "NoId";
         state = ClientStates.LOGIN;
     }
 
