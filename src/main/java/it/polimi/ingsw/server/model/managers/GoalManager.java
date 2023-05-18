@@ -157,7 +157,7 @@ public class GoalManager{
                 {"name":"pc_1", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
                 */
                 JsonArray tilesJ = patternJ.get("tiles").getAsJsonArray();
-                List<Tile> tiles = new ArrayList<>();
+                Set<Tile> tiles = new HashSet<>();
                 for (int i = 0; i < tilesJ.size(); i++) {
                     JsonArray tileJ = tilesJ.get(i).getAsJsonArray();
                     int x = tileJ.get(0).getAsInt();
