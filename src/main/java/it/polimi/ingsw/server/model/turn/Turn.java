@@ -29,6 +29,7 @@ public class Turn {
     /**
      * Used for deserialization
      */
+    //TODO: errore in turn state non viene caricato
     public Turn(List<Tile> pickedTiles, Player currentPlayer, LivingRoomBoard board) {
         this.pickedTiles = pickedTiles;
         this.currentPlayer = currentPlayer;
@@ -49,6 +50,7 @@ public class Turn {
      * @return true if the tiles were picked, false otherwise
      */
     public boolean pickTiles(List<Tile> tiles) {
+        System.out.println("State:" + state); //TODO: state è null
         return this.state.pickTiles(tiles);
     }
 

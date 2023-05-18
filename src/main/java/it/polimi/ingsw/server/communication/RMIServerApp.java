@@ -200,7 +200,9 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) throws RemoteException {
-        respondServer.respondPickTiles(new PickTilesCommand(playerId, tiles));
+        if(playerId != null && tiles != null && tiles.size() > 0){
+            respondServer.respondPickTiles(new PickTilesCommand(playerId, tiles));
+        }
     }
 
     /**

@@ -78,7 +78,7 @@ public class Game{
      * Notification are sent to the clients.
      * @param game another game
      */
-    public void setGame(Game game) {
+    public void setGame(@NotNull Game game) {
 
         this.players = game.players;
         this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
@@ -97,13 +97,13 @@ public class Game{
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
 
         addPropertyChangeListener(new GameListener(pushNotificationController));
-        notifyListeners();
-
         this.board.notifyListeners();
         //Force notifications
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
+
+        notifyListeners();
     }
 
     /**

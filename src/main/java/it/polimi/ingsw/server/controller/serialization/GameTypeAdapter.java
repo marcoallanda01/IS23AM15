@@ -220,8 +220,9 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     turn = new Turn(pickedTiles, currentPlayer, board);
                     switch (stateName) {
                         case "PickTilesState" -> turn.changeState(new PickTilesState(turn));
-                        case "PutTileState" -> turn.changeState(new PutTilesState(turn));
+                        case "PutTilesState" -> turn.changeState(new PutTilesState(turn));
                         case "EndState" -> turn.changeState(new EndState(turn));
+                        default -> throw new JsonParseException("State name is " + stateName);
                     }
                     in.endObject();
                 }
