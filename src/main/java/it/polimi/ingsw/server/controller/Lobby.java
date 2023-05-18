@@ -322,7 +322,7 @@ public class Lobby {
             this.currentGame.setGame(this.loadingGame);
         }
         System.out.println("Lobby startGame: before return, controller provider created");
-        this.controllerProvider = new ControllerProvider(this.currentGame, this.directory);
+        this.controllerProvider = new ControllerProvider(this.currentGame, this.directory, this.pushNotificationController);
         return this.controllerProvider;
     }
 

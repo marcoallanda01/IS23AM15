@@ -22,6 +22,7 @@ class PlayControllerTest {
     private String directory;
     private PlayController playController;
     private List<String> players;
+    private PushNotificationController pnc;
 
     @BeforeEach
     public void setUp() {
@@ -29,10 +30,11 @@ class PlayControllerTest {
         players.add("player1");
         players.add("player2");
         players.add("player3");
-        game = new Game(new PushNotificationController(new ArrayList<>()));
+        pnc = new PushNotificationController(new ArrayList<>());
+        game = new Game(pnc);
         game.setGame(players, false);
         directory = "saves";
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
     }
 
     @Test
@@ -42,7 +44,7 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "saves");
+        PlayController playController = new PlayController(game, "saves", pnc);
         assertTrue(playController.saveGame("SaveGameTest", true));
     }
 
@@ -53,9 +55,9 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "/");
+        PlayController playController = new PlayController(game, "/", pnc);
         assertThrows(IOException.class, () -> playController.saveGame("SaveGameTest"));
-        PlayController playController1 = new PlayController(game, "saves");
+        PlayController playController1 = new PlayController(game, "saves", pnc);
         assertThrows(SaveException.class, () -> playController1.saveGame("SaveGameTest", false));
     }
 
@@ -71,7 +73,7 @@ class PlayControllerTest {
         game = new Game(players, player.getUserName(), false, livingRoomBoard, new Turn(player, livingRoomBoard),
                 new Chat(players), new GoalManager(players, "data/goals.json", true));
 
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
 
         assertFalse(player.isFirstToFinish());
         assertEquals(playController.getPoints(player.getUserName()),
@@ -85,7 +87,7 @@ class PlayControllerTest {
         tiles.add(new Tile(-1, -1, TileType.CAT));
         player.insertTiles(tiles, 0);
 
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
 
         assertTrue(playController.getPoints(player.getUserName()) >= 0);
     }
@@ -169,7 +171,7 @@ class PlayControllerTest {
         Game game2 = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
                 new Chat(players), new GoalManager(players, "data/goals.json", true));
         game.setGame(game2);
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
         assertTrue(playController.pickTiles(tileToPick, player.getUserName()));
         assertFalse(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
         player.gsonPostProcess();
@@ -201,7 +203,7 @@ class PlayControllerTest {
 
         game = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
                 new Chat(players), new GoalManager(players, "data/goals.json", true));
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
         assertFalse(playController.pickTiles(tileToPick, player.getUserName()));
         assertTrue(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
     }
@@ -226,7 +228,7 @@ class PlayControllerTest {
 
         game = new Game(players, null, false, livingRoomBoard, new Turn(player, livingRoomBoard),
                 new Chat(players), new GoalManager(players, "data/goals.json", true));
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
         //Wrong turn
         assertFalse(playController.pickTiles(tileToPick, players.get(1).getUserName()));
         assertTrue(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
@@ -249,7 +251,7 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "saves");
+        PlayController playController = new PlayController(game, "saves", pnc);
         assertTrue(playController.leave("player1"));
         assertEquals(1, game.getPlayersList().stream().filter(p -> !p.isPlaying()).count());
         assertFalse(playController.leave("player1"));
@@ -264,7 +266,7 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "saves");
+        PlayController playController = new PlayController(game, "saves", pnc);
         assertFalse(playController.reconnect("player1"));
         assertTrue(playController.leave("player1"));
         assertTrue(playController.reconnect("player1"));
@@ -342,7 +344,7 @@ class PlayControllerTest {
         List<Player> Players = players.stream().map(Player::new).toList();
         game = new Game(Players, winner, false, game.getBoard(), new Turn(Players.get(1), game.getBoard()),
                 new Chat(Players), new GoalManager(Players, "data/goals.json", true));
-        playController = new PlayController(game, directory);
+        playController = new PlayController(game, directory, pnc);
         assertEquals(winner, playController.getWinner());
         assertEquals(winner, game.getWinner());
     }
