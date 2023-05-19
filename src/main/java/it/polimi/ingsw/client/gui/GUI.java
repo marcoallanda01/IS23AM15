@@ -19,9 +19,11 @@ public class GUI extends View {
     }
 
     public void render(){
+        System.out.println("Rendering: " + Client.getInstance().getClientState());
         switch (Client.getInstance().getClientState()) {
             case LOGIN -> this.guiState = new GUILogin(guiApplication);
-            case CREATE_LOBBY -> this.guiState = new GUICreateLobby(guiApplication);
+            case CREATE_LOBBY -> this.guiState = new GUICreateLobby(guiApplication, this.getNickname());
+            case CREATE_GAME -> this.guiState = new GUICreateGame(guiApplication);
             default -> System.out.println("Invalid state");
         }
     }
