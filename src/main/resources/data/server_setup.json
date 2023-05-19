@@ -1,0 +1,5 @@
+{
+  "rmi": 7001,
+  "tcp": 6000,
+  "directory": "saves"
+}

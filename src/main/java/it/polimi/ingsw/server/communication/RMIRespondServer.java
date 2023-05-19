@@ -94,6 +94,41 @@ public class RMIRespondServer extends ResponseServer{
     }
 
     /**
+     * Send an error message to a player
+     *
+     * @param player  player's id
+     * @param message Error message
+     */
+    @Override
+    protected void sendErrorMessage(String player, String message) {
+        this.playersIds.forEach((key, value) -> {
+            if(value.equals(player)) {
+                try {
+                    key.notifyError(message);
+                } catch (RemoteException e) {
+                    System.err.println("RMI sendErrorMessage: Remote Exception thrown with client " + value);
+                }
+            }
+        });
+    }
+
+    /**
+     * Send an error message to all players
+     *
+     * @param message Error message
+     */
+    @Override
+    protected void sendErrorMessageToAll(String message) {
+        this.playersIds.forEach((key, value) -> {
+            try {
+                key.notifyError(message);
+            } catch (RemoteException e) {
+                System.err.println("RMI sendErrorMessageToAll: Remote Exception thrown with client " + value);
+            }
+        });
+    }
+
+    /**
      * Send one GameSetUp object to every player
      */
     protected void gameSetUp(){

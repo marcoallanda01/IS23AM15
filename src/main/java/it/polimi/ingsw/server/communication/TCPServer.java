@@ -573,4 +573,31 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         Socket clientSock = (Socket) client;
         sendToClient(clientSock, new Ping().toJson());
     }
+
+    /**
+     * Send an error message to a player
+     *
+     * @param player  player's name
+     * @param message Error message
+     */
+    @Override
+    protected void sendErrorMessage(String player, String message) {
+        this.playersIds.forEach((s, id) ->{
+            if(id.equals(player)){
+                sendToClient(s, new ErrorMessage(message).toJson());
+            }
+        });
+    }
+
+    /**
+     * Send an error message to all players
+     *
+     * @param message Error message
+     */
+    @Override
+    protected void sendErrorMessageToAll(String message) {
+        this.playersIds.forEach((s, id) ->{
+            sendToClient(s, new ErrorMessage(message).toJson());
+        });
+    }
 }

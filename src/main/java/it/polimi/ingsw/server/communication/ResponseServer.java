@@ -14,7 +14,6 @@ import java.util.*;
 /**
  * Class that implements methods to answer a client request
  */
-// TODO: make TCPServer and RMIServerApp to extends this
 public abstract class ResponseServer{
 
     protected final Lobby lobby;
@@ -224,7 +223,7 @@ public abstract class ResponseServer{
         String namep = lobby.getNameFromId(ptc.getId());
         if (isGameActive() && namep != null) {
             if(! playController.pickTiles(new ArrayList<>(ptc.tiles), namep) ){
-                //TODO send error message
+                sendErrorMessage(ptc.getId(), "This tiles can't be picked!");
             }
         }
     }
@@ -238,7 +237,7 @@ public abstract class ResponseServer{
         if (isGameActive() && namep != null) {
             List<Tile> tilesPut = ptc.tiles.stream().map(Tile::new).toList();
             if(! playController.putTiles(tilesPut, ptc.column, namep) ){
-                //TODO send error message
+                sendErrorMessage(ptc.getId(), "Can't put this tiles like this!");
             }
         }
     }
@@ -249,13 +248,13 @@ public abstract class ResponseServer{
      */
     protected void respondSaveGame(SaveGame sg){
         synchronized (playLock) {
-            if (isGameActive() && lobby.getNameFromId(sg.getId()) != null) {
+            String namep = lobby.getNameFromId(sg.getId());
+            if (isGameActive() && namep != null) {
                 boolean res;
                 try {
                     playController.saveGame(sg.game);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    //TODO send error message
+                    sendErrorMessage(sg.getId(), "This tiles can't be picked!");
                 }
             }
         }
@@ -273,6 +272,7 @@ public abstract class ResponseServer{
                     chatController.sendMessage(sender, sm.player, sm.message);
                 } catch (PlayerNotFoundException e) {
                     System.out.println(sender+" tried to send a message to "+sm.player+", but this player doesn't exists!");
+                    sendErrorMessage(sm.getId(), "Can not send message! Try again!");
                 }
             }
         }
@@ -318,8 +318,7 @@ public abstract class ResponseServer{
                         return;
                     } catch (ArrestGameException e) {
                         System.err.println("Game arrested unexpected!");
-                        e.printStackTrace();
-                        //TODO: notify all clients with an errorMessage
+                        sendErrorMessageToAll("SERVER ERROR: Game can not start! Please retry or try later!");
                         return;
                     }
                 } else {
@@ -397,7 +396,7 @@ public abstract class ResponseServer{
                 }
             }
         };
-        this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 10000);
+        this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 15000);
         this.pingPongTasks.put(client, PingTask);
     }
 
@@ -428,13 +427,17 @@ public abstract class ResponseServer{
      */
     protected abstract void ping(Object client);
 
-    //TODO check this two
-    /*
+    /**
+     * Send an error message to a player
+     * @param player player's id
+     * @param message Error message
+     */
+    protected abstract void sendErrorMessage(String player, String message);
 
-     * Send a message to all the clients
-     * @param message Msg to send
-     /
-    protected abstract void sendMessageToAll(Msg message);
-    protected abstract void sendMessageToClient(Object client, Msg message);
-    */
+    /**
+     * Send an error message to all players
+     * @param message Error message
+     */
+    protected abstract void sendErrorMessageToAll(String message);
+
 }
