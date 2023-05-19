@@ -125,7 +125,9 @@ public abstract class ResponseServer{
             System.out.println("\u001B[38;5;202m respond join after try to start game here \u001B[0m");
             return joinResponse;
         }
-        return new JoinResponse(lobby.getIdFromName(name));
+        String idPlayer = lobby.getIdFromName(name);
+        sendErrorMessage(idPlayer, "You already joined under the name: "+name);
+        return new JoinResponse(idPlayer);
     }
 
     /**
