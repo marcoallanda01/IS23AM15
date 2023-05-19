@@ -56,6 +56,7 @@ public class TCPClientConnection implements ClientConnection {
             System.out.println("TCP client connection open");
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ClientConnectionException();
         }
     }
 
@@ -74,6 +75,7 @@ public class TCPClientConnection implements ClientConnection {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ClientConnectionException();
         }
     }
 

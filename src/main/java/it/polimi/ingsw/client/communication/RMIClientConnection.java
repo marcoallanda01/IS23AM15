@@ -6,6 +6,7 @@ import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -32,15 +33,28 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
         this.port = port;
         this.clientNotificationListener = clientNotificationListener;
     }
-    public void openConnection() throws Exception {
+    public void openConnection() throws ClientConnectionException {
         System.out.println("Opening RMI client connection...");
         // Getting the registry
         Registry registry;
         System.out.println("Locating registry...");
-        registry = LocateRegistry.getRegistry(hostname, port);
+        try {
+            registry = LocateRegistry.getRegistry(hostname, port);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            throw new ClientConnectionException();
+        }
         System.out.println("Looking up the registry for ServerRMIApp...");
         // Looking up the registry for the remote object
-        this.rmiServer = (RMIServer) registry.lookup("ServerRMIApp");
+        try {
+            this.rmiServer = (RMIServer) registry.lookup("ServerRMIApp");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            throw new ClientConnectionException();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+            throw new ClientConnectionException();
+        }
         System.out.println("RMI client connection open");
     }
     // Method to close RMI connection

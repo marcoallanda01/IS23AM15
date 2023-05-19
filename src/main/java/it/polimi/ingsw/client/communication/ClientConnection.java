@@ -5,8 +5,8 @@ package it.polimi.ingsw.client.communication;
  * the client MUST use only one instance of this class
  */
 public interface ClientConnection {
-    public void openConnection() throws Exception;
+    public void openConnection() throws ClientConnectionException;
 
-    public void closeConnection() throws Exception;
+    public void closeConnection() throws ClientConnectionException;
 }
 

@@ -56,7 +56,7 @@ public class GUICreateGame extends GUIState {
         root.setStyle("-fx-background-color: #F4F4F4;");
 
         // Create the scene and set the root pane
-        Scene scene = new Scene(root, 400, 300);
+        Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 

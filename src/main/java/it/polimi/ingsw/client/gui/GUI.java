@@ -15,9 +15,11 @@ public class GUI extends View {
     public GUI(GUIApplication guiApplication) {
         this.executorService = Executors.newCachedThreadPool();
         this.guiApplication = guiApplication;
-        render();
     }
-
+    @Override
+    public void showError(String error) {
+        guiApplication.showPopup(error);
+    }
     public void render(){
         System.out.println("Rendering: " + Client.getInstance().getClientState());
         switch (Client.getInstance().getClientState()) {

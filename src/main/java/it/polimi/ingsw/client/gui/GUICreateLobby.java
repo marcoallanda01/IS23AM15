@@ -39,7 +39,7 @@ public class GUICreateLobby extends GUIState {
         root.getChildren().addAll(usernameLabel, loadGameButton, newGameButton);
 
         // Create the scene and set the root pane
-        Scene scene = new Scene(root, 400, 300);
+        Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 

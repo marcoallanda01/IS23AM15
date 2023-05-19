@@ -195,8 +195,9 @@ public class Client {
         }
         try {
             singleton.clientConnection.openConnection();
-        } catch (Exception e) {
+        } catch (ClientConnectionException e) {
             e.printStackTrace();
+            throw e;
         }
     }
 }
