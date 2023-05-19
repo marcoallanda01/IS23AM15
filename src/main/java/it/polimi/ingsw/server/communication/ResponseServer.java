@@ -95,33 +95,37 @@ public abstract class ResponseServer{
     protected JoinResponse respondJoin(Join j, Object client) throws FirstPlayerAbsentException {
         JoinResponse joinResponse;
         System.out.println("\u001B[38;5;202m respond join called \u001B[0m");
-        try {
-            synchronized (playLock){
-                joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+        String name = getPlayerNameFromClient(client);
+        if(name == null) { // if client didn't join
+            try {
+                synchronized (playLock) {
+                    joinResponse = new JoinResponse(lobby.addPlayer(j.player));
+                }
+            } catch (NicknameTakenException e) {
+                joinResponse = new JoinResponse(e);
+            } catch (NicknameException e) {
+                joinResponse = new JoinResponse(e);
+            } catch (FullGameException e) {
+                joinResponse = new JoinResponse(e);
             }
-        } catch (NicknameTakenException e) {
-            joinResponse = new JoinResponse(e);
-        } catch (NicknameException e) {
-            joinResponse = new JoinResponse(e);
-        } catch (FullGameException e) {
-            joinResponse = new JoinResponse(e);
-        }
-        if(joinResponse.result){
-            System.out.println("\u001B[38;5;202m respond join: adding client \u001B[0m");
-            addPlayingClient(client, joinResponse.id);
-            startPingPong(client, joinResponse.id);
-        }
+            if (joinResponse.result) {
+                System.out.println("\u001B[38;5;202m respond join: adding client \u001B[0m");
+                addPlayingClient(client, joinResponse.id);
+                startPingPong(client, joinResponse.id);
+            }
 
-        ResponseServer rs = this;
-        //TODO: choose
-        new Thread(() -> {
-            System.out.println("\u001B[38;5;202m started a new thread with tryStartGame() \u001B[0m");
-            rs.tryStartGame();
-            return;
-        });//.start();
-        tryStartGame();
-        System.out.println("\u001B[38;5;202m respond join after try to start game here \u001B[0m");
-        return joinResponse;
+            ResponseServer rs = this;
+            //TODO: choose
+            new Thread(() -> {
+                System.out.println("\u001B[38;5;202m started a new thread with tryStartGame() \u001B[0m");
+                rs.tryStartGame();
+                return;
+            });//.start();
+            tryStartGame();
+            System.out.println("\u001B[38;5;202m respond join after try to start game here \u001B[0m");
+            return joinResponse;
+        }
+        return new JoinResponse(lobby.getIdFromName(name));
     }
 
     /**
