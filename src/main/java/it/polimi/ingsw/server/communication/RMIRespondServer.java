@@ -88,7 +88,7 @@ public class RMIRespondServer extends ResponseServer{
     protected void ping(Object client) {
         try {
             ((RMIClient)client).notifyPing();
-        } catch (RemoteException e) {
+        } catch (RemoteException | RuntimeException e) {
             System.err.println("RMI ping: Remote Exception thrown with client " + this.playersIds.get(client));
         }
     }
@@ -105,7 +105,7 @@ public class RMIRespondServer extends ResponseServer{
             if(value.equals(player)) {
                 try {
                     key.notifyError(message);
-                } catch (RemoteException e) {
+                } catch (RemoteException | RuntimeException e) {
                     System.err.println("RMI sendErrorMessage: Remote Exception thrown with client " + value);
                 }
             }
@@ -122,7 +122,7 @@ public class RMIRespondServer extends ResponseServer{
         this.playersIds.forEach((key, value) -> {
             try {
                 key.notifyError(message);
-            } catch (RemoteException e) {
+            } catch (RemoteException | RuntimeException e) {
                 System.err.println("RMI sendErrorMessageToAll: Remote Exception thrown with client " + value);
             }
         });
@@ -140,7 +140,7 @@ public class RMIRespondServer extends ResponseServer{
                             new ArrayList<>(playController.getEndGameGoals()),
                             playController.getPersonalGoalCard(getPlayerNameFromClient(key))
                     ));
-                } catch (RemoteException e) {
+                } catch (RemoteException | RuntimeException e) {
                     System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
                 } catch (PlayerNotFoundException e) {
                     System.out.println("GameSetUp: This player do not exists " + getPlayerNameFromClient(key));
