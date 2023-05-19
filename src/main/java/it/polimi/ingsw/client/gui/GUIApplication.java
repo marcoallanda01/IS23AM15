@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.Client;
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -56,21 +57,23 @@ public class GUIApplication extends Application {
 
     public synchronized void transitionToScene(Scene newScene) {
         System.out.println("Transitioning");
-        // Create a fade transition
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), primaryStage.getScene().getRoot());
-        fadeTransition.setFromValue(1.0);
-        fadeTransition.setToValue(0.0);
-        fadeTransition.setOnFinished(event -> {
-            // Set the new scene after the fade transition
-            primaryStage.setScene(newScene);
+        // Create a fade-out transition for the current scene
+        FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(1), primaryStage.getScene().getRoot());
+        fadeOutTransition.setFromValue(1.0);
+        fadeOutTransition.setToValue(0.0);
 
-            // Create another fade transition to show the new scene
-            FadeTransition showTransition = new FadeTransition(Duration.seconds(2), primaryStage.getScene().getRoot());
-            showTransition.setFromValue(0.0);
-            showTransition.setToValue(1.0);
-            showTransition.play();
+        // Create a fade-in transition for the new scene
+        FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(1), newScene.getRoot());
+        fadeInTransition.setFromValue(0.0);
+        fadeInTransition.setToValue(1.0);
+
+        // Combine the fade transitions in a parallel transition
+        ParallelTransition transition = new ParallelTransition(fadeOutTransition, fadeInTransition);
+        transition.setOnFinished(event -> {
+            // Set the new scene after the transition
+            primaryStage.setScene(newScene);
         });
-        fadeTransition.play();
+        transition.play();
     }
 
 }
