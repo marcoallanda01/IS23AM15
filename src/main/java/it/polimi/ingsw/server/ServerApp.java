@@ -19,21 +19,16 @@ import java.util.concurrent.Executors;
 import static java.lang.System.exit;
 
 public class ServerApp {
+    //default config
+    private static int rmi_port  = 7001;
+    private static int tcp_port = 6000;
+    private static String saves = "saves";
 
-    public static void main(String[] args) {
-        System.out.println("Server configuration...");
+    /**
+     * Parse json set up file
+     */
+    private static void parseJson(String file_setup){
 
-        //default ports
-        int rmi_port  = 7001;
-        int tcp_port = 6000;
-        String saves = null;
-
-        if(args.length != 1){
-            System.err.println("Wrong number of arguments!");
-            exit(1);
-        }
-
-        String file_setup = args[0];
         Map<String, Object> setUpMap = null;
         try {
             Reader reader = Files.newBufferedReader(Paths.get(file_setup));
@@ -58,7 +53,7 @@ public class ServerApp {
         }
         if(rmi_port == tcp_port){
             System.err.println("Server can not starts if ports are the same!");
-            exit(2);
+            exit(1);
         }
         try{
             saves = (String) setUpMap.get("directory");
@@ -67,8 +62,32 @@ public class ServerApp {
             }
             System.out.println("Saves directory set up to: "+ saves);
         }catch (RuntimeException e){
-            saves = "saves";
-            System.err.println("Can not set up saves directory! Set to default: " + saves);
+            System.err.println("Saves directory set to default: " + saves);
+        }
+    }
+
+    /**
+     * Start server.
+     * Pass as args a json sent up file es: "ServerApp setup.json". Pass no args tp.
+     * Set up file example with default settings:
+     * {
+     *     "rmi" : 7001,
+     *     "tcp" : 6000,
+     *     "directory" : "saves"
+     * }
+     * @param args args passed
+     */
+    public static void main(String[] args) {
+
+        System.out.println("Server configuration...");
+        if(args.length == 1){
+            String file_setup = args[0];
+            parseJson(file_setup);
+        }else{
+            System.out.println("Standard configuration chosen");
+            System.out.println("Rmi default port: "+rmi_port);
+            System.out.println("Tcp default port: "+tcp_port);
+            System.out.println("Saves default directory: "+saves);
         }
 
         System.out.println("Starting server...");
