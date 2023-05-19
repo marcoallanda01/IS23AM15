@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class GUIInGame extends GUIState {
@@ -58,9 +59,11 @@ public class GUIInGame extends GUIState {
         backgroundImageView.setFitWidth(315);
         backgroundImageView.setPreserveRatio(true);
 
+        Random random = new Random();
         for (Tile tile : livingRoomBoard) {
             if (tile != null) {
-                ImageView tileImage = new ImageView(new Image(getClass().getResource("/assets/tiles/" + tile.getType() + ".png").toExternalForm()));
+                int randomNum = random.nextInt(3) + 1;
+                ImageView tileImage = new ImageView(new Image(getClass().getResource("/assets/tiles/" + tile.getType() + randomNum + ".png").toExternalForm()));
                 tileImage.setFitHeight(30);
                 tileImage.setFitWidth(30);
                 gridPane.add(tileImage, tile.getY(), tile.getX());
