@@ -24,6 +24,7 @@ public class GUI extends View {
             case LOGIN -> this.guiState = new GUILogin(guiApplication);
             case CREATE_LOBBY -> this.guiState = new GUICreateLobby(guiApplication, this.getNickname());
             case CREATE_GAME -> this.guiState = new GUICreateGame(guiApplication);
+            case IN_GAME -> this.guiState = new GUIInGame(guiApplication, this.getLivingRoomBoard(), this.getBookShelves());
             default -> System.out.println("Invalid state");
         }
     }

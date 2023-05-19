@@ -90,8 +90,8 @@ public class CLIRenderer {
             line.add(null);
         }
         for (Tile tile : board) {
-            if (tile != null && tile.getY() == n) {
-                line.set(tile.getX(), tile);
+            if (tile != null && tile.getX() == n) {
+                line.set(tile.getY(), tile);
             }
         }
         System.out.print(n + "\uFE0F⃣");

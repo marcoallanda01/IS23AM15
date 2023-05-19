@@ -259,6 +259,11 @@ public class ClientController implements ClientNotificationListener {
                 }
             }
         }
+        if(tiles.size() == 0) {
+            view.render();
+            view.showError("The tiles you selected are not valid. Please retry.");
+            return;
+        }
         Client.getInstance().getClientCommunication().pickTiles(Client.getInstance().getId(), tiles);
     }
 
@@ -268,8 +273,8 @@ public class ClientController implements ClientNotificationListener {
         for(Integer index : order) {
             orderedTiles.add(tiles.get(index));
         }
-        Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), orderedTiles, column);
         view.setPickedTiles(new ArrayList<>());
+        Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), orderedTiles, column);
     }
 
     public void sendChatMessage(String message) {
