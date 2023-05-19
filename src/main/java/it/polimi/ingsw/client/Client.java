@@ -186,6 +186,8 @@ public class Client {
 
     public void init(View view) {
         this.view = view;
+        // clientController must be set before setting up the network, because the connection needs a reference to it
+        singleton.clientController = new ClientController();
         if (protocolSetting.equals(Protocols.RMI)) {
             singleton.setupNetworkRMI();
         } else if (protocolSetting.equals(Protocols.TCP)) {
@@ -196,7 +198,5 @@ public class Client {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        singleton.clientController = new ClientController();
-
     }
 }
