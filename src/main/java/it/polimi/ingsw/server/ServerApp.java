@@ -65,10 +65,10 @@ public class ServerApp {
             if(saves == null){
                 throw new NullPointerException("Saves directory can not be null");
             }
-            System.out.println("Saves directory set up to: "+saves);
+            System.out.println("Saves directory set up to: "+ saves);
         }catch (RuntimeException e){
-            System.err.println("Can not set up saves directory!");
-            exit(3);
+            saves = "saves";
+            System.err.println("Can not set up saves directory! Set to default: " + saves);
         }
 
         System.out.println("Starting server...");
