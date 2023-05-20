@@ -29,7 +29,7 @@ public class GUIApplication extends Application {
         root.getChildren().add(text);
 
         // Create the scene and set the root pane
-        Scene scene = new Scene(root, 400, 300);
+        Scene scene = new Scene(root, 800, 600);
 
         // Set CSS styling for the text
         text.getStyleClass().add("my-shelfie-text");
