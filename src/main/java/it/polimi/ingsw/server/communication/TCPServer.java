@@ -437,6 +437,22 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     public void notifyReconnection(String playerName) {
         this.clientsInGame.forEach(c->{
             sendToClient(c, new Reconnected(playerName).toJson());
+            if(getPlayerNameFromClient(c).equals(playerName)){
+                synchronized (playLock){
+                    try{
+                        sendToClient(c,
+                                new GameSetUp(
+                                        playController.getPlayers(),
+                                        new ArrayList<>(playController.getEndGameGoals()),
+                                        playController.getPersonalGoalCard(playerName)
+                                ).toJson()
+                        );
+                        sendToClient(c, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
+                    } catch (PlayerNotFoundException e) {
+                        System.err.println("Cannot handle GameSetUp reconnection of "+c);
+                    }
+                }
+            }
         });
     }
 
@@ -600,4 +616,32 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
             sendToClient(s, new ErrorMessage(message).toJson());
         });
     }
+
+    /**
+     * Handle reconnection of a client sending them all the necessary.
+     *
+     * @param client client's object
+     */
+    /*
+    @Override
+    protected void handleReconnection(Object client) {
+        Socket socket = (Socket) client;
+        synchronized (playLock){
+            String playerName = getPlayerNameFromClient(socket);
+            try{
+                sendToClient(socket,
+                        new GameSetUp(
+                                playController.getPlayers(),
+                                new ArrayList<>(playController.getEndGameGoals()),
+                                playController.getPersonalGoalCard(playerName)
+                        ).toJson()
+                );
+                sendToClient(socket, new BookShelfUpdate(playerName, playController..toJson());
+
+            } catch (PlayerNotFoundException e) {
+                System.err.println("Cannot handle reconnection of "+socket);
+            }
+        }
+    }
+    */
 }

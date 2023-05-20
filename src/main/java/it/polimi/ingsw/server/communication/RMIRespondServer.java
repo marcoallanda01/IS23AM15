@@ -148,4 +148,24 @@ public class RMIRespondServer extends ResponseServer{
             });
         }
     }
+
+    /**
+     * Handle the reconnection of a player
+     */
+    protected void handleReconnection(RMIClient client, String name){
+        synchronized (playLock) {
+            try {
+                client.notifyGame(new GameSetUp(
+                        playController.getPlayers(),
+                        new ArrayList<>(playController.getEndGameGoals()),
+                        playController.getPersonalGoalCard(name)
+                ));
+                client.notifyCommonGoalCards(playController.getCommonGoalCardsToTokens());
+            } catch (RemoteException | RuntimeException e) {
+                System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
+            } catch (PlayerNotFoundException e) {
+                System.out.println("handleReconnection: This player do not exists " + name);
+            }
+        }
+    }
 }

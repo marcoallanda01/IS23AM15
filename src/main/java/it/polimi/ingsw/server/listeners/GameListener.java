@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.listeners;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.turn.Turn;
 
@@ -27,8 +28,7 @@ public class GameListener extends StandardListener implements PropertyChangeList
         if(proprietyName.equals("currentTurn")) {
             String playerName = (String) evt.getNewValue();
             pnc.notifyTurnChange(playerName);
-        }
-        else if(proprietyName.equals("gameStarted")){
+        } else if(proprietyName.equals("gameStarted")){
             pnc.notifyGameSetUp();
         }
         else if(proprietyName.equals("gameWon")){

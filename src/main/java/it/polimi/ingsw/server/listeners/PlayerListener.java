@@ -25,18 +25,22 @@ public class PlayerListener extends StandardListener implements PropertyChangeLi
         String proprietyName = safePropertyName(evt.getPropertyName());
         System.out.println("\u001B[33m"+"PlayerLister: "+proprietyName+"\u001B[0m");
         if(proprietyName.equals("playingState")) {
-            String playerName = ((Player) evt.getSource()).getUserName();
+            Player player = (Player) evt.getSource();
+            String playerName = player.getUserName();
             if ((boolean) evt.getNewValue()) {
                 pnc.notifyReconnection(playerName);
+                //Sent to all clients to be sure
+                pnc.notifyChangeBookShelf(playerName, player.getBookShelf().getAllTiles());
             } else {
                 pnc.notifyDisconnection(playerName);
             }
         }
         else if(proprietyName.equals("pointsUpdate")) {
             String playerName = ((Player) evt.getSource()).getUserName();
-            if ((int) evt.getOldValue() != (int) evt.getNewValue()) {
-                pnc.updatePlayerPoints(playerName, (int) evt.getNewValue());
-            }
+            //if ((int) evt.getOldValue() != (int) evt.getNewValue()) {
+            // Decided to send every time to be sure that clients have the right value
+            pnc.updatePlayerPoints(playerName, (int) evt.getNewValue());
+            //}
         }
         else if(proprietyName.equals("bookShelfChange")) {
                 String playerName = ((Player) evt.getSource()).getUserName();

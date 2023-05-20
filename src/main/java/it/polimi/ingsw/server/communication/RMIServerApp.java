@@ -354,6 +354,9 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
         this.playersIds.forEach((key, value) -> {
             try {
                 key.notifyReconnection(playerName);
+                if(playerName.equals(respondServer.getPlayerNameFromClient(key))){
+                    respondServer.handleReconnection(key, playerName);
+                }
             } catch (RemoteException | RuntimeException e) {
                 System.err.println("RMI notifyReconnection: "+e.getClass()+" thrown with client "+value);
             }

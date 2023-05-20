@@ -214,8 +214,11 @@ public abstract class ResponseServer{
         if (isGameActive()) {
             String name = lobby.getNameFromId(id);
             if (name != null) {
-                if(playController.reconnect(name)){
-                    addPlayingClient(client, id);
+                addPlayingClient(client, id);
+                if(!playController.reconnect(name)){
+                    System.err.println("respondReconnect: something went wrong with reconnection of "+id
+                            +", probably client never disconnected for the server!");
+                    //handleReconnection(client);
                 }
             }
         }
@@ -445,5 +448,11 @@ public abstract class ResponseServer{
      * @param message Error message
      */
     protected abstract void sendErrorMessageToAll(String message);
+
+    /**
+     * Handle reconnection of a client sending them all the necessary.
+     * @param client client's object
+     */
+   // protected abstract void handleReconnection(Object client);
 
 }
