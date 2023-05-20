@@ -77,5 +77,22 @@ public class GUIApplication extends Application {
     }
 
     public void showPopup(String error) {
+        // Create the text node
+        Text text = new Text(error);
+        text.setFont(Font.font("Arial", 18));
+
+        // Create the layout pane
+        StackPane root = new StackPane();
+        root.getChildren().add(text);
+
+        // Create the scene and set the root pane
+        Scene scene = new Scene(root, 400, 300);
+
+        // Set CSS styling for the text
+        text.getStyleClass().add("my-shelfie-text");
+
+        // Set the scene to the primary stage
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
