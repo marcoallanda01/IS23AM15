@@ -76,4 +76,6 @@ public class GUIApplication extends Application {
         transition.play();
     }
 
+    public void showPopup(String error) {
+    }
 }
