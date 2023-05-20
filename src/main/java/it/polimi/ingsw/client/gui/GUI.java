@@ -15,7 +15,6 @@ public class GUI extends View {
     public GUI(GUIApplication guiApplication) {
         this.executorService = Executors.newCachedThreadPool();
         this.guiApplication = guiApplication;
-        render();
     }
     @Override
     public void showError(String error) {
