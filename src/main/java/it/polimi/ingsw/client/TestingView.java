@@ -77,7 +77,7 @@ public class TestingView implements ClientNotificationListener {
                     clientCommunication.disconnect(myId);
                     break;
                 case "reconnect":
-                    myId ="7bd38be3-9442-4871-afcb-144371af6302";
+                    myId ="9fe9bbef-f32d-45e7-b19e-7e1554525785";
                     clientCommunication.reconnect(myId);
                     break;
                 case "pick tiles":

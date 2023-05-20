@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class is used to implement the ResponseServer necessary to the RMIServerApp
@@ -161,11 +162,24 @@ public class RMIRespondServer extends ResponseServer{
                         playController.getPersonalGoalCard(name)
                 ));
                 client.notifyCommonGoalCards(playController.getCommonGoalCardsToTokens());
+                client.notifyBoard(playController.getBoard());
             } catch (RemoteException | RuntimeException e) {
                 System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
             } catch (PlayerNotFoundException e) {
                 System.out.println("handleReconnection: This player do not exists " + name);
             }
+            this.playersIds.forEach((c, id) ->{
+                try {
+                    if(!Objects.equals(c, client)){
+                        String thisPlayer = lobby.getNameFromId(id);
+                        client.notifyBookshelf(thisPlayer, playController.getBookshelf(thisPlayer));
+                    }
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
+                } catch (PlayerNotFoundException e) {
+                    System.out.println("handleReconnection:"+e.getMessage());
+                }
+            } );
         }
     }
 }

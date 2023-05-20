@@ -435,25 +435,47 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     @Override
     public void notifyReconnection(String playerName) {
+        Socket reconnectedPlayer = null;
+        for(Socket c : this.clientsInGame){
+            if(getPlayerNameFromClient(c).equals(playerName)){
+                reconnectedPlayer = c;
+                System.out.println("TCP notifyReconnection: client reconnected "+reconnectedPlayer+" "+playerName);
+            }
+        }
+        Socket finalReconnectedPlayer = reconnectedPlayer;
         this.clientsInGame.forEach(c->{
             sendToClient(c, new Reconnected(playerName).toJson());
-            if(getPlayerNameFromClient(c).equals(playerName)){
+            if(!getPlayerNameFromClient(c).equals(playerName)){
                 synchronized (playLock){
-                    try{
-                        sendToClient(c,
-                                new GameSetUp(
-                                        playController.getPlayers(),
-                                        new ArrayList<>(playController.getEndGameGoals()),
-                                        playController.getPersonalGoalCard(playerName)
+                    try {
+                        sendToClient(finalReconnectedPlayer,
+                                new BookShelfUpdate(
+                                        getPlayerNameFromClient(c),
+                                        playController.getBookshelf(getPlayerNameFromClient(c))
                                 ).toJson()
                         );
-                        sendToClient(c, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
                     } catch (PlayerNotFoundException e) {
-                        System.err.println("Cannot handle GameSetUp reconnection of "+c);
+                        System.err.println("notifyReconnection: "+e.getMessage());
                     }
                 }
             }
+
         });
+        synchronized (playLock){
+            try{
+                sendToClient(reconnectedPlayer,
+                        new GameSetUp(
+                                playController.getPlayers(),
+                                new ArrayList<>(playController.getEndGameGoals()),
+                                playController.getPersonalGoalCard(playerName)
+                        ).toJson()
+                );
+                sendToClient(reconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
+                sendToClient(reconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());
+            } catch (PlayerNotFoundException e) {
+                System.err.println("Cannot handle GameSetUp reconnection of "+reconnectedPlayer);
+            }
+        }
     }
 
     /**

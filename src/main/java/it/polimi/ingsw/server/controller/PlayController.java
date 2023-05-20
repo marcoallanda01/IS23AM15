@@ -201,4 +201,27 @@ public class PlayController {
     public synchronized List<String> getPlayers() {
         return game.getPlayers();
     }
+
+    /**
+     * Get player's bookshelf
+     * @param player player's name
+     * @return bookshelf tiles
+     * @throws PlayerNotFoundException if no player wa found
+     */
+    public synchronized Set<Tile> getBookshelf(String player) throws PlayerNotFoundException {
+        for(Player p : game.getPlayersList()){
+            if(p.getUserName().equals(player)){
+                return new HashSet<>(p.getBookShelf().getAllTiles());
+            }
+        }
+        throw new PlayerNotFoundException("getBookshelf: no player "+player+" found");
+    }
+
+    /**
+     * Get board
+     * @return board tiles
+     */
+    public synchronized Set<Tile> getBoard() {
+        return new HashSet<>(game.getBoard().getAllTiles());
+    }
 }
