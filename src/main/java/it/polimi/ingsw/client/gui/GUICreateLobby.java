@@ -12,37 +12,68 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * Represents the GUI state for creating a lobby.
+ */
 public class GUICreateLobby extends GUIState {
     private String nickname;
 
+    /**
+     * Constructs a new GUICreateLobby instance.
+     *
+     * @param guiApplication The GUI application to associate with.
+     * @param nickname       The nickname of the user.
+     */
     public GUICreateLobby(GUIApplication guiApplication, String nickname) {
         super(guiApplication);
         this.nickname = nickname;
         createUI();
     }
 
+    /**
+     * Creates the user interface for the create lobby state.
+     */
     private void createUI() {
-        // Create the layout pane
-        VBox root = new VBox(10);
-        root.setPadding(new Insets(10));
-        root.setAlignment(Pos.CENTER);
-
-        // Create the label to display the username
-        Label usernameLabel = new Label("Welcome, " + nickname + "!");
-        usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-        // Create the buttons
-        Button loadGameButton = createLoadGameButton();
-        Button newGameButton = createNewGameButton();
-
-        // Add the components to the root pane
-        root.getChildren().addAll(usernameLabel, loadGameButton, newGameButton);
-
-        // Create the scene and set the root pane
+        VBox root = createRootPane();
         Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
+    /**
+     * Creates the root pane for the create lobby UI.
+     *
+     * @return The created VBox root pane.
+     */
+    private VBox createRootPane() {
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(10));
+        root.setAlignment(Pos.CENTER);
+
+        Label usernameLabel = createUsernameLabel();
+        Button loadGameButton = createLoadGameButton();
+        Button newGameButton = createNewGameButton();
+
+        root.getChildren().addAll(usernameLabel, loadGameButton, newGameButton);
+
+        return root;
+    }
+
+    /**
+     * Creates the username label.
+     *
+     * @return The created Label to display the username.
+     */
+    private Label createUsernameLabel() {
+        Label usernameLabel = new Label("Welcome, " + nickname + "!");
+        usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        return usernameLabel;
+    }
+
+    /**
+     * Creates the load game button.
+     *
+     * @return The created Button for loading a game.
+     */
     private Button createLoadGameButton() {
         Button loadGameButton = new Button("Load Game");
         loadGameButton.setOnAction(event -> {
@@ -51,6 +82,11 @@ public class GUICreateLobby extends GUIState {
         return loadGameButton;
     }
 
+    /**
+     * Creates the new game button.
+     *
+     * @return The created Button for starting a new game.
+     */
     private Button createNewGameButton() {
         Button newGameButton = new Button("New Game");
         newGameButton.setOnAction(event -> {
