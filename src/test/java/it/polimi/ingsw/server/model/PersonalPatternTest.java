@@ -3,9 +3,12 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException;
 import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import it.polimi.ingsw.server.model.managers.patterns.PersonalPattern;
+import it.polimi.ingsw.server.model.managers.patterns.SpecificPattern;
+import it.polimi.ingsw.utils.ObjectCleaner;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -362,6 +365,53 @@ class PersonalPatternTest {
         String name = "P";
         Pattern pattern = new PersonalPattern(name, checks, list);
         assertEquals(12, pattern.getPatternFunction().apply(bookshelfState));
+    }
+    @Test
+    void test6RightWithDeletion() throws InvalidPatternParameterException {
+        // | - | - | - | - | P |
+        // | - | - | - | F | - |
+        // | - | B | - | - | - |
+        // | - | - | B | - | - |
+        // | - | - | - | - | - |
+        // | G | C | - | - | - |
+        Set<Tile> checks =
+                Set.of(new Tile(0,0,TileType.GAME), new Tile(1, 0, TileType.CAT),
+                        new Tile(1, 3, TileType.BOOK), new Tile(2,2,TileType.BOOK),
+                        new Tile(3,4,TileType.FRAME), new Tile(4,5,TileType.PLANT));
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 1});
+        list.add(new int[]{2, 2});
+        list.add(new int[]{3, 4});
+        list.add(new int[]{4, 6});
+        list.add(new int[]{5, 9});
+        list.add(new int[]{6, 12});
+        String name = "P";
+        Pattern pattern = new PersonalPattern(name, checks, list);
+        Function<List<List<Optional<Tile>>>, Integer> pf = pattern.getPatternFunction();
+        new ObjectCleaner(pattern);
+        pattern = null;
+        System.gc();
+        // | - | - | - | C | P |
+        // | - | - | - | F | B |
+        // | - | B | - | T | B |
+        // | - | G | B | T | B |
+        // | - | B | P | C | B |
+        // | - | C | C | B | P |
+        BookShelf bookShelf = new BookShelf();
+        // Inserting tiles to match the pattern
+        List<Tile> firstRow = List.of(new Tile(TileType.GAME));
+        bookShelf.insertTiles(firstRow, 0);
+        List<Tile> secondRow = List.of(new Tile(TileType.CAT), new Tile(TileType.BOOK), new Tile(TileType.GAME), new Tile(TileType.BOOK));
+        bookShelf.insertTiles(secondRow, 1);
+        List<Tile> thirdRow = List.of(new Tile(TileType.CAT), new Tile(TileType.PLANT), new Tile(TileType.BOOK));
+        bookShelf.insertTiles(thirdRow, 2);
+        List<Tile> fourthRow = List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY), new Tile(TileType.TROPHY), new Tile(TileType.FRAME), new Tile(TileType.CAT));
+        bookShelf.insertTiles(fourthRow, 3);
+        List<Tile> fifthRow = List.of(new Tile(TileType.PLANT), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.BOOK), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(fifthRow, 4);
+        List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
+
+        assertEquals(12, pf.apply(bookshelfState));
     }
     @Test
     void testNullTiles() {

@@ -56,10 +56,13 @@ public class AdjacentPattern extends Pattern {
      * (that could be interpreted as the actual points or just used to check if it satisfies the pattern)
      */
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
+        final int minTiles = this.minTiles;
+        final int minGroups = this.minGroups;
+        final int points = this.points;
         return (bookshelf) -> {
             Integer groupsFound = 0;
             while (findAndDeleteGroup(bookshelf, minTiles)) groupsFound++;
-            return groupsFound >= this.minGroups ? this.points * groupsFound : 0;
+            return groupsFound >= minGroups ? points * groupsFound : 0;
         };
     }
     /**
@@ -67,7 +70,7 @@ public class AdjacentPattern extends Pattern {
      * @param minTiles the minimum amount of tiles a group should have for it to be deleted
      * @return if a group of at least minTiles has been found (and deleted)
      */
-    private boolean findAndDeleteGroup(List<List<Optional<Tile>>> bookshelf, Integer minTiles) {
+    private static boolean findAndDeleteGroup(List<List<Optional<Tile>>> bookshelf, Integer minTiles) {
         List<List<Boolean>> mask = new ArrayList<>();
         for (int i = 0; i < bookshelf.size(); i++) {
             mask.add(new ArrayList<>());
@@ -99,7 +102,7 @@ public class AdjacentPattern extends Pattern {
      * @param bookshelf the bookshelf
      * @param mask a matrix representing the tiles to be removed
      */
-    private void removeTiles(List<List<Optional<Tile>>> bookshelf, List<List<Boolean>> mask) {
+    private static void removeTiles(List<List<Optional<Tile>>> bookshelf, List<List<Boolean>> mask) {
         for (int i = 0; i < mask.size(); i++) {
             for (int j = 0; j < mask.get(i).size(); j++) {
                 if (mask.get(i).get(j)) {
@@ -113,7 +116,7 @@ public class AdjacentPattern extends Pattern {
      * @param mask a matrix representing the tiles to be counted
      * @return the amount of true in the given matrix
      */
-    private Integer countAdjacentTiles(List<List<Boolean>> mask) {
+    private static Integer countAdjacentTiles(List<List<Boolean>> mask) {
         Integer count = 0;
         for (int i = 0; i < mask.size(); i++) {
             for (int j = 0; j < mask.get(i).size(); j++) {
@@ -131,7 +134,7 @@ public class AdjacentPattern extends Pattern {
      * @param checkedTile the currently checked tile
      * @param mask a matrix representing the tiles of the same type of the starting tile
      */
-    private void markAdjacentTiles(List<List<Optional<Tile>>> bookshelf, Tile checkedTile, List<List<Boolean>> mask) {
+    private static void markAdjacentTiles(List<List<Optional<Tile>>> bookshelf, Tile checkedTile, List<List<Boolean>> mask) {
         if (mask.get(checkedTile.getX()).get(checkedTile.getY()).equals(Boolean.FALSE)) {
             mask.get(checkedTile.getX()).set(checkedTile.getY(), Boolean.TRUE);
             if (checkedTile.getX() + 1 < bookshelf.size()) {
