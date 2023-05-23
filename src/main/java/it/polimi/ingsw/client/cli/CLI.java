@@ -64,7 +64,7 @@ public class CLI extends View {
             case IN_GAME -> {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
-                CLIRenderer.printBookshelves(this.getBookShelves(), Client.getInstance().getNickname(), this.getCurrentTurnPlayer());
+                CLIRenderer.printBookshelves(this.getPlayers(), this.getBookShelves(), Client.getInstance().getNickname(), this.getCurrentTurnPlayer());
                 CLIRenderer.printPickedTiles(this.getPickedTiles());
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
             }
