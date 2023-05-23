@@ -76,6 +76,7 @@ public class CLIRenderer {
     }
 
     public static void printLivingRoomBoard(Set<Tile> board) {
+        System.out.println(" ");
         System.out.println("◻️0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣");
         for (int n = 0; n < 9; n++) {
             printLivingRoomBoardLine(board, n);
