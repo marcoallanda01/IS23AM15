@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.model.TileType;
 import java.util.*;
 
 public abstract class View {
-    private String nickname;
     private List<String> players = new ArrayList<>();
     private List<String> lobbyPlayers = new ArrayList<>();
     private Map<String,Set<Tile>> bookShelves = new HashMap<>();
@@ -26,14 +25,6 @@ public abstract class View {
     public void render(){}
     public void showError(String error){}
     public void showChat(){}
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public List<String> getPlayers() {
         return players;

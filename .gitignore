@@ -36,3 +36,4 @@ build/
 /bin1/
 java/build/**
 /saves/
+/clients/

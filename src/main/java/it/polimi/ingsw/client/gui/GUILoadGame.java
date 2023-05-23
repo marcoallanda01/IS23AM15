@@ -32,28 +32,28 @@ public class GUILoadGame extends GUIState{
         Label savedGamesLabel = new Label("Saved Games:");
         savedGamesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        StackPane savedGamesPane = createSavedGamesPane();
+        VBox savedGamesBox = createSavedGamesBox();
 
-        root.getChildren().addAll(titleLabel, savedGamesLabel, savedGamesPane);
+        root.getChildren().addAll(titleLabel, savedGamesLabel, savedGamesBox);
 
         Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
-    private StackPane createSavedGamesPane() {
-        StackPane savedGamesPane = new StackPane();
-        savedGamesPane.setPadding(new Insets(10));
-        savedGamesPane.setAlignment(Pos.CENTER);
+    private VBox createSavedGamesBox() {
+    VBox savedGamesBox = new VBox(10); // Added spacing between buttons
+    savedGamesBox.setPadding(new Insets(10));
+    savedGamesBox.setAlignment(Pos.CENTER);
 
-        for(String savedGame : savedGames) {
-            Button savedGameButton = new Button(savedGame);
-            int savedGameIndex = savedGames.indexOf(savedGame);
-            savedGameButton.setOnAction(event -> {
-                Client.getInstance().getClientController().loadGame(savedGameIndex);
-            });
-            savedGamesPane.getChildren().add(savedGameButton);
-        }
-
-        return savedGamesPane;
+    for (String savedGame : savedGames) {
+        Button savedGameButton = new Button(savedGame);
+        int savedGameIndex = savedGames.indexOf(savedGame);
+        savedGameButton.setOnAction(event -> {
+            Client.getInstance().getClientController().loadGame(savedGameIndex);
+        });
+        savedGamesBox.getChildren().add(savedGameButton);
     }
+
+    return savedGamesBox;
+}
 }

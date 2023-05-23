@@ -149,7 +149,7 @@ public class ClientController implements ClientNotificationListener {
         List<String> players = new ArrayList<>(nicknames);
         view.setLobbyPlayers(players);
         view.setNumberOfPlayers(players.size());
-        Client.getInstance().getClientCommunication().joinLoadedAsFirst(view.getNickname(), Client.getInstance().getId());
+        Client.getInstance().getClientCommunication().joinLoadedAsFirst(Client.getInstance().getNickname(), Client.getInstance().getId());
     }
 
     @Override
@@ -164,7 +164,7 @@ public class ClientController implements ClientNotificationListener {
                 view.showError("The lobby is being created by another player. Please retry later.");
             }
         } else {
-            Client.getInstance().getClientCommunication().join(Client.getInstance().getView().getNickname());
+            Client.getInstance().getClientCommunication().join(Client.getInstance().getNickname());
 //            if (loadedGame) {
 //                Client.getInstance().getClientCommunication().getLoadedGamePlayers();
 //            } else {
@@ -208,14 +208,14 @@ public class ClientController implements ClientNotificationListener {
 
     @Override
     public void notifyPickedTiles(String nickname, List<TileType> tiles) {
-        if(nickname.equals(view.getNickname())) {
+        if (nickname.equals(Client.getInstance().getNickname())) {
             view.setPickedTiles(tiles);
             view.render();
         }
     }
 
     public void login(String nickname) {
-        view.setNickname(nickname);
+        Client.getInstance().setNickname(nickname);
         Client.getInstance().getClientCommunication().hello();
     }
 
@@ -236,7 +236,7 @@ public class ClientController implements ClientNotificationListener {
     public void createGame(int numOfPlayers, boolean easyRules) {
         view.setNumberOfPlayers(numOfPlayers);
         view.setEasyRules(easyRules);
-        Client.getInstance().getClientCommunication().joinNewAsFirst(view.getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
+        Client.getInstance().getClientCommunication().joinNewAsFirst(Client.getInstance().getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
     }
 
     public void getSavedGames() {
@@ -250,16 +250,16 @@ public class ClientController implements ClientNotificationListener {
     public void pickTiles(List<List<Integer>> coordinates) {
         Set<Tile> livingRoomBoard = view.getLivingRoomBoard();
         Set<Tile> tiles = new HashSet<>();
-        for(List<Integer> coordinate : coordinates) {
+        for (List<Integer> coordinate : coordinates) {
             int x = coordinate.get(0);
             int y = coordinate.get(1);
-            for(Tile tile : livingRoomBoard) {
-                if(tile.getX() == x && tile.getY() == y) {
+            for (Tile tile : livingRoomBoard) {
+                if (tile.getX() == x && tile.getY() == y) {
                     tiles.add(tile);
                 }
             }
         }
-        if(tiles.size() == 0) {
+        if (tiles.size() == 0) {
             view.render();
             view.showError("The tiles you selected are not valid. Please retry.");
             return;
@@ -270,7 +270,7 @@ public class ClientController implements ClientNotificationListener {
     public void putTiles(Integer column, List<Integer> order) {
         List<TileType> tiles = view.getPickedTiles();
         List<TileType> orderedTiles = new ArrayList<>();
-        for(Integer index : order) {
+        for (Integer index : order) {
             orderedTiles.add(tiles.get(index));
         }
         view.setPickedTiles(new ArrayList<>());

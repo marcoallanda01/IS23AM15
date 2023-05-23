@@ -34,28 +34,28 @@ public class GUILobby extends GUIState{
         Label playersLabel = new Label("Players in lobby:");
         playersLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        StackPane lobbyPlayersPane = createLobbyPlayersPane();
+        VBox lobbyPlayersBox = createLobbyPlayersBox();
 
         Label remainingPlayersLabel = new Label("Remaining players: " + (maxPlayers - lobbyPlayers.size()));
         remainingPlayersLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        root.getChildren().addAll(titleLabel, playersLabel, lobbyPlayersPane, remainingPlayersLabel);
+        root.getChildren().addAll(titleLabel, playersLabel, lobbyPlayersBox, remainingPlayersLabel);
 
         Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
-    private StackPane createLobbyPlayersPane() {
-        StackPane lobbyPlayersPane = new StackPane();
-        lobbyPlayersPane.setPadding(new Insets(10));
-        lobbyPlayersPane.setAlignment(Pos.CENTER);
+    private VBox createLobbyPlayersBox() {
+        VBox lobbyPlayersBox = new VBox(10);
+        lobbyPlayersBox.setPadding(new Insets(10));
+        lobbyPlayersBox.setAlignment(Pos.CENTER);
 
         for(String lobbyPlayer : lobbyPlayers) {
             Label lobbyPlayerLabel = new Label(lobbyPlayer);
             lobbyPlayerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-            lobbyPlayersPane.getChildren().add(lobbyPlayerLabel);
+            lobbyPlayersBox.getChildren().add(lobbyPlayerLabel);
         }
 
-        return lobbyPlayersPane;
+        return lobbyPlayersBox;
     }
 }

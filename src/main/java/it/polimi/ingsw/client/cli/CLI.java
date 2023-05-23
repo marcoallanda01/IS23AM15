@@ -9,6 +9,7 @@ public class CLI extends View {
     private final Thread inputThread;
     private final Scanner inputScanner;
     private boolean running;
+    private String message;
 
     public CLI() {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
@@ -63,16 +64,20 @@ public class CLI extends View {
             case IN_GAME -> {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
-                CLIRenderer.printBookshelves(this.getBookShelves(), this.getNickname(), this.getCurrentTurnPlayer());
+                CLIRenderer.printBookshelves(this.getBookShelves(), Client.getInstance().getNickname(), this.getCurrentTurnPlayer());
                 CLIRenderer.printPickedTiles(this.getPickedTiles());
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
             }
             case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
             default -> System.out.println("Invalid state");
         }
+        showError(this.message);
     }
     public void showError(String message){
-        CLIRenderer.printError(message);
+        this.message = message;
+        if(this.message != null){
+            CLIRenderer.printError(message);
+        }
     }
     public void showChat(){
         CLIRenderer.printChat(this.getChat());

@@ -38,8 +38,9 @@ public class GUIInGame extends GUIState {
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
         StackPane boardGrid = createBoardGrid();
+        HBox bookshelvesBox = createBookshelves();
 
-        root.getChildren().addAll(titleLabel, boardGrid);
+        root.getChildren().addAll(titleLabel, boardGrid, bookshelvesBox);
 
         Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
@@ -75,5 +76,49 @@ public class GUIInGame extends GUIState {
 
         return stackPane;
     }
+
+    private HBox createBookshelves() {
+        HBox bookshelvesBox = new HBox(10);
+        bookshelvesBox.setAlignment(Pos.CENTER);
+
+        for (Map.Entry<String, Set<Tile>> entry : bookshelves.entrySet()) {
+            StackPane bookshelfGrid = createBookshelfGrid(entry.getValue());
+            bookshelvesBox.getChildren().add(bookshelfGrid);
+        }
+
+        return bookshelvesBox;
+    }
+
+    private StackPane createBookshelfGrid(Set<Tile> bookshelfTiles) {
+        StackPane stackPane = new StackPane();
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(2.5);
+        gridPane.setVgap(1.7);
+        gridPane.setPadding(Insets.EMPTY);
+        gridPane.setAlignment(Pos.CENTER);
+
+        ImageView backgroundImageView = new ImageView(new Image(getClass().getResource("/assets/bookshelf.png").toExternalForm()));
+        backgroundImageView.setFitHeight(180);
+        backgroundImageView.setFitWidth(200);
+        backgroundImageView.setPreserveRatio(true);
+
+        Random random = new Random();
+        for (Tile tile : bookshelfTiles) {
+            if (tile != null) {
+                int randomNum = random.nextInt(3) + 1;
+                ImageView tileImage = new ImageView(new Image(getClass().getResource("/assets/tiles/" + tile.getType() + randomNum + ".png").toExternalForm()));
+                tileImage.setFitHeight(25);
+                tileImage.setFitWidth(25);
+                gridPane.add(tileImage, tile.getX(), tile.getY());
+            }
+        }
+
+        stackPane.getChildren().addAll(backgroundImageView, gridPane);
+        StackPane.setMargin(gridPane, new Insets(0, 0, -50, -70));
+
+        return stackPane;
+    }
+
 
 }
