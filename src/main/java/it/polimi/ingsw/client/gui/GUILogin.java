@@ -16,55 +16,105 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+/**
+ * Generates the GUI for the login state.
+ */
 public class GUILogin extends GUIState {
+
+    /**
+     * Constructs a new GUILogin instance.
+     *
+     * @param guiApplication The GUI application to associate with.
+     */
     public GUILogin(GUIApplication guiApplication) {
         super(guiApplication);
-        // Create the layout pane
-        StackPane root = new StackPane();
-        root.setPadding(new Insets(10));
+        createUI();
+    }
 
-        // Create the label for the username input
-        Label label = new Label("Enter your username:");
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-        // Create the text field for username input
-        TextField usernameField = createUsernameField();
-        usernameField.setMaxWidth(500);
-
-        // Create the login button
-        Button loginButton = createLoginButton(usernameField);
-        loginButton.setMinWidth(100);
-        loginButton.setStyle("-fx-font-size: 14px;");
-
-        VBox container = new VBox(10);
-        container.getChildren().addAll(label, usernameField, loginButton);
-        container.setAlignment(Pos.CENTER);
-        container.setMaxWidth(Double.MAX_VALUE);
-        container.setFillWidth(false);
-
-        root.getChildren().add(container);
-
-        // Create the scene and set the root pane
+    /**
+     * Creates the user interface for the login state.
+     */
+    private void createUI() {
+        StackPane root = createRootPane();
         Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
+    /**
+     * Creates the root pane for the login UI.
+     *
+     * @return The created StackPane root pane.
+     */
+    private StackPane createRootPane() {
+        StackPane root = new StackPane();
+        root.setPadding(new Insets(10));
 
+        Label label = createUsernameLabel();
+        TextField usernameField = createUsernameField();
+        Button loginButton = createLoginButton(usernameField);
+
+        VBox container = createContainer(label, usernameField, loginButton);
+        root.getChildren().add(container);
+
+        return root;
+    }
+
+    /**
+     * Creates the username label.
+     *
+     * @return The created Label for the username.
+     */
+    private Label createUsernameLabel() {
+        Label label = new Label("Enter your username:");
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        return label;
+    }
+
+    /**
+     * Creates the username input field.
+     *
+     * @return The created TextField for the username input.
+     */
     private TextField createUsernameField() {
         TextField textField = new TextField();
         textField.setPromptText("Username");
+        textField.setMaxWidth(500);
         return textField;
     }
 
+    /**
+     * Creates the login button.
+     *
+     * @param usernameField The TextField for the username input.
+     * @return The created Button for login.
+     */
     private Button createLoginButton(TextField usernameField) {
         Button button = new Button("Login");
         button.setOnAction(event -> {
             String username = usernameField.getText();
             if (!username.isEmpty()) {
-                // Call the login method with the entered username
                 Client.getInstance().getClientController().login(username);
             }
         });
+        button.setMinWidth(100);
+        button.setStyle("-fx-font-size: 14px;");
         return button;
+    }
+
+    /**
+     * Creates the container VBox for the UI components.
+     *
+     * @param label         The Label for the username.
+     * @param usernameField The TextField for the username input.
+     * @param loginButton   The Button for login.
+     * @return The created VBox container.
+     */
+    private VBox createContainer(Label label, TextField usernameField, Button loginButton) {
+        VBox container = new VBox(10);
+        container.getChildren().addAll(label, usernameField, loginButton);
+        container.setAlignment(Pos.CENTER);
+        container.setMaxWidth(Double.MAX_VALUE);
+        container.setFillWidth(false);
+        return container;
     }
 }

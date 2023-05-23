@@ -67,23 +67,25 @@ public class PersonalPattern extends Pattern {
      */
     @java.lang.Override
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
-        return (board) -> {
-                List<Optional<Tile>> boardList = board.stream()
-                        .flatMap(Collection::stream)
-                        .toList();
+        final Set<Tile> tiles = this.tiles;
+        final List<int[]> checkToPoints = this.checkToPoints;
 
-                Integer corrects = 0;
-                for (Tile tile : tiles) {
-                    if (boardList.contains(Optional.of(tile)))
-                        corrects++;
-                }
-                int i;
-                for(i = 0; i < this.checkToPoints.size(); i++){
-                    int[] couple = this.checkToPoints.get(i);
-                    if(corrects >= couple[0])
-                        return couple[1];
-                }
-                return 0;
-            };
+        return (board) -> {
+            List<Optional<Tile>> boardList = board.stream()
+                    .flatMap(Collection::stream)
+                    .toList();
+
+            int corrects = 0;
+            for (Tile tile : tiles) {
+                if (boardList.contains(Optional.of(tile)))
+                    corrects++;
+            }
+
+            for (int[] couple : checkToPoints) {
+                if (corrects >= couple[0])
+                    return couple[1];
+            }
+            return 0;
+        };
     }
 }

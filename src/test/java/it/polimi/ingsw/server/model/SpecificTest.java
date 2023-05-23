@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SpecificTest {
     //bookshelf.get(5).get(4) returns the top right corner
     //bookshelf.get(n) returns the nth row starting from the bottom
-    //bookshelf.get(n).get(m) returns the mth element (starting from left) of the nth column (starting from right)
+    //bookshelf.get(n).get(m) returns the mth element (starting from left) of the nth row (starting from bottom)
     @Test
     void testGetPatternFunction() throws InvalidPatternParameterException {
         // some random tests

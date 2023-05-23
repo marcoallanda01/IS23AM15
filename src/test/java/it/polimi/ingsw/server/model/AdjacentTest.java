@@ -3,10 +3,12 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException;
 import it.polimi.ingsw.server.model.managers.patterns.AdjacentPattern;
 import it.polimi.ingsw.server.model.managers.patterns.Pattern;
+import it.polimi.ingsw.utils.ObjectCleaner;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -294,6 +296,41 @@ class AdjacentTest {
         assertEquals(6, pattern.getPatternFunction().apply(myBookshelf));
         pattern = new AdjacentPattern(n,2, 1, 1);
         assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
+    }
+    @Test
+    void test6WithDeletion() throws InvalidPatternParameterException {
+        BookShelf bookShelf = new BookShelf();
+        // -----
+        // ---C-
+        // ---CT
+        // --CCC
+        // C-TCC
+        // TTTTT
+        String name = "6+";
+        Pattern pattern = new AdjacentPattern(name,6, 8);
+        Function<List<List<Optional<Tile>>>, Integer> pf = pattern.getPatternFunction();
+        new ObjectCleaner(pattern);
+        pattern = null;
+        System.gc();
+
+        List<Tile> one =
+                List.of(new Tile(TileType.TROPHY), new Tile(TileType.CAT));
+        bookShelf.insertTiles(one, 0);
+        List<Tile> two = List.of(new Tile(TileType.TROPHY));
+        bookShelf.insertTiles(two, 1);
+        List<Tile> three =
+                List.of(new Tile(TileType.TROPHY), new Tile(TileType.TROPHY), new Tile(TileType.CAT));
+        bookShelf.insertTiles(three, 2);
+        List<Tile> four =
+                List.of(new Tile(TileType.TROPHY), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.CAT));
+        bookShelf.insertTiles(four, 3);
+        List<Tile> five =
+                List.of(new Tile(TileType.TROPHY), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.TROPHY));
+        bookShelf.insertTiles(five, 4);
+
+        List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
+
+        assertEquals(16, pf.apply(myBookshelf));
     }
     @Test
     void testMinTiles() {
