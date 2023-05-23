@@ -36,8 +36,14 @@ public class InputCLI {
                             case "put":
                                 putTilesRequest(inputArray);
                                 break;
-                            case "chat":
+                            case "sendmessage":
                                 sendChatMessageRequest(inputArray);
+                                break;
+                            case "showchat":
+                                showChatRequest(inputArray);
+                                break;
+                            case "closechat":
+                                closeChatRequest(inputArray);
                                 break;
                             case "save":
                                 saveGameRequest(inputArray);
@@ -49,6 +55,22 @@ public class InputCLI {
                 }
             }
         }
+    }
+
+    private static void closeChatRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        Client.getInstance().getView().render();
+    }
+
+    private static void showChatRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        Client.getInstance().getView().showChat();
     }
 
     private static void loginRequest(String[] inputArray) {
