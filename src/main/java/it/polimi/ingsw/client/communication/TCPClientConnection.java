@@ -178,6 +178,9 @@ public class TCPClientConnection implements ClientConnection {
         } else if (LoadGameResponse.fromJson(json).isPresent()) {
             LoadGameResponse loadGameResponse = LoadGameResponse.fromJson(json).get();
             clientNotificationListener.notifyLoadGameResponse(loadGameResponse.result, loadGameResponse.error);
+        } else if (ChatMessage.fromJson(json).isPresent()) {
+            ChatMessage chatMessage = ChatMessage.fromJson(json).get();
+            clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date);
         } else if (Ping.fromJson(json).isPresent()) {
             Ping ping = Ping.fromJson(json).get();
             clientNotificationListener.notifyPing();

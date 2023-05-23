@@ -393,7 +393,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void notifyMessage(String sender, String date, String message, String receiver) {
         this.playersIds.entrySet().stream()
-                .filter(e->e.getValue().equals(receiver))
+                .filter(e->e.getValue().equals(respondServer.lobby.getIdFromName(receiver)))
                 .map(Map.Entry::getKey)
                 .findFirst().ifPresent(c-> {
                     try {
