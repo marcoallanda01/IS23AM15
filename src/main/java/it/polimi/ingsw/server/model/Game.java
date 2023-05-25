@@ -70,6 +70,8 @@ public class Game{
         //FirstFill
         this.board.fillBoard();
         this.goalManager = new GoalManager(this.players, goalPath, isFirstGame);
+        this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
+        this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
         this.players.forEach(Player::notifyListeners);
 

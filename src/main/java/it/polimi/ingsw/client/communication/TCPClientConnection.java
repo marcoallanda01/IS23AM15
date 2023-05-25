@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.communication.responses.*;
 
 import java.io.*;
@@ -42,20 +43,20 @@ public class TCPClientConnection implements ClientConnection {
      * starts listening to notifications
      */
     public void openConnection() {
-        System.out.println("Opening TCP client connection...");
+        Client.getInstance().getLogger().log("Opening TCP client connection...");
         readLock = new Object();
         writeLock = new Object();
         executorService = Executors.newCachedThreadPool();
         waitingResponses = 0;
         try {
             // Create a socket to connect to the server
-            System.out.println("Opening socket...");
+            Client.getInstance().getLogger().log("Opening socket...");
             socket = new Socket(hostname, port);
-            System.out.println("Starting notification handler...");
+            Client.getInstance().getLogger().log("Starting notification handler...");
             notificationListener = executorService.submit(() -> startNotificationHandler());
-            System.out.println("TCP client connection open");
+            Client.getInstance().getLogger().log("TCP client connection open");
         } catch (IOException e) {
-            e.printStackTrace();
+            Client.getInstance().getLogger().log(e);
             throw new ClientConnectionException();
         }
     }
@@ -71,10 +72,10 @@ public class TCPClientConnection implements ClientConnection {
                 socket.close();
                 executorService.close();
                 notificationListener.cancel(Boolean.TRUE);
-                System.out.println("Socket closed.");
+                Client.getInstance().getLogger().log("Socket closed.");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Client.getInstance().getLogger().log(e);
             throw new ClientConnectionException();
         }
     }
@@ -98,7 +99,7 @@ public class TCPClientConnection implements ClientConnection {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(json);
             } catch (IOException e) {
-                e.printStackTrace();
+                Client.getInstance().getLogger().log(e);
             }
             writeLock.notifyAll();
         }
@@ -115,12 +116,13 @@ public class TCPClientConnection implements ClientConnection {
                     Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
                     if (!json.contains("Ping")) {
-                        System.out.println("Received from server: " + json);
+                        Client.getInstance().getLogger().log("Received from server: " + json);
                     }
                     executorService.submit(() -> dispatchNotification(json));
                 }
                 return null;
             } catch (IOException e) {
+                Client.getInstance().getLogger().log(e);
                 throw new ClientConnectionException();
             }
         }
@@ -203,7 +205,7 @@ public class TCPClientConnection implements ClientConnection {
             Winner winner = Winner.fromJson(json).get();
             clientNotificationListener.notifyWinner(winner.player);
         } else {
-            System.out.println("Notification: " + json + " not recognized");
+            Client.getInstance().getLogger().log("Notification: " + json + " not recognized");
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

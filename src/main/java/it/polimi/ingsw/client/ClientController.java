@@ -9,7 +9,6 @@ import java.util.*;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
-
     public ClientController() {
         view = Client.getInstance().getView();
     }

@@ -1,0 +1,147 @@
+
+[
+    {
+      "name": "6_GROUPS_2_TILES",
+      "description": "Adjacent tiles in 6 different groups",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "DIAGONAL",
+      "description": "Specific diagonal pattern",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "4_GROUPS_4_TILES",
+      "description": "Adjacent tiles in 4 different groups",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "4_ROWS_3_COLOR",
+      "description": "Specific pattern of 4 rows with 3 colors",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "CORNERS",
+      "description": "Specific pattern of corner tiles",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "2_COLUMNS_COLOURFUL",
+      "description": "Specific pattern of 2 colorful columns",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "SQUARE",
+      "description": "Specific square pattern",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "2_ROWS_COLOURFUL",
+      "description": "Specific pattern of 2 colorful rows",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "3_COLUMNS_3_COLOR",
+      "description": "Specific pattern of 3 columns with 3 colors",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "X",
+      "description": "Specific X-shaped pattern",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "8_SAME",
+      "description": "Specific pattern of 8 identical tiles",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "STAIRS",
+      "description": "Specific pattern of stairs",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "6_ADJACENT",
+      "description": "6 adjacent tiles in any group",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "5_ADJACENT",
+      "description": "5 adjacent tiles in any group",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "4_ADJACENT",
+      "description": "4 adjacent tiles in any group",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "3_ADJACENT",
+      "description": "3 adjacent tiles in any group",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals3",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals2",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals4",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals5",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals6",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals7",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    },
+    {
+      "name": "Personal_Goals8",
+      "description": "Personal goals",
+      "image": "...",
+      "representation": "..."
+    }
+]
