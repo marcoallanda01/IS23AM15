@@ -500,8 +500,9 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
      */
     @Override
     public void notifyMessage(String sender, String date, String message, String receiver) {
+        System.out.println(new ChatMessage(sender, date, message).toJson());
         this.playersIds.entrySet().stream()
-                .filter(entry -> Objects.equals(entry.getValue(), receiver))
+                .filter(entry -> Objects.equals(entry.getValue(), lobby.getIdFromName(receiver)))
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .ifPresent(

@@ -68,7 +68,6 @@ public class GUIApplication extends Application {
     }
 
     public synchronized void transitionToScene(Scene newScene) {
-        System.out.println("Transitioning");
         // Create a fade-out transition for the current scene
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(1), primaryStage.getScene().getRoot());
         fadeOutTransition.setFromValue(1.0);

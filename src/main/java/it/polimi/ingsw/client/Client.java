@@ -5,9 +5,11 @@ import it.polimi.ingsw.client.communication.*;
 import it.polimi.ingsw.client.communication.ClientCommunication;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.client.gui.GUIApplication;
+import it.polimi.ingsw.utils.Logger;
 import javafx.application.Application;
 
 import java.io.*;
+import java.util.Map;
 
 public class Client {
     private static Client singleton;
@@ -23,14 +25,20 @@ public class Client {
     private String nickname;
     private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;
-
-    public Client(String hostname, int port, Protocols protocol, Views view, Modes mode) {
+    private Map<String, ClientGoal> clientGoals;
+    private final Logger logger = new Logger();
+    public Client(String hostname, int port, String clientGoalsPath, Protocols protocol, Views view, Modes mode) {
         this.hostname = hostname;
         this.port = port;
         loadClientInfo();
         this.protocolSetting = protocol;
         this.viewSetting = view;
         this.modeSetting = mode;
+        try {
+            this.clientGoals = ClientGoalParser.parseGoalsFromJsonFile(getClass().getResource(clientGoalsPath));
+        } catch (Exception e) {
+            logger.log("Error while parsing goals form: " + clientGoalsPath + " try restarting the app");
+        }
         state = ClientStates.LOGIN;
     }
 
@@ -38,13 +46,9 @@ public class Client {
         return singleton;
     }
 
-    public ClientConnection getConnection() {
-        return clientConnection;
-    }
-
     public void setupNetworkRMI() throws RuntimeException {
         try {
-            System.out.println("RMI setup");
+            logger.log("RMI setup");
             RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
             singleton.clientConnection = rmiClientConnection;
             singleton.clientCommunication = new RMIClientCommunication(rmiClientConnection);
@@ -55,7 +59,7 @@ public class Client {
 
     public void setupNetworkTCP() {
         try {
-            System.out.println("TCP setup");
+            logger.log("TCP setup");
             TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, clientController);
             singleton.clientConnection = tcpClientConnection;
             singleton.clientCommunication = new TCPClientCommunication(tcpClientConnection);
@@ -68,12 +72,13 @@ public class Client {
     {
         String hostname = parseArg(args, "-a", "--address");
         String port = parseArg(args, "-p", "--port");
+        String goalsPath = parseArg(args, "-g", "--goals");
         Protocols protocol = parseProtocol(args);
         Views view = parseView(args);
         Modes mode = parseMode(args);
 
         try {
-            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), protocol, view, mode);
+            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), goalsPath == null ? "/data/client_goals.json" : goalsPath, protocol, view, mode);
         } catch (NumberFormatException e) {
             System.out.println("Invalid port number");
         } catch (Exception e) {
@@ -168,7 +173,9 @@ public class Client {
     private enum Modes {
         TESTING, PRODUCTION
     }
-
+    public Map<String, ClientGoal> getClientGoals() {
+        return clientGoals;
+    }
     public ClientStates getClientState() {
         return state;
     }
@@ -205,7 +212,7 @@ public class Client {
             }
             fileWriter.close();
         } catch (IOException e) {
-            System.err.println("Error while saving client ID");
+            logger.log("Error while saving client ID");
             e.printStackTrace();
         }
     }
@@ -223,7 +230,7 @@ public class Client {
                 bufferedReader.close();
             }
         } catch (IOException e) {
-            System.err.println("Error while loading client ID");
+            logger.log("Error while loading client ID");
             e.printStackTrace();
         }
         this.id = id;
@@ -242,6 +249,10 @@ public class Client {
         return clientCommunication;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     public void init(View view) {
         this.view = view;
         // clientController must be set before setting up the network, because the connection needs a reference to it
@@ -254,7 +265,7 @@ public class Client {
         try {
             singleton.clientConnection.openConnection();
         } catch (ClientConnectionException e) {
-            e.printStackTrace();
+            logger.log(e);
             throw e;
         }
     }

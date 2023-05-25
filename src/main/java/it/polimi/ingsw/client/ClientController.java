@@ -9,7 +9,6 @@ import java.util.*;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
-
     public ClientController() {
         view = Client.getInstance().getView();
     }
@@ -106,8 +105,8 @@ public class ClientController implements ClientNotificationListener {
         Map<String, Map<String, String>> chat = view.getChat();
         chat.put(date, Map.of("nickname", nickname, "message", message));
         view.setChat(chat);
-
-        //view.render();
+        view.render();
+        view.showError("The player " + nickname + " has sent a message, to open the chat type \"showChat\".");
     }
 
     @Override

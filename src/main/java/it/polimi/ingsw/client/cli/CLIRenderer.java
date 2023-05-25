@@ -76,6 +76,7 @@ public class CLIRenderer {
     }
 
     public static void printLivingRoomBoard(Set<Tile> board) {
+        System.out.println(" ");
         System.out.println("◻️0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣");
         for (int n = 0; n < 9; n++) {
             printLivingRoomBoardLine(board, n);
@@ -104,9 +105,10 @@ public class CLIRenderer {
         }
     }
 
-    public static void printBookshelves(Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
+    public static void printBookshelves(List<String> players, Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
         for (int n = 5; n >= 0; n--) {
-            for (Set<Tile> tiles : bookshelves.values()) {
+            for (String name : players) {
+                Set<Tile> tiles = bookshelves.get(name);
                 printBookshelfLine(tiles, n);
                 System.out.print("      ");
             }
@@ -119,7 +121,7 @@ public class CLIRenderer {
         System.out.println();
 
         System.out.print("  ");
-        for (String name : bookshelves.keySet()) {
+        for (String name : players) {
             name = name.substring(0, Math.min(name.length(), 8));
             if (name.equals(currentPlayer)) {
                 if (name.equals(myName)) {

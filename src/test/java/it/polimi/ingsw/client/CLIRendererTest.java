@@ -40,7 +40,8 @@ class CLIRendererTest {
         Set<Tile> tiles2 = bookShelf2.getState().stream().flatMap(List::stream).map(optional -> optional.orElse(null)).collect(Collectors.toSet());
         Set<Tile> tiles3 = bookShelf3.getState().stream().flatMap(List::stream).map(optional -> optional.orElse(null)).collect(Collectors.toSet());
         Map<String, Set<Tile>> bookShelf = Map.of("Marco", tiles1, "Luca", tiles2, "Pietro1234", tiles3);
-        CLIRenderer.printBookshelves(bookShelf, "Luca", "Marco");
+        List<String> players = List.of("Marco", "Luca", "Pietro1234");
+        CLIRenderer.printBookshelves(players, bookShelf, "Luca", "Marco");
     }
 
     @Test

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
 import it.polimi.ingsw.communication.responses.GameSetUp;
@@ -34,17 +35,17 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
         this.clientNotificationListener = clientNotificationListener;
     }
     public void openConnection() throws ClientConnectionException {
-        System.out.println("Opening RMI client connection...");
+        Client.getInstance().getLogger().log("Opening RMI client connection...");
         // Getting the registry
         Registry registry;
-        System.out.println("Locating registry...");
+        Client.getInstance().getLogger().log("Locating registry...");
         try {
             registry = LocateRegistry.getRegistry(hostname, port);
         } catch (RemoteException e) {
             e.printStackTrace();
             throw new ClientConnectionException();
         }
-        System.out.println("Looking up the registry for ServerRMIApp...");
+        Client.getInstance().getLogger().log("Looking up the registry for ServerRMIApp...");
         // Looking up the registry for the remote object
         try {
             this.rmiServer = (RMIServer) registry.lookup("ServerRMIApp");
@@ -55,14 +56,14 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
             e.printStackTrace();
             throw new ClientConnectionException();
         }
-        System.out.println("RMI client connection open");
+        Client.getInstance().getLogger().log("RMI client connection open");
     }
     // Method to close RMI connection
     public void closeConnection() {
         try {
             // Unexport the remote object
             UnicastRemoteObject.unexportObject(this, true);
-            System.out.println("RMI client connection closed.");
+            Client.getInstance().getLogger().log("RMI client connection closed.");
         } catch (RemoteException e) {
             throw new ClientConnectionException();
         }
