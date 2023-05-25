@@ -42,7 +42,7 @@ public class InputCLI {
                             case "save":
                                 saveGameRequest(inputArray);
                             default:
-                                System.out.println("Invalid input");
+                                Client.getInstance().getView().showError("Invalid input");
                                 break;
                         }
                     }

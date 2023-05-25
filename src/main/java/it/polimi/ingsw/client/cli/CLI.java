@@ -28,29 +28,28 @@ public class CLI extends View {
         running = false;
     }
 
-    private void clearScreen(){
+    private void clearScreen() {
         try {
             final String os = System.getProperty("os.name");
             if (os.contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            }
-            else {
+            } else {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
     }
+
     public void inputHandler() {
-        while(running){
+        while (running) {
             InputCLI.inputHandler(inputScanner);
         }
         System.out.println("CLI InputHandler Closed");
     }
 
-    public void render(){
+    public void render() {
         clearScreen();
         switch (Client.getInstance().getClientState()) {
             case LOGIN -> {
@@ -71,15 +70,13 @@ public class CLI extends View {
             case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
             default -> System.out.println("Invalid state");
         }
-        showError(this.message);
     }
-    public void showError(String message){
-        this.message = message;
-        if(this.message != null){
-            CLIRenderer.printError(message);
-        }
+
+    public void showError(String message) {
+        CLIRenderer.printError(message);
     }
-    public void showChat(){
+
+    public void showChat() {
         CLIRenderer.printChat(this.getChat());
     }
 }
