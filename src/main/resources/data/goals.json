@@ -63,8 +63,8 @@
 ],
 "personal_cards" : [
 	{"name":"Personal_Goals", "type":"personal", "tiles":[[0,5,"PLANT"], [2,5,"FRAME"], [4,4,"CAT"], [3,3,"BOOK"], [1,2,"GAME"], [0,2,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-	{"name":"Personal_Goals3", "type":"personal", "tiles":[[2,3,"PLANT"], [0,4,"FRAME"], [1,2,"CAT"], [0,0,"BOOK"], [3,4,"GAME"], [4,2,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
 	{"name":"Personal_Goals2", "type":"personal", "tiles":[[1,4,"PLANT"], [4,0,"FRAME"], [0,3,"CAT"], [4,2,"BOOK"], [2,3,"GAME"], [3,1,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
+	{"name":"Personal_Goals3", "type":"personal", "tiles":[[2,3,"PLANT"], [0,4,"FRAME"], [1,2,"CAT"], [0,0,"BOOK"], [3,4,"GAME"], [4,2,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
 	{"name":"Personal_Goals4", "type":"personal", "tiles":[[3,2,"PLANT"], [2,3,"FRAME"], [2,1,"CAT"], [1,1,"BOOK"], [4,5,"GAME"], [0,3,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
 	{"name":"Personal_Goals5", "type":"personal", "tiles":[[4,1,"PLANT"], [1,2,"FRAME"], [3,0,"CAT"], [2,2,"BOOK"], [0,0,"GAME"], [2,4,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
 	{"name":"Personal_Goals6", "type":"personal", "tiles":[[0,0,"PLANT"], [3,1,"FRAME"], [4,5,"CAT"], [3,3,"BOOK"], [1,1,"GAME"], [2,5,"TROPHY"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },

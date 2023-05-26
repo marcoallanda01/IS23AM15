@@ -18,6 +18,7 @@ public class Client {
     private ClientNotificationListener clientController;
     private final String hostname;
     private final int port;
+    private final String goalsPath;
     private final Protocols protocolSetting;
     private final Views viewSetting;
     private final Modes modeSetting;
@@ -27,18 +28,14 @@ public class Client {
     private ClientCommunication clientCommunication;
     private Map<String, ClientGoal> clientGoals;
     private final Logger logger = new Logger();
-    public Client(String hostname, int port, String clientGoalsPath, Protocols protocol, Views view, Modes mode) {
+    public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view, Modes mode) {
         this.hostname = hostname;
         this.port = port;
         loadClientInfo();
         this.protocolSetting = protocol;
         this.viewSetting = view;
         this.modeSetting = mode;
-        try {
-            this.clientGoals = ClientGoalParser.parseGoalsFromJsonFile(getClass().getResource(clientGoalsPath));
-        } catch (Exception e) {
-            logger.log("Error while parsing goals form: " + clientGoalsPath + " try restarting the app");
-        }
+        this.goalsPath = goalsPath;
         state = ClientStates.LOGIN;
     }
 
@@ -256,7 +253,12 @@ public class Client {
     public void init(View view) {
         this.view = view;
         // clientController must be set before setting up the network, because the connection needs a reference to it
-        singleton.clientController = new ClientController();
+        try {
+            singleton.clientController = new ClientController(goalsPath);
+        } catch (Exception e) {
+            logger.log("Error while instantiating the ClientController, try restarting the app");
+            throw e;
+        }
         if (protocolSetting.equals(Protocols.RMI)) {
             singleton.setupNetworkRMI();
         } else if (protocolSetting.equals(Protocols.TCP)) {
@@ -265,7 +267,7 @@ public class Client {
         try {
             singleton.clientConnection.openConnection();
         } catch (ClientConnectionException e) {
-            logger.log(e);
+            logger.log("Error while opening the connection, try restarting the app");
             throw e;
         }
     }

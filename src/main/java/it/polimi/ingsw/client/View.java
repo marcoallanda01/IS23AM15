@@ -22,14 +22,15 @@ public abstract class View {
     private String game;
     private List<String> savedGames = new ArrayList<>();
     private String winner;
+    protected Map<String, ClientGoalDetail> goalsToDetails;
     public void render(){}
     public void showError(String error){}
     public void showChat(){}
-
+    public void showHelp() {}
+    public void showGoal(String goalName) {}
     public List<String> getPlayers() {
         return players;
     }
-
     public void setPlayers(List<String> players) {
         this.players = players;
     }
@@ -152,5 +153,11 @@ public abstract class View {
 
     public void setWinner(String winner) {
         this.winner = winner;
+    }
+    public Map<String, ClientGoalDetail> getGoalsToDetails() {
+        return goalsToDetails;
+    }
+    public void setGoalsToDetail(Map<String, ClientGoalDetail> goalsToDetails) {
+        this.goalsToDetails = goalsToDetails;
     }
 }

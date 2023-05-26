@@ -1,8 +1,10 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.ClientGoal;
 import it.polimi.ingsw.client.View;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class CLI extends View {
@@ -10,7 +12,6 @@ public class CLI extends View {
     private final Scanner inputScanner;
     private boolean running;
     private String message;
-
     public CLI() {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
         this.inputThread = new Thread(this::inputHandler);
@@ -63,10 +64,10 @@ public class CLI extends View {
             case IN_GAME -> {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
+                CLIRenderer.printCommonGoals(this.getCommonGoals());
                 CLIRenderer.printBookshelves(this.getPlayers(), this.getBookShelves(), Client.getInstance().getNickname(), this.getCurrentTurnPlayer());
                 CLIRenderer.printPickedTiles(this.getPickedTiles());
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
-                CLIRenderer.printCommonGoals(this.getCommonGoals());
             }
             case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
             default -> System.out.println("Invalid state");
@@ -80,4 +81,13 @@ public class CLI extends View {
     public void showChat() {
         CLIRenderer.printChat(this.getChat());
     }
+
+    public void showHelp() {
+        CLIRenderer.printHelp();
+    }
+
+    public void showGoal(String goalName) {
+        CLIRenderer.printGoal(this.getGoalsToDetails().get(goalName));
+    }
+
 }

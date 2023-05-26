@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ClientGoalParser {
-    public static Map<String, ClientGoal> parseGoalsFromJsonFile(URL url) throws IOException {
+    public static Map<String, ClientGoalDetail> parseGoalsFromJsonFile(URL url) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
         BufferedReader reader = new BufferedReader(inputStreamReader);
         Gson gson = new Gson();
