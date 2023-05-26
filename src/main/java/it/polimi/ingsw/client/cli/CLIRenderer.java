@@ -200,6 +200,13 @@ public class CLIRenderer {
         System.out.println("personalGoal = " + personalGoal);
     }
 
+    public static void printCommonGoals(List<String> commonGoals) {
+        System.out.println("Common goals:");
+        for (String goal : commonGoals) {
+            System.out.println(goal);
+        }
+    }
+
     public static void printEndGame(Map<String, Integer> points, String winner) {
         System.out.println("The game is over!");
         System.out.println("Final scores:");

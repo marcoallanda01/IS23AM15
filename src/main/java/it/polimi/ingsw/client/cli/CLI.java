@@ -66,6 +66,7 @@ public class CLI extends View {
                 CLIRenderer.printBookshelves(this.getPlayers(), this.getBookShelves(), Client.getInstance().getNickname(), this.getCurrentTurnPlayer());
                 CLIRenderer.printPickedTiles(this.getPickedTiles());
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
+                CLIRenderer.printCommonGoals(this.getCommonGoals());
             }
             case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
             default -> System.out.println("Invalid state");
