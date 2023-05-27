@@ -21,7 +21,7 @@ public class CLI extends View {
     public void start() {
         inputThread.start();
         render();
-        System.out.println("CLI started");
+        Client.getInstance().getLogger().log("CLI Started");
     }
 
     public void stop() {
@@ -49,7 +49,7 @@ public class CLI extends View {
         System.out.println("CLI InputHandler Closed");
     }
 
-    public void render() {
+    public synchronized void render() {
         clearScreen();
         switch (Client.getInstance().getClientState()) {
             case LOGIN -> {

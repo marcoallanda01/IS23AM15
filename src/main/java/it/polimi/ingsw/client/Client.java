@@ -105,14 +105,14 @@ public class Client {
                     Application.launch(GUIApplication.class, args);
                 }
             }
-            Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
          Thread shutdownHook = new Thread() {
             @Override
             public void run() {
-                System.out.println("Performing shutdown");
+                Client.getInstance().getLogger().log("Shutting down");
                 Client.getInstance().getClientController().logout();
             }
         };
