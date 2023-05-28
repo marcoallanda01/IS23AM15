@@ -214,11 +214,20 @@ public abstract class ResponseServer{
         if (isGameActive()) {
             String name = lobby.getNameFromId(id);
             if (name != null) {
-                addPlayingClient(client, id);
-                if(!playController.reconnect(name)){
-                    System.err.println("respondReconnect: something went wrong with reconnection of "+id
-                            +", probably client never disconnected for the server!");
-                    //handleReconnection(client);
+                try {
+                    addPlayingClient(client, id);
+                    if (!playController.reconnect(name)) {
+                        System.err.println("respondReconnect: something went wrong with reconnection of " + id
+                                + ", probably client never disconnected for the server!");
+                        //handleReconnection(client);
+                        throw new Exception("Player already connected!");
+                    }
+                }
+                catch (RuntimeException e){
+                    System.out.println("Problem in model during respondReconnect "+e.getMessage());
+                }
+                catch (Exception e){
+                    System.out.println("respondReconnect: "+e.getMessage());
                 }
             }
         }
@@ -280,8 +289,16 @@ public abstract class ResponseServer{
                 try {
                     chatController.sendMessage(sender, sm.player, sm.message);
                 } catch (PlayerNotFoundException e) {
-                    System.out.println(sender+" tried to send a message to "+sm.player+", but this player doesn't exists!");
+                    System.out.println(sender+" tried to send a message to "+sm.player+", but either receiver or sender don't exists!");
                     sendErrorMessage(sm.getId(), "Can not send message! Try again!");
+                }
+            } else {
+                try {
+                    chatController.sendMessage(sender, sm.message);
+                } catch (PlayerNotFoundException e) {
+                    System.out.println(sender+" tried to send a message to all but the sender doesn't exists!");
+                    sendErrorMessage(sm.getId(), "Can not send message! Try again!");
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -405,7 +422,7 @@ public abstract class ResponseServer{
                 }
             }
         };
-        this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 15000);
+        this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 3000);
         this.pingPongTasks.put(client, PingTask);
     }
 

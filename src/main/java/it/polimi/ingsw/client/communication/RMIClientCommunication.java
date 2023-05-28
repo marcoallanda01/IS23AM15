@@ -233,7 +233,6 @@ public class RMIClientCommunication implements ClientCommunication {
     public void pong(String playerId) {
         try {
             rmiClientConnection.getServer().pong(playerId);
-            System.out.println("Pong sent");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();

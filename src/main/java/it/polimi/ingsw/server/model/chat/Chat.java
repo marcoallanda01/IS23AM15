@@ -43,13 +43,14 @@ public class Chat implements PostProcessable, StandardListenable {
         if(MessagesPerPlayer.containsKey(m.sender.getUserName())){
             if (m.receiver.isPresent()) {
                 if (MessagesPerPlayer.containsKey(m.receiver.get().getUserName())) {
-                    MessagesPerPlayer.get(m.receiver.get().getUserName()).add(m);
+                    MessagesPerPlayer.get(m.receiver.get().getUserName()).add(0,m);
+                    MessagesPerPlayer.get(m.sender.getUserName()).add(0,m);
                 } else {
                     throw new PlayerNotFoundException("The receiver of the message is not in the game");
                 }
             } else {
                 for (String p : MessagesPerPlayer.keySet()) {
-                    MessagesPerPlayer.get(p).add(m);
+                    MessagesPerPlayer.get(p).add(0, m);
                 }
             }
             this.propertyChangeSupport.firePropertyChange("messageSent", null, m);

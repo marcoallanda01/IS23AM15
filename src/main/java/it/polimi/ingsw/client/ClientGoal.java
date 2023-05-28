@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-public class ClientGoal {
+public class ClientGoal implements ClientGoalDetail {
     private String name;
     private String description;
     private String image;

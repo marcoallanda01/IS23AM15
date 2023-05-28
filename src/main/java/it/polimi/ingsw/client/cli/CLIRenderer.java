@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ClientGoalDetail;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -178,15 +179,21 @@ public class CLIRenderer {
     }
 
     public static void printChat(Map<String, Map<String, String>> chat) {
-        for (String date : chat.keySet()) {
+        List<String> dates = new ArrayList<>(chat.keySet());
+        Collections.sort(dates);
+        for (String date : dates) {
             System.out.print(date + " - ");
-            for (String name : chat.get(date).keySet()) {
-                System.out.println(name + ": " + chat.get(date).get(name));
+            Map<String, String> messages = chat.get(date);
+            List<String> names = new ArrayList<>(messages.keySet());
+            Collections.sort(names);
+            for (String name : names) {
+                System.out.println(name + ": " + messages.get(name));
             }
         }
     }
 
     public static void printCommonCards(Map<String, List<Integer>> commonGoals) {
+        System.out.println("Common cards:");
         for (String name : commonGoals.keySet()) {
             System.out.print(name + ": ");
             for (Integer goal : commonGoals.get(name)) {
@@ -197,7 +204,14 @@ public class CLIRenderer {
     }
 
     public static void printPersonalGoal(String personalGoal) {
-        System.out.println("personalGoal = " + personalGoal);
+        System.out.println("Personal goal:\n" + personalGoal);
+    }
+
+    public static void printCommonGoals(List<String> commonGoals) {
+        System.out.println("Common goals:");
+        for (String goal : commonGoals) {
+            System.out.println(goal);
+        }
     }
 
     public static void printEndGame(Map<String, Integer> points, String winner) {
@@ -225,4 +239,25 @@ public class CLIRenderer {
         System.out.println(CliColor.RED_BOLD_BRIGHT + message + CliColor.RESET);
     }
 
+    public static void printHelp() {
+        System.out.println("Available commands:");
+        System.out.println("You may pick tiles with: " + "pick ROW1,COL1 ROW2,COL2 ..., " + "where ROWi and COLi are positive integers");
+        System.out.println("You may put tiles with: " + "put COL INDEX1 INDEX2 ..., " + "where COL is the column of your bookshelf and INDEXi represents the i-th picked tile, the order of the indexes represents the order in which tiles will be put in your bookshelf (bottom to top)");
+        System.out.println("You may send message to another player with: " + "sendmessage NICKNAME MESSAGE, " + "if NICKNAME is set to 'all' all players will receive the message");
+        System.out.println("You may show the chat using: " + "showchat");
+        System.out.println("You may show goal details using: " + "showgoal GOAL_NAME, " + "where GOAL_NAME is the name of the goal");
+        System.out.println("You may show the current game using: " + "showgame");
+        System.out.println("You may save the game using: " + "save SAVE_NAME, " + "where SAVE_NAME is the name of the game save, please note that you cannot override existing saves");
+    }
+
+    public static void printGoal(ClientGoalDetail goal) {
+        if (goal == null) {
+            System.out.println("Goal not found");
+            return;
+        }
+        System.out.println("Showing goal: " + goal.getName());
+        System.out.println("Description:\n" + goal.getDescription());
+        // TODO: add a better representation and print it
+        //System.out.println("Representation:\n" + goal.getRepresentation());
+    }
 }

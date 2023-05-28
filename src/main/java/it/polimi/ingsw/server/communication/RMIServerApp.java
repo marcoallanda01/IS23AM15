@@ -25,6 +25,8 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     private String firstPlayerId;
                                                //TODO togliere client in hello
                                               // tranne se sei il first player e metterlo solo in join
+    // TODO: make RMIServer methods synchronized
+    // TODO: make RMIServer methods synchronized according to the utilized resources (using separate locks)
     private final int port;
 
     public RMIServerApp(int port, Lobby lobby, String sharedLock) throws RemoteException {

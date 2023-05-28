@@ -30,6 +30,9 @@ public class InputCLI {
                     case LOAD_GAME -> loadGameRequest(inputArray);
                     case IN_GAME -> {
                         switch (inputArray[0].toLowerCase()) {
+                            case "help":
+                                helpRequest(inputArray);
+                                break;
                             case "pick":
                                 pickTilesRequest(inputArray);
                                 break;
@@ -42,8 +45,11 @@ public class InputCLI {
                             case "showchat":
                                 showChatRequest(inputArray);
                                 break;
-                            case "closechat":
-                                closeChatRequest(inputArray);
+                            case "showgoal":
+                                showGoalRequest(inputArray);
+                                break;
+                            case "showgame":
+                                showGameRequest(inputArray);
                                 break;
                             case "save":
                                 saveGameRequest(inputArray);
@@ -57,7 +63,23 @@ public class InputCLI {
         }
     }
 
-    private static void closeChatRequest(String[] inputArray) {
+    private static void showGoalRequest(String[] inputArray) {
+        if (inputArray.length != 2) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        Client.getInstance().getView().showGoal(inputArray[1]);
+    }
+
+    private static void helpRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        Client.getInstance().getView().showHelp();
+    }
+
+    private static void showGameRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
             return;

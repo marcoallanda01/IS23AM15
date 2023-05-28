@@ -5,12 +5,19 @@ import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
-    public ClientController() {
+    public ClientController(String goalsPath) {
         view = Client.getInstance().getView();
+        try {
+            view.setGoalsToDetail(ClientGoalParser.parseGoalsFromJsonFile(getClass().getResource(goalsPath)));
+        } catch (IOException e) {
+            Client.getInstance().getLogger().log(e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -106,7 +113,9 @@ public class ClientController implements ClientNotificationListener {
         chat.put(date, Map.of("nickname", nickname, "message", message));
         view.setChat(chat);
         view.render();
-        view.showError("The player " + nickname + " has sent a message, to open the chat type \"showChat\".");
+        if(!nickname.equals(Client.getInstance().getNickname())) {
+            view.showError("The player " + nickname + " has sent a message, to open the chat type \"showChat\".");
+        }
     }
 
     @Override

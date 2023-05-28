@@ -123,7 +123,6 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
     }
     @Override
     public void notifyPing() throws RemoteException {
-        System.out.println("Ping received");
         clientNotificationListener.notifyPing();
     }
     @Override
