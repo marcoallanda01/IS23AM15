@@ -56,9 +56,9 @@ class GameTest {
         assertThrows(PlayerNotFoundException.class, ()->game.sendMessage(p3.getUserName(), "nonPresente", "ciao p1"));
         assertThrows(PlayerNotFoundException.class, ()->game.sendMessage("nonPresente",  p1.getUserName(), "ciao p1"));
         game.sendMessage(p1.getUserName(), "ciao a tutti");
-        assertEquals(game.getChat().getMessages(p1).size(), 3);
-        assertEquals(game.getChat().getMessages(p2).size(), 2);
-        assertEquals(game.getChat().getMessages(p3).size(), 1);
+        assertEquals(game.getChat().getMessages(p1).size(), 4);
+        assertEquals(game.getChat().getMessages(p2).size(), 3);
+        assertEquals(game.getChat().getMessages(p3).size(), 2);
         assertThrows(PlayerNotFoundException.class, () -> game.sendMessage(p1.getUserName(), "p5", "ciao p5"));
         assertThrows(PlayerNotFoundException.class, () -> game.sendMessage("p5", p1.getUserName(), "ciao p5"));
 

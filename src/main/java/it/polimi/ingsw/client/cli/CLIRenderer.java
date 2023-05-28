@@ -179,10 +179,15 @@ public class CLIRenderer {
     }
 
     public static void printChat(Map<String, Map<String, String>> chat) {
-        for (String date : chat.keySet()) {
+        List<String> dates = new ArrayList<>(chat.keySet());
+        Collections.sort(dates);
+        for (String date : dates) {
             System.out.print(date + " - ");
-            for (String name : chat.get(date).keySet()) {
-                System.out.println(name + ": " + chat.get(date).get(name));
+            Map<String, String> messages = chat.get(date);
+            List<String> names = new ArrayList<>(messages.keySet());
+            Collections.sort(names);
+            for (String name : names) {
+                System.out.println(name + ": " + messages.get(name));
             }
         }
     }
