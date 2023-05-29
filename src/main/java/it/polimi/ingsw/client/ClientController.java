@@ -157,27 +157,31 @@ public class ClientController implements ClientNotificationListener {
         List<String> players = new ArrayList<>(nicknames);
         view.setLobbyPlayers(players);
         view.setNumberOfPlayers(players.size());
-        Client.getInstance().getClientCommunication().joinLoadedAsFirst(Client.getInstance().getNickname(), Client.getInstance().getId());
+        Client.getInstance().setClientState(ClientStates.LOAD_NAMES);
+        view.render();
+        //Client.getInstance().getClientCommunication().joinLoadedAsFirst(Client.getInstance().getNickname(), Client.getInstance().getId());
     }
 
     @Override
     public void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame) {
         if (!lobbyReady) {
             if (!firstPlayerId.equals("NoFirst")) {
+                Client.getInstance().setFirstPlayer(true);
                 Client.getInstance().setId(firstPlayerId);
                 Client.getInstance().setClientState(ClientStates.CREATE_LOBBY);
                 view.render();
             } else {
+                Client.getInstance().setFirstPlayer(false);
                 view.render();
                 view.showError("The lobby is being created by another player. Please retry later.");
             }
         } else {
-            Client.getInstance().getClientCommunication().join(Client.getInstance().getNickname());
-//            if (loadedGame) {
-//                Client.getInstance().getClientCommunication().getLoadedGamePlayers();
-//            } else {
-//
-//            }
+            Client.getInstance().setFirstPlayer(false);
+            if(loadedGame) {
+                Client.getInstance().getClientCommunication().getLoadedGamePlayers();
+            } else {
+                Client.getInstance().getClientCommunication().join(Client.getInstance().getNickname());
+            }
         }
     }
 

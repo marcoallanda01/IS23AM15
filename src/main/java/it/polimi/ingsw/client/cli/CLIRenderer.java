@@ -260,4 +260,11 @@ public class CLIRenderer {
         // TODO: add a better representation and print it
         //System.out.println("Representation:\n" + goal.getRepresentation());
     }
+
+    public static void printLoadedGameNames(List<String> gameNames) {
+        System.out.println("Choose a name from the following list:");
+        for (String gameName : gameNames) {
+            System.out.println(gameName);
+        }
+    }
 }
