@@ -215,12 +215,14 @@ public abstract class ResponseServer{
             String name = lobby.getNameFromId(id);
             if (name != null) {
                 try {
-                    addPlayingClient(client, id);
-                    if (!playController.reconnect(name)) {
-                        System.err.println("respondReconnect: something went wrong with reconnection of " + id
-                                + ", probably client never disconnected for the server!");
-                        //handleReconnection(client);
-                        throw new Exception("Player already connected!");
+                    if (!playController.isPlaying(name)) {
+                        addPlayingClient(client, id);
+                        if(!playController.reconnect(name)){
+                            System.err.println("respondReconnect: something went wrong with reconnection of " + id
+                                    + ", probably client never disconnected for the server!");
+                            //handleReconnection(client);
+                            throw new Exception("Player already connected!");
+                        }
                     }
                 }
                 catch (RuntimeException e){

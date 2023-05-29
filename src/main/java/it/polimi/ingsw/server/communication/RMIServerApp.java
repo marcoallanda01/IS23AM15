@@ -193,11 +193,13 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
             throw new RemoteException("playerId is null");
         }
         if(this.playersIds.containsValue(playerId)){
-            this.playersIds.forEach((k, v) -> {
-                if(v.equals(playerId)){
-                    respondServer.respondDisconnect(new Disconnect(playerId), k);
-                }
-            });
+            synchronized (playersIds) {
+                this.playersIds.forEach((k, v) -> {
+                    if (v.equals(playerId)) {
+                        respondServer.respondDisconnect(new Disconnect(playerId), k);
+                    }
+                });
+            }
         }
     }
 
@@ -213,8 +215,11 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
         if(client == null || playerId == null){
             throw new RemoteException("A parameter passed is null");
         }
-        if(this.playersIds.containsValue(playerId)){
+        if(!this.playersIds.containsValue(playerId)){
             respondServer.respondReconnect(new Reconnect(playerId), client);
+        }
+        else {
+            throw new RemoteException("Player is already playing");
         }
     }
 
@@ -308,13 +313,14 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
         }
         System.out.println("Pong received from: " + playerId);
         if(this.playersIds.containsValue(playerId)){
-            this.playersIds.forEach((k, v) -> {
-                if(v.equals(playerId)){
-                    System.out.println("Pong responding to: " + playerId);
-                    respondServer.respondPong(new Pong(playerId), k);
-                }
-            });
-            // TODO in questo modo in RMI solo chi gioca riceve i ping è giusro?
+            synchronized (playersIds){
+                this.playersIds.forEach((k, v) -> {
+                    if(v.equals(playerId)){
+                        System.out.println("Pong responding to: " + playerId);
+                        respondServer.respondPong(new Pong(playerId), k);
+                    }
+                });
+            }
         }else if(this.firstPlayerClient != null && this.firstPlayerId.equals(playerId)){
             System.out.println("RMI Server: First player pong");
             respondServer.respondPong(new Pong(playerId), firstPlayerClient);
@@ -338,13 +344,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyDisconnection(String playerName) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyDisconnection(playerName);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyDisconnection: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyDisconnection(playerName);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyDisconnection: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -354,16 +362,18 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyReconnection(String playerName) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyReconnection(playerName);
-                if(playerName.equals(respondServer.getPlayerNameFromClient(key))){
-                    respondServer.handleReconnection(key, playerName);
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyReconnection(playerName);
+                    if (playerName.equals(respondServer.getPlayerNameFromClient(key))) {
+                        respondServer.handleReconnection(key, playerName);
+                    }
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyReconnection: " + e.getClass() + " thrown with client " + value);
                 }
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyReconnection: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -375,13 +385,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyMessage(String sender, String date, String message) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyChatMessage(sender, date, message);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyMessage: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyChatMessage(sender, date, message);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyMessage: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -394,16 +406,18 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyMessage(String sender, String date, String message, String receiver) {
-        this.playersIds.entrySet().stream()
-                .filter(e->e.getValue().equals(respondServer.lobby.getIdFromName(receiver)))
-                .map(Map.Entry::getKey)
-                .findFirst().ifPresent(c-> {
-                    try {
-                        c.notifyChatMessage(sender, message,date);
-                    } catch (RemoteException | RuntimeException e) {
-                        System.err.println("RMI notifyMessage: "+e.getClass()+" thrown with client "+sender);
-                    }
-                });
+        synchronized (playersIds) {
+            this.playersIds.entrySet().stream()
+                    .filter(e -> e.getValue().equals(respondServer.lobby.getIdFromName(receiver)))
+                    .map(Map.Entry::getKey)
+                    .findFirst().ifPresent(c -> {
+                        try {
+                            c.notifyChatMessage(sender, message, date);
+                        } catch (RemoteException | RuntimeException e) {
+                            System.err.println("RMI notifyMessage: " + e.getClass() + " thrown with client " + sender);
+                        }
+                    });
+        }
     }
 
     /**
@@ -413,13 +427,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyChangeBoard(List<Tile> tiles) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyBoard(new HashSet<>(tiles));
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyChangeBoard: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyBoard(new HashSet<>(tiles));
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyChangeBoard: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -430,13 +446,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyBookshelf(playerName,new HashSet<>(tiles));
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyChangeBookShelf: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyBookshelf(playerName, new HashSet<>(tiles));
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyChangeBookShelf: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -447,13 +465,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void updatePlayerPoints(String playerName, int points) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyPoints(playerName, points);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI updatePlayerPoints: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyPoints(playerName, points);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI updatePlayerPoints: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -463,13 +483,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyTurn(String playerName) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyTurn(playerName);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyTurn: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyTurn(playerName);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyTurn: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -479,13 +501,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyCommonGoalCards(cardsAndTokens);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI sendCommonGoalsCards: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyCommonGoalCards(cardsAndTokens);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI sendCommonGoalsCards: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -495,17 +519,19 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyWinner(String playerName) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyWinner(playerName);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyWinner: "+e.getClass()+" thrown with client "+value);
-            }
-        });
-        // Close all playing clients
-        this.playersIds.forEach((key, value) -> {
-            respondServer.closeClient(key);
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyWinner(playerName);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyWinner: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+            // Close all playing clients
+            this.playersIds.forEach((key, value) -> {
+                respondServer.closeClient(key);
+            });
+        }
         //reset
         respondServer.reset();
     }
@@ -517,13 +543,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyGameSaved(String name) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyGameSaved(name);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyGameSaved: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyGameSaved(name);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyGameSaved: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**
@@ -534,13 +562,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyPickedTiles(String player, List<TileType> tiles) {
-        this.playersIds.forEach((key, value) -> {
-            try {
-                key.notifyPickedTiles(player, tiles);
-            } catch (RemoteException | RuntimeException e) {
-                System.err.println("RMI notifyPickedTiles: "+e.getClass()+" thrown with client "+value);
-            }
-        });
+        synchronized (playersIds) {
+            this.playersIds.forEach((key, value) -> {
+                try {
+                    key.notifyPickedTiles(player, tiles);
+                } catch (RemoteException | RuntimeException e) {
+                    System.err.println("RMI notifyPickedTiles: " + e.getClass() + " thrown with client " + value);
+                }
+            });
+        }
     }
 
     /**

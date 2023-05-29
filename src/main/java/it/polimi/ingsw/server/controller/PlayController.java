@@ -178,6 +178,20 @@ public class PlayController {
     }
 
     /**
+     * Check if a player is playing
+     * @param player player's nickname
+     * @return true if there is a player with that name who is playing
+     */
+    public synchronized boolean isPlaying(String player) {
+        for(Player p : game.getPlayersList()){
+            if(p.getUserName().equals(player)){
+                return p.isPlaying();
+            }
+        }
+        return false;
+    }
+
+    /**
      * Method to make reconnect a player to the game
      * @param player player name (can be passed also a player name that doesn't exist)
      * @return true if the reconnection ended well. false if the player doesn't exist
