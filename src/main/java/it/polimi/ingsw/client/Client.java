@@ -23,6 +23,16 @@ public class Client {
     private final Views viewSetting;
     private final Modes modeSetting;
     private String id;
+
+    public boolean isFirstPlayer() {
+        return isFirstPlayer;
+    }
+
+    public void setFirstPlayer(boolean firstPlayer) {
+        isFirstPlayer = firstPlayer;
+    }
+
+    private boolean isFirstPlayer;
     private String nickname;
     private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;

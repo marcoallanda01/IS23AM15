@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class InputCLI {
-
     public static void inputHandler(Scanner inputScanner) {
         while (inputScanner.hasNext()) {
             String input = inputScanner.next();
@@ -28,6 +27,7 @@ public class InputCLI {
                     case CREATE_LOBBY -> createLobbyRequest(inputArray);
                     case CREATE_GAME -> createGameRequest(inputArray);
                     case LOAD_GAME -> loadGameRequest(inputArray);
+                    case LOAD_NAMES -> loadNamesRequest(inputArray);
                     case IN_GAME -> {
                         switch (inputArray[0].toLowerCase()) {
                             case "help":
@@ -60,6 +60,22 @@ public class InputCLI {
                     }
                 }
             }
+        }
+    }
+
+    private static void loadNamesRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        if(Client.getInstance().getView().getLobbyPlayers().contains(inputArray[0])) {
+            if(Client.getInstance().isFirstPlayer()) {
+                Client.getInstance().getClientCommunication().joinLoadedAsFirst(inputArray[0], Client.getInstance().getId());
+            } else {
+                Client.getInstance().getClientCommunication().join(inputArray[0]);
+            }
+        } else {
+            Client.getInstance().getView().showError("Invalid input");
         }
     }
 
@@ -141,6 +157,7 @@ public class InputCLI {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
+
         Client.getInstance().getClientController().loadGame(choice);
     }
 
