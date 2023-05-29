@@ -69,18 +69,27 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     private void sendToClient(Socket client, String content){
         this.executorService.submit(()-> {
                     String clientLock;
-                    PrintWriter out = clientsToOut.get(client);
                     synchronized (lockOnLocks){
                         clientLock = clientsToLockOut.get(client);
                     }
-                    if(out != null && clientLock != null){
+                    if(clientLock != null){
                         // clientLock is a reference because map.get() returns a reference
                         synchronized (clientLock){
-                            //this lock is separated because I don't care if now the client is deleted
-                            //the message is sent but no one receive it
-                            out.println(content);
+                            System.out.println("Lock "+clientLock+" acquired");
+                            PrintWriter out = clientsToOut.get(client);
+                            if(out != null){
+
+                                //this lock is separated because I don't care if now the client is deleted
+                                //the message is sent but no one receive it
+                                out.println(content);
+                                System.out.println("Sent to "+client+": "+content);
+
+                            }
+                            else{
+                                System.err.println("TCP Error in writing on "+clientLock);
+                            }
+                            System.out.println("Lock "+clientLock+" released");
                         }
-                        System.out.println("Sent to "+client+": "+content);
                     }
                 }
         );
