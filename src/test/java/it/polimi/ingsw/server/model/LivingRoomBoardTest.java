@@ -25,12 +25,12 @@ class LivingRoomBoardTest {
         mask.put(4,
                 Map.of(0, TileRule.FOUR, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.FOUR));
         mask.put(5,
-                Map.of(0, TileRule.THREE, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.TWO, 8, TileRule.FOUR));
+                Map.of(0, TileRule.THREE, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.TWO, 7, TileRule.FOUR, 8, TileRule.BLOCK));
         mask.put(6, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.THREE, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.THREE, 7, TileRule.BLOCK, 8,
                 TileRule.BLOCK));
         mask.put(7, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.TWO, 5, TileRule.TWO, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
                 TileRule.BLOCK));
-        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.FOUR, 4, TileRule.THREE, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.FOUR, 5, TileRule.THREE, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
                 TileRule.BLOCK));
     }
 
@@ -62,7 +62,7 @@ class LivingRoomBoardTest {
         for (int i = 2; i < 5; i++) { // check for 2, 3, 4 players
             LivingRoomBoard board = new LivingRoomBoard(i);
             board.fillBoard();
-            //System.out.println("board with " + i + " players = " + board);
+            System.out.println("board with " + i + " players = " + board);
             int finalI = i;
             board.getBoard().forEach((row, map) -> map.forEach((col, tile) -> {
                 if (mask.get(row).get(col) == TileRule.BLOCK) {

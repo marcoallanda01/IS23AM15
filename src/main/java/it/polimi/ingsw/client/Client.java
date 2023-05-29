@@ -105,7 +105,6 @@ public class Client {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
          Thread shutdownHook = new Thread() {
             @Override
             public void run() {
@@ -270,5 +269,6 @@ public class Client {
             logger.log("Error while opening the connection, try restarting the app");
             throw e;
         }
+        Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
     }
 }

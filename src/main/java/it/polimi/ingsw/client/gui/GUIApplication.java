@@ -1,4 +1,5 @@
 package it.polimi.ingsw.client.gui;
+
 import it.polimi.ingsw.client.Client;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -54,6 +55,13 @@ public class GUIApplication extends Application {
         initializeViewAndConnection(5);
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        Client.getInstance().getLogger().log("Application closed");
+        Client.getInstance().getClientController().logout();
+    }
+
     public void clearStage() {
         // Get the root node of the stage
         StackPane root = (StackPane) primaryStage.getScene().getRoot();
@@ -69,12 +77,12 @@ public class GUIApplication extends Application {
 
     public synchronized void transitionToScene(Scene newScene) {
         // Create a fade-out transition for the current scene
-        FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(1), primaryStage.getScene().getRoot());
+        FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.4), primaryStage.getScene().getRoot());
         fadeOutTransition.setFromValue(1.0);
         fadeOutTransition.setToValue(0.0);
 
         // Create a fade-in transition for the new scene
-        FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(1), newScene.getRoot());
+        FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(0.4), newScene.getRoot());
         fadeInTransition.setFromValue(0.0);
         fadeInTransition.setToValue(1.0);
 
