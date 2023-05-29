@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.concurrent.*;
 
 /**
- * this class handles the TCP connection:
+ * Handles the TCP connection:
  * opens it, closes it, handles notifications
  * receives and sends messages from and to the server
  */
@@ -22,12 +22,6 @@ public class TCPClientConnection implements ClientConnection {
     private ExecutorService executorService;
     private Future<Void> notificationListener;
 
-    private Integer waitingResponses;
-
-    public Socket getSocket() {
-        return socket;
-    }
-
     /**
      * @param clientNotificationListener the clientNotificationListener
      */
@@ -38,66 +32,65 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     /**
-     * this method opens the TCP connection,
-     * initializes the executorService
-     * starts listening to notifications
+     * Opens the TCP connection, initializes the executorService, and starts listening to notifications.
+     *
+     * @throws ClientConnectionException if an error occurs while opening the TCP client connection.
      */
-    public void openConnection() {
+    public void openConnection() throws ClientConnectionException {
         Client.getInstance().getLogger().log("Opening TCP client connection...");
         readLock = new Object();
         writeLock = new Object();
         executorService = Executors.newCachedThreadPool();
-        waitingResponses = 0;
         try {
-            // Create a socket to connect to the server
             Client.getInstance().getLogger().log("Opening socket...");
             socket = new Socket(hostname, port);
             Client.getInstance().getLogger().log("Starting notification handler...");
             notificationListener = executorService.submit(() -> startNotificationHandler());
-            Client.getInstance().getLogger().log("TCP client connection open");
         } catch (IOException e) {
             Client.getInstance().getLogger().log(e);
-            throw new ClientConnectionException();
+            throw new ClientConnectionException("Error while opening TCP client connection.");
         }
+        Client.getInstance().getLogger().log("TCP client connection open.");
     }
 
     /**
-     * this method closes the TCP connection
-     * closes the executorService
-     * stops listening to notifications
+     * Closes the TCP connection, closes the executorService, and stops listening to notifications.
+     *
+     * @throws ClientConnectionException if an error occurs while closing the TCP client connection.
      */
-    public void closeConnection() {
+    public void closeConnection() throws ClientConnectionException {
         try {
             if (socket != null) {
                 socket.close();
                 executorService.close();
                 notificationListener.cancel(Boolean.TRUE);
-                Client.getInstance().getLogger().log("Socket closed.");
+                Client.getInstance().getLogger().log("TCP client connection closed.");
             }
         } catch (IOException e) {
             Client.getInstance().getLogger().log(e);
-            throw new ClientConnectionException();
+            throw new ClientConnectionException("Error while closing TCP client connection.");
         }
     }
 
     /**
-     * this method submits sendStringToServer to an executor service
+     * Submits sendStringToServer to an executor service
      */
     public void sendToServer(String json) {
         executorService.submit(() -> sendStringToServer(json));
     }
-
     /**
-     * this method sends a message to the server, it locks the writeLock
+     * Sends a message to the server, it locks the writeLock
      *
      * @param json the message to be sent to the server
      */
     private void sendStringToServer(String json) {
         synchronized (writeLock) {
             try {
-                // Create output stream for communication with the server
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(json);
+                if (!json.contains("Ping")) {
+                    Client.getInstance().getLogger().log("Sent to server: " + json);
+                }
             } catch (IOException e) {
                 Client.getInstance().getLogger().log(e);
             }
@@ -106,35 +99,34 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     /**
-     * this method listen for messages and writes them in the buffer all the time, unless interrupted
+     * Listens for messages and writes them in the buffer all the time, unless interrupted
      */
     private Void startNotificationHandler() {
         synchronized (readLock) {
             try {
-                // Create output stream for communication with the server
                 Scanner in = new Scanner(socket.getInputStream());
-                while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
+                while (!Thread.currentThread().isInterrupted()) {
                     String json = in.nextLine();
+                    if (!json.contains("Ping")) {
+                        Client.getInstance().getLogger().log("Received from server: " + json);
+                    }
                     executorService.submit(() -> dispatchNotification(json));
                 }
                 return null;
             } catch (IOException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientConnectionException();
+                return null;
             }
         }
     }
 
     /**
-     * this method handles the received message by calling the appropriate view method
+     * Handles the received message by calling the appropriate view method
      *
      * @param json the notification string received from the server
      * @return true if the response has been handled correctly by the view, false otherwise
      */
     private Boolean dispatchNotification(String json) {
-        if (!json.contains("Ping")) {
-            Client.getInstance().getLogger().log("Received from server: " + json);
-        }
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
             clientNotificationListener.notifyBoard(boardUpdate.tiles);
@@ -191,7 +183,7 @@ public class TCPClientConnection implements ClientConnection {
             clientNotificationListener.notifyPoints(playerPoints.player, playerPoints.points);
         } else if (Reconnected.fromJson(json).isPresent()) {
             Reconnected reconnected = Reconnected.fromJson(json).get();
-            clientNotificationListener.notifyReconnection(reconnected.toString());
+            clientNotificationListener.notifyReconnection(reconnected.player);
         } else if (SavedGames.fromJson(json).isPresent()) {
             SavedGames savedGames = SavedGames.fromJson(json).get();
             clientNotificationListener.notifySavedGames(savedGames.names);

@@ -6,7 +6,6 @@ package it.polimi.ingsw.client.communication;
  */
 public interface ClientConnection {
     public void openConnection() throws ClientConnectionException;
-
     public void closeConnection() throws ClientConnectionException;
 }
 

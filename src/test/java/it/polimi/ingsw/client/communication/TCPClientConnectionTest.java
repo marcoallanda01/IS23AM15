@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.communication.responses.BoardUpdate;
 import it.polimi.ingsw.communication.responses.BookShelfUpdate;
 import it.polimi.ingsw.communication.responses.GameSetUp;
@@ -42,7 +43,8 @@ class TCPClientConnectionTest {
     @BeforeEach
     @Test
     void constructorTest() throws InterruptedException, ExecutionException {
-            try {
+        Client.main();
+        try {
                 this.serverSocket = new ServerSocket(1001);
                 serverExecutorService = Executors.newCachedThreadPool();
                 this.acceptingThread = serverExecutorService.submit(() -> {

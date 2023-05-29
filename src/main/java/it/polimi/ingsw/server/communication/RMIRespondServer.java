@@ -167,7 +167,7 @@ public class RMIRespondServer extends ResponseServer{
                         new ArrayList<>(playController.getEndGameGoals()),
                         playController.getPersonalGoalCard(name)
                 ));
-                client.notifyCommonGoalCards(playController.getCommonGoalCardsToTokens());
+                client.notifyCommonCards(playController.getCommonGoalCardsToTokens());
                 client.notifyBoard(playController.getBoard());
             } catch (RemoteException | RuntimeException e) {
                 System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);

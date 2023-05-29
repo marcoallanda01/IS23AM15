@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * this class is a TCP based implementation of ClientCommunication
- * it uses a TCPClientConnection to send messages to the server
+ * TCP based implementation of ClientCommunication
+ * uses a TCPClientConnection to send messages to the server
  */
 public class TCPClientCommunication implements ClientCommunication {
     private TCPClientConnection tcpClientConnection;
@@ -20,114 +20,170 @@ public class TCPClientCommunication implements ClientCommunication {
         this.tcpClientConnection = tcpClientConnection;
     }
     /**
-     * this method sends a Hello to the server
+     * Sends a Hello to the server.
      */
     @Override
     public void hello() {
         tcpClientConnection.sendToServer((new HelloCommand()).toJson());
     }
+
     /**
-     * this method sends a JoinNewAsFirst to the server
+     * Sends a JoinNewAsFirst to the server.
+     *
+     * @param player          The nickname of the player joining the game.
+     * @param numPlayersGame  The number of players in the game.
+     * @param idFirstPlayer   The ID of the first player.
      */
     @Override
     public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
         joinNewAsFirst(player, numPlayersGame, idFirstPlayer, false);
     }
+
     /**
-     * this method sends a JoinNewAsFirst to the server
+     * Sends a JoinNewAsFirst to the server.
+     *
+     * @param player          The nickname of the player joining the game.
+     * @param numPlayersGame  The number of players in the game.
+     * @param idFirstPlayer   The ID of the first player.
+     * @param easyRules       A flag indicating whether to use easy rules.
      */
     @Override
     public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
         tcpClientConnection.sendToServer((new JoinNewAsFirst(player, numPlayersGame, idFirstPlayer, easyRules)).toJson());
     }
+
     /**
-     * this method sends a GetSavedGames to the server
+     * Sends a GetSavedGames to the server.
      */
     @Override
     public void getSavedGames() {
         tcpClientConnection.sendToServer((new GetSavedGames()).toJson());
     }
+
     /**
-     * this method sends a LoadGame to the server
+     * Sends a LoadGame to the server.
+     *
+     * @param game            The name of the game save to load.
+     * @param idFirstPlayer   The ID of the first player.
      */
     @Override
     public void loadGame(String game, String idFirstPlayer) {
         tcpClientConnection.sendToServer((new LoadGame(idFirstPlayer, game)).toJson());
     }
+
     /**
-     * this method sends a GetLoadedPlayers to the server
+     * Sends a GetLoadedPlayers to the server.
      */
     @Override
     public void getLoadedGamePlayers() {
         tcpClientConnection.sendToServer((new GetLoadedPlayers()).toJson());
     }
+
     /**
-     * this method sends a JoinLoadedAsFirst to the server
+     * Sends a JoinLoadedAsFirst to the server.
+     *
+     * @param player          The nickname of the player joining the game.
+     * @param idFirstPlayer   The ID of the first player.
      */
     @Override
     public void joinLoadedAsFirst(String player, String idFirstPlayer) {
         tcpClientConnection.sendToServer((new JoinLoadedAsFirst(player, idFirstPlayer)).toJson());
     }
+
     /**
-     * this method sends a Join to the server
+     * Sends a Join to the server.
+     *
+     * @param player  The nickname of the player joining the game.
      */
     @Override
     public void join(String player) {
         tcpClientConnection.sendToServer((new Join(player)).toJson());
     }
+
     /**
-     * this method sends a Disconnect to the server
+     * Sends a Disconnect to the server.
+     *
+     * @param playerId  The ID of the player to disconnect.
      */
     @Override
     public void disconnect(String playerId) {
         tcpClientConnection.sendToServer((new Disconnect(playerId)).toJson());
     }
+
     /**
-     * this method sends a Reconnect to the server
+     * Sends a Reconnect to the server.
+     *
+     * @param playerId  The ID of the player to reconnect.
      */
     @Override
     public void reconnect(String playerId) {
         tcpClientConnection.sendToServer((new Reconnect(playerId)).toJson());
     }
+
     /**
-     * this method sends a PickTilesCommand to the server
+     * Sends a PickTilesCommand to the server.
+     *
+     * @param playerId  The ID of the player picking tiles.
+     * @param tiles     The set of tiles to be picked.
      */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) {
         tcpClientConnection.sendToServer((new PickTilesCommand(playerId, tiles)).toJson());
     }
+
     /**
-     * this method sends a PutTilesCommand to the server
+     * Sends a PutTilesCommand to the server.
+     *
+     * @param playerId  The ID of the player putting tiles.
+     * @param tiles     The list of tiles to be placed.
+     * @param column    The column where the tiles will be placed.
      */
     @Override
     public void putTiles(String playerId, List<TileType> tiles, int column) {
         tcpClientConnection.sendToServer((new PutTilesCommand(playerId, tiles, column)).toJson());
     }
+
     /**
-     * this method sends a SendMessage to the server (to just one player)
+     * Sends a SendMessage to the server (to a specific player).
+     *
+     * @param playerId          The ID of the player sending the message.
+     * @param message           The message to be sent.
+     * @param receiverNickname  The nickname of the message receiver.
      */
     @Override
     public void sendMessage(String playerId, String message, String receiverNickname) {
         tcpClientConnection.sendToServer((new SendMessage(playerId, message, receiverNickname)).toJson());
     }
+
     /**
-     * this method sends a SendMessage to the server (to all)
+     * Sends a SendMessage to the server (to all players).
+     *
+     * @param playerId  The ID of the player sending the message.
+     * @param message   The message to be sent.
      */
     @Override
     public void sendMessage(String playerId, String message) {
         tcpClientConnection.sendToServer((new SendMessage(playerId, message)).toJson());
     }
+
     /**
-     * this method sends a Pong to the server, doesn't wait
+     * Sends a Pong to the server.
+     *
+     * @param playerId  The ID of the player sending the pong.
      */
     @Override
     public void pong(String playerId) {
         tcpClientConnection.sendToServer((new Pong(playerId)).toJson());
     }
 
+    /**
+     * Sends a SaveGame to the server.
+     *
+     * @param playerId   The ID of the player saving the game.
+     * @param gameName   The name of the save.
+     */
     @Override
     public void saveGame(String playerId, String gameName) {
         tcpClientConnection.sendToServer((new SaveGame(playerId, gameName)).toJson());
     }
-
 }

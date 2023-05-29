@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.communication.commands.HelloCommand;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,8 @@ class TCPClientClientCommunicationTest {
     @BeforeEach
     @Test
     void constructorTest() throws InterruptedException, ExecutionException {
-            try {
+        Client.main();
+        try {
                 this.serverSocket = new ServerSocket(1000);
                 serverExecutorService = Executors.newCachedThreadPool();
                 this.acceptingThread = serverExecutorService.submit(() -> {

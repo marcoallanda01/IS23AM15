@@ -48,7 +48,20 @@ public class Client {
         this.goalsPath = goalsPath;
         state = ClientStates.LOGIN;
     }
-
+    // used for testing
+    public Client() {
+        this.hostname = null;
+        this.port = 0;
+        this.protocolSetting = null;
+        this.viewSetting = null;
+        this.modeSetting = null;
+        this.goalsPath = null;
+        this.state = null;
+    }
+    // used for testing
+    public static void main() {
+        singleton = new Client();
+    }
     public static Client getInstance() {
         return singleton;
     }
@@ -74,7 +87,6 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
-
     public static void main(String[] args)  //static method
     {
         String hostname = parseArg(args, "-a", "--address");

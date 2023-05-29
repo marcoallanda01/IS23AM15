@@ -12,9 +12,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * this class is an RMI based implementation of ClientCommunication
+ * RMI based implementation of ClientCommunication
  * it uses a RMIClientConnection to call methods on the server
- * note that some methods expect a return value blocking the thread
+ * note that some methods expect a return value,
+ * the ClientCommunication class is responsible for dedicating
+ * threads that wait for that return value and call the appropriate functions
+ * on ClientCommunication (in  place of the server)
  */
 public class RMIClientCommunication implements ClientCommunication {
     private ExecutorService executorService;
@@ -27,7 +30,7 @@ public class RMIClientCommunication implements ClientCommunication {
         this.rmiClientConnection = rmiClientConnection;
     }
     /**
-     * this method calls Hello on the server
+     * Hello to establish a connection.
      */
     @Override
     public void hello() {
@@ -35,7 +38,9 @@ public class RMIClientCommunication implements ClientCommunication {
             Hello hello = null;
             try {
                 hello = rmiClientConnection.getServer().hello(rmiClientConnection);
+                Client.getInstance().getLogger().log("Client called hello(" + rmiClientConnection + ")");
                 rmiClientConnection.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
+                Client.getInstance().getLogger().log("Server returned: " + hello.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
@@ -43,7 +48,11 @@ public class RMIClientCommunication implements ClientCommunication {
         });
     }
     /**
-     * this method calls JoinNewAsFirst on the server
+     * Requests to join a new game as the first player.
+     *
+     * @param player           The name of the player joining the game.
+     * @param numPlayersGame   The number of players in the game.
+     * @param idFirstPlayer    The ID of the first player.
      */
     @Override
     public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer) {
@@ -51,15 +60,23 @@ public class RMIClientCommunication implements ClientCommunication {
             FirstJoinResponse firstJoinResponse = null;
             try {
                 firstJoinResponse = rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer);
+                Client.getInstance().getLogger().log("Client called joinNewAsFirst(" + player + ", " + numPlayersGame + ", " + idFirstPlayer + ")");
                 rmiClientConnection.notifyFirstJoinResponse(firstJoinResponse.result);
+                Client.getInstance().getLogger().log("Server responded: " + firstJoinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
             }
         });
     }
+
     /**
-     * this method calls JoinNewAsFirst on the server
+     * Requests to join a new game as the first player with specified rules.
+     *
+     * @param player           The name of the player joining the game.
+     * @param numPlayersGame   The number of players in the game.
+     * @param idFirstPlayer    The ID of the first player.
+     * @param easyRules        The flag indicating if easy rules should be applied.
      */
     @Override
     public void joinNewAsFirst(String player, int numPlayersGame, String idFirstPlayer, boolean easyRules) {
@@ -67,15 +84,18 @@ public class RMIClientCommunication implements ClientCommunication {
             FirstJoinResponse firstJoinResponse = null;
             try {
                 firstJoinResponse = rmiClientConnection.getServer().joinNewAsFirst(rmiClientConnection, player, numPlayersGame, idFirstPlayer, easyRules);
+                Client.getInstance().getLogger().log("Client called joinNewAsFirst(" + player + ", " + numPlayersGame + ", " + idFirstPlayer + ", " + easyRules + ")");
                 rmiClientConnection.notifyFirstJoinResponse(firstJoinResponse.result);
+                Client.getInstance().getLogger().log("Server responded: " + firstJoinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
             }
         });
     }
+
     /**
-     * this method calls GetSavedGames on the server
+     * Requests to get the list of saved games from the server.
      */
     @Override
     public void getSavedGames() {
@@ -83,15 +103,21 @@ public class RMIClientCommunication implements ClientCommunication {
             SavedGames savedGames = null;
             try {
                 savedGames = rmiClientConnection.getServer().getSavedGames();
+                Client.getInstance().getLogger().log("Client called getSavedGames()");
                 rmiClientConnection.notifySavedGames(savedGames.names);
+                Client.getInstance().getLogger().log("Server responded: " + savedGames.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
             }
         });
     }
+
     /**
-     * this method calls LoadGame on the server
+     * Requests to load a game from the server.
+     *
+     * @param game             The name of the game to be loaded.
+     * @param idFirstPlayer    The ID of the first player.
      */
     @Override
     public void loadGame(String game, String idFirstPlayer) {
@@ -99,7 +125,9 @@ public class RMIClientCommunication implements ClientCommunication {
             LoadGameResponse loadGameResponse = null;
             try {
                 loadGameResponse = rmiClientConnection.getServer().loadGame(game, idFirstPlayer);
+                Client.getInstance().getLogger().log("Client called loadGame(" + game + ", " + idFirstPlayer + ")");
                 rmiClientConnection.notifyLoadGameResponse(loadGameResponse.result, loadGameResponse.error);
+                Client.getInstance().getLogger().log("Server responded: " + loadGameResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
@@ -107,7 +135,7 @@ public class RMIClientCommunication implements ClientCommunication {
         });
     }
     /**
-     * this method calls GetLoadedPlayers on the server
+     * Requests to get the list of players in a loaded game from the server.
      */
     @Override
     public void getLoadedGamePlayers() {
@@ -115,7 +143,9 @@ public class RMIClientCommunication implements ClientCommunication {
             LoadedGamePlayers loadedGamePlayers = null;
             try {
                 loadedGamePlayers = rmiClientConnection.getServer().getLoadedGamePlayers();
+                Client.getInstance().getLogger().log("Client called getLoadedGamePlayers()");
                 rmiClientConnection.notifyLoadedGamePlayers(loadedGamePlayers.names);
+                Client.getInstance().getLogger().log("Server responded: " + loadedGamePlayers.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
@@ -123,7 +153,10 @@ public class RMIClientCommunication implements ClientCommunication {
         });
     }
     /**
-     * this method calls JoinLoadedAsFirst on the server
+     * Requests to join a loaded game as the first player.
+     *
+     * @param player           The name of the player joining the game.
+     * @param idFirstPlayer    The ID of the first player.
      */
     @Override
     public void joinLoadedAsFirst(String player, String idFirstPlayer) {
@@ -131,15 +164,20 @@ public class RMIClientCommunication implements ClientCommunication {
             FirstJoinResponse firstJoinResponse = null;
             try {
                 firstJoinResponse = rmiClientConnection.getServer().joinLoadedAsFirst(rmiClientConnection, player, idFirstPlayer);
+                Client.getInstance().getLogger().log("Client called joinLoadedAsFirst(" + player + ", " + idFirstPlayer + ")");
                 rmiClientConnection.notifyFirstJoinResponse(firstJoinResponse.result);
+                Client.getInstance().getLogger().log("Server responded: " + firstJoinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
             }
         });
     }
+
     /**
-     * this method calls Join on the server
+     * Requests to join an existing game without creating it.
+     *
+     * @param player the name of the player joining the game
      */
     @Override
     public void join(String player) {
@@ -147,87 +185,122 @@ public class RMIClientCommunication implements ClientCommunication {
             JoinResponse joinResponse = null;
             try {
                 joinResponse = rmiClientConnection.getServer().join(rmiClientConnection, player);
+                Client.getInstance().getLogger().log("Client called join(" + player + ")");
                 rmiClientConnection.notifyJoinResponse(joinResponse.result, joinResponse.error, joinResponse.id);
+                Client.getInstance().getLogger().log("Server responded: " + joinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
                 throw new ClientCommunicationException();
             }
         });
     }
+
     /**
-     * this method calls Disconnect on the server
+     * Requests to disconnect a player from the server.
+     *
+     * @param playerId The ID of the player to disconnect.
      */
     @Override
     public void disconnect(String playerId) {
         try {
             rmiClientConnection.getServer().disconnect(playerId);
+            Client.getInstance().getLogger().log("Client called disconnect(" + playerId + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();
         }
     }
+
     /**
-     * this method calls Reconnect on the server
+     * Requests to reconnect a player to the server.
+     *
+     * @param playerId The ID of the player to reconnect.
      */
     @Override
     public void reconnect(String playerId) {
         try {
             rmiClientConnection.getServer().reconnect(rmiClientConnection, playerId);
+            Client.getInstance().getLogger().log("Client called reconnect(" + playerId + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();
         }
     }
+
     /**
-     * this method calls PickTilesCommand on the server
+     * Requests to pick tiles for a player.
+     *
+     * @param playerId The ID of the player picking tiles.
+     * @param tiles    The set of tiles to be picked.
      */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) {
         try {
             rmiClientConnection.getServer().pickTiles(playerId, tiles);
+            Client.getInstance().getLogger().log("Client called pickTiles(" + playerId + ", " + tiles + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();
         }
     }
+
     /**
-     * this method calls PutTilesCommand on the server
+     * Requests to put tiles in the bookshelf.
+     *
+     * @param playerId The ID of the player putting tiles.
+     * @param tiles    The list of tiles to be placed.
+     * @param column   The bookshelf column where the tiles are to be put.
      */
     @Override
     public void putTiles(String playerId, List<TileType> tiles, int column) {
         try {
             rmiClientConnection.getServer().putTiles(playerId, tiles, column);
+            Client.getInstance().getLogger().log("Client called putTiles(" + playerId + ", " + tiles + ", " + column + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();
         }
     }
+
     /**
-     * this method calls SendMessage on the server (to one player)
+     * Requests to send a message from one player to another player.
+     *
+     * @param playerId         The ID of the player sending the message.
+     * @param message          The content of the message.
+     * @param receiverNickname The nickname of the message receiver.
      */
     @Override
     public void sendMessage(String playerId, String message, String receiverNickname) {
         try {
             rmiClientConnection.getServer().sendMessage(playerId, message, receiverNickname);
+            Client.getInstance().getLogger().log("Client called sendMessage(" + playerId + ", " + message + ", " + receiverNickname + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();
         }
     }
+
     /**
-     * this method calls SendMessage on the server (to all)
+     * Requests to send a message from one player to all players.
+     *
+     * @param playerId The ID of the player sending the message.
+     * @param message  The content of the message.
      */
     @Override
     public void sendMessage(String playerId, String message) {
         try {
             rmiClientConnection.getServer().sendMessage(playerId, message);
+            Client.getInstance().getLogger().log("Client called sendMessage(" + playerId + ", " + message + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();
         }
     }
+
     /**
-     * this method calls pong on the server
+     * Requests a ping, notifies that the player is active.
+     *
+     * @param playerId The ID of the player sending the pong.
      */
     @Override
     public void pong(String playerId) {
@@ -239,10 +312,17 @@ public class RMIClientCommunication implements ClientCommunication {
         }
     }
 
+    /**
+     * Requests to save the game state.
+     *
+     * @param playerId  The ID of the player saving the game.
+     * @param gameName  The name of the save.
+     */
     @Override
     public void saveGame(String playerId, String gameName) {
         try {
             rmiClientConnection.getServer().saveGame(playerId, gameName);
+            Client.getInstance().getLogger().log("Client called saveGame(" + playerId + ", " + gameName + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
             throw new ClientCommunicationException();

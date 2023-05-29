@@ -504,7 +504,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
                 try {
-                    key.notifyCommonGoalCards(cardsAndTokens);
+                    key.notifyCommonCards(cardsAndTokens);
                 } catch (RemoteException | RuntimeException e) {
                     System.err.println("RMI sendCommonGoalsCards: " + e.getClass() + " thrown with client " + value);
                 }

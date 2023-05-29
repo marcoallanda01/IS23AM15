@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.communication.responses.*;
 import it.polimi.ingsw.communication.rmi.RMIClient;
 import it.polimi.ingsw.communication.rmi.RMIServer;
@@ -27,6 +28,7 @@ class RMIClientConnectionTest extends UnicastRemoteObject implements RMIServer {
     RMIClient rmiClient;
 
     protected RMIClientConnectionTest() throws RemoteException {
+        Client.main();
         try {
             Registry registry = LocateRegistry.createRegistry(1002);
             try {
