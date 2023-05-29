@@ -13,22 +13,22 @@ public class Logger {
         logFileName = generateLogFileName();
     }
 
-    public void log(String message) {
+    public synchronized void log(String message) {
         writeLogEntry(message);
     }
 
-    public void log(Exception exception) {
+    public synchronized void log(Exception exception) {
         String exceptionStackTrace = getStackTraceAsString(exception);
         writeLogEntry(exceptionStackTrace);
     }
 
-    private String generateLogFileName() {
+    private synchronized String generateLogFileName() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String timestamp = dateFormat.format(new Date());
         return "log_" + timestamp + ".txt";
     }
 
-    private void writeLogEntry(String logEntry) {
+    private synchronized void writeLogEntry(String logEntry) {
         try (FileWriter fileWriter = new FileWriter(logFileName, true);
              PrintWriter printWriter = new PrintWriter(fileWriter)) {
             printWriter.println(logEntry);
@@ -37,7 +37,7 @@ public class Logger {
         }
     }
 
-    private String getStackTraceAsString(Exception exception) {
+    private synchronized String getStackTraceAsString(Exception exception) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         exception.printStackTrace(printWriter);
