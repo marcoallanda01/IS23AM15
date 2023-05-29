@@ -5,12 +5,21 @@ import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,15 +27,15 @@ import javafx.scene.text.FontWeight;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class GUIInGame extends GUIState {
 
     Set<Tile> livingRoomBoard;
     Map<String, Set<Tile>> bookshelves;
     List<Tile> clickedTiles = new ArrayList<>();
-
+    ListView<ImageView> tilesListView = new ListView<>();
     int randomNum;
+    private int draggedIndex = -1;
 
 
     public GUIInGame(GUIApplication guiApplication, Set<Tile> livingRoomBoard, Map<String, Set<Tile>> bookshelves) {
@@ -61,20 +70,120 @@ public class GUIInGame extends GUIState {
         });
         HBox tilesBox = new HBox(5);
         tilesBox.setAlignment(Pos.CENTER);
+        tilesBox.setPrefHeight(50);
+        tilesBox.setMinHeight(50);
+
+        tilesListView.setPrefWidth(200);
+        tilesListView.setPrefHeight(50);
+        tilesListView.setMinHeight(50);
+        tilesListView.setOrientation(Orientation.HORIZONTAL);
+        tilesListView.setCellFactory(lv -> {
+            ListCell<ImageView> cell = new ListCell<ImageView>() {
+                @Override
+                protected void updateItem(ImageView item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null && !empty) {
+                        setGraphic(item);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
+            cell.setStyle("-fx-background-color: transparent;");
+            return cell;
+        });
+
         if (!Client.getInstance().getView().getPickedTiles().isEmpty()) {
             Label pickedTilesLabel = new Label("Picked tiles:");
             pickedTilesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
             pickedTilesLabel.setTextFill(Color.BLACK);
             tilesBox.getChildren().add(pickedTilesLabel);
-            for (TileType tile : Client.getInstance().getView().getPickedTiles()) {
+            for (int i = 0; i < Client.getInstance().getView().getPickedTiles().size(); i++) {
+                TileType tile = Client.getInstance().getView().getPickedTiles().get(i);
                 ImageView tileImage = new ImageView(new Image(getClass().getResource("/assets/tiles/" + tile.toString().toLowerCase() + randomNum + ".png").toExternalForm()));
                 tileImage.setFitHeight(40);
                 tileImage.setFitWidth(40);
-                tilesBox.getChildren().add(tileImage);
+                tileImage.setId(String.valueOf(i));
+                tilesListView.getItems().add(tileImage);
             }
+            tilesBox.getChildren().add(tilesListView);
         } else {
+            tilesListView.getItems().clear();
             tilesBox.getChildren().clear();
         }
+        tilesListView.setFixedCellSize(40);
+
+        tilesListView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        tilesListView.setOnDragDetected(event -> {
+            ImageView draggedImageView = tilesListView.getSelectionModel().getSelectedItem();
+            if (draggedImageView != null) {
+                draggedIndex = tilesListView.getSelectionModel().getSelectedIndex();
+                Dragboard db = draggedImageView.startDragAndDrop(TransferMode.COPY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(draggedImageView.getImage());
+                db.setContent(content);
+
+                // Create a new WritableImage with the desired dimensions
+                double dragWidth = 50;
+                double dragHeight = 50;
+                WritableImage resizedImage = new WritableImage((int) dragWidth, (int) dragHeight);
+
+                // Draw the original image onto the new WritableImage using a Canvas and GraphicsContext
+                Canvas canvas = new Canvas(dragWidth, dragHeight);
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                gc.drawImage(draggedImageView.getImage(), 0, 0, dragWidth, dragHeight);
+
+                // Set the new WritableImage as the drag view
+                db.setDragView(resizedImage, dragWidth / 2, dragHeight / 2);
+
+                event.consume();
+            }
+        });
+
+
+        tilesListView.setOnDragOver(event -> {
+            if (event.getGestureSource() != tilesListView && event.getDragboard().hasImage()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
+
+        tilesListView.setOnDragEntered(event -> {
+            if (event.getGestureSource() != tilesListView && event.getDragboard().hasImage()) {
+                // Optional: Change the appearance of the ListView while dragging.
+            }
+            event.consume();
+        });
+
+        tilesListView.setOnDragExited(event -> {
+            // Optional: Reset the appearance of the ListView after dragging.
+            event.consume();
+        });
+
+        tilesListView.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasImage()) {
+                int dropIndex = calculateDropIndex(event.getX()); // Calculate the drop index based on the x-coordinate
+                if (dropIndex >= 0 && dropIndex != draggedIndex) {
+                    ImageView draggedImageView = tilesListView.getItems().remove(draggedIndex);
+                    tilesListView.getItems().add(dropIndex, draggedImageView);
+                    tilesListView.getSelectionModel().select(dropIndex);
+                    success = true;
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
+        tilesListView.setOnDragDone(event -> {
+            if (event.getTransferMode() == TransferMode.MOVE) {
+                ImageView draggedImageView = (ImageView) event.getSource();
+                tilesListView.getItems().remove(draggedImageView);
+            }
+            event.consume();
+        });
+
 
         root.getChildren().addAll(turnBox, boardGrid, tilesBox, bookshelvesBox);
         if (Client.getInstance().getView().getCurrentTurnPlayer().equals(Client.getInstance().getNickname())) {
@@ -99,9 +208,23 @@ public class GUIInGame extends GUIState {
             turnBox.getChildren().add(waitingLabel);
         }
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
+
+    private int calculateDropIndex(double x) {
+        double cellWidth = tilesListView.getFixedCellSize();
+        int index = (int) (x / cellWidth);
+
+        if (index < 0) {
+            return 0;
+        } else if (index >= tilesListView.getItems().size()) {
+            return tilesListView.getItems().size() - 1;
+        } else {
+            return index;
+        }
+    }
+
 
     private StackPane createBoardGrid() {
         StackPane stackPane = new StackPane();
@@ -159,7 +282,6 @@ public class GUIInGame extends GUIState {
 
         return stackPane;
     }
-
 
     private HBox createBookshelves() {
         HBox bookshelvesBox = new HBox(10);
@@ -228,7 +350,8 @@ public class GUIInGame extends GUIState {
                     arrow.setEffect(null);
                 });
                 arrow.setOnMouseClicked(event -> {
-                    Client.getInstance().getClientController().putTiles(finalI, IntStream.rangeClosed(0, Client.getInstance().getView().getPickedTiles().size() - 1).boxed().collect(Collectors.toList()));
+                    List<Integer> order = tilesListView.getItems().stream().map(item -> Integer.parseInt(item.getId())).collect(Collectors.toList());
+                    Client.getInstance().getClientController().putTiles(finalI, order);
                     Client.getInstance().getView().setPickedTiles(new ArrayList<>());
                 });
             }
@@ -258,10 +381,10 @@ public class GUIInGame extends GUIState {
         bookshelfNameLabel.setTranslateX(0);
         bookshelfNameLabel.setTranslateY(80);
 
-        stackPane.getChildren().addAll(gridPane,bookshelfArrows, bookshelfNameLabel);
+        stackPane.getChildren().addAll(gridPane, bookshelfArrows, bookshelfNameLabel);
 
         return stackPane;
     }
-
-
 }
+
+
