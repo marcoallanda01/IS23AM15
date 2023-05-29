@@ -111,13 +111,10 @@ public class TCPClientConnection implements ClientConnection {
     private Void startNotificationHandler() {
         synchronized (readLock) {
             try {
+                // Create output stream for communication with the server
+                Scanner in = new Scanner(socket.getInputStream());
                 while (!Thread.currentThread().isInterrupted()) { // check interrupt flag
-                    // Create output stream for communication with the server
-                    Scanner in = new Scanner(socket.getInputStream());
                     String json = in.nextLine();
-                    if (!json.contains("Ping")) {
-                        Client.getInstance().getLogger().log("Received from server: " + json);
-                    }
                     executorService.submit(() -> dispatchNotification(json));
                 }
                 return null;
@@ -135,6 +132,9 @@ public class TCPClientConnection implements ClientConnection {
      * @return true if the response has been handled correctly by the view, false otherwise
      */
     private Boolean dispatchNotification(String json) {
+        if (!json.contains("Ping")) {
+            Client.getInstance().getLogger().log("Received from server: " + json);
+        }
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
             clientNotificationListener.notifyBoard(boardUpdate.tiles);
