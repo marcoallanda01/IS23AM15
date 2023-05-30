@@ -98,7 +98,8 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     /**
-     * Listens for messages and writes them in the buffer all the time, unless interrupted
+     * Listens for messages and dispatches them, unless interrupted
+     * this process is done synchronously, so that messages received from the server hare handled in order of arrival
      */
     private Void startNotificationHandler() {
         synchronized (readLock) {
@@ -110,7 +111,7 @@ public class TCPClientConnection implements ClientConnection {
                     if (!json.contains("Ping")) {
                         Client.getInstance().getLogger().log("Received from server: " + json);
                     }
-                    executorService.submit(() -> dispatchNotification(json));
+                    dispatchNotification(json);
                 }
                 return null;
             } catch (IOException e) {
