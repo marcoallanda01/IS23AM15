@@ -66,6 +66,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
             throw new ClientConnectionException("Error while opening RMI client connection.");
         }
         Client.getInstance().getLogger().log("RMI client connection open.");
+        Client.getInstance().onConnectionReady();
     }
 
     /**

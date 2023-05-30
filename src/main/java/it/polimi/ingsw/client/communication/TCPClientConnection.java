@@ -105,6 +105,7 @@ public class TCPClientConnection implements ClientConnection {
         synchronized (readLock) {
             try {
                 Scanner in = new Scanner(socket.getInputStream());
+                Client.getInstance().onConnectionReady();
                 while (!Thread.currentThread().isInterrupted()) {
                     String json = in.nextLine();
                     if (!json.contains("Ping")) {

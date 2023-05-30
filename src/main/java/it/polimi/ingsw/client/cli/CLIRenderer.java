@@ -67,12 +67,8 @@ public class CLIRenderer {
         }
     }
 
-    public synchronized static void printLobby(List<String> players, int maxPlayers, boolean isEasyRules) {
-        System.out.println("Players in the lobby:");
-        for (String player : players) {
-            System.out.println("- " + player);
-        }
-        System.out.println("This is a " + maxPlayers + " players game, so it will start when " + (maxPlayers - players.size()) + " more players will join");
+    public synchronized static void printLobby(boolean isEasyRules) {
+        System.out.println("Waiting in lobby for other players to join...");
         System.out.println("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
     }
 
@@ -107,8 +103,6 @@ public class CLIRenderer {
     }
 
     public synchronized static void printBookshelves(List<String> players, Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
-        System.out.println("Bookshelves:");
-        System.out.println(bookshelves);
         for (int n = 5; n >= 0; n--) {
             for (String name : players) {
                 Set<Tile> tiles = bookshelves.get(name);

@@ -197,6 +197,8 @@ public class ClientController implements ClientNotificationListener {
     public void notifyJoinResponse(boolean result, String error, String id) {
         if (result) {
             Client.getInstance().setId(id);
+            Client.getInstance().setClientState(ClientStates.LOBBY);
+            view.render();
         } else {
             view.render();
             view.showError(error);

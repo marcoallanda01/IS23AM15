@@ -51,6 +51,7 @@ public class CLI extends View {
     }
 
     public synchronized void render() {
+        Client.getInstance().getLogger().log("Rendering: " + Client.getInstance().getClientState());
         clearScreen();
         switch (Client.getInstance().getClientState()) {
             case LOGIN -> {
@@ -61,7 +62,7 @@ public class CLI extends View {
             case CREATE_GAME -> CLIRenderer.printCreateGame();
             case LOAD_GAME -> CLIRenderer.printSavedGames(this.getSavedGames());
             case LOAD_NAMES -> CLIRenderer.printLoadedGameNames(this.getLobbyPlayers());
-            case LOBBY -> CLIRenderer.printLobby(this.getPlayers(), this.getNumberOfPlayers(), this.isEasyRules());
+            case LOBBY -> CLIRenderer.printLobby(this.isEasyRules());
             case IN_GAME -> {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
@@ -71,7 +72,7 @@ public class CLI extends View {
                 CLIRenderer.printPersonalGoal(this.getPersonalGoal());
             }
             case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
-            default -> System.out.println("Invalid state");
+            default -> Client.getInstance().getLogger().log("Invalid state");
         }
     }
 

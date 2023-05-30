@@ -291,6 +291,9 @@ public class Client {
             logger.log("Error while opening the connection, try restarting the app");
             throw e;
         }
+    }
+
+    public void onConnectionReady() {
         Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
     }
 }

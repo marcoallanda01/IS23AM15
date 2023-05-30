@@ -14,13 +14,10 @@ import javafx.scene.text.FontWeight;
 import java.util.List;
 
 public class GUILobby extends GUIState{
-    private List<String> lobbyPlayers;
-    private final int maxPlayers;
-
-    public GUILobby(GUIApplication guiApplication, List<String> lobbyPlayers, int maxPlayers) {
+    private final boolean isEasyRules;
+    public GUILobby(GUIApplication guiApplication, boolean isEasyRules) {
         super(guiApplication);
-        this.lobbyPlayers = lobbyPlayers;
-        this.maxPlayers = maxPlayers;
+        this.isEasyRules = isEasyRules;
         createUI();
     }
     public void createUI(){
@@ -31,31 +28,15 @@ public class GUILobby extends GUIState{
         Label titleLabel = new Label("Lobby");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-        Label playersLabel = new Label("Players in lobby:");
+        Label playersLabel = new Label("Waiting in lobby for other players to join...");
         playersLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        VBox lobbyPlayersBox = createLobbyPlayersBox();
+        Label rulesLabel = new Label("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
+        rulesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        Label remainingPlayersLabel = new Label("Remaining players: " + (maxPlayers - lobbyPlayers.size()));
-        remainingPlayersLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-
-        root.getChildren().addAll(titleLabel, playersLabel, lobbyPlayersBox, remainingPlayersLabel);
+        root.getChildren().addAll(titleLabel, playersLabel, rulesLabel);
 
         Scene scene = new Scene(root, 800, 600);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
-    }
-
-    private VBox createLobbyPlayersBox() {
-        VBox lobbyPlayersBox = new VBox(10);
-        lobbyPlayersBox.setPadding(new Insets(10));
-        lobbyPlayersBox.setAlignment(Pos.CENTER);
-
-        for(String lobbyPlayer : lobbyPlayers) {
-            Label lobbyPlayerLabel = new Label(lobbyPlayer);
-            lobbyPlayerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-            lobbyPlayersBox.getChildren().add(lobbyPlayerLabel);
-        }
-
-        return lobbyPlayersBox;
     }
 }
