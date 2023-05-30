@@ -73,10 +73,10 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     /**
-     * Submits sendStringToServer to an executor service
+     * Calls sendStringToServer
      */
     public void sendToServer(String json) {
-        executorService.submit(() -> sendStringToServer(json));
+        sendStringToServer(json);
     }
     /**
      * Sends a message to the server, it locks the writeLock
@@ -94,7 +94,6 @@ public class TCPClientConnection implements ClientConnection {
             } catch (IOException e) {
                 Client.getInstance().getLogger().log(e);
             }
-            writeLock.notifyAll();
         }
     }
 

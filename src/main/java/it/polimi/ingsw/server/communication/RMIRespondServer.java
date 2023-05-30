@@ -174,6 +174,7 @@ public class RMIRespondServer extends ResponseServer{
             } catch (PlayerNotFoundException e) {
                 System.out.println("handleReconnection: This player do not exists " + name);
             }
+            //TODO: client can be TCP as well
             this.playersIds.forEach((c, id) -> {
                 try {
                     if (!Objects.equals(c, client)) {
