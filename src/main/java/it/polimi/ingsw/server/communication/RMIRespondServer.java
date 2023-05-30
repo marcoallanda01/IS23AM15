@@ -102,6 +102,7 @@ public class RMIRespondServer extends ResponseServer{
      */
     @Override
     protected void sendErrorMessage(String player, String message) {
+        //TODO: add here excec
         synchronized (playersIds){
             this.playersIds.forEach((key, value) -> {
                 if(value.equals(player)) {
@@ -124,6 +125,7 @@ public class RMIRespondServer extends ResponseServer{
     protected void sendErrorMessageToAll(String message) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyError(message);
                 } catch (RemoteException | RuntimeException e) {
@@ -140,6 +142,7 @@ public class RMIRespondServer extends ResponseServer{
         synchronized (playLock) {
             synchronized (playersIds) {
                 this.playersIds.forEach((key, value) -> {
+                    //TODO: add here excec
                     try {
                         key.notifyGame(new GameSetUp(
                                 playController.getPlayers(),
@@ -160,6 +163,7 @@ public class RMIRespondServer extends ResponseServer{
      * Handle the reconnection of a player
      */
     protected void handleReconnection(RMIClient client, String name){
+        //TODO: add here excec
         synchronized (playLock) {
             try {
                 client.notifyGame(new GameSetUp(
