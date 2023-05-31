@@ -23,10 +23,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
 
     private RMIClient firstPlayerClient;
     private String firstPlayerId;
-                                               //TODO togliere client in hello
-                                              // tranne se sei il first player e metterlo solo in join
-    // TODO: make RMIServer methods synchronized
-    // TODO: make RMIServer methods synchronized according to the utilized resources (using separate locks)
+
     private final int port;
 
     public RMIServerApp(int port, Lobby lobby, String sharedLock) throws RemoteException {
@@ -346,6 +343,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void notifyDisconnection(String playerName) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyDisconnection(playerName);
                 } catch (RemoteException | RuntimeException e) {
@@ -364,6 +362,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void notifyReconnection(String playerName) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyReconnection(playerName);
                     if (playerName.equals(respondServer.getPlayerNameFromClient(key))) {
@@ -388,6 +387,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void notifyMessage(String sender, String date, String message) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyChatMessage(sender, date, message);
                 } catch (RemoteException | RuntimeException e) {
@@ -407,11 +407,15 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
      */
     @Override
     public void notifyMessage(String sender, String date, String message, String receiver) {
+        //TODO: add here excec
         synchronized (playersIds) {
             this.playersIds.entrySet().stream()
-                    .filter(e -> e.getValue().equals(respondServer.lobby.getIdFromName(receiver)))
+                    .filter(e ->
+                            e.getValue().equals(respondServer.lobby.getIdFromName(receiver)) ||
+                            Objects.equals(e.getValue(), respondServer.lobby.getIdFromName(sender))
+                    )
                     .map(Map.Entry::getKey)
-                    .findFirst().ifPresent(c -> {
+                    .forEach(c -> {
                         try {
                             c.notifyChatMessage(sender, message, date);
                         } catch (RemoteException | RuntimeException e) {
@@ -430,6 +434,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void notifyChangeBoard(List<Tile> tiles) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyBoard(new HashSet<>(tiles));
                 } catch (RemoteException | RuntimeException e) {
@@ -448,6 +453,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
         synchronized (playersIds) {
+            //TODO: add here excec
             this.playersIds.forEach((key, value) -> {
                 try {
                     key.notifyBookshelf(playerName, new HashSet<>(tiles));
@@ -467,6 +473,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void updatePlayerPoints(String playerName, int points) {
         synchronized (playersIds) {
+            //TODO: add here excec
             this.playersIds.forEach((key, value) -> {
                 try {
                     key.notifyPoints(playerName, points);
@@ -485,6 +492,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void notifyTurn(String playerName) {
         synchronized (playersIds) {
+            //TODO: add here excec
             this.playersIds.forEach((key, value) -> {
                 try {
                     key.notifyTurn(playerName);
@@ -503,6 +511,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void sendCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
         synchronized (playersIds) {
+            //TODO: add here excec
             this.playersIds.forEach((key, value) -> {
                 try {
                     key.notifyCommonCards(cardsAndTokens);
@@ -522,6 +531,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void notifyWinner(String playerName) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyWinner(playerName);
                 } catch (RemoteException | RuntimeException e) {
@@ -546,6 +556,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     public void notifyGameSaved(String name) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
+                //TODO: add here excec
                 try {
                     key.notifyGameSaved(name);
                 } catch (RemoteException | RuntimeException e) {
@@ -564,6 +575,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void notifyPickedTiles(String player, List<TileType> tiles) {
         synchronized (playersIds) {
+            //TODO: add here excec
             this.playersIds.forEach((key, value) -> {
                 try {
                     key.notifyPickedTiles(player, tiles);
