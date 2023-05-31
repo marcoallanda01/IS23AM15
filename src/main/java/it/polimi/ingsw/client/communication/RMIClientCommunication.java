@@ -43,7 +43,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server returned: " + hello.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -65,7 +64,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + firstJoinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -89,7 +87,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + firstJoinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -108,7 +105,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + savedGames.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -130,7 +126,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + loadGameResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -148,7 +143,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + loadedGamePlayers.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -169,7 +163,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + firstJoinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -190,7 +183,6 @@ public class RMIClientCommunication implements ClientCommunication {
                 Client.getInstance().getLogger().log("Server responded: " + joinResponse.toJson());
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
-                throw new ClientCommunicationException();
             }
         });
     }
@@ -204,10 +196,13 @@ public class RMIClientCommunication implements ClientCommunication {
     public void disconnect(String playerId) {
         try {
             rmiClientConnection.getServer().disconnect(playerId);
+            rmiClientConnection.closeConnection();
             Client.getInstance().getLogger().log("Client called disconnect(" + playerId + ")");
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
+        } catch (Exception e) {
+            // no details about the server side error (no information disclosed)
+            Client.getInstance().getLogger().log("Server encountered an error while logging you out");
         }
     }
 
@@ -218,13 +213,14 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void reconnect(String playerId) {
-        try {
-            rmiClientConnection.getServer().reconnect(rmiClientConnection, playerId);
-            Client.getInstance().getLogger().log("Client called reconnect(" + playerId + ")");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().reconnect(rmiClientConnection, playerId);
+                Client.getInstance().getLogger().log("Client called reconnect(" + playerId + ")");
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 
     /**
@@ -235,13 +231,14 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void pickTiles(String playerId, Set<Tile> tiles) {
-        try {
-            rmiClientConnection.getServer().pickTiles(playerId, tiles);
-            Client.getInstance().getLogger().log("Client called pickTiles(" + playerId + ", " + tiles + ")");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().pickTiles(playerId, tiles);
+                Client.getInstance().getLogger().log("Client called pickTiles(" + playerId + ", " + tiles + ")");
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 
     /**
@@ -253,13 +250,14 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void putTiles(String playerId, List<TileType> tiles, int column) {
-        try {
-            rmiClientConnection.getServer().putTiles(playerId, tiles, column);
-            Client.getInstance().getLogger().log("Client called putTiles(" + playerId + ", " + tiles + ", " + column + ")");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().putTiles(playerId, tiles, column);
+                Client.getInstance().getLogger().log("Client called putTiles(" + playerId + ", " + tiles + ", " + column + ")");
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 
     /**
@@ -271,13 +269,14 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void sendMessage(String playerId, String message, String receiverNickname) {
-        try {
-            rmiClientConnection.getServer().sendMessage(playerId, message, receiverNickname);
-            Client.getInstance().getLogger().log("Client called sendMessage(" + playerId + ", " + message + ", " + receiverNickname + ")");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().sendMessage(playerId, message, receiverNickname);
+                Client.getInstance().getLogger().log("Client called sendMessage(" + playerId + ", " + message + ", " + receiverNickname + ")");
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 
     /**
@@ -288,13 +287,14 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void sendMessage(String playerId, String message) {
-        try {
-            rmiClientConnection.getServer().sendMessage(playerId, message);
-            Client.getInstance().getLogger().log("Client called sendMessage(" + playerId + ", " + message + ")");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().sendMessage(playerId, message);
+                Client.getInstance().getLogger().log("Client called sendMessage(" + playerId + ", " + message + ")");
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 
     /**
@@ -304,12 +304,13 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void pong(String playerId) {
-        try {
-            rmiClientConnection.getServer().pong(playerId);
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().pong(playerId);
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 
     /**
@@ -320,12 +321,13 @@ public class RMIClientCommunication implements ClientCommunication {
      */
     @Override
     public void saveGame(String playerId, String gameName) {
-        try {
-            rmiClientConnection.getServer().saveGame(playerId, gameName);
-            Client.getInstance().getLogger().log("Client called saveGame(" + playerId + ", " + gameName + ")");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(e);
-            throw new ClientCommunicationException();
-        }
+        executorService.submit(() -> {
+            try {
+                rmiClientConnection.getServer().saveGame(playerId, gameName);
+                Client.getInstance().getLogger().log("Client called saveGame(" + playerId + ", " + gameName + ")");
+            } catch (RemoteException e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
     }
 }

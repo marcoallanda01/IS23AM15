@@ -91,7 +91,7 @@ public class TCPClientConnection implements ClientConnection {
                 if (!json.contains("Ping")) {
                     Client.getInstance().getLogger().log("Sent to server: " + json);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Client.getInstance().getLogger().log(e);
             }
         }
@@ -114,7 +114,7 @@ public class TCPClientConnection implements ClientConnection {
                     dispatchNotification(json);
                 }
                 return null;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Client.getInstance().getLogger().log(e);
                 return null;
             }

@@ -108,6 +108,7 @@ public class TCPClientCommunication implements ClientCommunication {
     @Override
     public void disconnect(String playerId) {
         tcpClientConnection.sendToServer((new Disconnect(playerId)).toJson());
+        tcpClientConnection.closeConnection();
     }
 
     /**
