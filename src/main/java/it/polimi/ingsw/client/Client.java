@@ -119,7 +119,7 @@ public class Client {
                 testingView.start();
             } else {
                 if (view.equals(Views.CLI)) {
-                    Client.getInstance().init(new CLI());
+                    new CLI();
                 } else if (view.equals(Views.GUI)) {
                     Application.launch(GUIApplication.class, args);
                 }

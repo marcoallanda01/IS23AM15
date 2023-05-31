@@ -52,7 +52,7 @@ public class GUIApplication extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        initializeViewAndConnection(5);
+        new GUI(this);
     }
 
     @Override
@@ -93,45 +93,6 @@ public class GUIApplication extends Application {
             primaryStage.setScene(newScene);
         });
         transition.play();
-    }
-
-    private void initializeViewAndConnection(int countdown) {
-        try {
-            GUI gui = new GUI(this);
-            Client.getInstance().init(gui);
-            gui.render();
-        } catch (Exception e) {
-            clearStage();
-            AtomicInteger retryCount = new AtomicInteger(countdown); // Initial retry count
-            Text text = new Text("MyShelfie encountered an error while starting, will retry in: " + retryCount.get());
-            text.setFont(Font.font("Arial", 18));
-
-            // Create the layout pane
-            StackPane root = new StackPane();
-            root.getChildren().add(text);
-
-            // Create the scene and set the root pane
-            Scene scene = new Scene(root, 800, 600);
-
-            // Set CSS styling for the text
-            text.getStyleClass().add("my-shelfie-text");
-
-            // Set the scene to the primary stage
-            transitionToScene(scene);
-            // Create a Timeline animation to update the retry countdown
-            Timeline timeline = new Timeline();
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), event -> {
-                int count = retryCount.decrementAndGet();
-                text.setText("MyShelfie encountered an error while starting, will retry in: " + count);
-                if (count == 0) {
-                    initializeViewAndConnection(countdown * 2);
-                    timeline.stop();
-                }
-            });
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.setCycleCount(retryCount.get());
-            timeline.play();
-        }
     }
 
     public void showPopup(String error) {
