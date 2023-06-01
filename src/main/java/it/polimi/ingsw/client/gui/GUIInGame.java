@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -207,8 +208,8 @@ public class GUIInGame extends GUIState {
             turnBox.getChildren().add(waitingLabel);
         }
 
-        //Scene scene = new Scene(root, 800, 700);
-        Platform.runLater(() -> guiApplication.changeScene(root));
+        Scene scene = new Scene(root, 800, 700);
+        Platform.runLater(() -> guiApplication.changeScene(scene));
     }
 
     private int calculateDropIndex(double x) {

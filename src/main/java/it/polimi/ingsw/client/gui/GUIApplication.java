@@ -10,10 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -53,13 +50,13 @@ public class GUIApplication extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public synchronized void stop() throws Exception {
         super.stop();
         Client.getInstance().getLogger().log("Application closed");
         Client.getInstance().getClientController().logout();
     }
 
-    public void clearStage() {
+    public synchronized void clearStage() {
         // Get the root node of the stage
         StackPane root = (StackPane) primaryStage.getScene().getRoot();
 
@@ -67,31 +64,13 @@ public class GUIApplication extends Application {
         root.getChildren().clear();
     }
 
-    public Stage clearAndGetStage() {
+    public synchronized Stage clearAndGetStage() {
         clearStage();
         return primaryStage;
     }
 
-    public synchronized void changeScene(Parent newRoot) {
-        // Set the root node of the new content opacity to 1.0
-        newRoot.setOpacity(1.0);
-        System.out.println("primaryStage.getScene() = " + primaryStage.getScene().getRoot());
-
-        // Update the root node of the current scene
-        if (primaryStage.getScene().getRoot() instanceof VBox) {
-            VBox currentRoot = (VBox) primaryStage.getScene().getRoot();
-
-            currentRoot.getChildren().clear();
-            currentRoot.getChildren().setAll(newRoot);
-        } else if (primaryStage.getScene().getRoot() instanceof StackPane) {
-            StackPane currentRoot = (StackPane) primaryStage.getScene().getRoot();
-
-            currentRoot.getChildren().clear();
-            currentRoot.getChildren().setAll(newRoot);
-        } else {
-            throw new IllegalStateException("Unexpected root node type: " + primaryStage.getScene().getRoot().getClass().getName());
-        }
-
+    public synchronized void changeScene(Scene newScene) {
+        primaryStage.setScene(newScene);
     }
 
     public synchronized void transitionToScene(Scene newScene) {
@@ -114,12 +93,13 @@ public class GUIApplication extends Application {
         transition.play();
     }
 
-    public void showPopup(String error) {
+    public void showPopup(String message) {
         Stage popupStage = new Stage();
-        popupStage.initModality(Modality.WINDOW_MODAL);
-        popupStage.initStyle(StageStyle.UNDECORATED);
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initOwner(primaryStage);
+        popupStage.setAlwaysOnTop(true);
 
-        Label messageLabel = new Label(error);
+        Label messageLabel = new Label(message);
         Button closeButton = new Button("Close");
         closeButton.setOnAction(event -> popupStage.close());
 
@@ -128,17 +108,17 @@ public class GUIApplication extends Application {
         layout.setPadding(new Insets(20));
         layout.getChildren().addAll(messageLabel, closeButton);
 
-        // Set the background color of the layout
-        BackgroundFill backgroundFill = new BackgroundFill(Color.RED, null, null);
-        Background background = new Background(backgroundFill);
-        layout.setBackground(background);
-
-        StackPane container = new StackPane();
-        container.getChildren().addAll(primaryStage.getScene().getRoot(), layout);
-
-        Scene popupScene = new Scene(container);
-
+        Scene popupScene = new Scene(layout);
         popupStage.setScene(popupScene);
+
+        // Get the position of the primary stage
+        double primaryStageX = primaryStage.getX();
+        double primaryStageY = primaryStage.getY();
+
+        // Set the position of the pop-up stage relative to the primary stage
+        popupStage.setX(primaryStageX + 50); // Adjust the X offset as needed
+        popupStage.setY(primaryStageY + 50); // Adjust the Y offset as needed
+
         popupStage.showAndWait();
     }
 }
