@@ -2,11 +2,11 @@ package it.polimi.ingsw.server.communication;
 
 import it.polimi.ingsw.communication.commands.*;
 import it.polimi.ingsw.communication.responses.*;
-import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.controller.Lobby;
 import it.polimi.ingsw.server.controller.exceptions.FirstPlayerAbsentException;
+import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
-import it.polimi.ingsw.server.model.Tile;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,9 +15,8 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
-public class TCPServer extends ResponseServer implements ServerCommunication{
+public class TCPServer extends ResponseServer implements ServerCommunication {
     private final List<Socket> clients;
     private final List<Socket> clientsInGame;
     private final Map<Socket, String> playersIds;
@@ -25,10 +24,10 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     private final String lockOnLocks = "outLocks";
     private final Map<Socket, String> clientsToLockOut; //lock of the map -- listen and closeClient
     private final int port;
-    private ServerSocket serverSocket;
     private final ExecutorService executorService;
+    private ServerSocket serverSocket;
 
-    public TCPServer(int port, Lobby lobby, String sharedLock){
+    public TCPServer(int port, Lobby lobby, String sharedLock) {
         super(lobby, sharedLock);
         this.port = port;
         this.clients = Collections.synchronizedList(new ArrayList<>());
@@ -47,6 +46,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Add client
+     *
      * @param client client's socket
      * @return true if add succeeded
      */
@@ -54,38 +54,38 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         boolean res = clients.add(client);
         startPingPong(client, ANONYMOUS_PING_ID);
         clientsToOut.put(client, new PrintWriter(client.getOutputStream(), true));
-        synchronized (lockOnLocks){
+        synchronized (lockOnLocks) {
             clientsToLockOut.put(client, client.toString());
         }
-        System.out.println("Client added: "+client+" "+res);
+        System.out.println("Client added: " + client + " " + res);
         return res;
     }
 
     /**
      * Write something on client output stream
-     * @param client client's socket
+     *
+     * @param client  client's socket
      * @param content message to send
      */
-    private void sendToClient(Socket client, String content){
+    private void sendToClient(Socket client, String content) {
         String clientLock;
-        synchronized (lockOnLocks){
+        synchronized (lockOnLocks) {
             clientLock = clientsToLockOut.get(client);
         }
-        if(clientLock != null){
+        if (clientLock != null) {
             // clientLock is a reference because map.get() returns a reference
-            synchronized (clientLock){
+            synchronized (clientLock) {
                 //System.out.println("Lock "+clientLock+" acquired");
                 PrintWriter out = clientsToOut.get(client);
-                if(out != null){
+                if (out != null) {
 
                     //this lock is separated because I don't care if now the client is deleted
                     //the message is sent but no one receive it
                     out.println(content);
-                    System.out.println("Sent to "+client+": "+content);
+                    System.out.println("Sent to " + client + ": " + content);
 
-                }
-                else{
-                    System.err.println("TCP Error in writing on "+clientLock);
+                } else {
+                    System.err.println("TCP Error in writing on " + clientLock);
                 }
                 //System.out.println("Lock "+clientLock+" released");
             }
@@ -94,24 +94,25 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Method for close a client
+     *
      * @param client client's socket
      */
-    private void closeClient(Socket client){
+    private void closeClient(Socket client) {
         this.clients.remove(client);
         this.clientsInGame.remove(client);
         PrintWriter out = this.clientsToOut.remove(client);
-        if(out != null){
+        if (out != null) {
             out.close();
         }
-        synchronized (lockOnLocks){
+        synchronized (lockOnLocks) {
             this.clientsToLockOut.remove(client);
         }
-        System.out.println("Closing "+client+"...");
+        System.out.println("Closing " + client + "...");
         try {
             Scanner in = new Scanner(client.getInputStream());
             in.close();
             client.close();
-        }catch (IOException b){
+        } catch (IOException b) {
             System.out.println("Socket was already closed:");
             b.printStackTrace();
         }
@@ -120,7 +121,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     /**
      * Function that listen always for new TCP connection
      */
-    public void listenForConnections(){
+    public void listenForConnections() {
         System.out.println("TCP Server listening to new connections...");
         /*
         TimerTask closeInactiveClientsTask = new TimerTask() {
@@ -135,15 +136,15 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         };
         new Timer().scheduleAtFixedRate(closeInactiveClientsTask, 20000, 30000);
         */
-        while(true) {
+        while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                if(addClient(clientSocket)) {
+                if (addClient(clientSocket)) {
                     this.executorService.submit(() -> {
                         clientHandler(clientSocket);
                     });
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -151,14 +152,14 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Function to listen for client request
+     *
      * @param client client
      */
-    public void clientHandler(Socket client){
+    public void clientHandler(Socket client) {
         Scanner in;
         try {
             in = new Scanner(client.getInputStream());
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             closeClient(client);
             return;
@@ -166,7 +167,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         String json;
         do {
             json = in.nextLine();
-            System.out.println("Received from "+client+": " + json);
+            System.out.println("Received from " + client + ": " + json);
         } while (respond(client, json));
 
         in.close();
@@ -175,26 +176,28 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Method for add a playing client
+     *
      * @param client client socket
      */
-    private synchronized void addPlayingClient(Socket client, String id){
-        if(!clientsInGame.contains(client)){
+    private synchronized void addPlayingClient(Socket client, String id) {
+        if (!clientsInGame.contains(client)) {
             clientsInGame.add(client);
             playersIds.put(client, id);
-            System.out.println("Client "+client+" added to playing clients");
+            System.out.println("Client " + client + " added to playing clients");
         }
     }
 
     /**
      * Method to handle a client request
+     *
      * @param client client to witch respond
-     * @param json json string that client sent
+     * @param json   json string that client sent
      * @return true if client still connected
      */
-    private boolean respond(Socket client, String json){
+    private boolean respond(Socket client, String json) {
         String commandName;
         Optional<String> oName = Command.nameFromJson(json);
-        if(oName.isPresent()) {
+        if (oName.isPresent()) {
             commandName = oName.get();
             boolean wrongFormatted = false;
 
@@ -227,7 +230,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                             joinResponse = respondJoin(oj.get(), client);
                             sendToClient(client, joinResponse.toJson());
                         } catch (FirstPlayerAbsentException e) {
-                            System.out.println(client+" tried to join without a first player preset!");
+                            System.out.println(client + " tried to join without a first player preset!");
                         }
                         return true;
                     } else {
@@ -259,7 +262,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                     Optional<GetLoadedPlayers> glp = GetLoadedPlayers.fromJson(json);
                     if (glp.isPresent()) {
                         LoadedGamePlayers loadedGamePlayers = respondGetLoadedPlayers(glp.get());
-                        sendToClient(client, loadedGamePlayers.toJson());;
+                        sendToClient(client, loadedGamePlayers.toJson());
+                        ;
                         return true;
                     } else {
                         wrongFormatted = true;
@@ -334,7 +338,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 }
                 case "Pong" -> {
                     Optional<Pong> po = Pong.fromJson(json);
-                    System.out.println("\u001B[94mPong Optional received from "+client+"\u001B[0m");
+                    System.out.println("\u001B[94mPong Optional received from " + client + "\u001B[0m");
                     if (po.isPresent()) {
                         respondPong(po.get(), client);
                         return true;
@@ -345,12 +349,12 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 default -> System.err.println("GameCommand from " + client.toString() +
                         " with name: " + commandName + " can not be found");
             }
-            if(wrongFormatted){
-                System.err.println("GameCommand from "+client.toString()+
-                        " cannot be understood because wrong formatted: "+json);
+            if (wrongFormatted) {
+                System.err.println("GameCommand from " + client.toString() +
+                        " cannot be understood because wrong formatted: " + json);
             }
-        }else{
-            System.err.println("GameCommand from "+client.toString()+" empty");
+        } else {
+            System.err.println("GameCommand from " + client.toString() + " empty");
         }
         return true;
     }
@@ -394,6 +398,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Add a playing client
+     *
      * @param client (casted to Socket)
      */
     @Override
@@ -409,7 +414,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
     @Override
     public void gameSetUp() {
         tryStartGame();
-        synchronized (playLock){
+        synchronized (playLock) {
             synchronized (clientsInGame) {
                 this.clientsInGame.forEach((c) -> {
                     try {
@@ -430,12 +435,13 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify to all clients that a player disconnected
+     *
      * @param playerName name of the player who disconnected
      */
     @Override
     public void notifyDisconnection(String playerName) {
-        synchronized (clientsInGame){
-            this.clientsInGame.forEach(c->{
+        synchronized (clientsInGame) {
+            this.clientsInGame.forEach(c -> {
                 sendToClient(c, new Disconnection(playerName).toJson());
             });
         }
@@ -443,11 +449,12 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify to all clients that a player reconnected
+     *
      * @param playerName name of the player who reconnected
      */
     @Override
     public void notifyReconnection(String playerName) {
-        synchronized (playLock){
+        synchronized (playLock) {
             synchronized (clientsInGame) {
                 Socket reconnectedPlayer = null;
                 for (Socket c : this.clientsInGame) {
@@ -458,22 +465,26 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                 }
                 Socket finalReconnectedPlayer = reconnectedPlayer;
                 this.clientsInGame.forEach(c -> {
-                    sendToClient(c, new Reconnected(playerName).toJson());
+                    try {
+                        sendToClient(finalReconnectedPlayer,
+                                new BookShelfUpdate(
+                                        getPlayerNameFromClient(c),
+                                        playController.getBookshelf(getPlayerNameFromClient(c))
+                                ).toJson()
+                        );
+                    } catch (PlayerNotFoundException e) {
+                        System.err.println("notifyReconnection: " + e.getMessage());
+                    }
                     if (!getPlayerNameFromClient(c).equals(playerName)) {
-                        try {
-                            sendToClient(finalReconnectedPlayer,
-                                    new BookShelfUpdate(
-                                            getPlayerNameFromClient(c),
-                                            playController.getBookshelf(getPlayerNameFromClient(c))
-                                    ).toJson()
-                            );
-                        } catch (PlayerNotFoundException e) {
-                            System.err.println("notifyReconnection: " + e.getMessage());
-                        }
+                        sendToClient(c, new Reconnected(playerName).toJson());
                     }
 
                 });
                 try {
+
+                    sendToClient(reconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
+                    sendToClient(reconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());
+                    sendToClient(reconnectedPlayer, new TurnNotify(playController.getCurrentPlayer()).toJson());
                     sendToClient(reconnectedPlayer,
                             new GameSetUp(
                                     playController.getPlayers(),
@@ -481,8 +492,6 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
                                     playController.getPersonalGoalCard(playerName)
                             ).toJson()
                     );
-                    sendToClient(reconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
-                    sendToClient(reconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());
                 } catch (PlayerNotFoundException e) {
                     System.err.println("Cannot handle GameSetUp reconnection of " + reconnectedPlayer);
                 }
@@ -492,8 +501,9 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Send a message to all players
-     * @param sender sender's name
-     * @param date date of message creation
+     *
+     * @param sender  sender's name
+     * @param date    date of message creation
      * @param message actual message to be sent
      */
     @Override
@@ -507,9 +517,10 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Send a message to all players
-     * @param sender sender's name
-     * @param date date of message creation
-     * @param message actual message to be sent
+     *
+     * @param sender   sender's name
+     * @param date     date of message creation
+     * @param message  actual message to be sent
      * @param receiver receiver's name
      */
     @Override
@@ -518,7 +529,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
         this.playersIds.entrySet().stream()
                 .filter(entry ->
                         Objects.equals(entry.getValue(), lobby.getIdFromName(receiver)) ||
-                        Objects.equals(entry.getValue(), lobby.getIdFromName(sender))
+                                Objects.equals(entry.getValue(), lobby.getIdFromName(sender))
                 )
                 .map(Map.Entry::getKey)
                 .forEach(
@@ -528,6 +539,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify change in the board to all clients in game
+     *
      * @param tiles board
      */
     @Override
@@ -541,13 +553,14 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify to all clients change in player's bookshelf
+     *
      * @param playerName player's name
-     * @param tiles bookshelf
+     * @param tiles      bookshelf
      */
     @Override
     public void notifyChangeBookShelf(String playerName, List<Tile> tiles) {
-        synchronized (clientsInGame){
-            this.clientsInGame.forEach(c->{
+        synchronized (clientsInGame) {
+            this.clientsInGame.forEach(c -> {
                 sendToClient(c, new BookShelfUpdate(playerName, new HashSet<>(tiles)).toJson());
             });
         }
@@ -555,13 +568,14 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify change in point of a player to all clients
+     *
      * @param playerName player's name
-     * @param points new points
+     * @param points     new points
      */
     @Override
     public void updatePlayerPoints(String playerName, int points) {
-        synchronized (clientsInGame){
-            this.clientsInGame.forEach(c->{
+        synchronized (clientsInGame) {
+            this.clientsInGame.forEach(c -> {
                 sendToClient(c, new PlayerPoints(playerName, points).toJson());
             });
         }
@@ -569,12 +583,13 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify to all player whom turn is
+     *
      * @param playerName current player
      */
     @Override
     public void notifyTurn(String playerName) {
-        synchronized (clientsInGame){
-            this.clientsInGame.forEach(c->{
+        synchronized (clientsInGame) {
+            this.clientsInGame.forEach(c -> {
                 sendToClient(c, new TurnNotify(playerName).toJson());
             });
         }
@@ -582,6 +597,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify to all clients a change in common goals cards and tokens
+     *
      * @param cardsAndTokens cards with associated tokens
      */
     @Override
@@ -595,6 +611,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Notify the winner to all playing clients, close all playing clients, reset lobby
+     *
      * @param playerName winner's game
      */
     @Override
@@ -635,10 +652,11 @@ public class TCPServer extends ResponseServer implements ServerCommunication{
 
     /**
      * Ping a client to keep connection alive
+     *
      * @param client object (Cast to Socket)
      */
     @Override
-    protected void ping(Object client){
+    protected void ping(Object client) {
         Socket clientSock = (Socket) client;
         sendToClient(clientSock, new Ping().toJson());
     }

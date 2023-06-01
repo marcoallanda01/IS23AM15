@@ -209,7 +209,7 @@ public class GUIInGame extends GUIState {
         }
 
         Scene scene = new Scene(root, 800, 700);
-        Platform.runLater(() -> guiApplication.transitionToScene(scene));
+        Platform.runLater(() -> guiApplication.changeScene(scene));
     }
 
     private int calculateDropIndex(double x) {
@@ -287,8 +287,8 @@ public class GUIInGame extends GUIState {
         HBox bookshelvesBox = new HBox(10);
         bookshelvesBox.setAlignment(Pos.CENTER);
 
-        for (Map.Entry<String, Set<Tile>> entry : bookshelves.entrySet()) {
-            StackPane bookshelfGrid = createBookshelfGrid(entry.getValue(), entry.getKey());
+        for (String name : Client.getInstance().getView().getPlayers()) {
+            StackPane bookshelfGrid = createBookshelfGrid(bookshelves.get(name), name);
             bookshelvesBox.getChildren().add(bookshelfGrid);
         }
 
@@ -299,19 +299,20 @@ public class GUIInGame extends GUIState {
         StackPane stackPane = new StackPane();
 
         GridPane gridPane = new GridPane();
-        gridPane.setHgap(7);
-        gridPane.setVgap(2);
+        gridPane.setHgap(6);
+        gridPane.setVgap(3.5);
         gridPane.setPrefSize(180, 216);
         gridPane.setMinSize(180, 216);
         gridPane.setMaxSize(180, 216);
         gridPane.setAlignment(Pos.CENTER);
+        gridPane.setPadding(new Insets(0, 10, 0, 10));
 
-        Image backgroundImage = new Image(getClass().getResource("/assets/bookshelf.png").toExternalForm());
-        BackgroundSize backgroundSize = new BackgroundSize(0.8, 1, true, true, true, false);
-        BackgroundImage backgroundImageView = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        gridPane.setBackground(new Background(backgroundImageView));
+        Image gridPaneImage = new Image(getClass().getResource("/assets/bookshelf.png").toExternalForm());
+        ImageView gridPaneBack = new ImageView(gridPaneImage);
+        gridPaneBack.setFitHeight(170);
+        gridPaneBack.setFitWidth(160);
+        gridPaneBack.setTranslateY(16);
 
-        Random random = new Random();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 ImageView emptyTile = new ImageView();
@@ -334,13 +335,13 @@ public class GUIInGame extends GUIState {
         for (int i = 0; i < 5; i++) {
             if (Client.getInstance().getView().getPickedTiles().isEmpty()) {
                 ImageView emptyArrow = new ImageView();
-                emptyArrow.setFitHeight(20);
-                emptyArrow.setFitWidth(20);
+                emptyArrow.setFitHeight(18);
+                emptyArrow.setFitWidth(18);
                 bookshelfArrows.getChildren().add(emptyArrow);
             } else if (Client.getInstance().getNickname().equals(bookshelfName)) {
                 ImageView arrow = new ImageView(new Image(getClass().getResource("/assets/arrow.png").toExternalForm()));
-                arrow.setFitHeight(20);
-                arrow.setFitWidth(20);
+                arrow.setFitHeight(18);
+                arrow.setFitWidth(18);
                 bookshelfArrows.getChildren().add(arrow);
                 int finalI = i;
                 arrow.setOnMouseEntered(event -> {
@@ -356,9 +357,8 @@ public class GUIInGame extends GUIState {
                 });
             }
         }
-        bookshelfArrows.setTranslateY(-5);
-        bookshelfArrows.setTranslateX(20);
-        bookshelfArrows.setTranslateZ(1);
+        bookshelfArrows.setTranslateY(20);
+        bookshelfArrows.setTranslateX(25);
 
         bookshelfName = bookshelfName.substring(0, Math.min(bookshelfName.length(), 8));
         Label bookshelfNameLabel = new Label(bookshelfName);
@@ -379,9 +379,9 @@ public class GUIInGame extends GUIState {
             }
         }
         bookshelfNameLabel.setTranslateX(0);
-        bookshelfNameLabel.setTranslateY(80);
+        bookshelfNameLabel.setTranslateY(90);
 
-        stackPane.getChildren().addAll(gridPane, bookshelfArrows, bookshelfNameLabel);
+        stackPane.getChildren().addAll(gridPaneBack, gridPane, bookshelfArrows, bookshelfNameLabel);
 
         return stackPane;
     }
