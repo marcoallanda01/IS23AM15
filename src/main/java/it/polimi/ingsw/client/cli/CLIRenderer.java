@@ -103,6 +103,7 @@ public class CLIRenderer {
     }
 
     public synchronized static void printBookshelves(List<String> players, Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
+        System.out.println();
         for (int n = 5; n >= 0; n--) {
             for (String name : players) {
                 Set<Tile> tiles = bookshelves.get(name);
@@ -200,10 +201,13 @@ public class CLIRenderer {
     }
 
     public synchronized static void printPersonalGoal(String personalGoal) {
+        System.out.println();
         System.out.println("Personal goal:\n" + personalGoal);
+        System.out.println();
     }
 
     public synchronized static void printCommonGoals(List<String> commonGoals) {
+        System.out.println();
         System.out.println("Common goals:");
         for (String goal : commonGoals) {
             System.out.println(goal);
@@ -261,6 +265,14 @@ public class CLIRenderer {
         System.out.println("Choose a name from the following list:");
         for (String gameName : gameNames) {
             System.out.println(gameName);
+        }
+    }
+
+    public synchronized static void printPoints(Map<String, Integer> points) {
+        System.out.println();
+        System.out.println("Points:");
+        for (String name : points.keySet()) {
+            System.out.println(name + ": " + points.get(name));
         }
     }
 }
