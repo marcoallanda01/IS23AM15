@@ -100,11 +100,9 @@ public class CLI extends View {
             case IN_GAME -> {
                 CLIRenderer.printLivingRoomBoard(this.getLivingRoomBoard());
                 CLIRenderer.printCommonCards(this.getCommonCards());
-                CLIRenderer.printCommonGoals(this.getCommonGoals());
                 CLIRenderer.printPoints(this.getPoints());
                 CLIRenderer.printBookshelves(this.getPlayers(), this.getBookShelves(), Client.getInstance().getNickname(), this.getCurrentTurnPlayer());
                 CLIRenderer.printPickedTiles(this.getPickedTiles());
-                CLIRenderer.printPersonalGoal(this.getPersonalGoal());
             }
             case END_GAME -> CLIRenderer.printEndGame(this.getPoints(), this.getWinner());
             default -> Client.getInstance().getLogger().log("Invalid state");
@@ -123,7 +121,7 @@ public class CLI extends View {
         CLIRenderer.printHelp();
     }
 
-    public void showGoal(String goalName) {
-        CLIRenderer.printGoal(this.getGoalsToDetails().get(goalName));
+    public void showGoals() {
+        CLIRenderer.printGoals(this.getCommonGoals(), this.getPersonalGoal());
     }
 }

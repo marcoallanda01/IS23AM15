@@ -45,8 +45,8 @@ public class InputCLI {
                             case "showchat":
                                 showChatRequest(inputArray);
                                 break;
-                            case "showgoal":
-                                showGoalRequest(inputArray);
+                            case "showgoals":
+                                showGoalsRequest(inputArray);
                                 break;
                             case "showgame":
                                 showGameRequest(inputArray);
@@ -79,12 +79,12 @@ public class InputCLI {
         }
     }
 
-    private static void showGoalRequest(String[] inputArray) {
-        if (inputArray.length != 2) {
+    private static void showGoalsRequest(String[] inputArray) {
+        if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        Client.getInstance().getView().showGoal(inputArray[1]);
+        Client.getInstance().getView().showGoals();
     }
 
     private static void helpRequest(String[] inputArray) {
