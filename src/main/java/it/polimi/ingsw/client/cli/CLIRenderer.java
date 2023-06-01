@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ClientGoalDetail;
+import it.polimi.ingsw.communication.responses.CommonGoals;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -274,5 +276,18 @@ public class CLIRenderer {
         for (String name : points.keySet()) {
             System.out.println(name + ": " + points.get(name));
         }
+    }
+    public synchronized static void printGoals(List<String> commonGoals, String personalGoal){
+        System.out.println();
+        System.out.println(CliColor.BLACK_BOLD + "Common goals:" + CliColor.RESET);
+        for (String goal : commonGoals) {
+            String goalDescription = Client.getInstance().getView().getGoalsToDetails().get(goal).getDescription();
+            System.out.println(goalDescription);
+            System.out.println();
+        }
+        System.out.println(CliColor.BLACK_BOLD + "Personal goal:" + CliColor.RESET);
+        String personalGoalDescription = Client.getInstance().getView().getGoalsToDetails().get(personalGoal).getDescription();
+        System.out.println(personalGoalDescription);
+        System.out.println();
     }
 }

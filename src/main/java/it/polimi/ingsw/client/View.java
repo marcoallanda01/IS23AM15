@@ -27,7 +27,7 @@ public abstract class View {
     public void showError(String error){}
     public void showChat(){}
     public void showHelp() {}
-    public void showGoal(String goalName) {}
+    public void showGoals() {}
     public List<String> getPlayers() {
         return players;
     }
