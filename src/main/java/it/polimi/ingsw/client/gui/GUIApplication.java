@@ -2,13 +2,11 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,8 +22,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class GUIApplication extends Application {
     private Stage primaryStage;
 
@@ -33,6 +29,7 @@ public class GUIApplication extends Application {
     public synchronized void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("MyShelfie");
+        this.primaryStage.initStyle(StageStyle.UNIFIED);
 
         // Create the text node
         Text text = new Text("MyShelfie is loading");
@@ -43,7 +40,7 @@ public class GUIApplication extends Application {
         root.getChildren().add(text);
 
         // Create the scene and set the root pane
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 700);
 
         // Set CSS styling for the text
         text.getStyleClass().add("my-shelfie-text");
@@ -75,6 +72,28 @@ public class GUIApplication extends Application {
         return primaryStage;
     }
 
+    public synchronized void changeScene(Parent newRoot) {
+        // Set the root node of the new content opacity to 1.0
+        newRoot.setOpacity(1.0);
+        System.out.println("primaryStage.getScene() = " + primaryStage.getScene().getRoot());
+
+        // Update the root node of the current scene
+        if (primaryStage.getScene().getRoot() instanceof VBox) {
+            VBox currentRoot = (VBox) primaryStage.getScene().getRoot();
+
+            currentRoot.getChildren().clear();
+            currentRoot.getChildren().setAll(newRoot);
+        } else if (primaryStage.getScene().getRoot() instanceof StackPane) {
+            StackPane currentRoot = (StackPane) primaryStage.getScene().getRoot();
+
+            currentRoot.getChildren().clear();
+            currentRoot.getChildren().setAll(newRoot);
+        } else {
+            throw new IllegalStateException("Unexpected root node type: " + primaryStage.getScene().getRoot().getClass().getName());
+        }
+
+    }
+
     public synchronized void transitionToScene(Scene newScene) {
         // Create a fade-out transition for the current scene
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.4), primaryStage.getScene().getRoot());
@@ -97,7 +116,7 @@ public class GUIApplication extends Application {
 
     public void showPopup(String error) {
         Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initModality(Modality.WINDOW_MODAL);
         popupStage.initStyle(StageStyle.UNDECORATED);
 
         Label messageLabel = new Label(error);

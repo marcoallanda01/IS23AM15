@@ -36,7 +36,7 @@ public class GUILoadGame extends GUIState{
 
         root.getChildren().addAll(titleLabel, savedGamesLabel, savedGamesBox);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 

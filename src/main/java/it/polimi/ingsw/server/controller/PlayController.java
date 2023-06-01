@@ -238,4 +238,8 @@ public class PlayController {
     public synchronized Set<Tile> getBoard() {
         return new HashSet<>(game.getBoard().getAllTiles());
     }
+
+    public synchronized String getCurrentPlayer() {
+        return game.getCurrentPlayer();
+    }
 }

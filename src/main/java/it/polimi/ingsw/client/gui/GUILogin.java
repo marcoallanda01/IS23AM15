@@ -36,7 +36,7 @@ public class GUILogin extends GUIState {
      */
     private void createUI() {
         StackPane root = createRootPane();
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
