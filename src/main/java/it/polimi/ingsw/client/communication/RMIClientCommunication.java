@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
  * note that some methods expect a return value,
  * the ClientCommunication class is responsible for dedicating
  * threads that wait for that return value and call the appropriate functions
- * on ClientCommunication (in  place of the server)
+ * on RMIClientConnection
  */
 public class RMIClientCommunication implements ClientCommunication {
     private ExecutorService executorService;

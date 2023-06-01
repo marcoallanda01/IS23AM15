@@ -187,28 +187,40 @@ public class Client {
         return clientGoals;
     }
     public ClientStates getClientState() {
-        return state;
+        synchronized (state) {
+            return state;
+        }
     }
 
     public void setClientState(ClientStates state) {
-        this.state = state;
+        synchronized (state) {
+            this.state = state;
+        }
     }
 
     public void setId(String id) {
-        this.id = id;
-        saveClientInfo(id, nickname);
+        synchronized (id) {
+            this.id = id;
+        }
+        saveClientInfo(getId(), getNickname());
     }
 
     public String getId() {
-        return this.id;
+        synchronized (id) {
+            return this.id;
+        }
     }
 
     public String getNickname() {
-        return nickname;
+        synchronized (nickname) {
+            return nickname;
+        }
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname;
+        synchronized (nickname) {
+            this.nickname = nickname;
+        }
     }
 
     private void saveClientInfo(String id, String name) {

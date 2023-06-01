@@ -224,7 +224,9 @@ public class ClientController implements ClientNotificationListener {
     public void notifyPickedTiles(String nickname, List<TileType> tiles) {
         if (nickname.equals(Client.getInstance().getNickname())) {
             view.setPickedTiles(tiles);
-            view.render();
+            if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+                view.render();
+            }
         }
     }
 
@@ -287,7 +289,6 @@ public class ClientController implements ClientNotificationListener {
         for (Integer index : order) {
             orderedTiles.add(tiles.get(index));
         }
-        view.setPickedTiles(new ArrayList<>());
         Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), orderedTiles, column);
     }
 

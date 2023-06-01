@@ -353,7 +353,6 @@ public class GUIInGame extends GUIState {
                 arrow.setOnMouseClicked(event -> {
                     List<Integer> order = tilesListView.getItems().stream().map(item -> Integer.parseInt(item.getId())).collect(Collectors.toList());
                     Client.getInstance().getClientController().putTiles(finalI, order);
-                    Client.getInstance().getView().setPickedTiles(new ArrayList<>());
                 });
             }
         }

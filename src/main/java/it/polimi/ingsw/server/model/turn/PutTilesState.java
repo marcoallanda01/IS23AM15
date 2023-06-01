@@ -37,7 +37,11 @@ public class PutTilesState extends State {
                 return false;
             }
         }
-        return this.turn.getCurrentPlayer().insertTiles(tiles, column);
+        if (this.turn.getCurrentPlayer().insertTiles(tiles, column)) {
+            this.turn.setPickedTiles(new ArrayList<>());
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -22,6 +22,10 @@ import java.util.Set;
  * Therefore, it is responsible for receiving notifications from the server.
  * It also offers the possibility to retrieve a reference to the RMIServer Interface representing
  * the UnicastRemoteObject registered from the server.
+ * There are also some methods that are used from RMIClientCommunication to notify the returned
+ * values of some specific methods called on the server.
+ * RMIClientConnection is responsible for synchronizing such methods since ClientNotificationListener
+ * does not guarantee synchronization
  */
 public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, ClientConnection {
     private ClientNotificationListener clientNotificationListener;
@@ -111,7 +115,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
     @Override
-    public void notifyWinner(String nickname) throws RemoteException {
+    public synchronized void notifyWinner(String nickname) throws RemoteException {
         Client.getInstance().getLogger().log("Server called notifyWinner(" + nickname + ")");
         clientNotificationListener.notifyWinner(nickname);
     }
@@ -296,7 +300,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @param loadedGame    indicates if the game is loaded from a saved state
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
-    public void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame) {
+    public synchronized void notifyHello(boolean lobbyReady, String firstPlayerId, boolean loadedGame) {
         Client.getInstance().getLogger().log("Server called notifyHello(" + lobbyReady + "," + firstPlayerId + "," + loadedGame + ")");
         clientNotificationListener.notifyHello(lobbyReady, firstPlayerId, loadedGame);
     }
@@ -307,7 +311,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @param games the set of saved game names
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
-    public void notifySavedGames(Set<String> games) {
+    public synchronized void notifySavedGames(Set<String> games) {
         Client.getInstance().getLogger().log("Server called notifySavedGames(" + games + ")");
         clientNotificationListener.notifySavedGames(games);
     }
@@ -320,7 +324,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @param id     the player's ID if the join request was successful
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
-    public void notifyJoinResponse(boolean result, String error, String id) {
+    public synchronized void notifyJoinResponse(boolean result, String error, String id) {
         Client.getInstance().getLogger().log("Server called notifyJoinResponse(" + result + "," + error + "," + id + ")");
         clientNotificationListener.notifyJoinResponse(result, error, id);
     }
@@ -331,7 +335,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @param result the result of the first join request (true if successful, false otherwise)
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
-    public void notifyFirstJoinResponse(boolean result) {
+    public synchronized void notifyFirstJoinResponse(boolean result) {
         Client.getInstance().getLogger().log("Server called notifyFirstJoinResponse(" + result + ")");
         clientNotificationListener.notifyFirstJoinResponse(result);
     }
@@ -343,7 +347,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @param error  the error message if the game loading request was unsuccessful
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
-    public void notifyLoadGameResponse(boolean result, String error) {
+    public synchronized void notifyLoadGameResponse(boolean result, String error) {
         Client.getInstance().getLogger().log("Server called notifyLoadGameResponse(" + result + "," + error + ")");
         clientNotificationListener.notifyLoadGameResponse(result, error);
     }
@@ -354,7 +358,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      * @param nicknames the set of player nicknames in the loaded game
      * @throws RemoteException if an RMI error occurs during the remote method invocation
      */
-    public void notifyLoadedGamePlayers(Set<String> nicknames) {
+    public synchronized void notifyLoadedGamePlayers(Set<String> nicknames) {
         Client.getInstance().getLogger().log("Server called notifyLoadedGamePlayers(" + nicknames + ")");
         clientNotificationListener.notifyLoadedGamePlayers(nicknames);
     }

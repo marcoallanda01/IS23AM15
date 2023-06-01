@@ -189,6 +189,9 @@ public class Game{
 
     public boolean putTiles(List<Tile> tiles, int column) {
         if (currentTurn.putTiles(tiles, column)) {
+            GameChangeSupport.firePropertyChange(PICKED_TILES_PROPRIETY_NAME,
+                    null,
+                    new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
             if (currentTurn.checkBoardRefill()) {
                 currentTurn.refillBoard();
             }
