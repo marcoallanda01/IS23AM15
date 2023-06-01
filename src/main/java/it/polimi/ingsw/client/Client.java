@@ -119,7 +119,7 @@ public class Client {
                 testingView.start();
             } else {
                 if (view.equals(Views.CLI)) {
-                    Client.getInstance().init(new CLI());
+                    new CLI();
                 } else if (view.equals(Views.GUI)) {
                     Application.launch(GUIApplication.class, args);
                 }
@@ -127,14 +127,6 @@ public class Client {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-         Thread shutdownHook = new Thread() {
-            @Override
-            public void run() {
-                Client.getInstance().getLogger().log("Shutting down");
-                Client.getInstance().getClientController().logout();
-            }
-        };
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
 
     private static String parseArg(String[] args, String option, String optionVerbose) {
@@ -295,5 +287,13 @@ public class Client {
 
     public void onConnectionReady() {
         Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
+        Thread shutdownHook = new Thread() {
+            @Override
+            public void run() {
+                Client.getInstance().getLogger().log("Shutting down");
+                Client.getInstance().getClientController().logout();
+            }
+        };
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
 }

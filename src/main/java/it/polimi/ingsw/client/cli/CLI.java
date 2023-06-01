@@ -3,9 +3,19 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ClientGoal;
 import it.polimi.ingsw.client.View;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CLI extends View {
     private final Thread inputThread;
@@ -16,10 +26,34 @@ public class CLI extends View {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
         this.inputThread = new Thread(this::inputHandler);
         this.running = true;
-        start();
+        initializeViewAndConnection(5);
     }
+    private void initializeViewAndConnection(int countdown) {
+        try {
+            Client.getInstance().init(this);
+            start();
+        } catch (Exception e) {
+            AtomicInteger retryCount = new AtomicInteger(countdown); // Initial retry count
+            System.out.println();
+            System.out.print("MyShelfie encountered an error while starting, will retry in: " + retryCount.get());
 
-    public void start() {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    int count = retryCount.decrementAndGet();
+                    System.out.print(" " + count);
+                    if (count == 0) {
+                        initializeViewAndConnection(countdown * 2);
+                        cancel();
+                    }
+                }
+            };
+
+            Timer timer = new Timer();
+            timer.schedule(task, 1000, 1000); // Update the countdown every second
+        }
+    }
+    private void start() {
         inputThread.start();
         render();
         Client.getInstance().getLogger().log("CLI Started");
@@ -92,5 +126,4 @@ public class CLI extends View {
     public void showGoal(String goalName) {
         CLIRenderer.printGoal(this.getGoalsToDetails().get(goalName));
     }
-
 }
