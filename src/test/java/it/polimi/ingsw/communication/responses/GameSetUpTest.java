@@ -1,5 +1,7 @@
 package it.polimi.ingsw.communication.responses;
 
+import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.chat.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,23 +23,29 @@ class GameSetUpTest {
         p.add("p2");
         p.add("p3");
         String personal = "personal";
+        List<Message> ml = new ArrayList<>();
+        Message m = new Message(new Player("test"), "ciao");
+        ml.add(m);
+        ChatMessage cm = new ChatMessage(m);
 
-        System.out.println(new GameSetUp(p, g, personal).toJson());
+        System.out.println(new GameSetUp(p, g, personal, ml).toJson());
         System.out.println("{\"name\":\"GameSetUp\"," +
                 "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]," +
-                "\"personal\":\"personal\"}");
-        assertEquals(Optional.of(new GameSetUp(p, g, personal)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
+                "\"personal\":\"personal\", \"oldChat:\"["+cm.toJson()+"]}");
+        assertEquals(Optional.of(new GameSetUp(p, g, personal,ml)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
                 "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]," +
                 "\"personal\":\"personal\"}"));
-        assertNotEquals(Optional.of(new GameSetUp(p, g, personal)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
+        assertNotEquals(Optional.of(new GameSetUp(p, g, personal, ml)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
                 "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Stai\",\"Come\"], " +
-                "\"personal\":\"notEqual\"}"));
-        assertEquals(Optional.of(new GameSetUp(p, new ArrayList<String>(), personal)),
+                "\"personal\":\"notEqual\", \"oldChat:\"["+cm.toJson()+"]}"));
+        assertEquals(Optional.of(new GameSetUp(p, new ArrayList<String>(), personal, ml)),
                 GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                        "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[], \"personal\":\"personal\"}"));
-        assertEquals(Optional.of(new GameSetUp(new ArrayList<String>(), g, personal)),
+                        "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[], \"personal\":\"personal\"," +
+                        "\"oldChat:\"["+cm.toJson()+"]}"));
+        assertEquals(Optional.of(new GameSetUp(new ArrayList<String>(), g, personal, ml)),
                 GameSetUp.fromJson("{\"name\":\"GameSetUp\", \"players\":[]," +
-                        "\"goals\":[\"Ciao\",\"Come\",\"Stai\"], \"personal\":\"personal\"}"));
+                        "\"goals\":[\"Ciao\",\"Come\",\"Stai\"], \"personal\":\"personal\"," +
+                        "\"oldChat:\"["+cm.toJson()+"]}"));
 
 
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +

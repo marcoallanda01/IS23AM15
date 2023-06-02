@@ -436,7 +436,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                                 new GameSetUp(
                                         playController.getPlayers(),
                                         new ArrayList<>(playController.getEndGameGoals()),
-                                        playController.getPersonalGoalCard(getPlayerNameFromClient(c))
+                                        playController.getPersonalGoalCard(getPlayerNameFromClient(c)),
+                                        chatController.getPlayerMessages(getPlayerNameFromClient(c))
                                 ).toJson()
                         );
                     } catch (PlayerNotFoundException e) {
@@ -508,7 +509,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                         new GameSetUp(
                                 playController.getPlayers(),
                                 new ArrayList<>(playController.getEndGameGoals()),
-                                playController.getPersonalGoalCard(playerName)
+                                playController.getPersonalGoalCard(playerName),
+                                chatController.getPlayerMessages(playerName)
                         ).toJson()
                 );
             } catch (PlayerNotFoundException e) {

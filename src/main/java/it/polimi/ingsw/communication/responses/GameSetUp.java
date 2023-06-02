@@ -19,18 +19,17 @@ public class GameSetUp extends Msg{
     public List<String> players;
     public List<String> goals;
     public String personal;
-    // public List<ChatMessage> oldChat;
+    public List<ChatMessage> oldChat;
 
 
-    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals, @NotNull String personal){//,
-                     //@NotNull List<Message> oldChat){
+    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals, @NotNull String personal,
+                     @NotNull List<Message> oldChat){
         super("GameSetUp");
         this.players = new ArrayList<>(players);
         this.goals = new ArrayList<>(goals);
         this.personal = new String(personal);
-        // this.oldChat = new ArrayList<>();
-        //
-        // oldChat.forEach((m) -> this.oldChat.add(new ChatMessage(m)));
+        this.oldChat = new ArrayList<>();
+        oldChat.forEach((m) -> this.oldChat.add(new ChatMessage(m)));
     }
 
 
@@ -43,7 +42,7 @@ public class GameSetUp extends Msg{
             return Optional.empty();
         }
         if(!"GameSetUp".equals(gsu.name) || gsu.players == null || gsu.goals == null || gsu.personal == null
-            ){//|| gsu.oldChat == null){
+            || gsu.oldChat == null){
             return Optional.empty();
         }
         return Optional.of(gsu);

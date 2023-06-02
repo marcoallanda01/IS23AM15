@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.controller.serialization.DateTimeTypeAdapter;
 import it.polimi.ingsw.server.controller.serialization.GameTypeAdapter;
 import it.polimi.ingsw.server.controller.serialization.OptionalTypeAdapter;
 import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.chat.Message;
 import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 
 import java.io.BufferedWriter;

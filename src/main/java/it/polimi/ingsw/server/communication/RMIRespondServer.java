@@ -157,17 +157,19 @@ public class RMIRespondServer extends ResponseServer{
         synchronized (playLock) {
             synchronized (playersIds) {
                 this.playersIds.forEach((key, value) -> {
+                    String playerName = getPlayerNameFromClient(key);
                     executorService.submit( () -> {
                         try {
                             key.notifyGame(new GameSetUp(
                                     playController.getPlayers(),
                                     new ArrayList<>(playController.getEndGameGoals()),
-                                    playController.getPersonalGoalCard(getPlayerNameFromClient(key))
+                                    playController.getPersonalGoalCard(playerName),
+                                    chatController.getPlayerMessages(playerName)
                             ));
                         } catch (RemoteException | RuntimeException e) {
                             System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
                         } catch (PlayerNotFoundException e) {
-                            System.out.println("GameSetUp: This player do not exists " + getPlayerNameFromClient(key));
+                            System.out.println("GameSetUp: This player do not exists " + playerName);
                         }
                     });
                 });
@@ -200,7 +202,8 @@ public class RMIRespondServer extends ResponseServer{
                 client.notifyGame(new GameSetUp(
                         playController.getPlayers(),
                         new ArrayList<>(playController.getEndGameGoals()),
-                        playController.getPersonalGoalCard(name)
+                        playController.getPersonalGoalCard(name),
+                        chatController.getPlayerMessages(name)
                 ));
 
             } catch (RemoteException | RuntimeException e) {
