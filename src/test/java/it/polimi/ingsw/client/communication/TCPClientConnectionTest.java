@@ -175,9 +175,9 @@ class TCPClientConnectionTest {
     }
     @Test
     void gameNotificationTest() throws InterruptedException, ExecutionException {
-        Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new GameSetUp(new ArrayList<>(), new ArrayList<>(), "test").toJson()));
+        Future<?> sentMessage = serverExecutorService.submit(() -> sendToClient(new GameSetUp(new ArrayList<>(), new ArrayList<>(), "test", new ArrayList<>()).toJson()));
         Thread.sleep(500);
-        assertEquals(List.of(new GameSetUp(new ArrayList<>(), new ArrayList<>(), "test").toJson()).toString(), notificationsSentToTheListener.toString());
+        assertEquals(List.of(new GameSetUp(new ArrayList<>(), new ArrayList<>(), "test", new ArrayList<>()).toJson()).toString(), notificationsSentToTheListener.toString());
     }
     @Test
     void winnerNotificationTest() throws InterruptedException, ExecutionException {

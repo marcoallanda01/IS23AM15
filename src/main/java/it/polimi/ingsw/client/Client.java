@@ -22,7 +22,7 @@ public class Client {
     private final Protocols protocolSetting;
     private final Views viewSetting;
     private final Modes modeSetting;
-    private String id;
+    private String id = "";
 
     public boolean isFirstPlayer() {
         return isFirstPlayer;
@@ -263,8 +263,11 @@ public class Client {
     public ClientController getClientController() {
         if (clientController instanceof ClientController)
             return (ClientController) clientController;
-        else
-            throw new RuntimeException("ClientController is not an instance of ClientController");
+        else {
+            RuntimeException e = new RuntimeException("ClientController is not an instance of ClientController");
+            Client.getInstance().getLogger().log(e);
+            throw e;
+        }
     }
 
     public ClientCommunication getClientCommunication() {
@@ -298,14 +301,24 @@ public class Client {
     }
 
     public void onConnectionReady() {
-        Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
-        Thread shutdownHook = new Thread() {
-            @Override
-            public void run() {
-                Client.getInstance().getLogger().log("Shutting down");
-                Client.getInstance().getClientController().logout();
-            }
-        };
+        try {
+            Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
+        } catch (Exception e) {
+            Client.getInstance().getLogger().log("Error while attempting to reconnect: ");
+            Client.getInstance().getLogger().log(e);
+        }
+        try {
+            Thread shutdownHook = new Thread() {
+                @Override
+                public void run() {
+                    Client.getInstance().getLogger().log("Shutting down");
+                    Client.getInstance().getClientController().logout();
+                }
+            };
         Runtime.getRuntime().addShutdownHook(shutdownHook);
+        } catch (Exception e) {
+            Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
+            Client.getInstance().getLogger().log(e);
+        }
     }
 }

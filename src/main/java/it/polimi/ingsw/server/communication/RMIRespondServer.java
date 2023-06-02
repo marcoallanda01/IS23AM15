@@ -186,7 +186,7 @@ public class RMIRespondServer extends ResponseServer{
                 playController.getPlayers().forEach((pn) ->
                     {
                         try {
-                            client.notifyBookshelf(name, playController.getBookshelf(pn));
+                            client.notifyBookshelf(pn, playController.getBookshelf(pn));
                         } catch (PlayerNotFoundException e) {
                             System.err.println("Cannot handle BookShelfUpdate:" + pn
                                     + " reconnection of " + name);
