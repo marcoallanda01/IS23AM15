@@ -115,6 +115,7 @@ public class Game{
      * @param isFirstGame game rule easy game
      */
     public @Deprecated Game(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
+        this.GameChangeSupport = new PropertyChangeSupport(this);
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         int numberOfPlayers = players.size();
         this.isFirstGame = isFirstGame;

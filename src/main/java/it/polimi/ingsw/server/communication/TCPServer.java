@@ -31,8 +31,8 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
         super(lobby, sharedLock);
         this.port = port;
         this.clients = Collections.synchronizedList(new ArrayList<>());
-        this.clientsInGame = Collections.synchronizedList(new ArrayList<>());
-        this.playersIds = Collections.synchronizedMap(new HashMap<>());
+        this.clientsInGame = new ArrayList<>();
+        this.playersIds = new HashMap<>();
         this.clientsToOut = Collections.synchronizedMap(new HashMap<>());
         this.clientsToLockOut = new HashMap<>();
         this.executorService = Executors.newCachedThreadPool();
@@ -99,7 +99,9 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
      */
     private void closeClient(Socket client) {
         this.clients.remove(client);
-        this.clientsInGame.remove(client);
+        synchronized (clientsInGame) {
+            this.clientsInGame.remove(client);
+        }
         PrintWriter out = this.clientsToOut.remove(client);
         if (out != null) {
             out.close();
@@ -180,9 +182,17 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
      * @param client client socket
      */
     private synchronized void addPlayingClient(Socket client, String id) {
-        if (!clientsInGame.contains(client)) {
-            clientsInGame.add(client);
-            playersIds.put(client, id);
+        boolean res = true;
+        synchronized (clientsInGame){
+            res = clientsInGame.contains(client);
+        }
+        if (!res) {
+            synchronized (clientsInGame){
+                clientsInGame.add(client);
+            }
+            synchronized (playersIds) {
+                playersIds.put(client, id);
+            }
             System.out.println("Client " + client + " added to playing clients");
         }
     }
@@ -393,7 +403,11 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
      */
     @Override
     protected String getPlayerNameFromClient(Object client) {
-        return this.lobby.getNameFromId(this.playersIds.get((Socket) client));
+        String id;
+        synchronized (playersIds) {
+            id = this.playersIds.get((Socket) client);
+        }
+        return this.lobby.getNameFromId(id);
     }
 
     /**
@@ -455,6 +469,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
     @Override
     public void notifyReconnection(String playerName) {
         synchronized (playLock) {
+            Socket finalReconnectedPlayer;
             synchronized (clientsInGame) {
                 Socket reconnectedPlayer = null;
                 for (Socket c : this.clientsInGame) {
@@ -463,38 +478,41 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                         System.out.println("TCP notifyReconnection: client reconnected " + reconnectedPlayer + " " + playerName);
                     }
                 }
-                Socket finalReconnectedPlayer = reconnectedPlayer;
+                finalReconnectedPlayer = reconnectedPlayer;
                 this.clientsInGame.forEach(c -> {
-                    try {
-                        sendToClient(finalReconnectedPlayer,
-                                new BookShelfUpdate(
-                                        getPlayerNameFromClient(c),
-                                        playController.getBookshelf(getPlayerNameFromClient(c))
-                                ).toJson()
-                        );
-                    } catch (PlayerNotFoundException e) {
-                        System.err.println("notifyReconnection: " + e.getMessage());
-                    }
                     if (!getPlayerNameFromClient(c).equals(playerName)) {
                         sendToClient(c, new Reconnected(playerName).toJson());
                     }
 
                 });
-                try {
+            }
 
-                    sendToClient(reconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
-                    sendToClient(reconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());
-                    sendToClient(reconnectedPlayer, new TurnNotify(playController.getCurrentPlayer()).toJson());
-                    sendToClient(reconnectedPlayer,
-                            new GameSetUp(
-                                    playController.getPlayers(),
-                                    new ArrayList<>(playController.getEndGameGoals()),
-                                    playController.getPersonalGoalCard(playerName)
-                            ).toJson()
-                    );
-                } catch (PlayerNotFoundException e) {
-                    System.err.println("Cannot handle GameSetUp reconnection of " + reconnectedPlayer);
+            playController.getPlayers().forEach((pn) ->
+                {
+                    try {
+                        sendToClient(finalReconnectedPlayer,
+                                new BookShelfUpdate(pn, playController.getBookshelf(pn)).toJson()
+                        );
+                    } catch (PlayerNotFoundException e) {
+                        System.err.println("Cannot handle BookShelfUpdate:" + pn
+                                + " reconnection of " + finalReconnectedPlayer);
+                    }
                 }
+            );
+
+            sendToClient(finalReconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
+            sendToClient(finalReconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());
+            sendToClient(finalReconnectedPlayer, new TurnNotify(playController.getCurrentPlayer()).toJson());
+            try {
+                sendToClient(finalReconnectedPlayer,
+                        new GameSetUp(
+                                playController.getPlayers(),
+                                new ArrayList<>(playController.getEndGameGoals()),
+                                playController.getPersonalGoalCard(playerName)
+                        ).toJson()
+                );
+            } catch (PlayerNotFoundException e) {
+                System.err.println("Cannot handle GameSetUp reconnection of " + finalReconnectedPlayer);
             }
         }
     }
@@ -526,15 +544,17 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
     @Override
     public void notifyMessage(String sender, String date, String message, String receiver) {
         System.out.println(new ChatMessage(sender, date, message).toJson());
-        this.playersIds.entrySet().stream()
-                .filter(entry ->
-                        Objects.equals(entry.getValue(), lobby.getIdFromName(receiver)) ||
-                                Objects.equals(entry.getValue(), lobby.getIdFromName(sender))
-                )
-                .map(Map.Entry::getKey)
-                .forEach(
-                        c -> sendToClient(c, new ChatMessage(sender, date, message).toJson())
-                );
+        synchronized (playersIds) {
+            this.playersIds.entrySet().stream()
+                    .filter(entry ->
+                            Objects.equals(entry.getValue(), lobby.getIdFromName(receiver)) ||
+                                    Objects.equals(entry.getValue(), lobby.getIdFromName(sender))
+                    )
+                    .map(Map.Entry::getKey)
+                    .forEach(
+                            c -> sendToClient(c, new ChatMessage(sender, date, message).toJson())
+                    );
+        }
     }
 
     /**

@@ -10,7 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class is used to implement the ResponseServer necessary to the RMIServerApp
@@ -18,10 +19,12 @@ import java.util.Objects;
 public class RMIRespondServer extends ResponseServer{
 
     protected final Map<RMIClient, String> playersIds;
+    private final ExecutorService executorService;
 
     public RMIRespondServer(Lobby lobby, String sharedLock, Map<RMIClient, String> playersIds){
         super(lobby, sharedLock);
         this.playersIds = playersIds;
+        this.executorService = Executors.newCachedThreadPool();
     }
 
     /**
@@ -30,7 +33,9 @@ public class RMIRespondServer extends ResponseServer{
      * @param client client socket
      */
     private synchronized void addPlayingClient(RMIClient client, String id) {
-        playersIds.put(client, id);
+        synchronized (playersIds) {
+            playersIds.put(client, id);
+        }
     }
 
     /**
@@ -39,7 +44,9 @@ public class RMIRespondServer extends ResponseServer{
      * @param client client
      */
     private void closeClient(RMIClient client) {
-        this.playersIds.remove(client);
+        synchronized (playersIds) {
+            this.playersIds.remove(client);
+        }
         try {
             UnicastRemoteObject.unexportObject(client, true);
         } catch (IOException b) {
@@ -66,7 +73,11 @@ public class RMIRespondServer extends ResponseServer{
     @Override
     protected String getPlayerNameFromClient(Object client) {
         RMIClient rmic = (RMIClient)client;
-        return this.lobby.getNameFromId(this.playersIds.get(rmic));
+        String id;
+        synchronized (playersIds){
+            id = this.playersIds.get(rmic);
+        }
+        return this.lobby.getNameFromId(id);
     }
 
     /**
@@ -90,7 +101,9 @@ public class RMIRespondServer extends ResponseServer{
         try {
             ((RMIClient)client).notifyPing();
         } catch (RemoteException | RuntimeException e) {
-            System.err.println("RMI ping: Remote Exception thrown with client " + this.playersIds.get(client));
+            synchronized (playersIds) {
+                System.err.println("RMI ping: Remote Exception thrown with client " + this.playersIds.get(client));
+            }
         }
     }
 
@@ -102,16 +115,17 @@ public class RMIRespondServer extends ResponseServer{
      */
     @Override
     protected void sendErrorMessage(String player, String message) {
-        //TODO: add here excec
         synchronized (playersIds){
             this.playersIds.forEach((key, value) -> {
-                if(value.equals(player)) {
-                    try {
-                        key.notifyError(message);
-                    } catch (RemoteException | RuntimeException e) {
-                        System.err.println("RMI sendErrorMessage: Remote Exception thrown with client " + value);
+                executorService.submit( () -> {
+                    if (value.equals(player)) {
+                        try {
+                            key.notifyError(message);
+                        } catch (RemoteException | RuntimeException e) {
+                            System.err.println("RMI sendErrorMessage: Remote Exception thrown with client " + value);
+                        }
                     }
-                }
+                });
             });
         }
     }
@@ -125,12 +139,13 @@ public class RMIRespondServer extends ResponseServer{
     protected void sendErrorMessageToAll(String message) {
         synchronized (playersIds) {
             this.playersIds.forEach((key, value) -> {
-                //TODO: add here excec
-                try {
-                    key.notifyError(message);
-                } catch (RemoteException | RuntimeException e) {
-                    System.err.println("RMI sendErrorMessageToAll: Remote Exception thrown with client " + value);
-                }
+                executorService.submit( () -> {
+                    try {
+                        key.notifyError(message);
+                    } catch (RemoteException | RuntimeException e) {
+                        System.err.println("RMI sendErrorMessageToAll: Remote Exception thrown with client " + value);
+                    }
+                });
             });
         }
     }
@@ -142,18 +157,19 @@ public class RMIRespondServer extends ResponseServer{
         synchronized (playLock) {
             synchronized (playersIds) {
                 this.playersIds.forEach((key, value) -> {
-                    //TODO: add here excec
-                    try {
-                        key.notifyGame(new GameSetUp(
-                                playController.getPlayers(),
-                                new ArrayList<>(playController.getEndGameGoals()),
-                                playController.getPersonalGoalCard(getPlayerNameFromClient(key))
-                        ));
-                    } catch (RemoteException | RuntimeException e) {
-                        System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
-                    } catch (PlayerNotFoundException e) {
-                        System.out.println("GameSetUp: This player do not exists " + getPlayerNameFromClient(key));
-                    }
+                    executorService.submit( () -> {
+                        try {
+                            key.notifyGame(new GameSetUp(
+                                    playController.getPlayers(),
+                                    new ArrayList<>(playController.getEndGameGoals()),
+                                    playController.getPersonalGoalCard(getPlayerNameFromClient(key))
+                            ));
+                        } catch (RemoteException | RuntimeException e) {
+                            System.err.println("RMI gameSetUp: Remote Exception thrown with client " + value);
+                        } catch (PlayerNotFoundException e) {
+                            System.out.println("GameSetUp: This player do not exists " + getPlayerNameFromClient(key));
+                        }
+                    });
                 });
             }
         }
@@ -163,35 +179,36 @@ public class RMIRespondServer extends ResponseServer{
      * Handle the reconnection of a player
      */
     protected void handleReconnection(RMIClient client, String name){
-        //TODO: add here excec
         synchronized (playLock) {
             try {
+                playController.getPlayers().forEach((pn) ->
+                    {
+                        try {
+                            client.notifyBookshelf(name, playController.getBookshelf(pn));
+                        } catch (PlayerNotFoundException e) {
+                            System.err.println("Cannot handle BookShelfUpdate:" + pn
+                                    + " reconnection of " + name);
+                        } catch (RemoteException | RuntimeException e) {
+                            System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
+                        }
+                    }
+                );
+
+                client.notifyCommonCards(playController.getCommonGoalCardsToTokens());
+                client.notifyBoard(playController.getBoard());
+                client.notifyTurn(playController.getCurrentPlayer());
                 client.notifyGame(new GameSetUp(
                         playController.getPlayers(),
                         new ArrayList<>(playController.getEndGameGoals()),
                         playController.getPersonalGoalCard(name)
                 ));
-                client.notifyCommonCards(playController.getCommonGoalCardsToTokens());
-                client.notifyBoard(playController.getBoard());
+
             } catch (RemoteException | RuntimeException e) {
                 System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
                 e.printStackTrace();
             } catch (PlayerNotFoundException e) {
                 System.out.println("handleReconnection: This player do not exists " + name);
             }
-            //TODO: client can be TCP as well
-            this.playersIds.forEach((c, id) -> {
-                try {
-                    if (!Objects.equals(c, client)) {
-                        String thisPlayer = lobby.getNameFromId(id);
-                        client.notifyBookshelf(thisPlayer, playController.getBookshelf(thisPlayer));
-                    }
-                } catch (RemoteException | RuntimeException e) {
-                    System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
-                } catch (PlayerNotFoundException e) {
-                    System.out.println("handleReconnection:" + e.getMessage());
-                }
-            });
         }
     }
 }

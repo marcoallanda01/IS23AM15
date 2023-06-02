@@ -2,6 +2,7 @@ package it.polimi.ingsw.communication.responses;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import it.polimi.ingsw.server.model.chat.Message;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,13 +19,18 @@ public class GameSetUp extends Msg{
     public List<String> players;
     public List<String> goals;
     public String personal;
+    // public List<ChatMessage> oldChat;
 
 
-    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals, @NotNull String personal){
+    public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals, @NotNull String personal){//,
+                     //@NotNull List<Message> oldChat){
         super("GameSetUp");
         this.players = new ArrayList<>(players);
         this.goals = new ArrayList<>(goals);
         this.personal = new String(personal);
+        // this.oldChat = new ArrayList<>();
+        //
+        // oldChat.forEach((m) -> this.oldChat.add(new ChatMessage(m)));
     }
 
 
@@ -36,7 +42,8 @@ public class GameSetUp extends Msg{
         }catch (JsonSyntaxException e){
             return Optional.empty();
         }
-        if(!"GameSetUp".equals(gsu.name) || gsu.players == null || gsu.goals == null || gsu.personal == null){
+        if(!"GameSetUp".equals(gsu.name) || gsu.players == null || gsu.goals == null || gsu.personal == null
+            ){//|| gsu.oldChat == null){
             return Optional.empty();
         }
         return Optional.of(gsu);
