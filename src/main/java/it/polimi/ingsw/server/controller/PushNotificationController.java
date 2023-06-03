@@ -56,9 +56,7 @@ public class PushNotificationController{
      * @param playerName current turn player
      */
     public synchronized void notifyTurnChange(String playerName){
-        executorService.submit(() ->
-            servers.forEach((s) -> s.notifyTurn(playerName))
-        );
+        servers.forEach((s) -> s.notifyTurn(playerName));
     }
 
     /**
@@ -66,9 +64,7 @@ public class PushNotificationController{
      * @param playerName player who disconnected
      */
     public synchronized void notifyDisconnection(String playerName){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyDisconnection(playerName))
-        );
+        servers.forEach((s) -> s.notifyDisconnection(playerName));
     }
 
     /**
@@ -76,9 +72,7 @@ public class PushNotificationController{
      * @param playerName player who reconnected
      */
     public synchronized void notifyReconnection(String playerName){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyReconnection(playerName))
-        );
+        servers.forEach((s) -> s.notifyReconnection(playerName));
     }
 
     /**
@@ -86,9 +80,7 @@ public class PushNotificationController{
      * @param tiles all tiles in the board
      */
     public synchronized void notifyChangeBoard(List<Tile> tiles){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyChangeBoard(tiles))
-        );
+        servers.forEach((s) -> s.notifyChangeBoard(tiles));
     }
 
     /**
@@ -97,9 +89,7 @@ public class PushNotificationController{
      * @param points player's points updated
      */
     public synchronized void updatePlayerPoints(String playerName, int points){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.updatePlayerPoints(playerName, points))
-        );
+        servers.forEach((s) -> s.updatePlayerPoints(playerName, points));
     }
 
     /**
@@ -107,9 +97,7 @@ public class PushNotificationController{
      * @param cardsAndTokens new situation about common cards
      */
     public synchronized void notifyCommonGoalsCards(Map<String, List<Integer>> cardsAndTokens) {
-        executorService.submit(() ->
-                servers.forEach((s) -> s.sendCommonGoalsCards(cardsAndTokens))
-        );
+        servers.forEach((s) -> s.sendCommonGoalsCards(cardsAndTokens));
     }
 
     /**
@@ -118,9 +106,7 @@ public class PushNotificationController{
      * @param playerName bookshelf player
      */
     public synchronized void notifyChangeBookShelf(String playerName, List<Tile> bookShelfTiles){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyChangeBookShelf(playerName, bookShelfTiles))
-        );
+        servers.forEach((s) -> s.notifyChangeBookShelf(playerName, bookShelfTiles));
     }
 
     /**
@@ -137,9 +123,7 @@ public class PushNotificationController{
      * @param playerName winner's name
      */
     public synchronized void notifyWinner(String playerName){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyWinner(playerName))
-        );
+        servers.forEach((s) -> s.notifyWinner(playerName));
     }
 
     /**
@@ -150,24 +134,18 @@ public class PushNotificationController{
      * @param receiver receiver's name, if empty means all players are receivers
      */
     public synchronized void notifyMessage(String sender, String date, String message, Optional<String> receiver){
-        executorService.submit(() -> {
-                    if (receiver.isPresent()) {
-                        servers.forEach((s) -> s.notifyMessage(sender, date, message, receiver.get()));
-                    } else {
-                        servers.forEach((s) -> s.notifyMessage(sender, date, message));
-                    }
-                }
-        );
-
+        if (receiver.isPresent()) {
+            servers.forEach((s) -> s.notifyMessage(sender, date, message, receiver.get()));
+        } else {
+            servers.forEach((s) -> s.notifyMessage(sender, date, message));
+        }
     }
 
     /**
      * Notify servers that no one is connected to the game anymore
      */
     public synchronized void notifyLastPlayerDisconnection(){
-        executorService.submit(() ->
-                servers.forEach(ServerCommunication::handleLastPlayerDisconnection)
-        );
+        servers.forEach(ServerCommunication::handleLastPlayerDisconnection);
     }
 
     /**
@@ -176,9 +154,7 @@ public class PushNotificationController{
      * @param tiles list of picked tiles
      */
     public synchronized void notifyPickedTiles(String player, List<TileType> tiles){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyPickedTiles(player, tiles))
-        );
+        servers.forEach((s) -> s.notifyPickedTiles(player, tiles));
     }
 
     /**
@@ -186,8 +162,6 @@ public class PushNotificationController{
      * @param name name of the save
      */
     public synchronized void notifyGameSaved(String name){
-        executorService.submit(() ->
-                servers.forEach((s) -> s.notifyGameSaved(name))
-        );
+        servers.forEach((s) -> s.notifyGameSaved(name));
     }
 }
