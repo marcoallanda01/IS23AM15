@@ -19,7 +19,7 @@ public class TCPClientConnection implements ClientConnection {
     private final int port;
     private Socket socket;
     private Object readLock, writeLock;
-    private ExecutorService executorService;
+    private ExecutorService executorService, notificationExecutor;
     private Future<Void> notificationListener;
 
     /**
@@ -41,6 +41,7 @@ public class TCPClientConnection implements ClientConnection {
         readLock = new Object();
         writeLock = new Object();
         executorService = Executors.newCachedThreadPool();
+        notificationExecutor = Executors.newSingleThreadExecutor();
         try {
             Client.getInstance().getLogger().log("Opening socket...");
             socket = new Socket(hostname, port);
@@ -60,15 +61,20 @@ public class TCPClientConnection implements ClientConnection {
      */
     public void closeConnection() throws ClientConnectionException {
         try {
+            executorService.close();
+            notificationExecutor.close();
+            notificationListener.cancel(Boolean.TRUE);
+        } catch (SecurityException e) {
+            Client.getInstance().getLogger().log(new ClientConnectionException("Error while closing TCP related executors."));
+        }
+        try {
             if (socket != null) {
                 socket.close();
-                executorService.close();
-                notificationListener.cancel(Boolean.TRUE);
                 Client.getInstance().getLogger().log("TCP client connection closed.");
             }
         } catch (IOException e) {
             Client.getInstance().getLogger().log(e);
-            throw new ClientConnectionException("Error while closing TCP client connection.");
+            Client.getInstance().getLogger().log(new ClientConnectionException("Error while closing TCP client connection."));
         }
     }
 
@@ -88,9 +94,7 @@ public class TCPClientConnection implements ClientConnection {
             try {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(json);
-                if (!json.contains("Ping")) {
-                    Client.getInstance().getLogger().log("Sent to server: " + json);
-                }
+                Client.getInstance().getLogger().log("Sent to server: " + json);
             } catch (Exception e) {
                 Client.getInstance().getLogger().log(e);
             }
@@ -108,9 +112,7 @@ public class TCPClientConnection implements ClientConnection {
                 Client.getInstance().onConnectionReady();
                 while (!Thread.currentThread().isInterrupted()) {
                     String json = in.nextLine();
-                    if (!json.contains("Ping")) {
-                        Client.getInstance().getLogger().log("Received from server: " + json);
-                    }
+                    Client.getInstance().getLogger().log("Received from server: " + json);
                     dispatchNotification(json);
                 }
                 return null;
@@ -122,7 +124,9 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     /**
-     * Handles the received message by calling the appropriate view method
+     * Handles the received message by calling the appropriate view method,
+     * notifications related to the game are called synchronously and in order (queued in a single thread pool executor)
+     * ping is called asynchronously, to prevent notification handler from causing excessive ping delay
      *
      * @param json the notification string received from the server
      * @return true if the response has been handled correctly by the view, false otherwise
@@ -130,73 +134,73 @@ public class TCPClientConnection implements ClientConnection {
     private Boolean dispatchNotification(String json) {
         if (BoardUpdate.fromJson(json).isPresent()) {
             BoardUpdate boardUpdate = BoardUpdate.fromJson(json).get();
-            clientNotificationListener.notifyBoard(boardUpdate.tiles);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyBoard(boardUpdate.tiles));
         } else if (TilesPicked.fromJson(json).isPresent()) {
             TilesPicked tilesPicked = TilesPicked.fromJson(json).get();
-            clientNotificationListener.notifyPickedTiles(tilesPicked.player, tilesPicked.tiles);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyPickedTiles(tilesPicked.player, tilesPicked.tiles));
         } else if (BookShelfUpdate.fromJson(json).isPresent()) {
             BookShelfUpdate bookShelfUpdate = BookShelfUpdate.fromJson(json).get();
-            clientNotificationListener.notifyBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyBookshelf(bookShelfUpdate.player, bookShelfUpdate.tiles));
         } else if (ChatMessage.fromJson(json).isPresent()) {
             ChatMessage chatMessage = ChatMessage.fromJson(json).get();
-            clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date));
         } else if (CommonCards.fromJson(json).isPresent()) {
             CommonCards commonCards = CommonCards.fromJson(json).get();
-            clientNotificationListener.notifyCommonCards(commonCards.cardsAndTokens);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyCommonCards(commonCards.cardsAndTokens));
         } else if (CommonGoals.fromJson(json).isPresent()) {
             CommonGoals commonGoals = CommonGoals.fromJson(json).get();
-            clientNotificationListener.notifyCommonGoals(commonGoals.goals);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyCommonGoals(commonGoals.goals));
         } else if (Disconnection.fromJson(json).isPresent()) {
             Disconnection disconnection = Disconnection.fromJson(json).get();
-            clientNotificationListener.notifyDisconnection(disconnection.player);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyDisconnection(disconnection.player));
         } else if (ErrorMessage.fromJson(json).isPresent()) {
             ErrorMessage errorMessage = ErrorMessage.fromJson(json).get();
-            clientNotificationListener.notifyError(errorMessage.message);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyError(errorMessage.message));
         } else if (FirstJoinResponse.fromJson(json).isPresent()) {
             FirstJoinResponse firstJoinResponse = FirstJoinResponse.fromJson(json).get();
-            clientNotificationListener.notifyFirstJoinResponse(firstJoinResponse.result);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyFirstJoinResponse(firstJoinResponse.result));
         } else if (GameSaved.fromJson(json).isPresent()) {
             GameSaved gameSaved = GameSaved.fromJson(json).get();
-            clientNotificationListener.notifyGameSaved(gameSaved.game);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyGameSaved(gameSaved.game));
         } else if (GameSetUp.fromJson(json).isPresent()) {
             GameSetUp gameSetUp = GameSetUp.fromJson(json).get();
-            clientNotificationListener.notifyGame(gameSetUp);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyGame(gameSetUp));
         } else if (Hello.fromJson(json).isPresent()) {
             Hello hello = Hello.fromJson(json).get();
-            clientNotificationListener.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyHello(hello.lobbyReady, hello.firstPlayerId, hello.loadedGame));
         } else if (JoinResponse.fromJson(json).isPresent()) {
             JoinResponse joinResponse = JoinResponse.fromJson(json).get();
-            clientNotificationListener.notifyJoinResponse(joinResponse.result, joinResponse.error, joinResponse.id);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyJoinResponse(joinResponse.result, joinResponse.error, joinResponse.id));
         } else if (LoadedGamePlayers.fromJson(json).isPresent()) {
             LoadedGamePlayers loadedGamePlayers = LoadedGamePlayers.fromJson(json).get();
-            clientNotificationListener.notifyLoadedGamePlayers(loadedGamePlayers.names);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyLoadedGamePlayers(loadedGamePlayers.names));
         } else if (LoadGameResponse.fromJson(json).isPresent()) {
             LoadGameResponse loadGameResponse = LoadGameResponse.fromJson(json).get();
-            clientNotificationListener.notifyLoadGameResponse(loadGameResponse.result, loadGameResponse.error);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyLoadGameResponse(loadGameResponse.result, loadGameResponse.error));
         } else if (ChatMessage.fromJson(json).isPresent()) {
             ChatMessage chatMessage = ChatMessage.fromJson(json).get();
-            clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyChatMessage(chatMessage.sender, chatMessage.message, chatMessage.date));
         } else if (Ping.fromJson(json).isPresent()) {
             Ping ping = Ping.fromJson(json).get();
-            clientNotificationListener.notifyPing();
+            executorService.submit(() -> clientNotificationListener.notifyPing());
         } else if (PlayerPoints.fromJson(json).isPresent()) {
             PlayerPoints playerPoints = PlayerPoints.fromJson(json).get();
-            clientNotificationListener.notifyPoints(playerPoints.player, playerPoints.points);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyPoints(playerPoints.player, playerPoints.points));
         } else if (Reconnected.fromJson(json).isPresent()) {
             Reconnected reconnected = Reconnected.fromJson(json).get();
-            clientNotificationListener.notifyReconnection(reconnected.player);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyReconnection(reconnected.player));
         } else if (SavedGames.fromJson(json).isPresent()) {
             SavedGames savedGames = SavedGames.fromJson(json).get();
-            clientNotificationListener.notifySavedGames(savedGames.names);
+            notificationExecutor.submit(() -> clientNotificationListener.notifySavedGames(savedGames.names));
         } else if (TilesPicked.fromJson(json).isPresent()) {
             TilesPicked tilesPicked = TilesPicked.fromJson(json).get();
-            clientNotificationListener.notifyPickedTiles(tilesPicked.player, tilesPicked.tiles);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyPickedTiles(tilesPicked.player, tilesPicked.tiles));
         }  else if (TurnNotify.fromJson(json).isPresent()) {
             TurnNotify turnNotify = TurnNotify.fromJson(json).get();
-            clientNotificationListener.notifyTurn(turnNotify.player);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyTurn(turnNotify.player));
         } else if (Winner.fromJson(json).isPresent()) {
             Winner winner = Winner.fromJson(json).get();
-            clientNotificationListener.notifyWinner(winner.player);
+            notificationExecutor.submit(() -> clientNotificationListener.notifyWinner(winner.player));
         } else {
             Client.getInstance().getLogger().log("Notification: " + json + " not recognized");
             return Boolean.FALSE;

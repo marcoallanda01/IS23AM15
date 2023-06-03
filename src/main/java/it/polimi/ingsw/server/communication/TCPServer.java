@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -82,7 +83,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                     //this lock is separated because I don't care if now the client is deleted
                     //the message is sent but no one receive it
                     out.println(content);
-                    System.out.println("Sent to " + client + ": " + content);
+                    System.out.println("Sent to " + client + ": " + content + " at: " + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
 
                 } else {
                     System.err.println("TCP Error in writing on " + clientLock);
@@ -348,7 +349,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                 }
                 case "Pong" -> {
                     Optional<Pong> po = Pong.fromJson(json);
-                    System.out.println("\u001B[94mPong Optional received from " + client + "\u001B[0m");
+                    System.out.println("\u001B[94mPong Optional received from " + client + "\u001B[0m" + " at: " + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
                     if (po.isPresent()) {
                         respondPong(po.get(), client);
                         return true;

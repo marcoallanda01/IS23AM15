@@ -31,6 +31,7 @@ public class Logger {
     private synchronized void writeLogEntry(String logEntry) {
         try (FileWriter fileWriter = new FileWriter(logFileName, true);
              PrintWriter printWriter = new PrintWriter(fileWriter)) {
+            printWriter.println((new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()) + ":");
             printWriter.println(logEntry);
         } catch (IOException e) {
             System.err.println("Failed to write to log file: " + e.getMessage());
