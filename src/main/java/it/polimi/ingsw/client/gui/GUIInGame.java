@@ -52,7 +52,8 @@ public class GUIInGame extends GUIState {
         HBox root = new HBox(10);
         root.setAlignment(Pos.CENTER);
         Image background = new Image(getClass().getResource("/assets/background.jpg").toExternalForm());
-        BackgroundImage backgroundImage = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        BackgroundSize backgroundSize = new BackgroundSize(300, 300, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
         root.setBackground(new Background(backgroundImage));
 
         VBox mainColumn = new VBox(10);
@@ -226,18 +227,19 @@ public class GUIInGame extends GUIState {
         StackPane stackPane = new StackPane();
 
         GridPane gridPane = new GridPane();
-        gridPane.setHgap(1.7);
-        gridPane.setVgap(1.7);
+        gridPane.setHgap(1.8);
+        gridPane.setVgap(1.8);
         gridPane.setPrefSize(305, 305);
         gridPane.setMinSize(305, 305);
         gridPane.setMaxSize(305, 305);
         gridPane.setAlignment(Pos.CENTER);
 
 
-        Image backgroundImage = new Image(getClass().getResource("/assets/livingroomboard.png").toExternalForm());
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, true, false);
-        BackgroundImage backgroundImageView = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        gridPane.setBackground(new Background(backgroundImageView));
+        ImageView backgroundImage = new ImageView(getClass().getResource("/assets/livingroomboard.png").toExternalForm());
+        backgroundImage.setFitHeight(305);
+        backgroundImage.setFitWidth(305);
+        backgroundImage.setTranslateX(1.2);
+        stackPane.getChildren().add(backgroundImage);
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
