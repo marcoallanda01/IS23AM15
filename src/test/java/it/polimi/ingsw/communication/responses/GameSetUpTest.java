@@ -31,29 +31,39 @@ class GameSetUpTest {
         System.out.println(new GameSetUp(p, g, personal, ml).toJson());
         System.out.println("{\"name\":\"GameSetUp\"," +
                 "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]," +
-                "\"personal\":\"personal\", \"oldChat:\"["+cm.toJson()+"]}");
+                "\"personal\":\"personal\", \"oldChat\":["+cm.toJson()+"]}");
         assertEquals(Optional.of(new GameSetUp(p, g, personal,ml)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
                 "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Come\",\"Stai\"]," +
-                "\"personal\":\"personal\"}"));
+                "\"personal\":\"personal\", \"oldChat\":["+cm.toJson()+"]}"));
         assertNotEquals(Optional.of(new GameSetUp(p, g, personal, ml)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
                 "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Stai\",\"Come\"], " +
-                "\"personal\":\"notEqual\", \"oldChat:\"["+cm.toJson()+"]}"));
+                "\"personal\":\"notEqual\", \"oldChat\":["+cm.toJson()+"]}"));
+        assertNotEquals(Optional.of(new GameSetUp(p, g, personal, ml)), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
+                "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[\"Ciao\",\"Stai\",\"Come\"], " +
+                "\"personal\":\"notEqual\", \"oldChat\":[" +
+                new ChatMessage(new Message(new Player("test"), "ciao")).toJson()+"]}"));
         assertEquals(Optional.of(new GameSetUp(p, new ArrayList<String>(), personal, ml)),
                 GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
                         "\"players\":[\"p1\",\"p2\",\"p3\"], \"goals\":[], \"personal\":\"personal\"," +
-                        "\"oldChat:\"["+cm.toJson()+"]}"));
+                        "\"oldChat\":["+cm.toJson()+"]}"));
         assertEquals(Optional.of(new GameSetUp(new ArrayList<String>(), g, personal, ml)),
                 GameSetUp.fromJson("{\"name\":\"GameSetUp\", \"players\":[]," +
                         "\"goals\":[\"Ciao\",\"Come\",\"Stai\"], \"personal\":\"personal\"," +
-                        "\"oldChat:\"["+cm.toJson()+"]}"));
+                        " \"oldChat\":["+cm.toJson()+"]}"));
 
 
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"players\":[\"p1\",\"p2\",\"p3]\", \"personal\":\"personal\"}"));
+                "\"players\":[\"p1\",\"p2\",\"p3]\", \"personal\":\"personal\"," +
+                " \"oldChat\":["+cm.toJson()+"]}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"goals\":[\"Ciao\",\"Come\",\"Stai\"],\"personal\":\"personal\"}"));
+                "\"goals\":[\"Ciao\",\"Come\",\"Stai\"],\"personal\":\"personal\"," +
+                " \"oldChat\":["+cm.toJson()+"]}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"," +
-                "\"players\":[\"p1\",\"p2\",\"p3]\",\"goals\":[\"Ciao\",\"Come\",\"Stai\"]}"));
+                "\"players\":[\"p1\",\"p2\",\"p3]\",\"goals\":[\"Ciao\",\"Come\",\"Stai\"]}," +
+                " \"oldChat\":["+cm.toJson()+"]}"));
+        assertEquals(Optional.empty(),
+                GameSetUp.fromJson("{\"name\":\"GameSetUp\", \"players\":[]," +
+                        "\"goals\":[\"Ciao\",\"Come\",\"Stai\"], \"personal\":\"personal\"}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"name\":\"GameSetUp\"}"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("kjdsvaskd"));
         assertEquals(Optional.empty(), GameSetUp.fromJson("{\"answer\":true}"));
