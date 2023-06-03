@@ -3,79 +3,79 @@
     {
       "name": "6_GROUPS_2_TILES",
       "description": "Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape). The tiles of one group can be different from those of another group.",
-      "image": "...",
+      "image": "4",
       "representation": "..."
     },
     {
       "name": "DIAGONAL",
       "description": "Five tiles of the same type forming a diagonal.",
-      "image": "...",
+      "image": "11",
       "representation": "..."
     },
     {
       "name": "4_GROUPS_4_TILES",
       "description": "Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape). The tiles of one group can be different from those of another group.",
-      "image": "...",
+      "image": "3",
       "representation": "..."
     },
     {
       "name": "4_ROWS_3_COLOR",
       "description": "Four lines each formed by 5 tiles of maximum three different types. One line can show the same or a different combination of another line.",
-      "image": "...",
+      "image": "7",
       "representation": "..."
     },
     {
       "name": "CORNERS",
       "description": "Four tiles of the same type in the four corners of the bookshelf. ",
-      "image": "...",
+      "image": "8",
       "representation": "..."
     },
     {
       "name": "2_COLUMNS_COLOURFUL",
       "description": "Two columns each formed by 6 different types of tiles. ",
-      "image": "...",
+      "image": "2",
       "representation": "..."
     },
     {
       "name": "SQUARE",
       "description": "Two groups each containing 4 tiles of the same type in a 2x2 square. The tiles of one square can be different from those of the other square.",
-      "image": "...",
+      "image": "1",
       "representation": "..."
     },
     {
       "name": "2_ROWS_COLOURFUL",
       "description": "Two lines each formed by 5 different types of tiles. One line can show the same or a different combination of the other line.",
-      "image": "...",
+      "image": "6",
       "representation": "..."
     },
     {
       "name": "3_COLUMNS_3_COLOR",
       "description": "Three columns each formed by 6 tiles of maximum three different types. One column can show the same or a different combination of another column.",
-      "image": "...",
+      "image": "5",
       "representation": "..."
     },
     {
       "name": "X",
       "description": "Five tiles of the same type forming an X.",
-      "image": "...",
+      "image": "10",
       "representation": "..."
     },
     {
       "name": "8_SAME",
       "description": "Eight tiles of the same type. There’s no restriction about the position of these tiles.",
-      "image": "...",
+      "image": "9",
       "representation": "..."
     },
     {
       "name": "STAIRS",
       "description": "Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, each next column must be made of exactly one more tile. Tiles can be of any type. ",
-      "image": "...",
+      "image": "12",
       "representation": "..."
     },
     {
       "name": "6_ADJACENT",
       "description": "You will get 8 points for each group containing 6+ adjacent tiles",
-      "image": "...",
+      "image": "4",
       "representation": "..."
     },
     {
@@ -97,75 +97,75 @@
       "representation": "..."
     },
   {
-    "name": "Personal_Goals1",
+    "name": "Personal_Goals",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 0th col, 5th row, a FRAME tile in the 2nd col, 5th row, a CAT tile in the 4th col, 4th row, a BOOK tile in the 3rd col, 3rd row, a GAME tile in the 1st col, 2nd row, and a TROPHY tile in the 0th col, 2nd row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "1",
     "representation": "..."
   },
   {
     "name": "Personal_Goals2",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 1st col, 4th row, a FRAME tile in the 4th col, 0th row, a CAT tile in the 0th col, 3rd row, a BOOK tile in the 4th col, 2nd row, a GAME tile in the 2nd col, 3rd row, and a TROPHY tile in the 3rd col, 1st row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "2",
     "representation": "..."
   },
   {
     "name": "Personal_Goals3",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 2nd col, 3rd row, a FRAME tile in the 0th col, 4th row, a CAT tile in the 1st col, 2nd row, a BOOK tile in the 0th col, 0th row, a GAME tile in the 3rd col, 4th row, and a TROPHY tile in the 4th col, 2nd row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "3",
     "representation": "..."
   },
   {
     "name": "Personal_Goals4",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 3rd col, 2nd row, a FRAME tile in the 2nd col, 3rd row, a CAT tile in the 2nd col, 1st row, a BOOK tile in the 1st col, 1st row, a GAME tile in the 4th col, 5th row, and a TROPHY tile in the 0th col, 3rd row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "4",
     "representation": "..."
   },
   {
     "name": "Personal_Goals5",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 4th col, 1st row, a FRAME tile in the 1st col, 2nd row, a CAT tile in the 3rd col, 0th row, a BOOK tile in the 2nd col, 2nd row, a GAME tile in the 0th col, 0th row, and a TROPHY tile in the 2nd col, 4th row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "5",
     "representation": "..."
   },
   {
     "name": "Personal_Goals6",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 0th col, 0th row, a FRAME tile in the 3rd col, 1st row, a CAT tile in the 4th col, 5th row, a BOOK tile in the 3rd col, 3rd row, a GAME tile in the 1st col, 1st row, and a TROPHY tile in the 2nd col, 5th row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "6",
     "representation": "..."
   },
   {
     "name": "Personal_Goals7",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 1st col, 3rd row, a FRAME tile in the 3rd col, 4th row, a CAT tile in the 0th col, 5th row, a BOOK tile in the 2nd col, 0th row, a GAME tile in the 4th col, 1st row, and a TROPHY tile in the 0th col, 2nd row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "7",
     "representation": "..."
   },
   {
     "name": "Personal_Goals8",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 0th col, 2nd row, a FRAME tile in the 4th col, 5th row, a CAT tile in the 1st col, 4th row, a BOOK tile in the 3rd col, 1st row, a GAME tile in the 3rd col, 0th row, and a TROPHY tile in the 2nd col, 3rd row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "8",
     "representation": "..."
   },
   {
     "name": "Personal_Goals9",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 4th col, 1st row, a FRAME tile in the 0th col, 0th row, a CAT tile in the 2nd col, 3rd row, a BOOK tile in the 4th col, 2nd row, a GAME tile in the 2nd col, 5th row, and a TROPHY tile in the 1st col, 1st row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "9",
     "representation": "..."
   },
   {
     "name": "Personal_Goals10",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 3rd col, 0th row, a FRAME tile in the 1st col, 1st row, a CAT tile in the 3rd col, 2nd row, a BOOK tile in the 0th col, 3rd row, a GAME tile in the 1st col, 4th row, and a TROPHY tile in the 4th col, 5th row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "10",
     "representation": "..."
   },
   {
     "name": "Personal_Goals11",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 2nd col, 5th row, a FRAME tile in the 2nd col, 2nd row, a CAT tile in the 4th col, 1st row, a BOOK tile in the 1st col, 4th row, a GAME tile in the 0th col, 3rd row, and a TROPHY tile in the 3rd col, 0th row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "11",
     "representation": "..."
   },
   {
     "name": "Personal_Goals12",
     "description": "You need to arrange tiles in a specific pattern. Place a PLANT tile in the 1st col, 2nd row, a FRAME tile in the 0th col, 5th row, a CAT tile in the 2nd col, 0th row, a BOOK tile in the 3rd col, 3rd row, a GAME tile in the 4th col, 4th row, and a TROPHY tile in the 1st col, 0th row. You will get 1, 2, 4, 6, 9, 12 points for 1, 2, 3, 4 ,5 ,6 tiles in the right position.",
-    "image": "...",
+    "image": "12",
     "representation": "..."
   }
 ]

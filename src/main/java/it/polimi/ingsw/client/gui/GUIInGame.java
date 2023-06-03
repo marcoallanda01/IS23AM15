@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.ClientGoalDetail;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 import javafx.application.Platform;
@@ -48,12 +49,16 @@ public class GUIInGame extends GUIState {
     }
 
     private void createUI() {
-        VBox root = new VBox(10);
-        root.setPadding(new Insets(10, 10, 10, 10));
+        HBox root = new HBox(10);
         root.setAlignment(Pos.CENTER);
         Image background = new Image(getClass().getResource("/assets/background.jpg").toExternalForm());
         BackgroundImage backgroundImage = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         root.setBackground(new Background(backgroundImage));
+
+        VBox mainColumn = new VBox(10);
+        mainColumn.setPadding(new Insets(10, 10, 10, 10));
+        mainColumn.setAlignment(Pos.CENTER);
+        root.getChildren().add(mainColumn);
 
         StackPane boardGrid = createBoardGrid();
         HBox bookshelvesBox = createBookshelves();
@@ -68,17 +73,15 @@ public class GUIInGame extends GUIState {
             Client.getInstance().getClientController().pickTiles(clickedTilesCoords);
             clickedTiles.clear();
         });
-        HBox tilesBox = new HBox(5);
-        tilesBox.setAlignment(Pos.CENTER);
-        tilesBox.setPrefHeight(50);
-        tilesBox.setMinHeight(50);
 
-        tilesListView.setPrefWidth(200);
-        tilesListView.setPrefHeight(50);
-        tilesListView.setMinHeight(50);
-        tilesListView.setOrientation(Orientation.HORIZONTAL);
+        VBox tilesBox = new VBox(5);
+        tilesBox.setAlignment(Pos.CENTER);
+
+        tilesListView.setOrientation(Orientation.VERTICAL);
+        tilesListView.setPrefHeight(150);
+        tilesListView.setPrefWidth(60);
         tilesListView.setCellFactory(lv -> {
-            ListCell<ImageView> cell = new ListCell<ImageView>() {
+            ListCell<ImageView> cell = new ListCell<>() {
                 @Override
                 protected void updateItem(ImageView item, boolean empty) {
                     super.updateItem(item, empty);
@@ -89,6 +92,7 @@ public class GUIInGame extends GUIState {
                     }
                 }
             };
+            cell.setAlignment(Pos.CENTER);
             cell.setStyle("-fx-background-color: transparent;");
             return cell;
         });
@@ -148,18 +152,6 @@ public class GUIInGame extends GUIState {
             event.consume();
         });
 
-        tilesListView.setOnDragEntered(event -> {
-            if (event.getGestureSource() != tilesListView && event.getDragboard().hasImage()) {
-                // Optional: Change the appearance of the ListView while dragging.
-            }
-            event.consume();
-        });
-
-        tilesListView.setOnDragExited(event -> {
-            // Optional: Reset the appearance of the ListView after dragging.
-            event.consume();
-        });
-
         tilesListView.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
@@ -184,8 +176,12 @@ public class GUIInGame extends GUIState {
             event.consume();
         });
 
+        VBox goalsBox = createGoals(Client.getInstance().getView().getCommonCards());
+        goalsBox.getChildren().add(tilesBox);
 
-        root.getChildren().addAll(turnBox, boardGrid, tilesBox, bookshelvesBox);
+        mainColumn.getChildren().addAll(turnBox, boardGrid, bookshelvesBox);
+
+        root.getChildren().addAll(goalsBox);
         if (Client.getInstance().getView().getCurrentTurnPlayer().equals(Client.getInstance().getNickname())) {
             turnBox.getChildren().clear();
             if (Client.getInstance().getView().getPickedTiles().isEmpty()) {
@@ -208,7 +204,7 @@ public class GUIInGame extends GUIState {
             turnBox.getChildren().add(waitingLabel);
         }
 
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
         Platform.runLater(() -> guiApplication.changeScene(scene));
     }
 
@@ -283,12 +279,60 @@ public class GUIInGame extends GUIState {
         return stackPane;
     }
 
+    private VBox createGoals(Map<String, List<Integer>> commonGoals) {
+        VBox goalsBox = new VBox(5);
+        goalsBox.setAlignment(Pos.CENTER);
+
+        Map<String, ClientGoalDetail> goals = Client.getInstance().getView().getGoalsToDetails();
+
+        VBox commonGoalsBox = new VBox(5);
+        commonGoalsBox.setAlignment(Pos.CENTER);
+
+        for (String goal : commonGoals.keySet()) {
+            String goalImage = goals.get(goal).getImage();
+            StackPane goalStackPane = new StackPane();
+            ImageView goalImageView = new ImageView(new Image(getClass().getResource("/assets/goals/common/" + goalImage + ".jpg").toExternalForm()));
+            goalImageView.setFitHeight(100);
+            goalImageView.setFitWidth(151);
+            goalStackPane.getChildren().add(goalImageView);
+
+            List<Integer> tokens = commonGoals.get(goal);
+            Integer topToken = tokens.get(tokens.size()-1);
+            ImageView tokenImageView = new ImageView(new Image(getClass().getResource("/assets/goals/common/tokens/" + topToken + ".jpg").toExternalForm()));
+            tokenImageView.setFitHeight(40);
+            tokenImageView.setFitWidth(40);
+            tokenImageView.setRotate(-8);
+            tokenImageView.setTranslateX(35);
+            tokenImageView.setTranslateY(-3);
+            goalStackPane.getChildren().add(tokenImageView);
+
+            commonGoalsBox.getChildren().add(goalStackPane);
+        }
+
+        String personalGoalImage = goals.get(Client.getInstance().getView().getPersonalGoal()).getImage();
+        ImageView personalGoalImageView = new ImageView(new Image(getClass().getResource("/assets/goals/personal/" + personalGoalImage + ".png").toExternalForm()));
+        personalGoalImageView.setFitHeight(150);
+        personalGoalImageView.setFitWidth(98.7);
+        commonGoalsBox.getChildren().add(personalGoalImageView);
+
+        goalsBox.getChildren().add(commonGoalsBox);
+
+        return goalsBox;
+    }
+
     private HBox createBookshelves() {
         HBox bookshelvesBox = new HBox(10);
         bookshelvesBox.setAlignment(Pos.CENTER);
 
         for (String name : Client.getInstance().getView().getPlayers()) {
             StackPane bookshelfGrid = createBookshelfGrid(bookshelves.get(name), name);
+            if (name.equals(Client.getInstance().getView().getPlayers().get(0))) {
+                ImageView firstPlayerToken = new ImageView(new Image(getClass().getResource("/assets/firstplayertoken.png").toExternalForm()));
+                firstPlayerToken.setFitHeight(50);
+                firstPlayerToken.setFitWidth(50);
+                firstPlayerToken.setTranslateY(-100);
+                bookshelfGrid.getChildren().add(firstPlayerToken);
+            }
             bookshelvesBox.getChildren().add(bookshelfGrid);
         }
 
@@ -352,6 +396,7 @@ public class GUIInGame extends GUIState {
                 });
                 arrow.setOnMouseClicked(event -> {
                     List<Integer> order = tilesListView.getItems().stream().map(item -> Integer.parseInt(item.getId())).collect(Collectors.toList());
+                    Collections.reverse(order);
                     Client.getInstance().getClientController().putTiles(finalI, order);
                 });
             }
@@ -360,7 +405,8 @@ public class GUIInGame extends GUIState {
         bookshelfArrows.setTranslateX(25);
 
         bookshelfName = bookshelfName.substring(0, Math.min(bookshelfName.length(), 8));
-        Label bookshelfNameLabel = new Label(bookshelfName);
+        Map<String,Integer> points = Client.getInstance().getView().getPoints();
+        Label bookshelfNameLabel = new Label(bookshelfName + ": " + (points.get(bookshelfName) == null ? 0 : String.valueOf(points.get(bookshelfName))));
         bookshelfNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         if (bookshelfName.equals(Client.getInstance().getView().getCurrentTurnPlayer())) {
             if (bookshelfName.equals(Client.getInstance().getNickname())) {
@@ -379,6 +425,7 @@ public class GUIInGame extends GUIState {
         }
         bookshelfNameLabel.setTranslateX(0);
         bookshelfNameLabel.setTranslateY(90);
+
 
         stackPane.getChildren().addAll(gridPaneBack, gridPane, bookshelfArrows, bookshelfNameLabel);
 
