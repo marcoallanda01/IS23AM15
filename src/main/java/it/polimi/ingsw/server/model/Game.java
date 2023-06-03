@@ -268,6 +268,7 @@ public class Game{
         if(winner != null){
             GameChangeSupport.firePropertyChange(WINNER_PROPRIETY_NAME, null, this.winner);
         }
+        goalManager.updatePointsTurn(currentPlayer);
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
         int playingPlayers = this.players.stream().mapToInt(player -> {return player.isPlaying() ? 1 : 0;}).sum();
         if (playingPlayers >= 1){

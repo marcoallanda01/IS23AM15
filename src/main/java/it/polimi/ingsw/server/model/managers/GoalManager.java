@@ -293,16 +293,20 @@ public class GoalManager{
     /**
      * @param player the player
      *               updates the points of the player relative to every pointsManager that should be updated every turn
+     * if frequent is set to true, unless the pm specifies end game updates, it will be updated
+     * if frequent is set to false, unless the pm specifies end turn updates, it will NOT be updated
      */
     public void updatePointsTurn(Player player) {
         if(player != null) {
-            Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) :
+            Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> !pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) :
                     pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_TURN);
             pointsManagers.stream().filter(toUpdate)
                     .forEach(pointsManager -> {
                         pointsManager.updatePoints(player);
-                        player.setPoints(this.getPoints(player));
                     });
+            player.setPoints(this.getPoints(player));
+            System.out.println(player.getUserName() + " points: " + this.getPoints(player));
+            System.out.println(pointsManagers);
         }
     }
 
@@ -340,7 +344,8 @@ public class GoalManager{
             updatePointsEnd(player);
         }
         //Last update of player points
-        players.forEach( (p) -> {p.setPoints(this.getPoints(p));} );
+        players.forEach(player -> updatePointsEnd(player));
+        players.forEach((p) -> p.setPoints(this.getPoints(p)));
         return players.stream().max(Comparator.comparingInt(this::getPoints)).get().getUserName();
     }
 
