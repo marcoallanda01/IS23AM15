@@ -48,7 +48,7 @@ public class GUI extends View {
             text.getStyleClass().add("my-shelfie-text");
 
             // Set the scene to the primary stage
-            guiApplication.transitionToScene(scene);
+            Platform.runLater(() -> guiApplication.transitionToScene(scene));
             // Create a Timeline animation to update the retry countdown
             Timeline timeline = new Timeline();
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), event -> {
