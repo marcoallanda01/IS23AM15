@@ -64,7 +64,7 @@ public class GUICreateLobby extends GUIState {
      * @return The created Label to display the username.
      */
     private Label createUsernameLabel() {
-        Label usernameLabel = new Label("Welcome, " + nickname + "!");
+        Label usernameLabel = new Label("Select the desired option: ");
         usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
         return usernameLabel;
     }

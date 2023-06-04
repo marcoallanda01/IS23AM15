@@ -65,8 +65,17 @@ public class GUI extends View {
         }
     }
     public void start() {
-        render();
         Client.getInstance().getLogger().log("GUI Started");
+    }
+    public void stop(String message) {
+        Platform.runLater(() -> {
+            try {
+                guiApplication.stop(message);
+            } catch (Exception e) {
+                Client.getInstance().getLogger().log(e);
+            }
+        });
+        Client.getInstance().getLogger().log("GUI Stopped");
     }
     public void render(){
         Client.getInstance().getLogger().log("Rendering: " + Client.getInstance().getClientState());

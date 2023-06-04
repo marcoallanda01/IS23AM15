@@ -5,10 +5,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -48,16 +45,32 @@ public class GUICreateGame extends GUIState {
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 
+        TextField nicknameField = createNicknameForm(root);
         ToggleGroup playerGroup = createPlayerForm(root);
         ToggleGroup rulesGroup = createRulesForm(root);
-        createSubmitButton(root, playerGroup, rulesGroup);
+        createSubmitButton(root, nicknameField, playerGroup, rulesGroup);
 
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #F4F4F4;");
 
         return root;
     }
+    /**
+     * Creates the form for selecting the number of players.
+     *
+     * @param root The root pane to add the form components to.
+     * @return The created ToggleGroup for the player selection.
+     */
+    private TextField createNicknameForm(VBox root) {
+        Label nickNameLabel = createLabel("Enter your username:");
+        TextField textField = new TextField();
+        textField.setPromptText("Username");
+        textField.setMaxWidth(300);
 
+        root.getChildren().addAll(nickNameLabel, textField);
+
+        return textField;
+    }
     /**
      * Creates the form for selecting the number of players.
      *
@@ -100,9 +113,9 @@ public class GUICreateGame extends GUIState {
      * @param playerGroup The ToggleGroup for player selection.
      * @param rulesGroup The ToggleGroup for rules selection.
      */
-    private void createSubmitButton(VBox root, ToggleGroup playerGroup, ToggleGroup rulesGroup) {
+    private void createSubmitButton(VBox root, TextField nicknameField, ToggleGroup playerGroup, ToggleGroup rulesGroup) {
         Button submitButton = new Button("Create Game");
-        submitButton.setOnAction(event -> handleCreateGame(playerGroup, rulesGroup));
+        submitButton.setOnAction(event -> handleCreateGame(nicknameField, playerGroup, rulesGroup));
 
         root.getChildren().add(submitButton);
     }
@@ -113,11 +126,18 @@ public class GUICreateGame extends GUIState {
      * @param playerGroup The ToggleGroup for player selection.
      * @param rulesGroup The ToggleGroup for rules selection.
      */
-    private void handleCreateGame(ToggleGroup playerGroup, ToggleGroup rulesGroup) {
+    private void handleCreateGame(TextField nicknameField, ToggleGroup playerGroup, ToggleGroup rulesGroup) {
+        String nickname = getNickname(nicknameField);
         int numOfPlayers = getSelectedNumOfPlayers(playerGroup);
         boolean isEasyRules = isEasyRulesSelected(rulesGroup);
 
-        Client.getInstance().getClientController().createGame(numOfPlayers, isEasyRules);
+        if (!nickname.isEmpty()) {
+            Client.getInstance().getClientController().createGame(nickname, numOfPlayers, isEasyRules);
+        }
+    }
+
+    private String getNickname(TextField nicknameField) {
+        return nicknameField.getText();
     }
 
     /**

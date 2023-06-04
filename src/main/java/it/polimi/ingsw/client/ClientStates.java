@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 public enum ClientStates {
+    STARTUP,
     LOGIN,
     CREATE_LOBBY,
     CREATE_GAME,

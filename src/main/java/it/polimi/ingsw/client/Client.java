@@ -46,7 +46,7 @@ public class Client {
         this.viewSetting = view;
         this.modeSetting = mode;
         this.goalsPath = goalsPath;
-        state = ClientStates.LOGIN;
+        state = ClientStates.STARTUP;
     }
     // used for testing
     public Client() {
@@ -301,6 +301,13 @@ public class Client {
     }
 
     public void onConnectionReady() {
+        try {
+            Client.getInstance().getClientCommunication().hello();
+            Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
+        } catch (Exception e) {
+            Client.getInstance().getLogger().log("Error while checking lobby status: ");
+            Client.getInstance().getLogger().log(e);
+        }
         try {
             Client.getInstance().getClientCommunication().reconnect(Client.getInstance().getId());
         } catch (Exception e) {

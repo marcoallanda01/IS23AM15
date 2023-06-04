@@ -28,6 +28,7 @@ public abstract class View {
     public void showChat(){}
     public void showHelp() {}
     public void showGoals() {}
+    public abstract void stop(String message);
     public List<String> getPlayers() {
         return players;
     }

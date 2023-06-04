@@ -55,6 +55,7 @@ public class CLIRenderer {
 
     public synchronized static void printCreateGame() {
         System.out.println("To create a new game please specify:");
+        System.out.println("- Your nickname");
         System.out.println("- The number of players (2-4)");
         System.out.println("- Should the game use easy rules? (y/n)");
         System.out.println("Please enter the \"create (n. of players) (y/n)\" command");

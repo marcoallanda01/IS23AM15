@@ -55,12 +55,14 @@ public class CLI extends View {
     }
     private void start() {
         inputThread.start();
-        render();
         Client.getInstance().getLogger().log("CLI Started");
     }
 
-    public void stop() {
+    public void stop(String message) {
+        showError(message);
+        showError("Enter any key to close");
         running = false;
+        Client.getInstance().getClientController().logout();
     }
 
     private void clearScreen() {

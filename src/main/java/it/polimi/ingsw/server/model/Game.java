@@ -177,11 +177,16 @@ public class Game{
     }
 
     public boolean pickTiles(List<Tile> tiles) {
+        List<Tile> oldTiles = currentTurn.getPickedTiles();
         if (currentTurn.pickTiles(tiles)) {
             GameChangeSupport.firePropertyChange(PICKED_TILES_PROPRIETY_NAME,
-                    null,
+                    new Turn(oldTiles, currentTurn.getCurrentPlayer(), currentTurn.getBoard()),
                     new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
             currentTurn.changeState(new PutTilesState(currentTurn));
+            // check board refill
+            if (currentTurn.checkBoardRefill()) {
+                currentTurn.refillBoard();
+            }
             return true;
         } else {
             return false;
@@ -189,24 +194,23 @@ public class Game{
     }
 
     public boolean putTiles(List<Tile> tiles, int column) {
+        List<Tile> oldTiles = currentTurn.getPickedTiles();
         if (currentTurn.putTiles(tiles, column)) {
             GameChangeSupport.firePropertyChange(PICKED_TILES_PROPRIETY_NAME,
-                    null,
+                    new Turn(oldTiles, currentTurn.getCurrentPlayer(), currentTurn.getBoard()),
                     new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
-            if (currentTurn.checkBoardRefill()) {
-                currentTurn.refillBoard();
-            }
             Player player = currentTurn.getCurrentPlayer();
+            // update points
             goalManager.updatePointsTurn(player);
+            // check last round and winner
             if (player.getBookShelf().getMaxColumnSpace() == 0) {
-                if (isLastRound) {
-                    if (this.players.indexOf(player) == this.players.size() - 1) {
-                        this.winner = goalManager.getWinner(this.players);
-                        return true;
-                    }
-                } else {
+                if (!isLastRound) {
                     player.setFirstToFinish(true);
                     isLastRound = true;
+                }
+                if (isLastRound && this.players.indexOf(player) == this.players.size() - 1) {
+                    this.winner = goalManager.getWinner(this.players);
+                    return true;
                 }
             }
             currentTurn.changeState(new EndState(currentTurn));
@@ -216,7 +220,6 @@ public class Game{
             return false;
         }
     }
-
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPoints(player);

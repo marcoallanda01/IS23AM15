@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Client;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -52,8 +53,11 @@ public class GUIApplication extends Application {
     @Override
     public synchronized void stop() throws Exception {
         super.stop();
-        Client.getInstance().getLogger().log("Application closed");
         Client.getInstance().getClientController().logout();
+        Client.getInstance().getLogger().log("Application closed");
+    }
+    public synchronized void stop(String message) throws Exception {
+        showPopup(message, () -> Platform.exit());
     }
 
     public synchronized void clearStage() {
@@ -118,6 +122,36 @@ public class GUIApplication extends Application {
         // Set the position of the pop-up stage relative to the primary stage
         popupStage.setX(primaryStageX + 50); // Adjust the X offset as needed
         popupStage.setY(primaryStageY + 50); // Adjust the Y offset as needed
+
+        popupStage.showAndWait();
+    }
+
+    public void showPopup(String message, Runnable onCloseFunction) {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initOwner(primaryStage);
+        popupStage.setAlwaysOnTop(true);
+
+        Label messageLabel = new Label(message);
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(event -> {
+            onCloseFunction.run();
+            popupStage.close();
+        });
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(20));
+        layout.getChildren().addAll(messageLabel, closeButton);
+
+        Scene popupScene = new Scene(layout);
+        popupStage.setScene(popupScene);
+
+        double primaryStageX = primaryStage.getX();
+        double primaryStageY = primaryStage.getY();
+
+        popupStage.setX(primaryStageX + 50);
+        popupStage.setY(primaryStageY + 50);
 
         popupStage.showAndWait();
     }

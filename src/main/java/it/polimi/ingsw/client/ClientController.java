@@ -171,16 +171,15 @@ public class ClientController implements ClientNotificationListener {
                 Client.getInstance().setClientState(ClientStates.CREATE_LOBBY);
                 view.render();
             } else {
-                Client.getInstance().setFirstPlayer(false);
-                view.render();
-                view.showError("The lobby is being created by another player. Please retry later.");
+                view.stop("The lobby is being created by another player. Please retry later.");
             }
         } else {
             Client.getInstance().setFirstPlayer(false);
             if(loadedGame) {
                 Client.getInstance().getClientCommunication().getLoadedGamePlayers();
             } else {
-                Client.getInstance().getClientCommunication().join(Client.getInstance().getNickname());
+                Client.getInstance().setClientState(ClientStates.LOGIN);
+                view.render();
             }
         }
     }
@@ -229,10 +228,9 @@ public class ClientController implements ClientNotificationListener {
             }
         }
     }
-
     public void login(String nickname) {
         Client.getInstance().setNickname(nickname);
-        Client.getInstance().getClientCommunication().hello();
+        Client.getInstance().getClientCommunication().join(Client.getInstance().getNickname());
     }
 
     public void logout() {
@@ -249,7 +247,8 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    public void createGame(int numOfPlayers, boolean easyRules) {
+    public void createGame(String nickname, int numOfPlayers, boolean easyRules) {
+        Client.getInstance().setNickname(nickname);
         view.setNumberOfPlayers(numOfPlayers);
         view.setEasyRules(easyRules);
         Client.getInstance().getClientCommunication().joinNewAsFirst(Client.getInstance().getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
@@ -303,4 +302,5 @@ public class ClientController implements ClientNotificationListener {
     public void saveGame(String gameName) {
         Client.getInstance().getClientCommunication().saveGame(Client.getInstance().getId(), gameName);
     }
+
 }

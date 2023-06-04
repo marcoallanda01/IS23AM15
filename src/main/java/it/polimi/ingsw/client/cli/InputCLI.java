@@ -23,6 +23,9 @@ public class InputCLI {
 
             if (!globalCommand) {
                 switch (Client.getInstance().getClientState()) {
+                    case STARTUP -> {
+                        return;
+                    }
                     case LOGIN -> loginRequest(inputArray);
                     case CREATE_LOBBY -> createLobbyRequest(inputArray);
                     case CREATE_GAME -> createGameRequest(inputArray);
@@ -170,25 +173,32 @@ public class InputCLI {
     }
 
     private static void createGameRequest(String[] inputArray) {
-        if (inputArray.length < 1 || inputArray.length > 2) {
+        if (inputArray.length < 2 || inputArray.length > 3) {
+            Client.getInstance().getView().showError("Invalid input");
+            return;
+        }
+        String nickname;
+        try {
+            nickname = inputArray[0];
+        } catch (NumberFormatException e) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
         int numPlayers;
         try {
-            numPlayers = Integer.parseInt(inputArray[0]);
+            numPlayers = Integer.parseInt(inputArray[1]);
         } catch (NumberFormatException e) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        if (inputArray.length == 2) {
-            if (inputArray[1].equalsIgnoreCase("easyRules")) {
-                Client.getInstance().getClientController().createGame(numPlayers, true);
+        if (inputArray.length == 3) {
+            if (inputArray[2].equalsIgnoreCase("easyRules")) {
+                Client.getInstance().getClientController().createGame(nickname, numPlayers, true);
             } else {
                 Client.getInstance().getView().showError("Invalid input");
             }
         } else {
-            Client.getInstance().getClientController().createGame(numPlayers, false);
+            Client.getInstance().getClientController().createGame(nickname, numPlayers, false);
         }
     }
 

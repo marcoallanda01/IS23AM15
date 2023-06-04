@@ -78,7 +78,7 @@ public class GUILogin extends GUIState {
     private TextField createUsernameField() {
         TextField textField = new TextField();
         textField.setPromptText("Username");
-        textField.setMaxWidth(500);
+        textField.setMaxWidth(300);
         return textField;
     }
 
