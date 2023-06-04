@@ -56,6 +56,7 @@ public class CLI extends View {
     private void start() {
         inputThread.start();
         Client.getInstance().getLogger().log("CLI Started");
+        CLIRenderer.printGame();
     }
 
     public void stop(String message) {
@@ -91,10 +92,11 @@ public class CLI extends View {
         clearScreen();
         switch (Client.getInstance().getClientState()) {
             case LOGIN -> {
-                CLIRenderer.printGame();
                 CLIRenderer.printLogin();
             }
-            case CREATE_LOBBY -> CLIRenderer.printCreateLobby();
+            case CREATE_LOBBY -> {
+                CLIRenderer.printCreateLobby();
+            }
             case CREATE_GAME -> CLIRenderer.printCreateGame();
             case LOAD_GAME -> CLIRenderer.printSavedGames(this.getSavedGames());
             case LOAD_NAMES -> CLIRenderer.printLoadedGameNames(this.getLobbyPlayers());
