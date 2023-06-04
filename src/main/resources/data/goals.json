@@ -44,7 +44,7 @@
 	},
 	{"name":"STAIRS",
 		"type":"specific", "masks":[[[1,0,0,0,0],[1,1,0,0,0],[1,1,1,0,0],[1,1,1,1,0],[1,1,1,1,1]]],
-		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "Y"
+		"group_num":1, "sgc":"N","max":6,"min":1, "fe": "Y"
 	}
 ],
 "end_game" : [

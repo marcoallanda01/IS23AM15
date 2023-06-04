@@ -299,14 +299,16 @@ public class GUIInGame extends GUIState {
             goalStackPane.getChildren().add(goalImageView);
 
             List<Integer> tokens = commonGoals.get(goal);
-            Integer topToken = tokens.get(tokens.size()-1);
-            ImageView tokenImageView = new ImageView(new Image(getClass().getResource("/assets/goals/common/tokens/" + topToken + ".jpg").toExternalForm()));
-            tokenImageView.setFitHeight(40);
-            tokenImageView.setFitWidth(40);
-            tokenImageView.setRotate(-8);
-            tokenImageView.setTranslateX(35);
-            tokenImageView.setTranslateY(-3);
-            goalStackPane.getChildren().add(tokenImageView);
+            if (tokens.size() > 0) {
+                Integer topToken = tokens.get(tokens.size()-1);
+                ImageView tokenImageView = new ImageView(new Image(getClass().getResource("/assets/goals/common/tokens/" + topToken + ".jpg").toExternalForm()));
+                tokenImageView.setFitHeight(40);
+                tokenImageView.setFitWidth(40);
+                tokenImageView.setRotate(-8);
+                tokenImageView.setTranslateX(35);
+                tokenImageView.setTranslateY(-3);
+                goalStackPane.getChildren().add(tokenImageView);
+            }
 
             commonGoalsBox.getChildren().add(goalStackPane);
         }
