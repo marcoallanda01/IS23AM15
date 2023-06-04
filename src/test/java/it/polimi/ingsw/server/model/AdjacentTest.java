@@ -260,6 +260,41 @@ class AdjacentTest {
         assertEquals(2, pattern.getPatternFunction().apply(myBookshelf));
     }
     @Test
+    void test4GroupsOf4() throws InvalidPatternParameterException {
+        BookShelf bookShelf = new BookShelf();
+        // -PPP-
+        // -PCT-
+        // -FCPP
+        // TFCPP
+        // TTCCF
+        // CTCFF
+        List<Tile> one =
+                List.of(new Tile(TileType.CAT), new Tile(TileType.TROPHY), new Tile(TileType.TROPHY));
+        bookShelf.insertTiles(one, 0);
+        List<Tile> two = List.of(new Tile(TileType.TROPHY), new Tile(TileType.TROPHY), new Tile(TileType.FRAME), new Tile(TileType.FRAME), new Tile(TileType.PLANT), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(two, 1);
+        List<Tile> three =
+                List.of(new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.CAT), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(three, 2);
+        List<Tile> four =
+                List.of(new Tile(TileType.FRAME), new Tile(TileType.CAT), new Tile(TileType.PLANT), new Tile(TileType.PLANT), new Tile(TileType.TROPHY), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(four, 3);
+        List<Tile> five =
+                List.of(new Tile(TileType.FRAME), new Tile(TileType.FRAME), new Tile(TileType.PLANT), new Tile(TileType.PLANT));
+        bookShelf.insertTiles(five, 4);
+
+        List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
+
+        String name = "4";
+        Pattern pattern = new AdjacentPattern(name,4, 5, 1);
+        assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
+        // groups are deleted anyway
+        pattern = new AdjacentPattern(name,4, 4, 1);
+        assertEquals(0, pattern.getPatternFunction().apply(myBookshelf));
+        myBookshelf = bookShelf.getState();
+        assertEquals(4, pattern.getPatternFunction().apply(myBookshelf));
+    }
+    @Test
     void test6GroupsOf2() throws InvalidPatternParameterException {
         BookShelf bookShelf = new BookShelf();
         // -----

@@ -153,7 +153,7 @@ public class AdjacentPattern extends Pattern {
                     }
                 }
             }
-            if (checkedTile.getX() - 1 > 0) {
+            if (checkedTile.getX() - 1 >= 0) {
                 Optional<Tile> nextXTile = bookshelf.get(checkedTile.getX() - 1).get(checkedTile.getY());
                 if (nextXTile.isPresent()) {
                     if (nextXTile.get().getType().equals(checkedTile.getType())) {
@@ -161,7 +161,7 @@ public class AdjacentPattern extends Pattern {
                     }
                 }
             }
-            if (checkedTile.getY() - 1 > 0) {
+            if (checkedTile.getY() - 1 >= 0) {
                 Optional<Tile> nextYTile = bookshelf.get(checkedTile.getX()).get(checkedTile.getY() - 1);
                 if (nextYTile.isPresent()) {
                     if (nextYTile.get().getType().equals(checkedTile.getType())) {
