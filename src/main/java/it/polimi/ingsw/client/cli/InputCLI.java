@@ -71,15 +71,7 @@ public class InputCLI {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
-        if(Client.getInstance().getView().getLobbyPlayers().contains(inputArray[0])) {
-            if(Client.getInstance().isFirstPlayer()) {
-                Client.getInstance().getClientCommunication().joinLoadedAsFirst(inputArray[0], Client.getInstance().getId());
-            } else {
-                Client.getInstance().getClientCommunication().join(inputArray[0]);
-            }
-        } else {
-            Client.getInstance().getView().showError("Invalid input");
-        }
+        Client.getInstance().getClientController().loginLoaded(inputArray[0]);
     }
 
     private static void showGoalsRequest(String[] inputArray) {

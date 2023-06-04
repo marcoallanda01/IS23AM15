@@ -261,7 +261,14 @@ public class ClientController implements ClientNotificationListener {
     public void loadGame(int index) {
         Client.getInstance().getClientCommunication().loadGame(view.getSavedGames().get(index), Client.getInstance().getId());
     }
-
+    public void loginLoaded(String nickname) {
+        Client.getInstance().setNickname(nickname);
+        if(Client.getInstance().isFirstPlayer()) {
+            Client.getInstance().getClientCommunication().joinLoadedAsFirst(nickname, Client.getInstance().getId());
+        } else {
+            Client.getInstance().getClientCommunication().join(nickname);
+        }
+    }
     public void pickTiles(List<List<Integer>> coordinates) {
         Set<Tile> livingRoomBoard = view.getLivingRoomBoard();
         Set<Tile> tiles = new HashSet<>();
