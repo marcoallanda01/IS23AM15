@@ -267,6 +267,7 @@ public class Game{
     private boolean nextTurn(Player currentPlayer) {
         if(winner != null){
             GameChangeSupport.firePropertyChange(WINNER_PROPRIETY_NAME, null, this.winner);
+            return false;
         }
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
         int playingPlayers = this.players.stream().mapToInt(player -> {return player.isPlaying() ? 1 : 0;}).sum();
