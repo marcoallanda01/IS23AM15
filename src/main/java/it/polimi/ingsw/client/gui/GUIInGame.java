@@ -38,14 +38,17 @@ public class GUIInGame extends GUIState {
     int randomNum;
     private int draggedIndex = -1;
 
+    GUIState chatState;
 
-    public GUIInGame(GUIApplication guiApplication, Set<Tile> livingRoomBoard, Map<String, Set<Tile>> bookshelves) {
+
+    public GUIInGame(GUIApplication guiApplication, Set<Tile> livingRoomBoard, Map<String, Set<Tile>> bookshelves, Map<String,Map<String,String>> chat, List<String> players) {
         super(guiApplication);
         this.livingRoomBoard = livingRoomBoard;
         this.bookshelves = bookshelves;
         Random random = new Random();
         this.randomNum = random.nextInt(3) + 1;
         createUI();
+        chatState = new GUIChat(guiApplication, chat, players);
     }
 
     private void createUI() {
@@ -332,9 +335,9 @@ public class GUIInGame extends GUIState {
             StackPane bookshelfGrid = createBookshelfGrid(bookshelves.get(name), name);
             if (name.equals(Client.getInstance().getView().getPlayers().get(0))) {
                 ImageView firstPlayerToken = new ImageView(new Image(getClass().getResource("/assets/firstplayertoken.png").toExternalForm()));
-                firstPlayerToken.setFitHeight(50);
-                firstPlayerToken.setFitWidth(50);
-                firstPlayerToken.setTranslateY(-100);
+                firstPlayerToken.setFitHeight(40);
+                firstPlayerToken.setFitWidth(40);
+                firstPlayerToken.setTranslateY(-90);
                 bookshelfGrid.getChildren().add(firstPlayerToken);
             }
             bookshelvesBox.getChildren().add(bookshelfGrid);

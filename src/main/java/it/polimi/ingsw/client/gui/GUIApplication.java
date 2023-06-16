@@ -23,11 +23,17 @@ import javafx.util.Duration;
 public class GUIApplication extends Application {
     private Stage primaryStage;
 
+    private final Stage chatStage = new Stage();
+
     @Override
     public synchronized void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("MyShelfie");
         this.primaryStage.initStyle(StageStyle.UNIFIED);
+
+        this.chatStage.initModality(Modality.NONE);
+        this.chatStage.initOwner(primaryStage);
+        this.chatStage.setAlwaysOnTop(true);
 
         // Create the text node
         Text text = new Text("MyShelfie is loading");
@@ -124,6 +130,11 @@ public class GUIApplication extends Application {
         popupStage.setY(primaryStageY + 50); // Adjust the Y offset as needed
 
         popupStage.showAndWait();
+    }
+
+    public void showChat(Scene chatScene){
+        chatStage.setScene(chatScene);
+        chatStage.show();
     }
 
     public void showPopup(String message, Runnable onCloseFunction) {

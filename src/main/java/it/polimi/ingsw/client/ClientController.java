@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.communication.ClientNotificationListener;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
@@ -113,7 +114,7 @@ public class ClientController implements ClientNotificationListener {
         chat.put(date, Map.of("nickname", nickname, "message", message));
         view.setChat(chat);
         view.render();
-        if(!nickname.equals(Client.getInstance().getNickname())) {
+        if(!nickname.equals(Client.getInstance().getNickname()) && Client.getInstance().getView() instanceof CLI) {
             view.showError("The player " + nickname + " has sent a message, to open the chat type \"showChat\".");
         }
     }
