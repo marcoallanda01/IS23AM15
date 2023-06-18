@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class InputCLI {
+    /**
+     * Handles the input from the user based on the current state of the client
+     * @param inputScanner the scanner that reads the input
+     */
     public static void inputHandler(Scanner inputScanner) {
         while (inputScanner.hasNext()) {
             String input = inputScanner.next();
@@ -66,6 +70,10 @@ public class InputCLI {
         }
     }
 
+    /**
+     * Handles the choice of the nickname for a saved game
+     * @param inputArray the input from the user (the nickname)
+     */
     private static void loadNamesRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -74,6 +82,10 @@ public class InputCLI {
         Client.getInstance().getClientController().loginLoaded(inputArray[0]);
     }
 
+    /**
+     * Handles the request to show the goals (common and personal)
+     * @param inputArray the input from the user
+     */
     private static void showGoalsRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -82,6 +94,10 @@ public class InputCLI {
         Client.getInstance().getView().showGoals();
     }
 
+    /**
+     * Handles the request to show the help menu
+     * @param inputArray the input from the user
+     */
     private static void helpRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -90,6 +106,10 @@ public class InputCLI {
         Client.getInstance().getView().showHelp();
     }
 
+    /**
+     * Handles the request to show the current game
+     * @param inputArray the input from the user
+     */
     private static void showGameRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -98,6 +118,10 @@ public class InputCLI {
         Client.getInstance().getView().render();
     }
 
+    /**
+     * Handles the request to show the chat window
+     * @param inputArray the input from the user
+     */
     private static void showChatRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -106,6 +130,10 @@ public class InputCLI {
         Client.getInstance().getView().showChat();
     }
 
+    /**
+     * Handles the request to log in with a nickname
+     * @param inputArray the input from the user (the nickname)
+     */
     private static void loginRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -114,6 +142,10 @@ public class InputCLI {
         Client.getInstance().getClientController().login(inputArray[0]);
     }
 
+    /**
+     * Handles the request to log out
+     * @param inputArray the input from the user
+     */
     private static void logoutRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -122,6 +154,10 @@ public class InputCLI {
         Client.getInstance().getClientController().logout();
     }
 
+    /**
+     * Handles the request to create a lobby
+     * @param inputArray the input from the user
+     */
     private static void createLobbyRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -136,6 +172,10 @@ public class InputCLI {
         }
     }
 
+    /**
+     * Handles the request to load a game
+     * @param inputArray the input from the user (the index of the game)
+     */
     private static void loadGameRequest(String[] inputArray) {
         if (inputArray.length != 1) {
             Client.getInstance().getView().showError("Invalid input");
@@ -156,6 +196,10 @@ public class InputCLI {
         Client.getInstance().getClientController().loadGame(choice);
     }
 
+    /**
+     * Handles the request to save a game
+     * @param inputArray the input from the user
+     */
     private static void saveGameRequest(String[] inputArray) {
         if (inputArray.length != 2) {
             Client.getInstance().getView().showError("Invalid input");
@@ -164,6 +208,10 @@ public class InputCLI {
         Client.getInstance().getClientController().saveGame(inputArray[1]);
     }
 
+    /**
+     * Handles the request to create a game
+     * @param inputArray the input from the user
+     */
     private static void createGameRequest(String[] inputArray) {
         if (inputArray.length < 2 || inputArray.length > 3) {
             Client.getInstance().getView().showError("Invalid input");
@@ -194,22 +242,10 @@ public class InputCLI {
         }
     }
 
-    /*private static void joinLobbyRequest(String[] inputArray) {
-        if (inputArray.length != 1) {
-            Client.getInstance().getView().showError("Invalid input");
-            return;
-        }
-        Client.getInstance().getClientController().joinLobby();
-    }*/
-
-    /*private static void startGameRequest(String[] inputArray) {
-        if (inputArray.length != 1) {
-            Client.getInstance().getView().showError("Invalid input");
-            return;
-        }
-        Client.getInstance().getClientController().startGame();
-    }*/
-
+    /**
+     * Handles the request to pick a list of tiles
+     * @param inputArray the input from the user (the coordinates of the tiles)
+     */
     private static void pickTilesRequest(String[] inputArray) {
         if (inputArray.length < 2 || inputArray.length > 4) {
             Client.getInstance().getView().showError("Invalid input");
@@ -234,6 +270,10 @@ public class InputCLI {
         Client.getInstance().getClientController().pickTiles(coordTiles);
     }
 
+    /**
+     * Handles the request to put a list of tiles
+     * @param inputArray the input from the user (the column and the order of the tiles)
+     */
     private static void putTilesRequest(String[] inputArray) {
         if (inputArray.length < 3 || inputArray.length != Client.getInstance().getView().getPickedTiles().size() + 2) {
             Client.getInstance().getView().showError("Invalid input");
@@ -258,6 +298,10 @@ public class InputCLI {
         Client.getInstance().getClientController().putTiles(column, order);
     }
 
+    /**
+     * Handles the request to send a chat message
+     * @param inputArray the input from the user (the receiver/s and the message)
+     */
     private static void sendChatMessageRequest(String[] inputArray) {
         if (inputArray.length < 3) {
             Client.getInstance().getView().showError("Invalid input");
@@ -276,6 +320,10 @@ public class InputCLI {
         }
     }
 
+    /**
+     * Handles a global command (state independent)
+     * @param command the command to handle
+     */
     private static boolean globalCommand(String[] command) {
         if (command[0].equalsIgnoreCase("logout")) {
             if (Client.getInstance().getClientState() == ClientStates.LOGIN) {

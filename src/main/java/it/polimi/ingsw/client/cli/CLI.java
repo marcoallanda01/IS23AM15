@@ -1,17 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.ClientGoal;
 import it.polimi.ingsw.client.View;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
-
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +11,10 @@ public class CLI extends View {
     private final Thread inputThread;
     private final Scanner inputScanner;
     private boolean running;
-    private String message;
+
+    /**
+     * Constructor for CLI
+     */
     public CLI() {
         this.inputScanner = new Scanner(System.in).useDelimiter("\n");
         this.inputThread = new Thread(this::inputHandler);
@@ -53,12 +46,18 @@ public class CLI extends View {
             timer.schedule(task, 1000, 1000); // Update the countdown every second
         }
     }
+    /**
+     * Starts the CLI
+     */
     private void start() {
         inputThread.start();
         Client.getInstance().getLogger().log("CLI Started");
         CLIRenderer.printGame();
     }
 
+    /**
+     * Stops the CLI
+     */
     public void stop(String message) {
         showError(message);
         showError("Enter any key to close");
@@ -66,6 +65,9 @@ public class CLI extends View {
         Client.getInstance().getClientController().logout();
     }
 
+    /**
+     * Clears the screen
+     */
     private void clearScreen() {
         try {
             final String os = System.getProperty("os.name");
@@ -80,6 +82,9 @@ public class CLI extends View {
         }
     }
 
+    /**
+     * Handles the input from the user
+     */
     public void inputHandler() {
         while (running) {
             InputCLI.inputHandler(inputScanner);
@@ -87,6 +92,9 @@ public class CLI extends View {
         System.out.println("CLI InputHandler Closed");
     }
 
+    /**
+     * Renders the CLI based on the current state of the client
+     */
     public synchronized void render() {
         Client.getInstance().getLogger().log("Rendering: " + Client.getInstance().getClientState());
         clearScreen();
@@ -113,18 +121,31 @@ public class CLI extends View {
         }
     }
 
+    /**
+     * Shows a message to the user
+     * @param message the message to show
+     */
     public void showError(String message) {
         CLIRenderer.printError(message);
     }
 
+    /**
+     * Opens the chat
+     */
     public void showChat() {
         CLIRenderer.printChat(this.getChat());
     }
 
+    /**
+     * Shows the help
+     */
     public void showHelp() {
         CLIRenderer.printHelp();
     }
 
+    /**
+     * Shows the goals
+     */
     public void showGoals() {
         CLIRenderer.printGoals(this.getCommonGoals(), this.getPersonalGoal());
     }

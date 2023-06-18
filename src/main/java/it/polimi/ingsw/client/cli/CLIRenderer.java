@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.ClientGoalDetail;
-import it.polimi.ingsw.communication.responses.CommonGoals;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -11,6 +9,9 @@ import java.util.stream.Collectors;
 
 public class CLIRenderer {
 
+    /**
+     * Prints the game logo
+     */
     public synchronized static void printGame() {
         String gameScreen = """
                                                                                                                                                                                                \s
@@ -42,10 +43,16 @@ public class CLIRenderer {
         System.out.println(gameScreen);
     }
 
+    /**
+     * Prints the request to insert the nickname
+     */
     public synchronized static void printLogin() {
         System.out.println("Insert a nickname to join a lobby");
     }
 
+    /**
+     * Prints the request to choice to create a new game or load a saved one
+     */
     public synchronized static void printCreateLobby() {
         System.out.println("There is no lobby available, would you like to create a new game or load one from the saves?");
         System.out.println("Select an option:");
@@ -53,6 +60,9 @@ public class CLIRenderer {
         System.out.println("2. Load a saved game");
     }
 
+    /**
+     * Prints the request to insert the number of players and the easy rules
+     */
     public synchronized static void printCreateGame() {
         System.out.println("To create a new game please specify:");
         System.out.println("- Your nickname");
@@ -61,6 +71,10 @@ public class CLIRenderer {
         System.out.println("Please enter the \"create (n. of players) (y/n)\" command");
     }
 
+    /**
+     * Prints saved games
+     * @param savedGames the list of saved games
+     */
     public synchronized static void printSavedGames(List<String> savedGames) {
         System.out.println("Here's the list of saved games:");
         System.out.println("Select an option:");
@@ -70,11 +84,19 @@ public class CLIRenderer {
         }
     }
 
+    /**
+     * Prints the lobby screen
+     * @param isEasyRules true if the game uses easy rules
+     */
     public synchronized static void printLobby(boolean isEasyRules) {
         System.out.println("Waiting in lobby for other players to join...");
         System.out.println("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
     }
 
+    /**
+     * Prints a Living Room board
+     * @param board the board to print
+     */
     public synchronized static void printLivingRoomBoard(Set<Tile> board) {
         System.out.println(" ");
         System.out.println("◻️0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣");
@@ -85,6 +107,11 @@ public class CLIRenderer {
         System.out.println();
     }
 
+    /**
+     * Prints a line of a Living Room board
+     * @param board the board to print
+     * @param n the number of the line
+     */
     public synchronized static void printLivingRoomBoardLine(Set<Tile> board, int n) {
         List<Tile> line = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
@@ -105,6 +132,13 @@ public class CLIRenderer {
         }
     }
 
+    /**
+     * Prints a bookshelf
+     * @param players the list of players (the order of the players in the list is the order of the bookshelves)
+     * @param bookshelves the map of bookshelves
+     * @param myName the nickname of the client
+     * @param currentPlayer the nickname of the current player
+     */
     public synchronized static void printBookshelves(List<String> players, Map<String, Set<Tile>> bookshelves, String myName, String currentPlayer) {
         System.out.println();
         for (int n = 5; n >= 0; n--) {
@@ -144,6 +178,11 @@ public class CLIRenderer {
         System.out.println();
     }
 
+    /**
+     * Prints a line of a bookshelf
+     * @param tiles the tiles to print
+     * @param n the number of the line
+     */
     public synchronized static void printBookshelfLine(Set<Tile> tiles, int n) {
         List<Tile> line = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -163,6 +202,10 @@ public class CLIRenderer {
         }
     }
 
+    /**
+     * Prints the list of the tiles picked by the player
+     * @param tiles the list of the tiles picked by the player
+     */
     public synchronized static void printPickedTiles(List<TileType> tiles) {
         if (!tiles.isEmpty()) {
             System.out.println("Picked tiles: ");
@@ -178,6 +221,10 @@ public class CLIRenderer {
 
     }
 
+    /**
+     * prints the chat
+     * @param chat the chat to print
+     */
     public synchronized static void printChat(Map<String, Map<String, String>> chat) {
         List<String> dates = new ArrayList<>(chat.keySet());
         Collections.sort(dates);
@@ -192,6 +239,10 @@ public class CLIRenderer {
         }
     }
 
+    /**
+     * Prints the common cards
+     * @param commonGoals the map of the common cards
+     */
     public synchronized static void printCommonCards(Map<String, List<Integer>> commonGoals) {
         System.out.println("Common cards:");
         for (String name : commonGoals.keySet()) {
@@ -203,20 +254,11 @@ public class CLIRenderer {
         }
     }
 
-    public synchronized static void printPersonalGoal(String personalGoal) {
-        System.out.println();
-        System.out.println("Personal goal:\n" + personalGoal);
-        System.out.println();
-    }
-
-    public synchronized static void printCommonGoals(List<String> commonGoals) {
-        System.out.println();
-        System.out.println("Common goals:");
-        for (String goal : commonGoals) {
-            System.out.println(goal);
-        }
-    }
-
+    /**
+     * prints the winner of the game and the final scores
+     * @param points the map of the points
+     * @param winner the nickname of the winner
+     */
     public synchronized static void printEndGame(Map<String, Integer> points, String winner) {
         System.out.println("The game is over!");
         System.out.println("Final scores:");
@@ -238,10 +280,17 @@ public class CLIRenderer {
 
     }
 
+    /**
+     * Prints the error message
+     * @param message the error message
+     */
     public synchronized static void printError(String message) {
         System.out.println(CliColor.RED_BOLD_BRIGHT + message + CliColor.RESET);
     }
 
+    /**
+     * Prints the help
+     */
     public synchronized static void printHelp() {
         System.out.println("Available commands:");
         System.out.println("You may pick tiles with: " + "pick ROW1,COL1 ROW2,COL2 ..., " + "where ROWi and COLi are positive integers");
@@ -253,17 +302,10 @@ public class CLIRenderer {
         System.out.println("You may save the game using: " + "save SAVE_NAME, " + "where SAVE_NAME is the name of the game save, please note that you cannot override existing saves");
     }
 
-    public synchronized static void printGoal(ClientGoalDetail goal) {
-        if (goal == null) {
-            System.out.println("Goal not found");
-            return;
-        }
-        System.out.println("Showing goal: " + goal.getName());
-        System.out.println("Description:\n" + goal.getDescription());
-        // TODO: add a better representation and print it
-        //System.out.println("Representation:\n" + goal.getRepresentation());
-    }
-
+    /**
+     * Prints the nicknames' players list of a saved game
+     * @param gameNames the list of the nicknames' players
+     */
     public synchronized static void printLoadedGameNames(List<String> gameNames) {
         System.out.println("Choose a name from the following list:");
         for (String gameName : gameNames) {
@@ -271,6 +313,10 @@ public class CLIRenderer {
         }
     }
 
+    /**
+     * Prints the points of the players
+     * @param points the map of the points
+     */
     public synchronized static void printPoints(Map<String, Integer> points) {
         System.out.println();
         System.out.println("Points:");
@@ -278,6 +324,12 @@ public class CLIRenderer {
             System.out.println(name + ": " + points.get(name));
         }
     }
+
+    /**
+     * Prints the goals of the players
+     * @param commonGoals the list of the common goals
+     * @param personalGoal the personal goal
+     */
     public synchronized static void printGoals(List<String> commonGoals, String personalGoal){
         System.out.println();
         System.out.println(CliColor.BLACK_BOLD + "Common goals:" + CliColor.RESET);
