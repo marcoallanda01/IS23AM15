@@ -16,11 +16,20 @@ import javafx.scene.text.FontWeight;
 public class GUILoadGame extends GUIState{
     private final List<String> savedGames;
 
+    /**
+     * Constructor for GUILoadGame
+     * @param guiApplication is the GUIApplication
+     * @param savedGames is the list of saved games
+     */
     public GUILoadGame(GUIApplication guiApplication, List<String> savedGames) {
         super(guiApplication);
         this.savedGames = savedGames;
         createUI();
     }
+
+    /**
+     * Method to create the UI
+     */
     public void createUI(){
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
@@ -40,6 +49,10 @@ public class GUILoadGame extends GUIState{
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
+    /**
+     * Method to create the VBox of saved games
+     * @return the VBox of saved games
+     */
     private VBox createSavedGamesBox() {
     VBox savedGamesBox = new VBox(10); // Added spacing between buttons
     savedGamesBox.setPadding(new Insets(10));

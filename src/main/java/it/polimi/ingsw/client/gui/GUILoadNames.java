@@ -20,11 +20,21 @@ import java.util.List;
 
 public class GUILoadNames extends GUIState{
     List<String> savedNames;
+
+    /**
+     * Constructor for GUILoadNames
+     * @param guiApplication is the GUIApplication
+     * @param savedNames is the list of saved names
+     */
     public GUILoadNames(GUIApplication guiApplication, List<String> savedNames) {
         super(guiApplication);
         this.savedNames = savedNames;
         createUI();
     }
+
+    /**
+     * Method to create the UI
+     */
     public void createUI(){
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
@@ -44,6 +54,10 @@ public class GUILoadNames extends GUIState{
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
+    /**
+     * Method to create the VBox of saved names
+     * @return the VBox of saved names
+     */
     private VBox createSavedNamesBox() {
         VBox savedNamesBox = new VBox(10); // Added spacing between buttons
         savedNamesBox.setPadding(new Insets(10));

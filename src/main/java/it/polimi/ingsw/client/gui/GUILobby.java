@@ -15,11 +15,21 @@ import java.util.List;
 
 public class GUILobby extends GUIState{
     private final boolean isEasyRules;
+
+    /**
+     * Constructor for GUILobby
+     * @param guiApplication is the GUIApplication
+     * @param isEasyRules is true if the game will use easy rules, false otherwise
+     */
     public GUILobby(GUIApplication guiApplication, boolean isEasyRules) {
         super(guiApplication);
         this.isEasyRules = isEasyRules;
         createUI();
     }
+
+    /**
+     * Method to create the UI
+     */
     public void createUI(){
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
