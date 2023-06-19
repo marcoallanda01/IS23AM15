@@ -66,6 +66,9 @@ public class Client {
         return singleton;
     }
 
+    /*
+        * Setups the RMI connection
+     */
     public void setupNetworkRMI() throws RuntimeException {
         try {
             logger.log("RMI setup");
@@ -77,6 +80,9 @@ public class Client {
         }
     }
 
+    /*
+        * Setups the TCP connection
+     */
     public void setupNetworkTCP() {
         try {
             logger.log("TCP setup");
@@ -129,6 +135,13 @@ public class Client {
         }
     }
 
+    /*
+        * Parses the arguments passed to the program
+        * @param args the arguments
+        * @param option the short option
+        * @param optionVerbose the long option
+        * @return the value of the option
+     */
     private static String parseArg(String[] args, String option, String optionVerbose) {
         for (int i = 0; i < args.length - 1; i++) {
             String arg = args[i];
@@ -137,6 +150,11 @@ public class Client {
         return null;
     }
 
+    /*
+        * Parses the protocol from the arguments
+        * @param args the arguments
+        * @return the protocol
+     */
     private static Protocols parseProtocol(String[] args) {
         for (String s : args) {
             if (s.contains("rmi")) return Protocols.RMI;
@@ -145,6 +163,11 @@ public class Client {
         return Protocols.RMI; // default
     }
 
+    /*
+        * Parses the view from the arguments
+        * @param args the arguments
+        * @return the view
+     */
     private static Views parseView(String[] args) {
         for (String s : args) {
             if (s.contains("cli")) return Views.CLI;
@@ -153,6 +176,11 @@ public class Client {
         return Views.CLI; // default
     }
 
+    /*
+        * Parses the mode from the arguments
+        * @param args the arguments
+        * @return the mode
+     */
     private static Modes parseMode(String[] args) {
         for (String s : args) {
             if (s.contains("testing")) return Modes.TESTING;
@@ -223,6 +251,11 @@ public class Client {
         }
     }
 
+    /*
+        * Saves the client ID to a file
+        * @param id the client ID
+        * @param name the client name
+     */
     private void saveClientInfo(String id, String name) {
         try {
             File clientIdFile = new File("client_info.txt");
@@ -239,6 +272,9 @@ public class Client {
         }
     }
 
+    /*
+        * Loads the client ID from a file
+     */
     private void loadClientInfo() {
         String id = "NoId";
         String name = "NoName";
@@ -278,6 +314,9 @@ public class Client {
         return logger;
     }
 
+    /*
+        * Initializes the client
+     */
     public void init(View view) {
         this.view = view;
         // clientController must be set before setting up the network, because the connection needs a reference to it

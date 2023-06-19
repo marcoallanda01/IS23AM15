@@ -51,6 +51,9 @@ public class GUIInGame extends GUIState {
         chatState = new GUIChat(guiApplication, chat, players);
     }
 
+    /*
+     * Create the in game UI
+     */
     private void createUI() {
         HBox root = new HBox(10);
         root.setAlignment(Pos.CENTER);
@@ -212,6 +215,11 @@ public class GUIInGame extends GUIState {
         Platform.runLater(() -> guiApplication.changeScene(scene));
     }
 
+    /**
+     * Calculates the drop index based on the x-coordinate of the mouse pointer
+     * @param x the x-coordinate of the mouse pointer
+     * @return the drop index
+     */
     private int calculateDropIndex(double x) {
         double cellWidth = tilesListView.getFixedCellSize();
         int index = (int) (x / cellWidth);
@@ -226,6 +234,10 @@ public class GUIInGame extends GUIState {
     }
 
 
+    /**
+     * Creates the grid of the board
+     * @return the StackPane containing the grid
+     */
     private StackPane createBoardGrid() {
         StackPane stackPane = new StackPane();
 
@@ -284,6 +296,11 @@ public class GUIInGame extends GUIState {
         return stackPane;
     }
 
+    /*
+        * Creates the list of goals
+        * @param commonGoals the map containing the goals to be displayed
+        * @return the VBox containing the list of goals
+     */
     private VBox createGoals(Map<String, List<Integer>> commonGoals) {
         VBox goalsBox = new VBox(5);
         goalsBox.setAlignment(Pos.CENTER);
@@ -327,6 +344,10 @@ public class GUIInGame extends GUIState {
         return goalsBox;
     }
 
+    /*
+        * Creates the list of bookshelves
+        * @return the HBox containing the list of bookshelves
+     */
     private HBox createBookshelves() {
         HBox bookshelvesBox = new HBox(10);
         bookshelvesBox.setAlignment(Pos.CENTER);
@@ -346,6 +367,12 @@ public class GUIInGame extends GUIState {
         return bookshelvesBox;
     }
 
+    /*
+        * Creates a single bookshelf
+        * @param bookshelfTiles the set of tiles to be displayed
+        * @param bookshelfName the name of the player owning the bookshelf
+        * @return the StackPane containing the bookshelf
+     */
     private StackPane createBookshelfGrid(Set<Tile> bookshelfTiles, String bookshelfName) {
         StackPane stackPane = new StackPane();
 
