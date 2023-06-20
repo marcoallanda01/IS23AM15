@@ -16,6 +16,11 @@ import java.util.Map;
 public class Chat implements PostProcessable, StandardListenable {
      private final Map<String, List<Message>> MessagesPerPlayer;
     private transient PropertyChangeSupport propertyChangeSupport;
+
+    /**
+     * Constructor
+     * @param players the players in the game
+     */
      public Chat(List<Player> players){
          MessagesPerPlayer = new HashMap<>();
          for (Player p : players){
