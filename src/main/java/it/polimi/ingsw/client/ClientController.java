@@ -342,6 +342,12 @@ public class ClientController implements ClientNotificationListener {
      */
     public void logout() {
         Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
+        Client.getInstance().setClientState(ClientStates.STARTUP);
+    }
+
+    public void logout(String message) {
+        view.stop(message);
+        logout();
     }
 
     /*

@@ -18,7 +18,6 @@ public class Client {
     private final String goalsPath;
     private final Protocols protocolSetting;
     private final Views viewSetting;
-    private final Modes modeSetting;
     private final Logger logger = new Logger();
     private ClientStates state;
     private View view;
@@ -31,17 +30,15 @@ public class Client {
     private Map<String, ClientGoal> clientGoals;
     private Timer disconnectTimer;
 
-    public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view, Modes mode) {
+    public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view) {
         this.hostname = hostname;
         this.port = port;
         loadClientInfo();
         this.protocolSetting = protocol;
         this.viewSetting = view;
-        this.modeSetting = mode;
         this.goalsPath = goalsPath;
         state = ClientStates.STARTUP;
         disconnectTimer = new Timer();
-        scheduleDisconnect();
     }
 
     // used for testing
@@ -50,7 +47,6 @@ public class Client {
         this.port = 0;
         this.protocolSetting = null;
         this.viewSetting = null;
-        this.modeSetting = null;
         this.goalsPath = null;
         this.state = null;
     }
@@ -71,41 +67,29 @@ public class Client {
         String goalsPath = parseArg(args, "-g", "--goals");
         Protocols protocol = parseProtocol(args);
         Views view = parseView(args);
-        Modes mode = parseMode(args);
 
         try {
-            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), goalsPath == null ? "/data/client_goals.json" : goalsPath, protocol, view, mode);
+            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), goalsPath == null ? "/data/client_goals.json" : goalsPath, protocol, view);
         } catch (NumberFormatException e) {
             System.out.println("Invalid port number");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+        initView(view);
+    }
+
+    private static void initView(Views view) {
         try {
-            if (mode.equals(Modes.TESTING)) {
-                // I am in testing, setup is easier
-                TestingView testingView = new TestingView();
-                singleton.clientController = testingView;
-                if (protocol.equals(Protocols.RMI)) {
-                    singleton.setupNetworkRMI();
-                } else if (protocol.equals(Protocols.TCP)) {
-                    singleton.setupNetworkTCP();
-                }
-                singleton.clientConnection.openConnection();
-                testingView.setClientCommunication(singleton.clientCommunication);
-                testingView.start();
-            } else {
-                if (view.equals(Views.CLI)) {
-                    new CLI();
-                } else if (view.equals(Views.GUI)) {
-                    Application.launch(GUIApplication.class, args);
-                }
+            if (view.equals(Views.CLI)) {
+                new CLI();
+            } else if (view.equals(Views.GUI)) {
+                Application.launch(GUIApplication.class, "");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
     /*
      * Parses the arguments passed to the program
      * @param args the arguments
@@ -145,19 +129,6 @@ public class Client {
             if (s.contains("gui")) return Views.GUI;
         }
         return Views.CLI; // default
-    }
-
-    /*
-     * Parses the mode from the arguments
-     * @param args the arguments
-     * @return the mode
-     */
-    private static Modes parseMode(String[] args) {
-        for (String s : args) {
-            if (s.contains("testing")) return Modes.TESTING;
-            if (s.contains("production")) return Modes.PRODUCTION;
-        }
-        return Modes.TESTING; // default
     }
 
     private static boolean isTesting(String[] args) {
@@ -359,6 +330,7 @@ public class Client {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
         }
+        scheduleDisconnect();
     }
 
     /*
@@ -385,19 +357,14 @@ public class Client {
         CLI, GUI
     }
 
-    private enum Modes {
-        TESTING, PRODUCTION
-    }
-
     private static class DisconnectTask extends TimerTask {
 
         public DisconnectTask() {}
 
         @Override
         public void run() {
-            Client.getInstance().getLogger().log("No response from server for 10 seconds, disconnecting...");
-            Client.getInstance().getView().showError("No response from server for 10 seconds, disconnecting...");
-            Client.getInstance().getClientController().logout();
+            Client.getInstance().getLogger().log("No response from server for 10 seconds, try restarting the app...");
+            Client.getInstance().getClientController().logout("No response from server for 10 seconds, try restarting the app...");
         }
     }
 }

@@ -328,7 +328,7 @@ public class GoalManager{
     public int getPoints(Player player) {
 
         return pointsManagers.stream()
-                .map(pointsManager -> {System.out.println("PlayerToPoints:"+pointsManager.getPlayersToPoints());System.out.println(pointsManager.getPoints(player)); return pointsManager.getPoints(player);}).reduce(0, (a,b) -> a+b)
+                .map(pointsManager -> {System.out.println("Player: " + player);System.out.println("PlayerToPoints:"+pointsManager.getPlayersToPoints());System.out.println(pointsManager.getPlayersToPoints().get(player));System.out.println(pointsManager.getPoints(player)); return pointsManager.getPoints(player);}).reduce(0, (a,b) -> a+b)
                 + (player.isFirstToFinish() ? 1 : 0);
     }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
