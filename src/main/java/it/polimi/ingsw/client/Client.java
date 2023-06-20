@@ -2,42 +2,35 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.communication.*;
-import it.polimi.ingsw.client.communication.ClientCommunication;
-import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.client.gui.GUIApplication;
 import it.polimi.ingsw.utils.Logger;
 import javafx.application.Application;
 
 import java.io.*;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Client {
     private static Client singleton;
-    private ClientStates state;
-    private View view;
-    private ClientNotificationListener clientController;
     private final String hostname;
     private final int port;
     private final String goalsPath;
     private final Protocols protocolSetting;
     private final Views viewSetting;
     private final Modes modeSetting;
+    private final Logger logger = new Logger();
+    private ClientStates state;
+    private View view;
+    private ClientNotificationListener clientController;
     private String id = "";
-
-    public boolean isFirstPlayer() {
-        return isFirstPlayer;
-    }
-
-    public void setFirstPlayer(boolean firstPlayer) {
-        isFirstPlayer = firstPlayer;
-    }
-
     private boolean isFirstPlayer;
     private String nickname;
     private ClientConnection clientConnection;
     private ClientCommunication clientCommunication;
     private Map<String, ClientGoal> clientGoals;
-    private final Logger logger = new Logger();
+    private Timer disconnectTimer;
+
     public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view, Modes mode) {
         this.hostname = hostname;
         this.port = port;
@@ -47,7 +40,10 @@ public class Client {
         this.modeSetting = mode;
         this.goalsPath = goalsPath;
         state = ClientStates.STARTUP;
+        disconnectTimer = new Timer();
+        scheduleDisconnect();
     }
+
     // used for testing
     public Client() {
         this.hostname = null;
@@ -58,41 +54,16 @@ public class Client {
         this.goalsPath = null;
         this.state = null;
     }
+
     // used for testing
     public static void main() {
         singleton = new Client();
     }
+
     public static Client getInstance() {
         return singleton;
     }
 
-    /*
-        * Setups the RMI connection
-     */
-    public void setupNetworkRMI() throws RuntimeException {
-        try {
-            logger.log("RMI setup");
-            RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
-            singleton.clientConnection = rmiClientConnection;
-            singleton.clientCommunication = new RMIClientCommunication(rmiClientConnection);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /*
-        * Setups the TCP connection
-     */
-    public void setupNetworkTCP() {
-        try {
-            logger.log("TCP setup");
-            TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, clientController);
-            singleton.clientConnection = tcpClientConnection;
-            singleton.clientCommunication = new TCPClientCommunication(tcpClientConnection);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
     public static void main(String[] args)  //static method
     {
         String hostname = parseArg(args, "-a", "--address");
@@ -136,11 +107,11 @@ public class Client {
     }
 
     /*
-        * Parses the arguments passed to the program
-        * @param args the arguments
-        * @param option the short option
-        * @param optionVerbose the long option
-        * @return the value of the option
+     * Parses the arguments passed to the program
+     * @param args the arguments
+     * @param option the short option
+     * @param optionVerbose the long option
+     * @return the value of the option
      */
     private static String parseArg(String[] args, String option, String optionVerbose) {
         for (int i = 0; i < args.length - 1; i++) {
@@ -151,9 +122,9 @@ public class Client {
     }
 
     /*
-        * Parses the protocol from the arguments
-        * @param args the arguments
-        * @return the protocol
+     * Parses the protocol from the arguments
+     * @param args the arguments
+     * @return the protocol
      */
     private static Protocols parseProtocol(String[] args) {
         for (String s : args) {
@@ -164,9 +135,9 @@ public class Client {
     }
 
     /*
-        * Parses the view from the arguments
-        * @param args the arguments
-        * @return the view
+     * Parses the view from the arguments
+     * @param args the arguments
+     * @return the view
      */
     private static Views parseView(String[] args) {
         for (String s : args) {
@@ -177,9 +148,9 @@ public class Client {
     }
 
     /*
-        * Parses the mode from the arguments
-        * @param args the arguments
-        * @return the mode
+     * Parses the mode from the arguments
+     * @param args the arguments
+     * @return the mode
      */
     private static Modes parseMode(String[] args) {
         for (String s : args) {
@@ -196,24 +167,50 @@ public class Client {
         return false; // default
     }
 
+    public boolean isFirstPlayer() {
+        return isFirstPlayer;
+    }
+
+    public void setFirstPlayer(boolean firstPlayer) {
+        isFirstPlayer = firstPlayer;
+    }
+
+    /*
+     * Setups the RMI connection
+     */
+    public void setupNetworkRMI() throws RuntimeException {
+        try {
+            logger.log("RMI setup");
+            RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
+            singleton.clientConnection = rmiClientConnection;
+            singleton.clientCommunication = new RMIClientCommunication(rmiClientConnection);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * Setups the TCP connection
+     */
+    public void setupNetworkTCP() {
+        try {
+            logger.log("TCP setup");
+            TCPClientConnection tcpClientConnection = new TCPClientConnection(hostname, port, clientController);
+            singleton.clientConnection = tcpClientConnection;
+            singleton.clientCommunication = new TCPClientCommunication(tcpClientConnection);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public View getView() {
         return view;
     }
 
-    private enum Protocols {
-        RMI, TCP
-    }
-
-    private enum Views {
-        CLI, GUI
-    }
-
-    private enum Modes {
-        TESTING, PRODUCTION
-    }
     public Map<String, ClientGoal> getClientGoals() {
         return clientGoals;
     }
+
     public ClientStates getClientState() {
         synchronized (state) {
             return state;
@@ -226,17 +223,17 @@ public class Client {
         }
     }
 
+    public String getId() {
+        synchronized (id) {
+            return this.id;
+        }
+    }
+
     public void setId(String id) {
         synchronized (id) {
             this.id = id;
         }
         saveClientInfo(getId(), getNickname());
-    }
-
-    public String getId() {
-        synchronized (id) {
-            return this.id;
-        }
     }
 
     public String getNickname() {
@@ -252,9 +249,9 @@ public class Client {
     }
 
     /*
-        * Saves the client ID to a file
-        * @param id the client ID
-        * @param name the client name
+     * Saves the client ID to a file
+     * @param id the client ID
+     * @param name the client name
      */
     private void saveClientInfo(String id, String name) {
         try {
@@ -273,7 +270,7 @@ public class Client {
     }
 
     /*
-        * Loads the client ID from a file
+     * Loads the client ID from a file
      */
     private void loadClientInfo() {
         String id = "NoId";
@@ -295,7 +292,6 @@ public class Client {
         this.nickname = name;
     }
 
-
     public ClientController getClientController() {
         if (clientController instanceof ClientController)
             return (ClientController) clientController;
@@ -315,7 +311,7 @@ public class Client {
     }
 
     /*
-        * Initializes the client
+     * Initializes the client
      */
     public void init(View view) {
         this.view = view;
@@ -354,17 +350,54 @@ public class Client {
             Client.getInstance().getLogger().log(e);
         }
         try {
-            Thread shutdownHook = new Thread() {
-                @Override
-                public void run() {
-                    Client.getInstance().getLogger().log("Shutting down");
-                    Client.getInstance().getClientController().logout();
-                }
-            };
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
+            Thread shutdownHook = new Thread(() -> {
+                Client.getInstance().getLogger().log("Shutting down");
+                Client.getInstance().getClientController().logout();
+            });
+            Runtime.getRuntime().addShutdownHook(shutdownHook);
         } catch (Exception e) {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
+        }
+    }
+
+    /*
+     * Schedule a disconnect after 10 seconds
+     */
+    public void scheduleDisconnect() {
+        disconnectTimer.schedule(new DisconnectTask(), 10 * 1000);
+    }
+
+    /*
+     * Reset the disconnect timer
+     */
+    public void resetDisconnectTimer() {
+        disconnectTimer.cancel();
+        disconnectTimer = new Timer();
+        scheduleDisconnect();
+    }
+
+    private enum Protocols {
+        RMI, TCP
+    }
+
+    private enum Views {
+        CLI, GUI
+    }
+
+    private enum Modes {
+        TESTING, PRODUCTION
+    }
+
+    private static class DisconnectTask extends TimerTask {
+
+        public DisconnectTask() {}
+
+        @Override
+        public void run() {
+            Client.getInstance().getLogger().log("No response from server for 10 seconds, disconnecting...");
+            Client.getInstance().getView().showError("No response from server for 10 seconds, disconnecting...");
+            Client.getInstance().getClientController().logout();
         }
     }
 }

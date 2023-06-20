@@ -190,6 +190,7 @@ public class ClientController implements ClientNotificationListener {
      */
     @Override
     public void notifyPing() {
+        Client.getInstance().resetDisconnectTimer();
         Client.getInstance().getClientCommunication().pong(Client.getInstance().getId());
     }
 

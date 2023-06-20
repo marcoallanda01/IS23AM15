@@ -10,6 +10,11 @@ public class PickTilesState extends State {
         super(turn);
     }
 
+    /**
+     * Checks if the given tiles can be picked
+     * @param tiles the tiles to pick
+     * @return the tiles if they can be picked, Optional.empty() otherwise
+     */
     private Optional<List<Tile>> checkPick(List<Tile> tiles) {
         //return tiles.size() <= this.turn.getCurrentPlayer().getBookShelf().getMaxColumnSpace() && this.turn.getBoard().checkPick(tiles);
         Optional<List<Tile>> result = Optional.empty();
