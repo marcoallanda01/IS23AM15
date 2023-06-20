@@ -13,9 +13,21 @@ public class ChatController {
     public ChatController(Game game) {
         this.game = game;
     }
+
+    /**
+     * Send a message to a player
+     * @param sender sender's name
+     * @param receiver receiver's name
+     * @param content message's content
+     */
     public synchronized void sendMessage(String sender, String receiver, String content) throws PlayerNotFoundException {
         game.sendMessage(sender, receiver, content);
     }
+    /**
+     * Send a message to all players
+     * @param sender sender's name
+     * @param content message's content
+     */
     public synchronized void sendMessage(String sender, String content) throws PlayerNotFoundException {
         game.sendMessage(sender, content);
     }

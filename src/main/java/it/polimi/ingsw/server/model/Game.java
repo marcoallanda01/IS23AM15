@@ -373,7 +373,7 @@ public class Game{
         }
         if (this.getCurrentPlayer().equals(player)) {
             if(this.currentTurn.getState().getClass().equals(PutTilesState.class)){
-                this.board.putBackInBad(this.currentTurn.getPickedTiles());
+                this.board.putBackInBag(this.currentTurn.getPickedTiles());
             }
             this.nextTurn(this.currentTurn.getCurrentPlayer());
         }
