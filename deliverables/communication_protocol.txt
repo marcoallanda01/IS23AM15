@@ -158,8 +158,9 @@ HelloCommand                        --------------------------------------------
 PING PONG:
 The ping pong is necessary to keep a client alive and make sure he didn't disconnect without notify it.
 The disconnection works as mentioned before.
+id is player's id or "NoId" if a player hasn't got an id yet.
 
-Every 20 seconds the server send a ping and the client must respond in 10 seconds with a pong.
+Every 3 seconds the server send a ping and the client must respond in 3 seconds with a pong.
 
 ##############                                                                                            ##############
 #   Client   #                                                                                            #   Server   #
@@ -190,6 +191,12 @@ Client can do three actions:
 ]}
 
 
+                                                      To all players                              {"name":"TilesPicked",
+                                     <--------------------------------------------------           "player":"***"
+                                                                                                   "tiles":"[***]"
+                                                                                                  }
+
+
 2) Put Tiles
 
 {"name":"PutTilesCommand",
@@ -198,6 +205,11 @@ Client can do three actions:
 "tiles":[
 "BOOK", ***
 ]}
+
+                                                      To all players                              {"name":"TilesPicked",
+                                     <--------------------------------------------------           "player":"***"
+                                                                                                   "tiles":"[]"
+                                                                                                  }
 
 
 3) Save Game and make all leave
@@ -246,13 +258,15 @@ Client does not respond to notifications. The right delivery of it relies on the
 players = list of strings of players' names ordered by turn
 goals = list of strings of common goals' name
 personal = list of personal cards
+oldChat = old messages (ChatMessage) from old game or if a player reconnected
 Other setting as boards, and considering loaded game settings as bookshelf and points, are sent using the others
 notifications
 
 {"name":"GameSetUp",
-"players":["***", ***]                  -------------------------------------------------->
-"goals":["***", ***]
-"personal":["***", ***]
+"players":["***", ***],                 -------------------------------------------------->
+"goals":["***", ***],
+"personal":["***", ***],
+"oldChat":[***]
 }
 
 
@@ -313,7 +327,7 @@ It's the client turn if he reads his name
 game = name of the save
 
 {"name":"GameSaved"
-"game":"***"}                         -------------------------------------------------->
+"game":"***"}                          -------------------------------------------------->
 
 
 - Winner notification
@@ -321,3 +335,9 @@ The connection is closed
 
 {"name":"Winner"                       -------------------------------------------------->
 "player":"***"}
+
+
+- General error message
+
+{"name":"ErrorMessage",
+ "message":"***"}                      -------------------------------------------------->
