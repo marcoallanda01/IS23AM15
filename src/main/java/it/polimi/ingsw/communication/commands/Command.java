@@ -8,6 +8,11 @@ import java.util.Optional;
 
 public abstract class Command {
     protected String name;
+
+    /**
+     * Command to perform something
+     * @param name command name
+     */
     public Command(String name){
         this.name = name;
     }

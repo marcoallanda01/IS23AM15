@@ -29,6 +29,9 @@ public class GUIChat extends GUIState {
         createUI();
     }
 
+    /*
+        * Create the chat UI
+     */
     public void createUI() {
         VBox root = new VBox(10);
         root.setPadding(new javafx.geometry.Insets(10));

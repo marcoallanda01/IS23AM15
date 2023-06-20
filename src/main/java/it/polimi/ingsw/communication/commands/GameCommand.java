@@ -9,6 +9,11 @@ import java.util.Optional;
 public abstract class GameCommand extends Command{
     protected String id;
 
+    /**
+     * Command that perform a specific player
+     * @param name command name
+     * @param id player unique id
+     */
     public GameCommand(String name, String id){
         super(name);
         this.id = id;

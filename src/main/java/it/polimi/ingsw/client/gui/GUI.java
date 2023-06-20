@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.client.cli.CLIRenderer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -48,7 +47,7 @@ public class GUI extends View {
             text.getStyleClass().add("my-shelfie-text");
 
             // Set the scene to the primary stage
-            Platform.runLater(() -> guiApplication.transitionToScene(scene));
+            guiApplication.transitionToScene(scene);
             // Create a Timeline animation to update the retry countdown
             Timeline timeline = new Timeline();
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), event -> {

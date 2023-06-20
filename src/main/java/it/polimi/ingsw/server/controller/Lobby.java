@@ -183,6 +183,9 @@ public class Lobby {
      * @param name          the name of the saved game
      * @param idFirstPlayer the id of the first player to connect
      * @return the list of loaded game players nicknames
+     * @throws GameNameException game name not available
+     * @throws GameLoadException could not load the game
+     * @throws IllegalLobbyException this player can not perform this action
      */
     public synchronized List<String> loadGame(String name, String idFirstPlayer) throws GameLoadException, GameNameException, IllegalLobbyException {
         System.out.println("Before loadgame: "+this);
@@ -212,6 +215,7 @@ public class Lobby {
      * @param name future nickname in the game from those available
      * @param id first player's id
      * @return true if game creation went well
+     * @throws NicknameException nickname not available in the old nicknames list
      */
     public synchronized boolean joinLoadedGameFirstPlayer(String name, String id) throws NicknameException {
         System.out.println("Before joinLoadedGameFirstPlayer: "+this);

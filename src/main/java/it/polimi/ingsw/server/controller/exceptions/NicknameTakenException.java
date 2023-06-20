@@ -2,11 +2,20 @@ package it.polimi.ingsw.server.controller.exceptions;
 
 public class NicknameTakenException extends Exception{
 
+    /**
+     * NicknameException constructor. Use when game with a nickname was already taken.
+     */
     public NicknameTakenException(){
+        super();
         System.err.println(this +"Nickname is already taken, can not connect!");
     }
 
+    /**
+     * NicknameException constructor. Use when game with a nickname was already taken.
+     * @param player nickname tried
+     */
     public NicknameTakenException(String player){
+        super();
         System.err.println(this +player+" tried to join!");
     }
 
