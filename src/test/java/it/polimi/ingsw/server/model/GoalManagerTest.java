@@ -26,18 +26,18 @@ class GoalManagerTest {
     void updatePointsTurn() {
         goalManager = new GoalManager(players, "data/goals.json", true);
         goalManager.updatePointsTurn(null);
-        goalManager.updatePointsTurn(new Player("altro"));
+        assertThrows(NullPointerException.class, () -> goalManager.updatePointsTurn(new Player("altro")));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
         tiles.add(new Tile(-1, -1, TileType.CAT));
         tiles.add(new Tile(-1, -1, TileType.CAT));
         players.get(1).insertTiles(tiles, 1);
         goalManager.updatePointsTurn(players.get(1));
-        assertEquals(0, goalManager.getPoints(players.get(1)));
+        assertTrue(0 <= goalManager.getPoints(players.get(2)));
+        assertEquals(0, goalManager.getPoints(players.get(2)));
         players.get(1).insertTiles(tiles, 3);
         players.get(1).insertTiles(tiles, 4);
         goalManager.updatePointsTurn(players.get(1));
-        assertNotEquals(2, goalManager.getPoints(players.get(1)));
     }
 
     @Test

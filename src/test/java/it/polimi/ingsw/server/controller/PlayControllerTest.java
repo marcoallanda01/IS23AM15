@@ -114,7 +114,6 @@ class PlayControllerTest {
                 new Chat(players), new GoalManager(players, "data/goals.json", true)) );
         assertTrue(playController.pickTiles(tileToPick, player.getUserName()));
         assertFalse(livingRoomBoard.getAllTiles().contains(tileToPick.get(0)));
-        player.gsonPostProcess();
         assertTrue(playController.putTiles(tileToPick, 0, player.getUserName()));
         assertTrue(player.getBookShelf().getAllTiles().contains(tileToPick.get(0)));
     }

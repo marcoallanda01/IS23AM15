@@ -397,8 +397,10 @@ public class Lobby {
      * Note MUST CALL when game is ended
      */
     public synchronized void reset(){
+        System.out.println("Lobby: Reset called!");
         this.resets++;
         if(this.resets == this.numServers) {
+            System.out.println("Lobby: All servers called reset!");
             this.directory = directory;
             this.firstPlayerId = null;
             this.numPlayersGame = -1;

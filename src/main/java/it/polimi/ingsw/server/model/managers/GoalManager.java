@@ -326,10 +326,9 @@ public class GoalManager{
      * @return points
      */
     public int getPoints(Player player) {
+
         return pointsManagers.stream()
-                .map(pointsManager -> pointsManager.getPoints(player))
-                .mapToInt(Integer::intValue)
-                .sum()
+                .map(pointsManager -> {System.out.println("PlayerToPoints:"+pointsManager.getPlayersToPoints());System.out.println(pointsManager.getPoints(player)); return pointsManager.getPoints(player);}).reduce(0, (a,b) -> a+b)
                 + (player.isFirstToFinish() ? 1 : 0);
     }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
@@ -344,7 +343,7 @@ public class GoalManager{
             updatePointsEnd(player);
         }
         //Last update of player points
-        players.forEach(player -> updatePointsEnd(player));
+        players.forEach(this::updatePointsEnd);
         players.forEach((p) -> p.setPoints(this.getPoints(p)));
         return players.stream().max(Comparator.comparingInt(this::getPoints)).get().getUserName();
     }

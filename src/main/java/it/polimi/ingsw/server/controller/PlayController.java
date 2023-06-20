@@ -240,6 +240,10 @@ public class PlayController {
         return new HashSet<>(game.getBoard().getAllTiles());
     }
 
+    /**
+     * Get current player
+     * @return player's nickname
+     */
     public synchronized String getCurrentPlayer() {
         return game.getCurrentPlayer();
     }
