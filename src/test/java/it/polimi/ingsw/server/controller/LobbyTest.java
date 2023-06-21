@@ -165,7 +165,7 @@ class LobbyTest {
     Lobby lobby;
     @BeforeEach
     void initialize(){
-        lobby = new Lobby("saves");
+        lobby = new Lobby("src/test/resources/saves");
     }
 
     @Test
@@ -414,12 +414,12 @@ class LobbyTest {
     @Test
     void loadGame() throws GameLoadException, GameNameException, IOException, IllegalLobbyException, WaitLobbyException {
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        Lobby lobby = new Lobby("saves");
+        Lobby lobby = new Lobby("src/test/resources/saves");
         Optional<String> uniqueID = lobby.join();
         if(uniqueID.isEmpty()){
             fail();
         }
-        File saves = new File("saves");
+        File saves = new File("src/test/resources/saves");
         if (!saves.exists()) {
             System.err.println(saves.getAbsolutePath());
             throw new IOException("Can not find " + saves);

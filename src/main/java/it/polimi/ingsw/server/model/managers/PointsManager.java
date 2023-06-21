@@ -30,6 +30,7 @@ public abstract class PointsManager {
      */
     public abstract void updatePoints(Player player);
     /**
+     * Gets the points of the player
      * @param player the player
      * @return the points of the player
      */
@@ -37,6 +38,7 @@ public abstract class PointsManager {
         return playersToPoints.get(player);
     }
     /**
+     * Gets the update rule
      * @return the frequency to which the PointsManager MUST be updated
      */
     public UpdateRule getUpdateRule() { return updateRule; }

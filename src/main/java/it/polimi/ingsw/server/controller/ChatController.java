@@ -23,6 +23,7 @@ public class ChatController {
      * @param sender sender's name
      * @param receiver receiver's name
      * @param content message's content
+     * @throws PlayerNotFoundException if no player was found
      */
     public synchronized void sendMessage(String sender, String receiver, String content) throws PlayerNotFoundException {
         game.sendMessage(sender, receiver, content);
@@ -31,6 +32,7 @@ public class ChatController {
      * Send a message to all players
      * @param sender sender's name
      * @param content message's content
+     * @throws PlayerNotFoundException if no player was found
      */
     public synchronized void sendMessage(String sender, String content) throws PlayerNotFoundException {
         game.sendMessage(sender, content);

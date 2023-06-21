@@ -33,7 +33,7 @@ class PlayControllerTest {
         pnc = new PushNotificationController(new ArrayList<>());
         game = new Game(pnc);
         game.setGame(players, false);
-        directory = "saves";
+        directory = "src/test/resources/saves";
         playController = new PlayController(game, directory, pnc);
     }
 
@@ -44,7 +44,7 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "saves", pnc);
+        PlayController playController = new PlayController(game, "src/test/resources/saves", pnc);
         assertTrue(playController.saveGame("SaveGameTest", true));
     }
 
@@ -57,7 +57,7 @@ class PlayControllerTest {
         Game game = new Game(players, false);
         PlayController playController = new PlayController(game, "/", pnc);
         assertThrows(IOException.class, () -> playController.saveGame("SaveGameTest"));
-        PlayController playController1 = new PlayController(game, "saves", pnc);
+        PlayController playController1 = new PlayController(game, "src/test/resources/saves", pnc);
         assertThrows(SaveException.class, () -> playController1.saveGame("SaveGameTest", false));
     }
 
@@ -250,7 +250,7 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "saves", pnc);
+        PlayController playController = new PlayController(game, "src/test/resources/saves", pnc);
         assertTrue(playController.leave("player1"));
         assertEquals(1, game.getPlayersList().stream().filter(p -> !p.isPlaying()).count());
         assertFalse(playController.leave("player1"));
@@ -271,7 +271,7 @@ class PlayControllerTest {
         players.add("player2");
         players.add("player3");
         Game game = new Game(players, false);
-        PlayController playController = new PlayController(game, "saves", pnc);
+        PlayController playController = new PlayController(game, "src/test/resources/saves", pnc);
         assertTrue(playController.isPlaying("player1"));
         assertFalse(playController.reconnect("player1"));
         assertTrue(playController.isPlaying("player1"));
