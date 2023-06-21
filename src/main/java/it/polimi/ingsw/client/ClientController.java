@@ -344,11 +344,11 @@ public class ClientController implements ClientNotificationListener {
         * Sends a message to the server to logout.
      */
     public void logout() {
-        Client.getInstance().setClientState(ClientStates.STARTUP);
         Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
     }
 
     public void close(String message) {
+        Client.getInstance().setClientState(ClientStates.END_GAME);
         view.stop(message);
     }
 
