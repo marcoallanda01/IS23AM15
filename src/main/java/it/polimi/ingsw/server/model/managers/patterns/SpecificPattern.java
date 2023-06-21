@@ -283,6 +283,9 @@ public class SpecificPattern extends Pattern {
             return false;
         };
     }
+    /**
+     * used for testing
+     */
     public static List<List<List<Boolean>>> getTransposedMasks(List<List<List<Boolean>>> masks) {
         return transposeMasks(masks);
     }

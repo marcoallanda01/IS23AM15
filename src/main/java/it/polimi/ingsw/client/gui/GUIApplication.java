@@ -59,11 +59,14 @@ public class GUIApplication extends Application {
     @Override
     public synchronized void stop() throws Exception {
         super.stop();
-        Client.getInstance().getClientController().logout();
         Client.getInstance().getLogger().log("Application closed");
+        Runtime.getRuntime().exit(0);
     }
     public synchronized void stop(String message) throws Exception {
-        showPopup(message, () -> Platform.exit());
+        showPopup(message, () -> {
+            Platform.exit();
+            Runtime.getRuntime().exit(0);
+        });
     }
 
     public synchronized void clearStage() {

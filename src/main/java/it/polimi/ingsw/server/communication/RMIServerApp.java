@@ -553,17 +553,18 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public void notifyWinner(String playerName) {
         synchronized (playersIds) {
+            Map<RMIClient, String> playersIdsCopy = new HashMap<>(this.playersIds);
             // I'm doing it in a synchronous way so I can close correctly the clients
-            this.playersIds.forEach((key, value) -> {
-                try {
-                    key.notifyWinner(playerName);
-                } catch (RemoteException | RuntimeException e) {
-                    System.err.println("RMI notifyWinner: " + e.getClass() + " thrown with client " + value);
-                }
-            });
-            // Close all playing clients
-            this.playersIds.forEach((key, value) -> {
-                respondServer.closeClient(key);
+            playersIdsCopy.forEach((key, value) -> {
+                executorService.submit( () -> {
+                    try {
+                        key.notifyWinner(playerName);
+                    } catch (RemoteException | RuntimeException e) {
+                        System.out.println("RMI notifyWinner: " + e.getClass() + " thrown with client " + value);
+                    }
+                    // Close all playing clients
+                    //respondServer.closeClient(key);
+                });
             });
         }
         //reset

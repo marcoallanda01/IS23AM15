@@ -65,7 +65,6 @@ public class PersonalPattern extends Pattern {
      *
      * @return function that returns points you get from number of tiles in right spots
      */
-    @java.lang.Override
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
         final Set<Tile> tiles = this.tiles;
         final List<int[]> checkToPoints = this.checkToPoints;

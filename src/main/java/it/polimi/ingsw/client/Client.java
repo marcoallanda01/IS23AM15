@@ -330,7 +330,7 @@ public class Client {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
         }
-        scheduleDisconnect(10);
+        scheduleDisconnect(1000);
     }
 
     /*
@@ -364,7 +364,7 @@ public class Client {
         @Override
         public void run() {
             Client.getInstance().getLogger().log("No response from server for 10 seconds, try restarting the app...");
-            Client.getInstance().getClientController().logout("No response from server for 10 seconds, try restarting the app...");
+            Client.getInstance().getClientController().close("No response from server for 10 seconds, try restarting the app...");
         }
     }
 }

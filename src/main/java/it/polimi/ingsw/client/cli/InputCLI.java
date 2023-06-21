@@ -28,6 +28,7 @@ public class InputCLI {
             if (!globalCommand) {
                 switch (Client.getInstance().getClientState()) {
                     case STARTUP -> {
+                        Runtime.getRuntime().exit(0);
                         return;
                     }
                     case LOGIN -> loginRequest(inputArray);
