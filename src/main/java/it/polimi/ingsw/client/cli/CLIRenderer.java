@@ -68,7 +68,7 @@ public class CLIRenderer {
         System.out.println("- Your nickname");
         System.out.println("- The number of players (2-4)");
         System.out.println("- Should the game use easy rules? (y/n)");
-        System.out.println("Please enter the \"create (n. of players) (y/n)\" command");
+        System.out.println("Please enter the \"(name) (n. of players) (y/n)\"");
     }
 
     /**
@@ -285,42 +285,19 @@ public class CLIRenderer {
      * @param message the error message
      */
     public synchronized static void printError(String message) {
-        String description;
-        switch (message) {
-            case "NicknameTakenException":
-                description = "Nickname already taken";
-                break;
-            case "NicknameException":
-                description = "Nickname not valid";
-                break;
-            case "EmptyLobbyException":
-                description = "Lobby is not full, wait";
-                break;
-            case "FirstPlayerAbsentException":
-                description = "First player is absent";
-                break;
-            case "FullGameException":
-                description = "Game is full";
-                break;
-            case "GameLoadException":
-                description = "Could not load game";
-                break;
-            case "GameNameException":
-                description = "Game name not valid";
-                break;
-            case "IllegalLobbyException":
-                description = "You don't have the permissions";
-                break;
-            case "SaveException":
-                description = "Save not valid";
-                break;
-            case "WaitLobbyException":
-                description = "Wait lobby not valid";
-                break;
-            default:
-                description = message;
-                break;
-        }
+        String description = switch (message) {
+            case "NicknameTakenException" -> "Nickname already taken";
+            case "NicknameException" -> "Nickname not valid";
+            case "EmptyLobbyException" -> "Lobby is not full, wait";
+            case "FirstPlayerAbsentException" -> "First player is absent";
+            case "FullGameException" -> "Game is full";
+            case "GameLoadException" -> "Could not load game";
+            case "GameNameException" -> "Game name not valid";
+            case "IllegalLobbyException" -> "You don't have the permissions";
+            case "SaveException" -> "Save not valid";
+            case "WaitLobbyException" -> "Wait lobby not valid";
+            default -> message;
+        };
         System.out.println(CliColor.RED_BOLD_BRIGHT + description + CliColor.RESET);
     }
 
