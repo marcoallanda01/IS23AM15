@@ -195,6 +195,18 @@ public class RMIRespondServer extends ResponseServer{
                         }
                     }
                 );
+                playController.getPlayers().forEach((pn) ->
+                        {
+                            try {
+                                client.notifyPoints(pn, playController.getPoints(pn));
+                            } catch (PlayerNotFoundException e) {
+                                System.err.println("Cannot handle PointsUpdate:" + pn
+                                        + " reconnection of " + name);
+                            } catch (RemoteException | RuntimeException e) {
+                                System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
+                            }
+                        }
+                );
 
                 client.notifyCommonCards(playController.getCommonGoalCardsToTokens());
                 client.notifyBoard(playController.getBoard());

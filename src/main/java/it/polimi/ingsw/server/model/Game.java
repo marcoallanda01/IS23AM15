@@ -193,6 +193,12 @@ public class Game{
         }
     }
 
+    /**
+     * Put tiles action performed
+     * @param tiles tiles to put
+     * @param column column in witch put the tiles
+     * @return True if action was performed correctly, false otherwise
+     */
     public boolean putTiles(List<Tile> tiles, int column) {
         List<Tile> oldTiles = currentTurn.getPickedTiles();
         if (currentTurn.putTiles(tiles, column)) {
