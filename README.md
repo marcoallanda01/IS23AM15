@@ -8,14 +8,20 @@
 | Complete rules               |  🟢   |
 | RMI                          |  🟢   |
 | Socket                       |  🟢   |
-| CLI                          |  🟡   |
-| GUI                          |  🔴   |
-| Persistence                  |  🟡   |
+| CLI                          |  🟢   |
+| GUI                          |  🟢   |
+| Persistence                  |  🟢   |
 | Resilience to disconnections |  🟢   |
-| Chat                         |  🟡   |
-| Multiple games               |  🔴   |
+| Chat                         |  🟢   |
 
 #### Legend
 🔴 Not implemented<br>
 🟡 Implementing<br>
 🟢 Implemented<br>
+
+## Test coverage
+| Functionality        |  Class%  |  Method%  | Line% |
+|:---------------------|:--------:|:---------:|:-----:|
+| Controller           |95%       |92%        |  94%  |
+| Model                |100%      |97%        |  94%  |
+![Test Coverage - Image](https://github.com/marccoallanda/IS23AM15/blob/main/deliverables/coverage.png)
