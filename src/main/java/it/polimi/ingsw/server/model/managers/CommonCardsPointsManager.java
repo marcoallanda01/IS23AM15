@@ -167,9 +167,9 @@ public class CommonCardsPointsManager extends CardsPointsManager implements Stan
      *
      * @param player the player to check for cards fulfillment
      * @param cards  the unfulfilled cards of the checked player
-     * @return a map (of type Map<Boolean, Set<Pattern>>) where
+     * @return {@literal a map (of type Map<Boolean, Set<Pattern>>) where
      * map.get(true) is a Set of cards that have just been fulfilled
-     * map.get(false) is a Set of cards that have not yet been fulfilled
+     * map.get(false) is a Set of cards that have not yet been fulfilled}
      */
     private Map<Boolean, Set<Pattern>> partitionCardsByFulfillment(Player player, Set<Pattern> cards) {
         return cards.stream().collect(Collectors.partitioningBy(hasPlayerFulfilledCard(player), Collectors.toSet()));

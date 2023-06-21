@@ -35,7 +35,7 @@ public class ClientController implements ClientNotificationListener {
         view.render();
     }
 
-    /*
+    /**
         * This method is called when the client receives the winner of the game.
         * @param nickname the nickname of the winner
      */
@@ -52,7 +52,7 @@ public class ClientController implements ClientNotificationListener {
         close("There is a winner, game ended");
     }
 
-    /*
+    /**
         * This method is called when the client receives the board of the game.
         * @param tiles the tiles of the board
      */
@@ -65,7 +65,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives a bookshelf of a player.
         * @param nickname the nickname of the player
         * @param tiles the tiles of the bookshelf
@@ -81,7 +81,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the points of a player.
         * @param nickname the nickname of the player
         * @param points the points of the player
@@ -97,7 +97,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the name of the current player.
         * @param nickname the nickname of the current player
      */
@@ -110,7 +110,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives its personal goal card.
         * @param nickname the nickname of the client
         * @param card the personal goal card of the client
@@ -124,7 +124,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the common cards of the game.
         * @param cardsToTokens the common cards of the game
      */
@@ -137,7 +137,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the common goals of the game.
         * @param goals the common goals of the game
      */
@@ -151,7 +151,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives a chat message.
         * @param nickname the nickname of the player who sent the message
         * @param message the message
@@ -168,7 +168,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives a disconnect message.
         * @param nickname the nickname of the player who disconnected
      */
@@ -178,7 +178,7 @@ public class ClientController implements ClientNotificationListener {
         view.showError("The player " + nickname + " has disconnected.");
     }
 
-    /*
+    /**
         * This method is called when the client receives a save message.
         * @param game the game to save
      */
@@ -188,7 +188,7 @@ public class ClientController implements ClientNotificationListener {
         view.showError("The game has been saved successfully.");
     }
 
-    /*
+    /**
         * This method is called when the client receives a ping message.
      */
     @Override
@@ -197,7 +197,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().pong(Client.getInstance().getId());
     }
 
-    /*
+    /**
         * This method is called when the client receives a reconnection message.
         * @param nickname the nickname of the player who reconnected
      */
@@ -207,7 +207,7 @@ public class ClientController implements ClientNotificationListener {
         view.showError("The player " + nickname + " has reconnected.");
     }
 
-    /*
+    /**
         * This method is called when the client receives the result of joining as the first player.
         * @param result true if the player has joined successfully, false otherwise
         *
@@ -223,7 +223,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the list of players in the loaded game.
         * @param nicknames the nicknames of the players in the loaded game
      */
@@ -237,7 +237,7 @@ public class ClientController implements ClientNotificationListener {
         //Client.getInstance().getClientCommunication().joinLoadedAsFirst(Client.getInstance().getNickname(), Client.getInstance().getId());
     }
 
-    /*
+    /**
         * This method is called when the client receives the handshake response.
         * @param lobbyReady true if the lobby is ready, false otherwise
         * @param firstPlayerId the id of the first player
@@ -265,7 +265,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the list of saved games.
         * @param games the list of saved games
      */
@@ -276,7 +276,7 @@ public class ClientController implements ClientNotificationListener {
 
         view.render();
     }
-    /*
+    /**
         * This method is called when the client receives the result of joining the lobby.
         * @param result true if the player has joined successfully, false otherwise
         * @param error the error message
@@ -294,7 +294,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * This method is called when the client receives the result of loading a game.
         * @param result true if the game has been loaded successfully, false otherwise
         * @param error the error message
@@ -308,7 +308,7 @@ public class ClientController implements ClientNotificationListener {
             view.showError(error);
         }
     }
-    /*
+    /**
         * This method is called when the client receives an error message.
         * @param message the error message
      */
@@ -317,7 +317,7 @@ public class ClientController implements ClientNotificationListener {
         view.showError(message);
     }
 
-    /*
+    /**
         * This method is called when the client receives the list of tiles he picked
         * @param nickname the nickname of the player who picked the tiles
         * @param tiles the list of tiles he picked
@@ -332,7 +332,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * Sends a message to the server to join a lobby.
      */
     public void login(String nickname) {
@@ -340,7 +340,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().join(Client.getInstance().getNickname());
     }
 
-    /*
+    /**
         * Sends a message to the server to logout.
      */
     public void logout() {
@@ -352,7 +352,7 @@ public class ClientController implements ClientNotificationListener {
         view.stop(message);
     }
 
-    /*
+    /**
         * Transitions either to the saved game selection or to the lobby creation.
      */
     public void createLobby(boolean loadGame) {
@@ -365,7 +365,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * Sends a message to the server to create a lobby.
         * @param nickname the nickname of the player who creates the lobby
         * @param numOfPlayers the number of players in the lobby
@@ -378,14 +378,14 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().joinNewAsFirst(Client.getInstance().getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
     }
 
-    /*
+    /**
         * Sends a message to the server to fetch the list of saved games.
      */
     public void getSavedGames() {
         Client.getInstance().getClientCommunication().getSavedGames();
     }
 
-    /*
+    /**
         * Sends a message to the server to load a game.
         * @param index the index of the game to load
      */
@@ -393,7 +393,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().loadGame(view.getSavedGames().get(index), Client.getInstance().getId());
     }
 
-    /*
+    /**
         * Sends a message to the server to join the game as the selected player.
         * @param nickname the nickname of the player selected
      */
@@ -406,7 +406,7 @@ public class ClientController implements ClientNotificationListener {
         }
     }
 
-    /*
+    /**
         * Sends a message to the server to pick the selected tiles.
         * @param coordinates the coordinates of the tiles to pick
      */
@@ -430,7 +430,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().pickTiles(Client.getInstance().getId(), tiles);
     }
 
-    /*
+    /**
         * Sends a message to the server to insert the selected tiles.
         * @param column the column where to insert the tiles
         * @param order the order of the tiles to insert
@@ -444,7 +444,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), orderedTiles, column);
     }
 
-    /*
+    /**
         * Sends a message to all the players
         * @param message the message to send
      */
@@ -452,7 +452,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().sendMessage(Client.getInstance().getId(), message);
     }
 
-    /*
+    /**
         * Sends a message to a specific player
         * @param receiver the nickname of the receiver
         * @param message the message to send
@@ -461,7 +461,7 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().sendMessage(Client.getInstance().getId(), message, receiver);
     }
 
-    /*
+    /**
         * Sends a message to the server to save the game.
      */
     public void saveGame(String gameName) {

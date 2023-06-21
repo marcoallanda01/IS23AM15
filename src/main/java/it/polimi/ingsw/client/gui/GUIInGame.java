@@ -52,7 +52,7 @@ public class GUIInGame extends GUIState {
         chatState = new GUIChat(guiApplication, chat, players);
     }
 
-    /*
+    /**
      * Create the in game UI
      */
     private void createUI() {
@@ -297,7 +297,7 @@ public class GUIInGame extends GUIState {
         return stackPane;
     }
 
-    /*
+    /**
         * Creates the list of goals
         * @param commonGoals the map containing the goals to be displayed
         * @return the VBox containing the list of goals
@@ -345,7 +345,7 @@ public class GUIInGame extends GUIState {
         return goalsBox;
     }
 
-    /*
+    /**
         * Creates the list of bookshelves
         * @return the HBox containing the list of bookshelves
      */
@@ -368,7 +368,7 @@ public class GUIInGame extends GUIState {
         return bookshelvesBox;
     }
 
-    /*
+    /**
         * Creates a single bookshelf
         * @param bookshelfTiles the set of tiles to be displayed
         * @param bookshelfName the name of the player owning the bookshelf
