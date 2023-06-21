@@ -3,7 +3,7 @@
 	{"name":"6_GROUPS_2_TILES",
 		"type":"adjacent", "min_tiles":2, "min_groups":6, "points":"1"
 	},
-	{"name":"DIAGONAL",
+	{"name":"DIAGONAL"},
 	{"name":"CORNERS",
 		"type":"specific", "masks":[[[1,0,0,0,1],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[1,0,0,0,1]]],
 		"group_num":1, "sgc":"N","max":1,"min":1, "fe": "N"
