@@ -220,10 +220,10 @@ public class RMIRespondServer extends ResponseServer{
 
             } catch (RemoteException | RuntimeException e) {
                 System.err.println("RMI handleReconnection: Remote Exception thrown with client " + name);
-                e.printStackTrace();
             } catch (PlayerNotFoundException e) {
                 System.out.println("handleReconnection: This player do not exists " + name);
             }
         }
+        startPingPong(client, lobby.getIdFromName(name));
     }
 }

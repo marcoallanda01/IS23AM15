@@ -384,7 +384,6 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
                         }
                     } catch (RemoteException | RuntimeException e) {
                         System.err.println("RMI notifyReconnection: " + e.getClass() + " thrown with client " + value);
-                        e.printStackTrace();
                     }
                 }
             );

@@ -115,12 +115,6 @@ public abstract class ResponseServer{
             }
 
             ResponseServer rs = this;
-            //TODO: choose
-            new Thread(() -> {
-                System.out.println("\u001B[38;5;202m started a new thread with tryStartGame() \u001B[0m");
-                rs.tryStartGame();
-                return;
-            });//.start();
             tryStartGame();
             System.out.println("\u001B[38;5;202m respond join after try to start game here \u001B[0m");
             return joinResponse;
@@ -220,7 +214,6 @@ public abstract class ResponseServer{
                         if(!playController.reconnect(name)){
                             System.err.println("respondReconnect: something went wrong with reconnection of " + id
                                     + ", probably client never disconnected for the server!");
-                            //handleReconnection(client);
                             throw new Exception("Player already connected!");
                         }
                     }
@@ -466,11 +459,5 @@ public abstract class ResponseServer{
      * @param message Error message
      */
     protected abstract void sendErrorMessageToAll(String message);
-
-    /**
-     * Handle reconnection of a client sending them all the necessary.
-     * @param client client's object
-     */
-   // protected abstract void handleReconnection(Object client);
 
 }

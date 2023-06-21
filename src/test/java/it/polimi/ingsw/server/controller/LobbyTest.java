@@ -570,8 +570,8 @@ class LobbyTest {
 
         tiles = List.of(new Tile(5, 2, TileType.GAME));
         pc.pickTiles(tiles, "player2");
-        pc.putTiles(tiles, 0, "player2");
-
+        pc.putTiles(tiles, 3, "player2");
+        assertEquals("player2", pc.getWinner());
         //Simulation s1
         Thread t1 = new Thread(() -> lobby.reset());
         //Simulation s2
@@ -580,9 +580,6 @@ class LobbyTest {
         t2.start();
         t1.join();
         t2.join();
-
-        assertEquals("player2", pc.getWinner());
         assertNotNull(lobby.join());
-
     }
 }
