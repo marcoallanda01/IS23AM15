@@ -330,23 +330,23 @@ public class Client {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
         }
-        scheduleDisconnect();
+        scheduleDisconnect(10);
     }
 
     /*
      * Schedule a disconnect after 10 seconds
      */
-    public void scheduleDisconnect() {
-        disconnectTimer.schedule(new DisconnectTask(), 10 * 1000);
+    public void scheduleDisconnect(int seconds) {
+        disconnectTimer.schedule(new DisconnectTask(), seconds * 1000L);
     }
 
     /*
      * Reset the disconnect timer
      */
-    public void resetDisconnectTimer() {
+    public void resetDisconnectTimer(int seconds) {
         disconnectTimer.cancel();
         disconnectTimer = new Timer();
-        scheduleDisconnect();
+        scheduleDisconnect(seconds);
     }
 
     private enum Protocols {
