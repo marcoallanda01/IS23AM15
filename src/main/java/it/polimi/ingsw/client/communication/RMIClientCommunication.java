@@ -307,6 +307,7 @@ public class RMIClientCommunication implements ClientCommunication {
         executorService.submit(() -> {
             try {
                 rmiClientConnection.getServer().pong(playerId);
+                Client.getInstance().getLogger().log("Client called pong(" + playerId + ")");
             } catch (RemoteException e) {
                 Client.getInstance().getLogger().log(e);
             }

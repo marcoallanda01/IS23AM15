@@ -263,6 +263,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
      */
     @Override
     public synchronized void notifyPing() throws RemoteException {
+        Client.getInstance().getLogger().log("Server called notifyPing()");
         executorService.submit(() -> clientNotificationListener.notifyPing());
     }
 
