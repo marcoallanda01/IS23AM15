@@ -1,0 +1,28 @@
+20230621_163519:
+RMI setup
+20230621_163519:
+Opening RMI client connection...
+20230621_163519:
+Locating registry...
+20230621_163519:
+Looking up the registry for ServerRMIApp...
+20230621_163520:
+RMI client connection open.
+20230621_163520:
+CLI Started
+20230621_163520:
+Client called reconnect(NoId)
+20230621_163520:
+Client called reconnect(NoId)
+20230621_163520:
+Client called hello(RMIClientConnection[UnicastServerRef [liveRef: [endpoint:[192.168.56.1:55920](local),objID:[-368423f4:188de619eef:-7fff, 4081544587199088848]]]])
+20230621_163520:
+Server called notifyHello(false,NoFirst,false)
+20230621_163520:
+Server returned: {"lobbyReady":false,"firstPlayerId":"NoFirst","loadedGame":false,"name":"Hello"}
+20230621_163527:
+Shutting down
+20230621_163527:
+RMI client connection closed.
+20230621_163527:
+Client called disconnect(NoId)

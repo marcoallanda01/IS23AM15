@@ -1,0 +1,74 @@
+20230621_163705:
+RMI setup
+20230621_163705:
+Opening RMI client connection...
+20230621_163705:
+Locating registry...
+20230621_163705:
+Looking up the registry for ServerRMIApp...
+20230621_163706:
+RMI client connection open.
+20230621_163706:
+CLI Started
+20230621_163706:
+Client called reconnect(2b506b3b-7226-414b-92bd-02c7d95fd2a4)
+20230621_163706:
+Client called reconnect(2b506b3b-7226-414b-92bd-02c7d95fd2a4)
+20230621_163706:
+Server called notifyReconnection(player2)
+20230621_163706:
+Rendering: STARTUP
+20230621_163706:
+Server called notifyBookshelf(player2,[Tile{x=0, y=1, type=CAT}, Tile{x=0, y=3, type=CAT}, Tile{x=2, y=5, type=CAT}, Tile{x=4, y=5, type=BOOK}, Tile{x=0, y=5, type=CAT}, Tile{x=1, y=1, type=TROPHY}, Tile{x=3, y=1, type=FRAME}, Tile{x=2, y=1, type=FRAME}, Tile{x=4, y=3, type=FRAME}, Tile{x=3, y=3, type=PLANT}, Tile{x=2, y=3, type=PLANT}, Tile{x=3, y=4, type=TROPHY}, Tile{x=0, y=4, type=TROPHY}, Tile{x=2, y=0, type=BOOK}, Tile{x=3, y=0, type=BOOK}, Tile{x=1, y=5, type=PLANT}, Tile{x=4, y=0, type=CAT}, Tile{x=1, y=0, type=TROPHY}, Tile{x=4, y=2, type=GAME}, Tile{x=3, y=2, type=GAME}, Tile{x=0, y=0, type=GAME}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=2, type=PLANT}, Tile{x=4, y=4, type=FRAME}, Tile{x=1, y=2, type=PLANT}, Tile{x=1, y=3, type=TROPHY}, Tile{x=2, y=4, type=PLANT}, Tile{x=1, y=4, type=PLANT}, Tile{x=4, y=1, type=CAT}])
+20230621_163706:
+Client called hello(RMIClientConnection[UnicastServerRef [liveRef: [endpoint:[192.168.56.1:56024](local),objID:[3ffc92ac:188de633de1:-7fff, 3994328564203392853]]]])
+20230621_163706:
+Server called notifyBookshelf(player1,[Tile{x=4, y=3, type=CAT}, Tile{x=1, y=3, type=BOOK}, Tile{x=3, y=5, type=BOOK}, Tile{x=0, y=1, type=BOOK}, Tile{x=4, y=1, type=GAME}, Tile{x=2, y=1, type=TROPHY}, Tile{x=2, y=3, type=GAME}, Tile{x=3, y=1, type=PLANT}, Tile{x=1, y=1, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=2, y=5, type=FRAME}, Tile{x=3, y=0, type=BOOK}, Tile{x=1, y=0, type=BOOK}, Tile{x=0, y=3, type=PLANT}, Tile{x=4, y=4, type=CAT}, Tile{x=0, y=4, type=CAT}, Tile{x=1, y=4, type=BOOK}, Tile{x=2, y=0, type=TROPHY}, Tile{x=4, y=0, type=GAME}, Tile{x=4, y=2, type=GAME}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=4, type=GAME}, Tile{x=3, y=2, type=PLANT}, Tile{x=0, y=0, type=FRAME}, Tile{x=2, y=2, type=FRAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=1, y=2, type=FRAME}, Tile{x=1, y=5, type=TROPHY}, Tile{x=3, y=3, type=BOOK}])
+20230621_163706:
+Server called notifyHello(true,NoFirst,false)
+20230621_163706:
+Server called notifyBookshelf(player2,[Tile{x=0, y=1, type=CAT}, Tile{x=0, y=3, type=CAT}, Tile{x=2, y=5, type=CAT}, Tile{x=4, y=5, type=BOOK}, Tile{x=0, y=5, type=CAT}, Tile{x=1, y=1, type=TROPHY}, Tile{x=3, y=1, type=FRAME}, Tile{x=2, y=1, type=FRAME}, Tile{x=4, y=3, type=FRAME}, Tile{x=3, y=3, type=PLANT}, Tile{x=2, y=3, type=PLANT}, Tile{x=3, y=4, type=TROPHY}, Tile{x=0, y=4, type=TROPHY}, Tile{x=2, y=0, type=BOOK}, Tile{x=3, y=0, type=BOOK}, Tile{x=1, y=5, type=PLANT}, Tile{x=4, y=0, type=CAT}, Tile{x=1, y=0, type=TROPHY}, Tile{x=4, y=2, type=GAME}, Tile{x=3, y=2, type=GAME}, Tile{x=0, y=0, type=GAME}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=2, type=PLANT}, Tile{x=4, y=4, type=FRAME}, Tile{x=1, y=2, type=PLANT}, Tile{x=1, y=3, type=TROPHY}, Tile{x=2, y=4, type=PLANT}, Tile{x=1, y=4, type=PLANT}, Tile{x=4, y=1, type=CAT}])
+20230621_163706:
+Server returned: {"lobbyReady":true,"firstPlayerId":"NoFirst","loadedGame":false,"name":"Hello"}
+20230621_163706:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163706:
+Server called notifyBoard([Tile{x=4, y=7, type=GAME}, Tile{x=3, y=3, type=CAT}, Tile{x=4, y=3, type=GAME}, Tile{x=5, y=3, type=FRAME}, Tile{x=7, y=5, type=FRAME}, Tile{x=6, y=5, type=PLANT}, Tile{x=4, y=6, type=TROPHY}, Tile{x=2, y=3, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=5, y=6, type=TROPHY}, Tile{x=3, y=7, type=FRAME}, Tile{x=4, y=4, type=BOOK}, Tile{x=3, y=6, type=BOOK}, Tile{x=5, y=2, type=GAME}, Tile{x=7, y=4, type=GAME}, Tile{x=6, y=4, type=GAME}, Tile{x=3, y=2, type=GAME}, Tile{x=4, y=2, type=PLANT}, Tile{x=5, y=4, type=PLANT}, Tile{x=3, y=4, type=PLANT}, Tile{x=3, y=5, type=TROPHY}, Tile{x=2, y=5, type=TROPHY}, Tile{x=5, y=5, type=BOOK}, Tile{x=2, y=4, type=PLANT}, Tile{x=4, y=1, type=CAT}, Tile{x=6, y=3, type=CAT}, Tile{x=5, y=1, type=CAT}])
+20230621_163706:
+Server called notifyTurn(player1)
+20230621_163706:
+Invalid state
+20230621_163706:
+Server called notifyGame({"players":["player1","player2"],"goals":["4_ADJACENT","3_ADJACENT","6_ADJACENT","5_ADJACENT"],"personal":"Personal_Goals","oldChat":[],"name":"GameSetUp"})
+20230621_163706:
+Rendering: LOGIN
+20230621_163706:
+Rendering: IN_GAME
+20230621_163722:
+Server called notifyDisconnection(player1)
+20230621_163722:
+Server called notifyTurn(player2)
+20230621_163722:
+Rendering: IN_GAME
+20230621_163722:
+Rendering: IN_GAME
+20230621_163725:
+Server called notifyReconnection(player1)
+20230621_163725:
+Rendering: IN_GAME
+20230621_163725:
+Server called notifyBookshelf(player1,[Tile{x=4, y=3, type=CAT}, Tile{x=1, y=3, type=BOOK}, Tile{x=3, y=5, type=BOOK}, Tile{x=0, y=1, type=BOOK}, Tile{x=4, y=1, type=GAME}, Tile{x=2, y=1, type=TROPHY}, Tile{x=2, y=3, type=GAME}, Tile{x=3, y=1, type=PLANT}, Tile{x=1, y=1, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=2, y=5, type=FRAME}, Tile{x=3, y=0, type=BOOK}, Tile{x=1, y=0, type=BOOK}, Tile{x=0, y=3, type=PLANT}, Tile{x=4, y=4, type=CAT}, Tile{x=0, y=4, type=CAT}, Tile{x=1, y=4, type=BOOK}, Tile{x=2, y=0, type=TROPHY}, Tile{x=4, y=0, type=GAME}, Tile{x=4, y=2, type=GAME}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=4, type=GAME}, Tile{x=3, y=2, type=PLANT}, Tile{x=0, y=0, type=FRAME}, Tile{x=2, y=2, type=FRAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=1, y=2, type=FRAME}, Tile{x=1, y=5, type=TROPHY}, Tile{x=3, y=3, type=BOOK}])
+20230621_163725:
+Rendering: IN_GAME
+20230621_163746:
+Server called notifyDisconnection(player1)
+20230621_163746:
+Rendering: IN_GAME
+20230621_163749:
+Shutting down
+20230621_163749:
+Server called notifyDisconnection(player2)
+20230621_163749:
+Rendering: STARTUP
+20230621_163749:
+Server encountered an error while logging you out

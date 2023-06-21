@@ -1,0 +1,124 @@
+20230621_164845:
+RMI setup
+20230621_164845:
+Opening RMI client connection...
+20230621_164845:
+Locating registry...
+20230621_164845:
+Looking up the registry for ServerRMIApp...
+20230621_164845:
+RMI client connection open.
+20230621_164845:
+CLI Started
+20230621_164845:
+Client called reconnect(1a8bcb5d-11fb-4205-b924-9983ba13a010)
+20230621_164845:
+Client called reconnect(1a8bcb5d-11fb-4205-b924-9983ba13a010)
+20230621_164845:
+Client called hello(RMIClientConnection[UnicastServerRef [liveRef: [endpoint:[192.168.56.1:56412](local),objID:[-1e55acd6:188de6deb1c:-7fff, -4313433941267918235]]]])
+20230621_164845:
+Server called notifyHello(true,NoFirst,true)
+20230621_164845:
+Client called getLoadedGamePlayers()
+20230621_164845:
+Server returned: {"lobbyReady":true,"firstPlayerId":"NoFirst","loadedGame":true,"name":"Hello"}
+20230621_164845:
+Server called notifyLoadedGamePlayers([player1, player2])
+20230621_164845:
+Rendering: LOAD_NAMES
+20230621_164845:
+Server responded: {"names":["player1","player2"],"name":"LoadedGamePlayers"}
+20230621_164854:
+Server called notifyTurn(player1)
+20230621_164854:
+Server called notifyBoard([Tile{x=4, y=3, type=GAME}, Tile{x=6, y=5, type=PLANT}, Tile{x=4, y=7, type=GAME}, Tile{x=2, y=3, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=4, y=1, type=CAT}, Tile{x=6, y=3, type=CAT}, Tile{x=5, y=3, type=FRAME}, Tile{x=7, y=5, type=FRAME}, Tile{x=3, y=3, type=CAT}, Tile{x=4, y=4, type=BOOK}, Tile{x=3, y=7, type=FRAME}, Tile{x=3, y=6, type=BOOK}, Tile{x=3, y=5, type=TROPHY}, Tile{x=2, y=5, type=TROPHY}, Tile{x=5, y=2, type=GAME}, Tile{x=7, y=4, type=GAME}, Tile{x=6, y=4, type=GAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=5, y=1, type=CAT}, Tile{x=3, y=4, type=PLANT}, Tile{x=4, y=2, type=PLANT}, Tile{x=3, y=2, type=GAME}, Tile{x=5, y=4, type=PLANT}, Tile{x=5, y=5, type=BOOK}, Tile{x=5, y=6, type=TROPHY}, Tile{x=4, y=6, type=TROPHY}])
+20230621_164854:
+Server called notifyPoints(player1,9)
+20230621_164854:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_164854:
+Server called notifyPoints(player2,11)
+20230621_164854:
+Server called notifyBookshelf(player1,[Tile{x=4, y=1, type=GAME}, Tile{x=0, y=3, type=PLANT}, Tile{x=2, y=3, type=GAME}, Tile{x=3, y=1, type=PLANT}, Tile{x=2, y=1, type=TROPHY}, Tile{x=4, y=5, type=FRAME}, Tile{x=1, y=1, type=FRAME}, Tile{x=3, y=0, type=BOOK}, Tile{x=4, y=3, type=CAT}, Tile{x=1, y=0, type=BOOK}, Tile{x=1, y=4, type=BOOK}, Tile{x=2, y=5, type=FRAME}, Tile{x=1, y=5, type=TROPHY}, Tile{x=4, y=2, type=GAME}, Tile{x=4, y=0, type=GAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=4, type=GAME}, Tile{x=3, y=2, type=PLANT}, Tile{x=2, y=0, type=TROPHY}, Tile{x=0, y=4, type=CAT}, Tile{x=1, y=2, type=FRAME}, Tile{x=0, y=0, type=FRAME}, Tile{x=2, y=2, type=FRAME}, Tile{x=4, y=4, type=CAT}, Tile{x=0, y=1, type=BOOK}, Tile{x=3, y=3, type=BOOK}, Tile{x=3, y=5, type=BOOK}, Tile{x=1, y=3, type=BOOK}])
+20230621_164854:
+Server called notifyBookshelf(player2,[Tile{x=1, y=5, type=PLANT}, Tile{x=4, y=0, type=CAT}, Tile{x=3, y=3, type=PLANT}, Tile{x=2, y=3, type=PLANT}, Tile{x=0, y=1, type=CAT}, Tile{x=0, y=3, type=CAT}, Tile{x=2, y=5, type=CAT}, Tile{x=1, y=1, type=TROPHY}, Tile{x=4, y=1, type=CAT}, Tile{x=3, y=0, type=BOOK}, Tile{x=2, y=1, type=FRAME}, Tile{x=4, y=3, type=FRAME}, Tile{x=2, y=0, type=BOOK}, Tile{x=3, y=1, type=FRAME}, Tile{x=0, y=5, type=CAT}, Tile{x=1, y=3, type=TROPHY}, Tile{x=4, y=2, type=GAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=1, y=4, type=PLANT}, Tile{x=2, y=2, type=PLANT}, Tile{x=1, y=2, type=PLANT}, Tile{x=0, y=2, type=GAME}, Tile{x=3, y=2, type=GAME}, Tile{x=0, y=0, type=GAME}, Tile{x=1, y=0, type=TROPHY}, Tile{x=4, y=4, type=FRAME}, Tile{x=4, y=5, type=BOOK}, Tile{x=3, y=4, type=TROPHY}, Tile{x=0, y=4, type=TROPHY}])
+20230621_164854:
+Client called join(player2)
+20230621_164854:
+Server called notifyJoinResponse(true,null,2d38e0b7-4149-426e-9f53-c8dbc8696720)
+20230621_164854:
+Server responded: {"result":true,"id":"2d38e0b7-4149-426e-9f53-c8dbc8696720","name":"JoinResponse"}
+20230621_164854:
+Rendering: LOBBY
+20230621_164854:
+Server called notifyGame({"players":["player1","player2"],"goals":["4_ADJACENT","3_ADJACENT","6_ADJACENT","5_ADJACENT"],"personal":"Personal_Goals","oldChat":[],"name":"GameSetUp"})
+20230621_164854:
+Rendering: IN_GAME
+20230621_164923:
+Server called notifyDisconnection(player1)
+20230621_164923:
+Rendering: IN_GAME
+20230621_164923:
+Server called notifyTurn(player2)
+20230621_164923:
+Rendering: IN_GAME
+20230621_164927:
+Server called notifyReconnection(player1)
+20230621_164927:
+Rendering: IN_GAME
+20230621_164927:
+Server called notifyBookshelf(player1,[Tile{x=4, y=1, type=GAME}, Tile{x=0, y=3, type=PLANT}, Tile{x=2, y=3, type=GAME}, Tile{x=3, y=1, type=PLANT}, Tile{x=2, y=1, type=TROPHY}, Tile{x=4, y=5, type=FRAME}, Tile{x=1, y=1, type=FRAME}, Tile{x=3, y=0, type=BOOK}, Tile{x=4, y=3, type=CAT}, Tile{x=1, y=0, type=BOOK}, Tile{x=1, y=4, type=BOOK}, Tile{x=2, y=5, type=FRAME}, Tile{x=1, y=5, type=TROPHY}, Tile{x=4, y=2, type=GAME}, Tile{x=4, y=0, type=GAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=4, type=GAME}, Tile{x=3, y=2, type=PLANT}, Tile{x=2, y=0, type=TROPHY}, Tile{x=0, y=4, type=CAT}, Tile{x=1, y=2, type=FRAME}, Tile{x=0, y=0, type=FRAME}, Tile{x=2, y=2, type=FRAME}, Tile{x=4, y=4, type=CAT}, Tile{x=0, y=1, type=BOOK}, Tile{x=3, y=3, type=BOOK}, Tile{x=3, y=5, type=BOOK}, Tile{x=1, y=3, type=BOOK}])
+20230621_164927:
+Rendering: IN_GAME
+20230621_164953:
+Server called notifyBoard([Tile{x=4, y=3, type=GAME}, Tile{x=6, y=5, type=PLANT}, Tile{x=4, y=7, type=GAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=4, y=1, type=CAT}, Tile{x=6, y=3, type=CAT}, Tile{x=5, y=3, type=FRAME}, Tile{x=7, y=5, type=FRAME}, Tile{x=3, y=3, type=CAT}, Tile{x=4, y=4, type=BOOK}, Tile{x=3, y=7, type=FRAME}, Tile{x=3, y=6, type=BOOK}, Tile{x=3, y=5, type=TROPHY}, Tile{x=2, y=5, type=TROPHY}, Tile{x=5, y=2, type=GAME}, Tile{x=7, y=4, type=GAME}, Tile{x=6, y=4, type=GAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=5, y=1, type=CAT}, Tile{x=3, y=4, type=PLANT}, Tile{x=4, y=2, type=PLANT}, Tile{x=3, y=2, type=GAME}, Tile{x=5, y=4, type=PLANT}, Tile{x=5, y=5, type=BOOK}, Tile{x=5, y=6, type=TROPHY}, Tile{x=4, y=6, type=TROPHY}])
+20230621_164953:
+Rendering: IN_GAME
+20230621_164953:
+Server called notifyPickedTiles(player2,[FRAME])
+20230621_164953:
+Client called pickTiles(2d38e0b7-4149-426e-9f53-c8dbc8696720, [Tile{x=2, y=3, type=FRAME}])
+20230621_164953:
+Rendering: IN_GAME
+20230621_164959:
+Server called notifyBookshelf(player2,[Tile{x=1, y=5, type=PLANT}, Tile{x=4, y=0, type=CAT}, Tile{x=3, y=3, type=PLANT}, Tile{x=2, y=3, type=PLANT}, Tile{x=0, y=1, type=CAT}, Tile{x=0, y=3, type=CAT}, Tile{x=2, y=5, type=CAT}, Tile{x=1, y=1, type=TROPHY}, Tile{x=4, y=1, type=CAT}, Tile{x=3, y=0, type=BOOK}, Tile{x=2, y=1, type=FRAME}, Tile{x=4, y=3, type=FRAME}, Tile{x=2, y=0, type=BOOK}, Tile{x=3, y=1, type=FRAME}, Tile{x=3, y=5, type=FRAME}, Tile{x=0, y=5, type=CAT}, Tile{x=1, y=3, type=TROPHY}, Tile{x=4, y=2, type=GAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=1, y=4, type=PLANT}, Tile{x=2, y=2, type=PLANT}, Tile{x=1, y=2, type=PLANT}, Tile{x=0, y=2, type=GAME}, Tile{x=3, y=2, type=GAME}, Tile{x=0, y=0, type=GAME}, Tile{x=1, y=0, type=TROPHY}, Tile{x=4, y=4, type=FRAME}, Tile{x=4, y=5, type=BOOK}, Tile{x=3, y=4, type=TROPHY}, Tile{x=0, y=4, type=TROPHY}])
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Server called notifyPickedTiles(player2,[])
+20230621_164959:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_164959:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_164959:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_164959:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_164959:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_164959:
+Server called notifyPoints(player2,12)
+20230621_164959:
+Server called notifyWinner(player2)
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Client called putTiles(2d38e0b7-4149-426e-9f53-c8dbc8696720, [FRAME], 3)
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Rendering: IN_GAME
+20230621_164959:
+Rendering: END_GAME
+20230621_165018:
+Shutting down
+20230621_165018:
+Server encountered an error while logging you out
