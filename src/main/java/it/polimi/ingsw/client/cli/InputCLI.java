@@ -66,6 +66,10 @@ public class InputCLI {
                                 break;
                         }
                     }
+                    case END_GAME -> {
+                        Runtime.getRuntime().exit(0);
+                        return;
+                    }
                 }
             }
         }
