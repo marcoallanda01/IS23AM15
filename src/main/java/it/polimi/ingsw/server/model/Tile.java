@@ -18,27 +18,37 @@ public class Tile implements  Serializable{
         this(-1, -1, type);
     }
 
+    /*
+        Gets the x coordinate of the tile
+     */
     public int getX() {
         return x;
     }
 
+    /*
+        Gets the y coordinate of the tile
+     */
     public int getY() {
         return y;
     }
 
+    /*
+        Sets the x coordinate of the tile
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /*
+        Sets the y coordinate of the tile
+     */
     public void setY(int y) {
         this.y = y;
     }
 
-    public void removeFromBoard() {
-        this.x = -1;
-        this.y = -1;
-    }
-
+    /*
+        Gets the type of the tile
+     */
     public TileType getType() {
         return type;
     }
@@ -46,15 +56,6 @@ public class Tile implements  Serializable{
     @Override
     public String toString() {
         return "Tile{" + "x=" + x + ", y=" + y + ", type=" + type + '}';
-    }
-
-    /**
-     * Check if two tiles have the same type
-     * @param t Other Tile
-     * @return true if this Tile and t have the same TileType
-     */
-    public boolean equalsType(Tile t){
-        return this.type == t.type;
     }
 
     @Override

@@ -128,6 +128,8 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                 jsonWriter.endObject();
                 jsonWriter.name("frequentUpdates");
                 jsonWriter.value(goalManager.getFrequentUpdates());
+                jsonWriter.name("commonCardsToDraw");
+                jsonWriter.value(goalManager.getCommonCardsToDraw());
             }
             jsonWriter.endObject();
         }
@@ -165,6 +167,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
         UpdateRule updateRule3 = null;
         LinkedHashSet<Pattern> patterns = null;
         boolean frequentUpdates = false;
+        int commonCardsToDraw = 2;
 
         in.beginObject();
 
@@ -179,14 +182,10 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     players.forEach(player -> player.setPlaying(true));
                     if (players == null || players.isEmpty()) throw new JsonParseException("Player list is null or empty");
                 }
-                case "winner" -> {
-                    // Read the winner
-                    winner = in.nextString();
-                }
-                case "isFirstGame" -> {
-                    // Read the isFirstGame flag
-                    isFirstGame = in.nextBoolean();
-                }
+                case "winner" -> // Read the winner
+                        winner = in.nextString();
+                case "isFirstGame" -> // Read the isFirstGame flag
+                        isFirstGame = in.nextBoolean();
                 case "board" -> {
                     // Read the LivingRoomBoard object
                     board = gson.fromJson(in, LivingRoomBoard.class);
@@ -199,20 +198,16 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                         String turnName = in.nextName();
 
                         switch (turnName) {
-                            case "pickedTiles" -> {
-                                // Read the list of picked tiles
-                                pickedTiles = gson.fromJson(in, new TypeToken<List<Tile>>() {
-                                }.getType());
-                            }
+                            case "pickedTiles" -> // Read the list of picked tiles
+                                    pickedTiles = gson.fromJson(in, new TypeToken<List<Tile>>() {
+                                    }.getType());
                             case "currentPlayer" -> {
                                 // Read the current player's username
                                 String currentPlayerName = in.nextString();
                                 currentPlayer = players.stream().filter(p -> p.getUserName().equals(currentPlayerName)).findFirst().orElse(null);
                             }
-                            case "state" -> {
-                                // Read the turn state
-                                stateName = in.nextString();
-                            }
+                            case "state" -> // Read the turn state
+                                    stateName = in.nextString();
                         }
                     }
                     if (currentPlayer == null) throw new JsonParseException("Current player is null");
@@ -226,12 +221,9 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                     }
                     in.endObject();
                 }
-                case "chat" -> {
-                    // Read the chat object
-                    chat = gson.fromJson(in, Chat.class);
-                }
+                case "chat" -> // Read the chat object
+                        chat = gson.fromJson(in, Chat.class);
                 case "goalManager" -> {
-                    //TODO: aggiunt campo CommonCardsToDraw a GoalManager
                     in.beginObject();
 
                     List<Player> finalPlayers = players;
@@ -252,16 +244,10 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                                     Collectors.toMap(entry -> finalPlayers.stream().filter(p -> p.getUserName().equals(entry.getKey())).findFirst().orElse(null),
                                                             Map.Entry::getValue));
                                         }
-                                        case "updateRule" -> {
-                                            updateRule = gson.fromJson(in, UpdateRule.class);
-                                        }
-                                        case "deck" -> {
-                                            deck = gson.fromJson(in, Deck.class);
-                                        }
-                                        case "cardsToTokens" -> {
-                                            cardsToTokens = gson.fromJson(in, new TypeToken<Map<Pattern, Stack<Integer>>>() {
-                                            }.getType());
-                                        }
+                                        case "updateRule" -> updateRule = gson.fromJson(in, UpdateRule.class);
+                                        case "deck" -> deck = gson.fromJson(in, Deck.class);
+                                        case "cardsToTokens" -> cardsToTokens = gson.fromJson(in, new TypeToken<Map<Pattern, Stack<Integer>>>() {
+                                        }.getType());
                                         case "playersToTokens" -> {
                                             Map<String, List<Integer>> playerToTokensNames = gson.fromJson(in, new TypeToken<Map<String, List<Integer>>>() {
                                             }.getType());
@@ -298,12 +284,8 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                                     Collectors.toMap(entry -> finalPlayers.stream().filter(p -> p.getUserName().equals(entry.getKey())).findFirst().orElse(null),
                                                             Map.Entry::getValue));
                                         }
-                                        case "updateRule" -> {
-                                            updateRule2 = gson.fromJson(in, UpdateRule.class);
-                                        }
-                                        case "deck" -> {
-                                            deck2 = gson.fromJson(in, Deck.class);
-                                        }
+                                        case "updateRule" -> updateRule2 = gson.fromJson(in, UpdateRule.class);
+                                        case "deck" -> deck2 = gson.fromJson(in, Deck.class);
                                         case "playersToCards" -> {
                                             Map<String, Pattern> playerToCardsNames = gson.fromJson(in, new TypeToken<Map<String, Pattern>>() {
                                             }.getType());
@@ -330,27 +312,22 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                                                     Collectors.toMap(entry -> finalPlayers.stream().filter(p -> p.getUserName().equals(entry.getKey())).findFirst().orElse(null),
                                                             Map.Entry::getValue));
                                         }
-                                        case "updateRule" -> {
-                                            updateRule3 = gson.fromJson(in, UpdateRule.class);
-                                        }
-                                        case "patterns" -> {
-                                            patterns = gson.fromJson(in, new TypeToken<LinkedHashSet<Pattern>>() {
-                                            }.getType());
-                                        }
+                                        case "updateRule" -> updateRule3 = gson.fromJson(in, UpdateRule.class);
+                                        case "patterns" -> patterns = gson.fromJson(in, new TypeToken<LinkedHashSet<Pattern>>() {
+                                        }.getType());
                                     }
                                 }
                                 if (playerToPoints3 == null || updateRule3 == null || patterns == null) throw new JsonParseException("Some fields are null");
                                 commonGoalsPointsManager = new CommonGoalsPointsManager(players, playerToPoints3, updateRule3, patterns);
                                 in.endObject();
                             }
-                            case "frequentUpdates" -> {
-                                frequentUpdates = in.nextBoolean();
-                            }
+                            case "frequentUpdates" -> frequentUpdates = in.nextBoolean();
+                            case "commonCardsToDraw" -> commonCardsToDraw = in.nextInt();
                         }
                     }
                     if (commonCardsPointsManager == null || personalCardsPointsManager == null || commonGoalsPointsManager == null)
                         throw new JsonParseException("At least one of the goal managers is null");
-                    goalManager = new GoalManager(commonCardsPointsManager, personalCardsPointsManager, commonGoalsPointsManager, frequentUpdates);
+                    goalManager = new GoalManager(commonCardsPointsManager, personalCardsPointsManager, commonGoalsPointsManager, frequentUpdates, commonCardsToDraw);
                     in.endObject();
                 }
                 // Ignore unknown fields

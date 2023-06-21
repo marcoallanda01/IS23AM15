@@ -214,7 +214,7 @@ public class InputCLI {
      * @param inputArray the input from the user
      */
     private static void createGameRequest(String[] inputArray) {
-        if (inputArray.length < 2 || inputArray.length > 3) {
+        if (inputArray.length < 3 || inputArray.length > 4) {
             Client.getInstance().getView().showError("Invalid input");
             return;
         }
@@ -233,13 +233,13 @@ public class InputCLI {
             return;
         }
         if (inputArray.length == 3) {
-            if (inputArray[2].equalsIgnoreCase("easyRules")) {
+            if (inputArray[2].equalsIgnoreCase("y")) {
                 Client.getInstance().getClientController().createGame(nickname, numPlayers, true);
-            } else {
-                Client.getInstance().getView().showError("Invalid input");
+            } else if ((inputArray[2].equalsIgnoreCase("n"))) {
+                Client.getInstance().getClientController().createGame(nickname, numPlayers, false);
             }
         } else {
-            Client.getInstance().getClientController().createGame(nickname, numPlayers, false);
+                Client.getInstance().getView().showError("Invalid input");
         }
     }
 
