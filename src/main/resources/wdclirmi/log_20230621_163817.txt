@@ -1,0 +1,152 @@
+20230621_163817:
+RMI setup
+20230621_163817:
+Opening RMI client connection...
+20230621_163817:
+Locating registry...
+20230621_163817:
+Looking up the registry for ServerRMIApp...
+20230621_163817:
+RMI client connection open.
+20230621_163817:
+CLI Started
+20230621_163817:
+Client called reconnect(2b506b3b-7226-414b-92bd-02c7d95fd2a4)
+20230621_163817:
+Client called reconnect(2b506b3b-7226-414b-92bd-02c7d95fd2a4)
+20230621_163818:
+Client called hello(RMIClientConnection[UnicastServerRef [liveRef: [endpoint:[192.168.56.1:56092](local),objID:[40681ef:188de6456d4:-7fff, 5392571135480363159]]]])
+20230621_163818:
+Server called notifyHello(true,NoFirst,true)
+20230621_163818:
+Client called getLoadedGamePlayers()
+20230621_163818:
+Server called notifyLoadedGamePlayers([player1, player2])
+20230621_163818:
+Server returned: {"lobbyReady":true,"firstPlayerId":"NoFirst","loadedGame":true,"name":"Hello"}
+20230621_163818:
+Rendering: LOAD_NAMES
+20230621_163818:
+Server responded: {"names":["player1","player2"],"name":"LoadedGamePlayers"}
+20230621_163835:
+Server called notifyTurn(player1)
+20230621_163835:
+Client called join(player2)
+20230621_163835:
+Server called notifyPoints(player1,9)
+20230621_163835:
+Server called notifyJoinResponse(true,null,489aca51-f0d3-419a-b097-66ab53ff62c4)
+20230621_163835:
+Server responded: {"result":true,"id":"489aca51-f0d3-419a-b097-66ab53ff62c4","name":"JoinResponse"}
+20230621_163835:
+Server called notifyPoints(player2,11)
+20230621_163835:
+Rendering: LOBBY
+20230621_163835:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163835:
+Server called notifyBoard([Tile{x=2, y=3, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=5, y=3, type=FRAME}, Tile{x=7, y=5, type=FRAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=3, y=7, type=FRAME}, Tile{x=4, y=3, type=GAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=4, y=2, type=PLANT}, Tile{x=5, y=4, type=PLANT}, Tile{x=5, y=5, type=BOOK}, Tile{x=4, y=7, type=GAME}, Tile{x=3, y=5, type=TROPHY}, Tile{x=2, y=5, type=TROPHY}, Tile{x=4, y=1, type=CAT}, Tile{x=6, y=3, type=CAT}, Tile{x=5, y=1, type=CAT}, Tile{x=6, y=4, type=GAME}, Tile{x=5, y=2, type=GAME}, Tile{x=7, y=4, type=GAME}, Tile{x=3, y=6, type=BOOK}, Tile{x=3, y=3, type=CAT}, Tile{x=3, y=2, type=GAME}, Tile{x=6, y=5, type=PLANT}, Tile{x=4, y=4, type=BOOK}, Tile{x=5, y=6, type=TROPHY}, Tile{x=4, y=6, type=TROPHY}])
+20230621_163835:
+Server called notifyBookshelf(player2,[Tile{x=0, y=4, type=TROPHY}, Tile{x=3, y=1, type=FRAME}, Tile{x=4, y=0, type=CAT}, Tile{x=2, y=1, type=FRAME}, Tile{x=4, y=3, type=FRAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=1, y=4, type=PLANT}, Tile{x=2, y=2, type=PLANT}, Tile{x=1, y=2, type=PLANT}, Tile{x=4, y=5, type=BOOK}, Tile{x=0, y=5, type=CAT}, Tile{x=0, y=3, type=CAT}, Tile{x=2, y=5, type=CAT}, Tile{x=1, y=1, type=TROPHY}, Tile{x=1, y=3, type=TROPHY}, Tile{x=4, y=1, type=CAT}, Tile{x=4, y=4, type=FRAME}, Tile{x=1, y=5, type=PLANT}, Tile{x=0, y=1, type=CAT}, Tile{x=4, y=2, type=GAME}, Tile{x=0, y=0, type=GAME}, Tile{x=3, y=3, type=PLANT}, Tile{x=3, y=2, type=GAME}, Tile{x=2, y=3, type=PLANT}, Tile{x=2, y=0, type=BOOK}, Tile{x=3, y=0, type=BOOK}, Tile{x=0, y=2, type=GAME}, Tile{x=1, y=0, type=TROPHY}, Tile{x=3, y=4, type=TROPHY}])
+20230621_163835:
+Server called notifyBookshelf(player1,[Tile{x=1, y=1, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=1, y=3, type=BOOK}, Tile{x=3, y=5, type=BOOK}, Tile{x=4, y=1, type=GAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=4, y=4, type=CAT}, Tile{x=2, y=5, type=FRAME}, Tile{x=3, y=2, type=PLANT}, Tile{x=3, y=3, type=BOOK}, Tile{x=0, y=1, type=BOOK}, Tile{x=2, y=3, type=GAME}, Tile{x=2, y=1, type=TROPHY}, Tile{x=0, y=0, type=FRAME}, Tile{x=2, y=2, type=FRAME}, Tile{x=1, y=5, type=TROPHY}, Tile{x=1, y=2, type=FRAME}, Tile{x=4, y=0, type=GAME}, Tile{x=4, y=2, type=GAME}, Tile{x=1, y=4, type=BOOK}, Tile{x=0, y=3, type=PLANT}, Tile{x=4, y=3, type=CAT}, Tile{x=3, y=1, type=PLANT}, Tile{x=1, y=0, type=BOOK}, Tile{x=3, y=0, type=BOOK}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=4, type=GAME}, Tile{x=2, y=0, type=TROPHY}, Tile{x=0, y=4, type=CAT}])
+20230621_163835:
+Server called notifyGame({"players":["player1","player2"],"goals":["4_ADJACENT","3_ADJACENT","6_ADJACENT","5_ADJACENT"],"personal":"Personal_Goals","oldChat":[],"name":"GameSetUp"})
+20230621_163835:
+Rendering: IN_GAME
+20230621_163844:
+Server called notifyDisconnection(player1)
+20230621_163844:
+Server called notifyTurn(player2)
+20230621_163844:
+Rendering: IN_GAME
+20230621_163844:
+Rendering: IN_GAME
+20230621_163849:
+Server called notifyReconnection(player1)
+20230621_163849:
+Rendering: IN_GAME
+20230621_163849:
+Server called notifyBookshelf(player1,[Tile{x=1, y=1, type=FRAME}, Tile{x=4, y=5, type=FRAME}, Tile{x=1, y=3, type=BOOK}, Tile{x=3, y=5, type=BOOK}, Tile{x=4, y=1, type=GAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=4, y=4, type=CAT}, Tile{x=2, y=5, type=FRAME}, Tile{x=3, y=2, type=PLANT}, Tile{x=3, y=3, type=BOOK}, Tile{x=0, y=1, type=BOOK}, Tile{x=2, y=3, type=GAME}, Tile{x=2, y=1, type=TROPHY}, Tile{x=0, y=0, type=FRAME}, Tile{x=2, y=2, type=FRAME}, Tile{x=1, y=5, type=TROPHY}, Tile{x=1, y=2, type=FRAME}, Tile{x=4, y=0, type=GAME}, Tile{x=4, y=2, type=GAME}, Tile{x=1, y=4, type=BOOK}, Tile{x=0, y=3, type=PLANT}, Tile{x=4, y=3, type=CAT}, Tile{x=3, y=1, type=PLANT}, Tile{x=1, y=0, type=BOOK}, Tile{x=3, y=0, type=BOOK}, Tile{x=0, y=2, type=GAME}, Tile{x=2, y=4, type=GAME}, Tile{x=2, y=0, type=TROPHY}, Tile{x=0, y=4, type=CAT}])
+20230621_163849:
+Rendering: IN_GAME
+20230621_163910:
+Server called notifyBoard([Tile{x=4, y=5, type=FRAME}, Tile{x=5, y=3, type=FRAME}, Tile{x=7, y=5, type=FRAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=3, y=7, type=FRAME}, Tile{x=4, y=3, type=GAME}, Tile{x=3, y=4, type=PLANT}, Tile{x=4, y=2, type=PLANT}, Tile{x=5, y=4, type=PLANT}, Tile{x=5, y=5, type=BOOK}, Tile{x=4, y=7, type=GAME}, Tile{x=3, y=5, type=TROPHY}, Tile{x=2, y=5, type=TROPHY}, Tile{x=4, y=1, type=CAT}, Tile{x=6, y=3, type=CAT}, Tile{x=5, y=1, type=CAT}, Tile{x=6, y=4, type=GAME}, Tile{x=5, y=2, type=GAME}, Tile{x=7, y=4, type=GAME}, Tile{x=3, y=6, type=BOOK}, Tile{x=3, y=3, type=CAT}, Tile{x=3, y=2, type=GAME}, Tile{x=6, y=5, type=PLANT}, Tile{x=4, y=4, type=BOOK}, Tile{x=5, y=6, type=TROPHY}, Tile{x=4, y=6, type=TROPHY}])
+20230621_163910:
+Rendering: IN_GAME
+20230621_163910:
+Server called notifyPickedTiles(player2,[FRAME])
+20230621_163910:
+Client called pickTiles(489aca51-f0d3-419a-b097-66ab53ff62c4, [Tile{x=2, y=3, type=FRAME}])
+20230621_163910:
+Rendering: IN_GAME
+20230621_163946:
+Server called notifyBookshelf(player2,[Tile{x=0, y=4, type=TROPHY}, Tile{x=3, y=1, type=FRAME}, Tile{x=4, y=0, type=CAT}, Tile{x=2, y=1, type=FRAME}, Tile{x=4, y=3, type=FRAME}, Tile{x=2, y=4, type=PLANT}, Tile{x=1, y=4, type=PLANT}, Tile{x=2, y=2, type=PLANT}, Tile{x=3, y=5, type=FRAME}, Tile{x=1, y=2, type=PLANT}, Tile{x=4, y=5, type=BOOK}, Tile{x=0, y=5, type=CAT}, Tile{x=0, y=3, type=CAT}, Tile{x=2, y=5, type=CAT}, Tile{x=1, y=1, type=TROPHY}, Tile{x=1, y=3, type=TROPHY}, Tile{x=4, y=1, type=CAT}, Tile{x=4, y=4, type=FRAME}, Tile{x=1, y=5, type=PLANT}, Tile{x=0, y=1, type=CAT}, Tile{x=4, y=2, type=GAME}, Tile{x=0, y=0, type=GAME}, Tile{x=3, y=3, type=PLANT}, Tile{x=3, y=2, type=GAME}, Tile{x=2, y=3, type=PLANT}, Tile{x=2, y=0, type=BOOK}, Tile{x=3, y=0, type=BOOK}, Tile{x=0, y=2, type=GAME}, Tile{x=1, y=0, type=TROPHY}, Tile{x=3, y=4, type=TROPHY}])
+20230621_163946:
+Server called notifyPickedTiles(player2,[])
+20230621_163946:
+Rendering: IN_GAME
+20230621_163946:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163946:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163946:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163946:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163946:
+Server called notifyCommonCards({6_GROUPS_2_TILES=[], DIAGONAL=[4, 8]})
+20230621_163946:
+Server called notifyPoints(player2,12)
+20230621_163946:
+Server called notifyWinner(player2)
+20230621_163946:
+Client called putTiles(489aca51-f0d3-419a-b097-66ab53ff62c4, [FRAME], 3)
+20230621_163946:
+Rendering: IN_GAME
+20230621_163946:
+Rendering: IN_GAME
+20230621_163946:
+Rendering: IN_GAME
+20230621_163946:
+Rendering: IN_GAME
+20230621_163947:
+Rendering: IN_GAME
+20230621_163947:
+Rendering: IN_GAME
+20230621_163947:
+Rendering: IN_GAME
+20230621_163947:
+Rendering: END_GAME
+20230621_164514:
+No response from server for 10 seconds, try restarting the app...
+20230621_164523:
+Shutting down
+20230621_164525:
+java.rmi.ConnectException: Connection refused to host: 192.168.56.1; nested exception is: 
+	java.net.ConnectException: Connection refused: connect
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:626)
+	at java.rmi/sun.rmi.transport.tcp.TCPChannel.createConnection(TCPChannel.java:217)
+	at java.rmi/sun.rmi.transport.tcp.TCPChannel.newConnection(TCPChannel.java:204)
+	at java.rmi/sun.rmi.server.UnicastRef.invoke(UnicastRef.java:134)
+	at java.rmi/java.rmi.server.RemoteObjectInvocationHandler.invokeRemoteMethod(RemoteObjectInvocationHandler.java:215)
+	at java.rmi/java.rmi.server.RemoteObjectInvocationHandler.invoke(RemoteObjectInvocationHandler.java:160)
+	at jdk.proxy1/jdk.proxy1.$Proxy1.disconnect(Unknown Source)
+	at it.polimi.ingsw.client.communication.RMIClientCommunication.disconnect(RMIClientCommunication.java:198)
+	at it.polimi.ingsw.client.ClientController.logout(ClientController.java:348)
+	at it.polimi.ingsw.client.Client.lambda$onConnectionReady$0(Client.java:326)
+	at java.base/java.lang.Thread.run(Thread.java:1589)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:579)
+	at java.base/sun.nio.ch.Net.connect(Net.java:568)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:576)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:666)
+	at java.base/java.net.Socket.connect(Socket.java:600)
+	at java.base/java.net.Socket.<init>(Socket.java:509)
+	at java.base/java.net.Socket.<init>(Socket.java:289)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createSocket(TCPDirectSocketFactory.java:40)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:620)
+	... 10 more
+

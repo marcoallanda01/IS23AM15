@@ -500,6 +500,18 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                     }
                 }
             );
+            playController.getPlayers().forEach((pn) ->
+                    {
+                        try {
+                            sendToClient(finalReconnectedPlayer,
+                                    new PlayerPoints(pn, playController.getPoints(pn)).toJson()
+                            );
+                        } catch (PlayerNotFoundException e) {
+                            System.err.println("Cannot handle PointsUpdate:" + pn
+                                    + " reconnection of " + finalReconnectedPlayer);
+                        }
+                    }
+            );
 
             sendToClient(finalReconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
             sendToClient(finalReconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());

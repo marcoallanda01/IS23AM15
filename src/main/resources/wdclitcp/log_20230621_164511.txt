@@ -1,0 +1,120 @@
+20230621_164511:
+TCP setup
+20230621_164511:
+Opening TCP client connection...
+20230621_164511:
+Opening socket...
+20230621_164511:
+Starting notification handler...
+20230621_164511:
+TCP client connection open.
+20230621_164511:
+CLI Started
+20230621_164511:
+Sent to server: {"name":"HelloCommand"}
+20230621_164511:
+Sent to server: {"id":"a2b81a6a-1c07-417a-aa80-52898e970f28","name":"Reconnect"}
+20230621_164511:
+Sent to server: {"id":"a2b81a6a-1c07-417a-aa80-52898e970f28","name":"Reconnect"}
+20230621_164511:
+Received from server: {"lobbyReady":false,"firstPlayerId":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","loadedGame":false,"name":"Hello"}
+20230621_164511:
+Rendering: CREATE_LOBBY
+20230621_164515:
+Sent to server: {"name":"GetSavedGames"}
+20230621_164515:
+Received from server: { "name": "SavedGames", "names": ["0","SaveGameTest","almost_finished","game_1","1_to_finish"]}
+20230621_164515:
+Rendering: LOAD_GAME
+20230621_164516:
+Received from server: {"name":"Ping"}
+20230621_164516:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164517:
+Sent to server: {"idFirstPlayer":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","game":"1_to_finish","name":"LoadGame"}
+20230621_164517:
+Received from server: {"result":true,"name":"LoadGameResponse"}
+20230621_164517:
+Sent to server: {"name":"GetLoadedPlayers"}
+20230621_164517:
+Received from server: {"names":["player1","player2"],"name":"LoadedGamePlayers"}
+20230621_164517:
+Rendering: LOAD_NAMES
+20230621_164519:
+Received from server: {"name":"Ping"}
+20230621_164519:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164520:
+Sent to server: {"player":"player1","idFirstPlayer":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"JoinLoadedAsFirst"}
+20230621_164520:
+Received from server: {"result":true,"name":"FirstJoinResponse"}
+20230621_164520:
+Rendering: LOBBY
+20230621_164522:
+Received from server: {"name":"Ping"}
+20230621_164522:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164525:
+Received from server: {"name":"Ping"}
+20230621_164525:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164528:
+Received from server: {"name":"Ping"}
+20230621_164528:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164531:
+Received from server: {"name":"Ping"}
+20230621_164531:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164533:
+Received from server: {"player":"player1","name":"TurnNotify"}
+20230621_164533:
+Received from server: {"tiles":[{"x":4,"y":7,"type":"GAME"},{"x":5,"y":6,"type":"TROPHY"},{"x":4,"y":3,"type":"GAME"},{"x":5,"y":4,"type":"PLANT"},{"x":4,"y":2,"type":"PLANT"},{"x":4,"y":6,"type":"TROPHY"},{"x":2,"y":4,"type":"PLANT"},{"x":4,"y":4,"type":"BOOK"},{"x":3,"y":4,"type":"PLANT"},{"x":3,"y":6,"type":"BOOK"},{"x":5,"y":3,"type":"FRAME"},{"x":7,"y":5,"type":"FRAME"},{"x":2,"y":3,"type":"FRAME"},{"x":4,"y":5,"type":"FRAME"},{"x":6,"y":4,"type":"GAME"},{"x":3,"y":2,"type":"GAME"},{"x":3,"y":7,"type":"FRAME"},{"x":5,"y":2,"type":"GAME"},{"x":7,"y":4,"type":"GAME"},{"x":4,"y":1,"type":"CAT"},{"x":6,"y":3,"type":"CAT"},{"x":6,"y":5,"type":"PLANT"},{"x":5,"y":1,"type":"CAT"},{"x":2,"y":5,"type":"TROPHY"},{"x":3,"y":5,"type":"TROPHY"},{"x":5,"y":5,"type":"BOOK"},{"x":3,"y":3,"type":"CAT"}],"name":"BoardUpdate"}
+20230621_164533:
+Received from server: {"cardsAndTokens":{"6_GROUPS_2_TILES":[],"DIAGONAL":[4,8]},"name":"CommonCards"}
+20230621_164533:
+Received from server: {"player":"player1","points":9,"name":"PlayerPoints"}
+20230621_164533:
+Received from server: {"player":"player1","tiles":[{"x":1,"y":2,"type":"FRAME"},{"x":0,"y":0,"type":"FRAME"},{"x":2,"y":2,"type":"FRAME"},{"x":2,"y":3,"type":"GAME"},{"x":2,"y":0,"type":"TROPHY"},{"x":4,"y":1,"type":"GAME"},{"x":3,"y":2,"type":"PLANT"},{"x":1,"y":4,"type":"BOOK"},{"x":3,"y":4,"type":"PLANT"},{"x":0,"y":4,"type":"CAT"},{"x":4,"y":4,"type":"CAT"},{"x":0,"y":2,"type":"GAME"},{"x":2,"y":4,"type":"GAME"},{"x":4,"y":5,"type":"FRAME"},{"x":1,"y":1,"type":"FRAME"},{"x":2,"y":5,"type":"FRAME"},{"x":4,"y":2,"type":"GAME"},{"x":2,"y":1,"type":"TROPHY"},{"x":4,"y":0,"type":"GAME"},{"x":1,"y":5,"type":"TROPHY"},{"x":3,"y":1,"type":"PLANT"},{"x":4,"y":3,"type":"CAT"},{"x":0,"y":1,"type":"BOOK"},{"x":0,"y":3,"type":"PLANT"},{"x":3,"y":3,"type":"BOOK"},{"x":1,"y":3,"type":"BOOK"},{"x":3,"y":5,"type":"BOOK"},{"x":3,"y":0,"type":"BOOK"},{"x":1,"y":0,"type":"BOOK"}],"name":"BookShelfUpdate"}
+20230621_164533:
+Received from server: {"player":"player2","points":11,"name":"PlayerPoints"}
+20230621_164533:
+Received from server: {"player":"player2","tiles":[{"x":4,"y":4,"type":"FRAME"},{"x":3,"y":4,"type":"TROPHY"},{"x":1,"y":0,"type":"TROPHY"},{"x":0,"y":4,"type":"TROPHY"},{"x":4,"y":0,"type":"CAT"},{"x":1,"y":4,"type":"PLANT"},{"x":2,"y":4,"type":"PLANT"},{"x":1,"y":2,"type":"PLANT"},{"x":2,"y":2,"type":"PLANT"},{"x":0,"y":2,"type":"GAME"},{"x":2,"y":1,"type":"FRAME"},{"x":4,"y":3,"type":"FRAME"},{"x":3,"y":1,"type":"FRAME"},{"x":0,"y":0,"type":"GAME"},{"x":1,"y":5,"type":"PLANT"},{"x":4,"y":2,"type":"GAME"},{"x":1,"y":1,"type":"TROPHY"},{"x":3,"y":2,"type":"GAME"},{"x":4,"y":1,"type":"CAT"},{"x":1,"y":3,"type":"TROPHY"},{"x":4,"y":5,"type":"BOOK"},{"x":2,"y":3,"type":"PLANT"},{"x":3,"y":3,"type":"PLANT"},{"x":0,"y":5,"type":"CAT"},{"x":3,"y":0,"type":"BOOK"},{"x":2,"y":0,"type":"BOOK"},{"x":0,"y":1,"type":"CAT"},{"x":0,"y":3,"type":"CAT"},{"x":2,"y":5,"type":"CAT"}],"name":"BookShelfUpdate"}
+20230621_164533:
+Received from server: {"players":["player1","player2"],"goals":["4_ADJACENT","3_ADJACENT","6_ADJACENT","5_ADJACENT"],"personal":"Personal_Goals9","oldChat":[],"name":"GameSetUp"}
+20230621_164533:
+Rendering: IN_GAME
+20230621_164534:
+Received from server: {"name":"Ping"}
+20230621_164534:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164537:
+Received from server: {"name":"Ping"}
+20230621_164537:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164540:
+Received from server: {"name":"Ping"}
+20230621_164540:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164543:
+Received from server: {"name":"Ping"}
+20230621_164543:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Pong"}
+20230621_164545:
+java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1656)
+	at it.polimi.ingsw.client.communication.TCPClientConnection.startNotificationHandler(TCPClientConnection.java:114)
+	at it.polimi.ingsw.client.communication.TCPClientConnection.lambda$openConnection$0(TCPClientConnection.java:49)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1589)
+
+20230621_164553:
+No response from server for 10 seconds, try restarting the app...
+20230621_164558:
+Shutting down
+20230621_164558:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Disconnect"}
+20230621_164558:
+TCP client connection closed.

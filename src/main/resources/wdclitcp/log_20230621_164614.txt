@@ -1,0 +1,334 @@
+20230621_164614:
+TCP setup
+20230621_164614:
+Opening TCP client connection...
+20230621_164614:
+Opening socket...
+20230621_164614:
+Starting notification handler...
+20230621_164614:
+TCP client connection open.
+20230621_164614:
+CLI Started
+20230621_164614:
+Sent to server: {"name":"HelloCommand"}
+20230621_164614:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Reconnect"}
+20230621_164614:
+Sent to server: {"id":"f6ff606b-a7b8-4994-aa2d-706c1ca994c1","name":"Reconnect"}
+20230621_164614:
+Received from server: {"lobbyReady":false,"firstPlayerId":"97cf1a08-d98f-4977-b718-f27a342ce10c","loadedGame":false,"name":"Hello"}
+20230621_164614:
+Rendering: CREATE_LOBBY
+20230621_164619:
+Received from server: {"name":"Ping"}
+20230621_164619:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164620:
+Sent to server: {"name":"GetSavedGames"}
+20230621_164620:
+Received from server: { "name": "SavedGames", "names": ["0","SaveGameTest","almost_finished","game_1","1_to_finish"]}
+20230621_164620:
+Rendering: LOAD_GAME
+20230621_164622:
+Received from server: {"name":"Ping"}
+20230621_164622:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164622:
+Sent to server: {"idFirstPlayer":"97cf1a08-d98f-4977-b718-f27a342ce10c","game":"1_to_finish","name":"LoadGame"}
+20230621_164622:
+Received from server: {"result":true,"name":"LoadGameResponse"}
+20230621_164622:
+Sent to server: {"name":"GetLoadedPlayers"}
+20230621_164622:
+Received from server: {"names":["player1","player2"],"name":"LoadedGamePlayers"}
+20230621_164622:
+Rendering: LOAD_NAMES
+20230621_164625:
+Received from server: {"name":"Ping"}
+20230621_164625:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164625:
+Sent to server: {"player":"player1","idFirstPlayer":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"JoinLoadedAsFirst"}
+20230621_164625:
+Received from server: {"result":true,"name":"FirstJoinResponse"}
+20230621_164625:
+Rendering: LOBBY
+20230621_164628:
+Received from server: {"name":"Ping"}
+20230621_164628:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164631:
+Received from server: {"name":"Ping"}
+20230621_164631:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164634:
+Received from server: {"name":"Ping"}
+20230621_164634:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164637:
+Received from server: {"name":"Ping"}
+20230621_164637:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164640:
+Received from server: {"name":"Ping"}
+20230621_164640:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164643:
+Received from server: {"name":"Ping"}
+20230621_164643:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164646:
+Received from server: {"name":"Ping"}
+20230621_164646:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164649:
+Received from server: {"name":"Ping"}
+20230621_164649:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164652:
+Received from server: {"name":"Ping"}
+20230621_164652:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164655:
+Received from server: {"name":"Ping"}
+20230621_164655:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164658:
+Received from server: {"name":"Ping"}
+20230621_164658:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164701:
+Received from server: {"name":"Ping"}
+20230621_164701:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164704:
+Received from server: {"name":"Ping"}
+20230621_164704:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164707:
+Received from server: {"name":"Ping"}
+20230621_164707:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164710:
+Received from server: {"name":"Ping"}
+20230621_164710:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164713:
+Received from server: {"name":"Ping"}
+20230621_164713:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164716:
+Received from server: {"name":"Ping"}
+20230621_164716:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164719:
+Received from server: {"name":"Ping"}
+20230621_164719:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164722:
+Received from server: {"name":"Ping"}
+20230621_164722:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164725:
+Received from server: {"name":"Ping"}
+20230621_164725:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164728:
+Received from server: {"name":"Ping"}
+20230621_164728:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164731:
+Received from server: {"name":"Ping"}
+20230621_164731:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164734:
+Received from server: {"name":"Ping"}
+20230621_164734:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164737:
+Received from server: {"name":"Ping"}
+20230621_164737:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164740:
+Received from server: {"name":"Ping"}
+20230621_164740:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164743:
+Received from server: {"name":"Ping"}
+20230621_164743:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164746:
+Received from server: {"name":"Ping"}
+20230621_164746:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164749:
+Received from server: {"name":"Ping"}
+20230621_164749:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164752:
+Received from server: {"name":"Ping"}
+20230621_164752:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164755:
+Received from server: {"name":"Ping"}
+20230621_164755:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164758:
+Received from server: {"name":"Ping"}
+20230621_164758:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164801:
+Received from server: {"name":"Ping"}
+20230621_164801:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164804:
+Received from server: {"name":"Ping"}
+20230621_164804:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164807:
+Received from server: {"name":"Ping"}
+20230621_164807:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164810:
+Received from server: {"name":"Ping"}
+20230621_164810:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164813:
+Received from server: {"name":"Ping"}
+20230621_164813:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164816:
+Received from server: {"name":"Ping"}
+20230621_164816:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164819:
+Received from server: {"name":"Ping"}
+20230621_164819:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164822:
+Received from server: {"name":"Ping"}
+20230621_164822:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164825:
+Received from server: {"name":"Ping"}
+20230621_164825:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164828:
+Received from server: {"name":"Ping"}
+20230621_164828:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164831:
+Received from server: {"name":"Ping"}
+20230621_164831:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164834:
+Received from server: {"name":"Ping"}
+20230621_164834:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164837:
+Received from server: {"name":"Ping"}
+20230621_164837:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164840:
+Received from server: {"name":"Ping"}
+20230621_164840:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164843:
+Received from server: {"name":"Ping"}
+20230621_164843:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164846:
+Received from server: {"name":"Ping"}
+20230621_164846:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164849:
+Received from server: {"name":"Ping"}
+20230621_164849:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164852:
+Received from server: {"name":"Ping"}
+20230621_164852:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164854:
+Received from server: {"player":"player1","name":"TurnNotify"}
+20230621_164854:
+Received from server: {"tiles":[{"x":4,"y":7,"type":"GAME"},{"x":5,"y":6,"type":"TROPHY"},{"x":4,"y":3,"type":"GAME"},{"x":5,"y":4,"type":"PLANT"},{"x":4,"y":2,"type":"PLANT"},{"x":4,"y":6,"type":"TROPHY"},{"x":2,"y":4,"type":"PLANT"},{"x":4,"y":4,"type":"BOOK"},{"x":3,"y":4,"type":"PLANT"},{"x":3,"y":6,"type":"BOOK"},{"x":5,"y":3,"type":"FRAME"},{"x":7,"y":5,"type":"FRAME"},{"x":2,"y":3,"type":"FRAME"},{"x":4,"y":5,"type":"FRAME"},{"x":6,"y":4,"type":"GAME"},{"x":3,"y":2,"type":"GAME"},{"x":3,"y":7,"type":"FRAME"},{"x":5,"y":2,"type":"GAME"},{"x":7,"y":4,"type":"GAME"},{"x":4,"y":1,"type":"CAT"},{"x":6,"y":3,"type":"CAT"},{"x":6,"y":5,"type":"PLANT"},{"x":5,"y":1,"type":"CAT"},{"x":2,"y":5,"type":"TROPHY"},{"x":3,"y":5,"type":"TROPHY"},{"x":5,"y":5,"type":"BOOK"},{"x":3,"y":3,"type":"CAT"}],"name":"BoardUpdate"}
+20230621_164854:
+Received from server: {"cardsAndTokens":{"6_GROUPS_2_TILES":[],"DIAGONAL":[4,8]},"name":"CommonCards"}
+20230621_164854:
+Received from server: {"player":"player1","points":9,"name":"PlayerPoints"}
+20230621_164854:
+Received from server: {"player":"player1","tiles":[{"x":1,"y":2,"type":"FRAME"},{"x":0,"y":0,"type":"FRAME"},{"x":2,"y":2,"type":"FRAME"},{"x":2,"y":3,"type":"GAME"},{"x":2,"y":0,"type":"TROPHY"},{"x":4,"y":1,"type":"GAME"},{"x":3,"y":2,"type":"PLANT"},{"x":1,"y":4,"type":"BOOK"},{"x":3,"y":4,"type":"PLANT"},{"x":0,"y":4,"type":"CAT"},{"x":4,"y":4,"type":"CAT"},{"x":0,"y":2,"type":"GAME"},{"x":2,"y":4,"type":"GAME"},{"x":4,"y":5,"type":"FRAME"},{"x":1,"y":1,"type":"FRAME"},{"x":2,"y":5,"type":"FRAME"},{"x":4,"y":2,"type":"GAME"},{"x":2,"y":1,"type":"TROPHY"},{"x":4,"y":0,"type":"GAME"},{"x":1,"y":5,"type":"TROPHY"},{"x":3,"y":1,"type":"PLANT"},{"x":4,"y":3,"type":"CAT"},{"x":0,"y":1,"type":"BOOK"},{"x":0,"y":3,"type":"PLANT"},{"x":3,"y":3,"type":"BOOK"},{"x":1,"y":3,"type":"BOOK"},{"x":3,"y":5,"type":"BOOK"},{"x":3,"y":0,"type":"BOOK"},{"x":1,"y":0,"type":"BOOK"}],"name":"BookShelfUpdate"}
+20230621_164854:
+Received from server: {"player":"player2","points":11,"name":"PlayerPoints"}
+20230621_164854:
+Received from server: {"player":"player2","tiles":[{"x":4,"y":4,"type":"FRAME"},{"x":3,"y":4,"type":"TROPHY"},{"x":1,"y":0,"type":"TROPHY"},{"x":0,"y":4,"type":"TROPHY"},{"x":4,"y":0,"type":"CAT"},{"x":1,"y":4,"type":"PLANT"},{"x":2,"y":4,"type":"PLANT"},{"x":1,"y":2,"type":"PLANT"},{"x":2,"y":2,"type":"PLANT"},{"x":0,"y":2,"type":"GAME"},{"x":2,"y":1,"type":"FRAME"},{"x":4,"y":3,"type":"FRAME"},{"x":3,"y":1,"type":"FRAME"},{"x":0,"y":0,"type":"GAME"},{"x":1,"y":5,"type":"PLANT"},{"x":4,"y":2,"type":"GAME"},{"x":1,"y":1,"type":"TROPHY"},{"x":3,"y":2,"type":"GAME"},{"x":4,"y":1,"type":"CAT"},{"x":1,"y":3,"type":"TROPHY"},{"x":4,"y":5,"type":"BOOK"},{"x":2,"y":3,"type":"PLANT"},{"x":3,"y":3,"type":"PLANT"},{"x":0,"y":5,"type":"CAT"},{"x":3,"y":0,"type":"BOOK"},{"x":2,"y":0,"type":"BOOK"},{"x":0,"y":1,"type":"CAT"},{"x":0,"y":3,"type":"CAT"},{"x":2,"y":5,"type":"CAT"}],"name":"BookShelfUpdate"}
+20230621_164854:
+Received from server: {"players":["player1","player2"],"goals":["4_ADJACENT","3_ADJACENT","6_ADJACENT","5_ADJACENT"],"personal":"Personal_Goals9","oldChat":[],"name":"GameSetUp"}
+20230621_164854:
+Rendering: IN_GAME
+20230621_164855:
+Received from server: {"name":"Ping"}
+20230621_164855:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164858:
+Received from server: {"name":"Ping"}
+20230621_164858:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164901:
+Received from server: {"name":"Ping"}
+20230621_164901:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164904:
+Received from server: {"name":"Ping"}
+20230621_164904:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164907:
+Received from server: {"name":"Ping"}
+20230621_164907:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164910:
+Received from server: {"name":"Ping"}
+20230621_164910:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164913:
+Received from server: {"name":"Ping"}
+20230621_164913:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164916:
+Received from server: {"name":"Ping"}
+20230621_164916:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164919:
+Received from server: {"name":"Ping"}
+20230621_164919:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164922:
+Received from server: {"name":"Ping"}
+20230621_164922:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Pong"}
+20230621_164923:
+Shutting down
+20230621_164923:
+Sent to server: {"id":"97cf1a08-d98f-4977-b718-f27a342ce10c","name":"Disconnect"}
+20230621_164923:
+Received from server: {"player":"player1","name":"Disconnection"}
+20230621_164923:
+Rendering: IN_GAME
+20230621_164923:
+Received from server: {"player":"player2","name":"TurnNotify"}
+20230621_164923:
+java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1656)
+	at it.polimi.ingsw.client.communication.TCPClientConnection.startNotificationHandler(TCPClientConnection.java:114)
+	at it.polimi.ingsw.client.communication.TCPClientConnection.lambda$openConnection$0(TCPClientConnection.java:49)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1589)
+
+20230621_164923:
+Rendering: IN_GAME
+20230621_164923:
+TCP client connection closed.
