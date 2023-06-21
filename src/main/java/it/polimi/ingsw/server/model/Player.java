@@ -154,12 +154,12 @@ public class Player implements StandardListenable, PostProcessable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return firstToFinish == player.firstToFinish && isPlaying == player.isPlaying && fullBookShelf == player.fullBookShelf && Objects.equals(userName, player.userName) && Objects.equals(bookShelf, player.bookShelf) && Objects.equals(propertyChangeSupport, player.propertyChangeSupport);
+        return Objects.equals(userName, player.userName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userName, bookShelf, firstToFinish, isPlaying, fullBookShelf, propertyChangeSupport);
+        return Objects.hash(userName);
     }
 
     @Override

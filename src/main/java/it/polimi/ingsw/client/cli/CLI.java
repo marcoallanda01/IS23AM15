@@ -62,7 +62,6 @@ public class CLI extends View {
         showError(message);
         showError("Enter any key to close");
         running = false;
-        Client.getInstance().getClientController().logout();
     }
 
     /**

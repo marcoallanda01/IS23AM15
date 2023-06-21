@@ -135,7 +135,12 @@ public class GUICreateGame extends GUIState {
             Client.getInstance().getClientController().createGame(nickname, numOfPlayers, isEasyRules);
         }
     }
-
+    /**
+     * Retrieves the nickname from the textfield
+     *
+     * @param nicknameField the text-field containing the nickname.
+     * @return The text written in the nickname field.
+     */
     private String getNickname(TextField nicknameField) {
         return nicknameField.getText();
     }

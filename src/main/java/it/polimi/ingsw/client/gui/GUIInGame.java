@@ -45,8 +45,9 @@ public class GUIInGame extends GUIState {
         super(guiApplication);
         this.livingRoomBoard = livingRoomBoard;
         this.bookshelves = bookshelves;
-        Random random = new Random();
-        this.randomNum = random.nextInt(3) + 1;
+        //Random random = new Random();
+        //this.randomNum = random.nextInt(3) + 1;
+        this.randomNum = 1;
         createUI();
         chatState = new GUIChat(guiApplication, chat, players);
     }
@@ -352,7 +353,7 @@ public class GUIInGame extends GUIState {
         HBox bookshelvesBox = new HBox(10);
         bookshelvesBox.setAlignment(Pos.CENTER);
 
-        for (String name : Client.getInstance().getView().getPlayers()) {
+        for (String name : bookshelves.keySet()) {
             StackPane bookshelfGrid = createBookshelfGrid(bookshelves.get(name), name);
             if (name.equals(Client.getInstance().getView().getPlayers().get(0))) {
                 ImageView firstPlayerToken = new ImageView(new Image(getClass().getResource("/assets/firstplayertoken.png").toExternalForm()));
@@ -374,6 +375,7 @@ public class GUIInGame extends GUIState {
         * @return the StackPane containing the bookshelf
      */
     private StackPane createBookshelfGrid(Set<Tile> bookshelfTiles, String bookshelfName) {
+
         StackPane stackPane = new StackPane();
 
         GridPane gridPane = new GridPane();
@@ -422,12 +424,8 @@ public class GUIInGame extends GUIState {
                 arrow.setFitWidth(18);
                 bookshelfArrows.getChildren().add(arrow);
                 int finalI = i;
-                arrow.setOnMouseEntered(event -> {
-                    arrow.setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-                });
-                arrow.setOnMouseExited(event -> {
-                    arrow.setEffect(null);
-                });
+                arrow.setOnMouseEntered(event -> arrow.setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0)));
+                arrow.setOnMouseExited(event -> arrow.setEffect(null));
                 arrow.setOnMouseClicked(event -> {
                     List<Integer> order = tilesListView.getItems().stream().map(item -> Integer.parseInt(item.getId())).collect(Collectors.toList());
                     Collections.reverse(order);

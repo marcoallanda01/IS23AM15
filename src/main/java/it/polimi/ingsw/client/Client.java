@@ -2,27 +2,141 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.communication.*;
-import it.polimi.ingsw.client.communication.ClientCommunication;
-import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.client.gui.GUIApplication;
 import it.polimi.ingsw.utils.Logger;
 import javafx.application.Application;
 
 import java.io.*;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Client {
     private static Client singleton;
-    private ClientStates state;
-    private View view;
-    private ClientNotificationListener clientController;
     private final String hostname;
     private final int port;
     private final String goalsPath;
     private final Protocols protocolSetting;
     private final Views viewSetting;
-    private final Modes modeSetting;
+    private final Logger logger = new Logger();
+    private ClientStates state;
+    private View view;
+    private ClientNotificationListener clientController;
     private String id = "";
+    private boolean isFirstPlayer;
+    private String nickname;
+    private ClientConnection clientConnection;
+    private ClientCommunication clientCommunication;
+    private Map<String, ClientGoal> clientGoals;
+    private Timer disconnectTimer;
+
+    public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view) {
+        this.hostname = hostname;
+        this.port = port;
+        loadClientInfo();
+        this.protocolSetting = protocol;
+        this.viewSetting = view;
+        this.goalsPath = goalsPath;
+        state = ClientStates.STARTUP;
+        disconnectTimer = new Timer();
+    }
+
+    // used for testing
+    public Client() {
+        this.hostname = null;
+        this.port = 0;
+        this.protocolSetting = null;
+        this.viewSetting = null;
+        this.goalsPath = null;
+        this.state = null;
+    }
+
+    // used for testing
+    public static void main() {
+        singleton = new Client();
+    }
+
+    public static Client getInstance() {
+        return singleton;
+    }
+
+    public static void main(String[] args)  //static method
+    {
+        String hostname = parseArg(args, "-a", "--address");
+        String port = parseArg(args, "-p", "--port");
+        String goalsPath = parseArg(args, "-g", "--goals");
+        Protocols protocol = parseProtocol(args);
+        Views view = parseView(args);
+
+        try {
+            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), goalsPath == null ? "/data/client_goals.json" : goalsPath, protocol, view);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid port number");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        initView(view);
+    }
+
+    private static void initView(Views view) {
+        try {
+            if (view.equals(Views.CLI)) {
+                new CLI();
+            } else if (view.equals(Views.GUI)) {
+                Application.launch(GUIApplication.class, "");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /*
+     * Parses the arguments passed to the program
+     * @param args the arguments
+     * @param option the short option
+     * @param optionVerbose the long option
+     * @return the value of the option
+     */
+    private static String parseArg(String[] args, String option, String optionVerbose) {
+        for (int i = 0; i < args.length - 1; i++) {
+            String arg = args[i];
+            if (arg.equalsIgnoreCase(option) || arg.equalsIgnoreCase(optionVerbose)) return args[i + 1];
+        }
+        return null;
+    }
+
+    /*
+     * Parses the protocol from the arguments
+     * @param args the arguments
+     * @return the protocol
+     */
+    private static Protocols parseProtocol(String[] args) {
+        for (String s : args) {
+            if (s.contains("rmi")) return Protocols.RMI;
+            if (s.contains("tcp")) return Protocols.TCP;
+        }
+        return Protocols.RMI; // default
+    }
+
+    /*
+     * Parses the view from the arguments
+     * @param args the arguments
+     * @return the view
+     */
+    private static Views parseView(String[] args) {
+        for (String s : args) {
+            if (s.contains("cli")) return Views.CLI;
+            if (s.contains("gui")) return Views.GUI;
+        }
+        return Views.CLI; // default
+    }
+
+    private static boolean isTesting(String[] args) {
+        for (String s : args) {
+            if (s.contains("testing")) return true;
+        }
+        return false; // default
+    }
 
     public boolean isFirstPlayer() {
         return isFirstPlayer;
@@ -32,42 +146,8 @@ public class Client {
         isFirstPlayer = firstPlayer;
     }
 
-    private boolean isFirstPlayer;
-    private String nickname;
-    private ClientConnection clientConnection;
-    private ClientCommunication clientCommunication;
-    private Map<String, ClientGoal> clientGoals;
-    private final Logger logger = new Logger();
-    public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view, Modes mode) {
-        this.hostname = hostname;
-        this.port = port;
-        loadClientInfo();
-        this.protocolSetting = protocol;
-        this.viewSetting = view;
-        this.modeSetting = mode;
-        this.goalsPath = goalsPath;
-        state = ClientStates.STARTUP;
-    }
-    // used for testing
-    public Client() {
-        this.hostname = null;
-        this.port = 0;
-        this.protocolSetting = null;
-        this.viewSetting = null;
-        this.modeSetting = null;
-        this.goalsPath = null;
-        this.state = null;
-    }
-    // used for testing
-    public static void main() {
-        singleton = new Client();
-    }
-    public static Client getInstance() {
-        return singleton;
-    }
-
     /*
-        * Setups the RMI connection
+     * Setups the RMI connection
      */
     public void setupNetworkRMI() throws RuntimeException {
         try {
@@ -81,7 +161,7 @@ public class Client {
     }
 
     /*
-        * Setups the TCP connection
+     * Setups the TCP connection
      */
     public void setupNetworkTCP() {
         try {
@@ -93,127 +173,15 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
-    public static void main(String[] args)  //static method
-    {
-        String hostname = parseArg(args, "-a", "--address");
-        String port = parseArg(args, "-p", "--port");
-        String goalsPath = parseArg(args, "-g", "--goals");
-        Protocols protocol = parseProtocol(args);
-        Views view = parseView(args);
-        Modes mode = parseMode(args);
-
-        try {
-            singleton = new Client(hostname == null ? "localhost" : hostname, port == null ? 6000 : Integer.parseInt(port), goalsPath == null ? "/data/client_goals.json" : goalsPath, protocol, view, mode);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid port number");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            if (mode.equals(Modes.TESTING)) {
-                // I am in testing, setup is easier
-                TestingView testingView = new TestingView();
-                singleton.clientController = testingView;
-                if (protocol.equals(Protocols.RMI)) {
-                    singleton.setupNetworkRMI();
-                } else if (protocol.equals(Protocols.TCP)) {
-                    singleton.setupNetworkTCP();
-                }
-                singleton.clientConnection.openConnection();
-                testingView.setClientCommunication(singleton.clientCommunication);
-                testingView.start();
-            } else {
-                if (view.equals(Views.CLI)) {
-                    new CLI();
-                } else if (view.equals(Views.GUI)) {
-                    Application.launch(GUIApplication.class, args);
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /*
-        * Parses the arguments passed to the program
-        * @param args the arguments
-        * @param option the short option
-        * @param optionVerbose the long option
-        * @return the value of the option
-     */
-    private static String parseArg(String[] args, String option, String optionVerbose) {
-        for (int i = 0; i < args.length - 1; i++) {
-            String arg = args[i];
-            if (arg.equalsIgnoreCase(option) || arg.equalsIgnoreCase(optionVerbose)) return args[i + 1];
-        }
-        return null;
-    }
-
-    /*
-        * Parses the protocol from the arguments
-        * @param args the arguments
-        * @return the protocol
-     */
-    private static Protocols parseProtocol(String[] args) {
-        for (String s : args) {
-            if (s.contains("rmi")) return Protocols.RMI;
-            if (s.contains("tcp")) return Protocols.TCP;
-        }
-        return Protocols.RMI; // default
-    }
-
-    /*
-        * Parses the view from the arguments
-        * @param args the arguments
-        * @return the view
-     */
-    private static Views parseView(String[] args) {
-        for (String s : args) {
-            if (s.contains("cli")) return Views.CLI;
-            if (s.contains("gui")) return Views.GUI;
-        }
-        return Views.CLI; // default
-    }
-
-    /*
-        * Parses the mode from the arguments
-        * @param args the arguments
-        * @return the mode
-     */
-    private static Modes parseMode(String[] args) {
-        for (String s : args) {
-            if (s.contains("testing")) return Modes.TESTING;
-            if (s.contains("production")) return Modes.PRODUCTION;
-        }
-        return Modes.TESTING; // default
-    }
-
-    private static boolean isTesting(String[] args) {
-        for (String s : args) {
-            if (s.contains("testing")) return true;
-        }
-        return false; // default
-    }
 
     public View getView() {
         return view;
     }
 
-    private enum Protocols {
-        RMI, TCP
-    }
-
-    private enum Views {
-        CLI, GUI
-    }
-
-    private enum Modes {
-        TESTING, PRODUCTION
-    }
     public Map<String, ClientGoal> getClientGoals() {
         return clientGoals;
     }
+
     public ClientStates getClientState() {
         synchronized (state) {
             return state;
@@ -226,17 +194,17 @@ public class Client {
         }
     }
 
+    public String getId() {
+        synchronized (id) {
+            return this.id;
+        }
+    }
+
     public void setId(String id) {
         synchronized (id) {
             this.id = id;
         }
         saveClientInfo(getId(), getNickname());
-    }
-
-    public String getId() {
-        synchronized (id) {
-            return this.id;
-        }
     }
 
     public String getNickname() {
@@ -252,9 +220,9 @@ public class Client {
     }
 
     /*
-        * Saves the client ID to a file
-        * @param id the client ID
-        * @param name the client name
+     * Saves the client ID to a file
+     * @param id the client ID
+     * @param name the client name
      */
     private void saveClientInfo(String id, String name) {
         try {
@@ -273,7 +241,7 @@ public class Client {
     }
 
     /*
-        * Loads the client ID from a file
+     * Loads the client ID from a file
      */
     private void loadClientInfo() {
         String id = "NoId";
@@ -295,7 +263,6 @@ public class Client {
         this.nickname = name;
     }
 
-
     public ClientController getClientController() {
         if (clientController instanceof ClientController)
             return (ClientController) clientController;
@@ -315,7 +282,7 @@ public class Client {
     }
 
     /*
-        * Initializes the client
+     * Initializes the client
      */
     public void init(View view) {
         this.view = view;
@@ -354,17 +321,50 @@ public class Client {
             Client.getInstance().getLogger().log(e);
         }
         try {
-            Thread shutdownHook = new Thread() {
-                @Override
-                public void run() {
-                    Client.getInstance().getLogger().log("Shutting down");
-                    Client.getInstance().getClientController().logout();
-                }
-            };
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
+            Thread shutdownHook = new Thread(() -> {
+                Client.getInstance().getLogger().log("Shutting down");
+                Client.getInstance().getClientController().logout();
+            });
+            Runtime.getRuntime().addShutdownHook(shutdownHook);
         } catch (Exception e) {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
+        }
+        scheduleDisconnect(10);
+    }
+
+    /*
+     * Schedule a disconnect after 10 seconds
+     */
+    public void scheduleDisconnect(int seconds) {
+        disconnectTimer.schedule(new DisconnectTask(), seconds * 1000L);
+    }
+
+    /*
+     * Reset the disconnect timer
+     */
+    public void resetDisconnectTimer(int seconds) {
+        disconnectTimer.cancel();
+        disconnectTimer = new Timer();
+        scheduleDisconnect(seconds);
+    }
+
+    private enum Protocols {
+        RMI, TCP
+    }
+
+    private enum Views {
+        CLI, GUI
+    }
+
+    private static class DisconnectTask extends TimerTask {
+
+        public DisconnectTask() {}
+
+        @Override
+        public void run() {
+            Client.getInstance().getLogger().log("No response from server for 10 seconds, try restarting the app...");
+            Client.getInstance().getClientController().logout("No response from server for 10 seconds, try restarting the app...");
         }
     }
 }

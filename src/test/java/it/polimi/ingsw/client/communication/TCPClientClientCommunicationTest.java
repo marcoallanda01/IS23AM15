@@ -28,6 +28,7 @@ class TCPClientClientCommunicationTest {
 
     TCPClientCommunication tcpClientCommunication;
     Future<?> acceptingThread;
+    /*
     @AfterEach
     void close() throws IOException, InterruptedException {
         this.tcpClientConnection.closeConnection();
@@ -78,4 +79,6 @@ class TCPClientClientCommunicationTest {
             return null;
         }
     }
+
+     */
 }

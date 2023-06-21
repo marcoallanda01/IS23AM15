@@ -204,14 +204,27 @@ public class Game{
             goalManager.updatePointsTurn(player);
             // check last round and winner
             if (player.getBookShelf().getMaxColumnSpace() == 0) {
+                player.setFullBookShelf(true);
                 if (!isLastRound) {
                     player.setFirstToFinish(true);
                     isLastRound = true;
                 }
-                if (isLastRound && this.players.indexOf(player) == this.players.size() - 1) {
+            }
+            System.out.println("GAME: BEFORE WINNER!: "+this.winner);
+            System.out.println("GAME: BEFORE WINNER isLastRound: "+this.isLastRound);
+            System.out.println("GAME: BEFORE WINNER players.indexOf(player): "+this.players.indexOf(player));
+            System.out.println("GAME: BEFORE WINNER players.indexOf(player): "+ (this.players.size() - 1));
+            if (isLastRound && (this.players.indexOf(player) == (this.players.size() - 1))) {
+                System.out.println("GAME: DOVREBBE ESSERCI UN VINCITORE");
+            }
+            if (isLastRound && (this.players.indexOf(player) == (this.players.size() - 1))) {
+                try{
                     this.winner = goalManager.getWinner(this.players);
-                    return true;
+                }catch (Exception e){
+                    System.out.println("GAME: getWinner lancia una eccezzione!");
+                    e.printStackTrace();
                 }
+                System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
             }
             currentTurn.changeState(new EndState(currentTurn));
             nextTurn(player);

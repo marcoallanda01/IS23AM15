@@ -41,10 +41,11 @@ public class ClientController implements ClientNotificationListener {
      */
     @Override
     public void notifyWinner(String nickname) {
+        Client.getInstance().resetDisconnectTimer(60);
         Client.getInstance().setClientState(ClientStates.END_GAME);
         view.setWinner(nickname);
 
-        if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
+        if (Client.getInstance().getClientState() == ClientStates.END_GAME) {
             view.render();
         }
     }
@@ -190,6 +191,7 @@ public class ClientController implements ClientNotificationListener {
      */
     @Override
     public void notifyPing() {
+        Client.getInstance().resetDisconnectTimer(10);
         Client.getInstance().getClientCommunication().pong(Client.getInstance().getId());
     }
 
@@ -341,6 +343,12 @@ public class ClientController implements ClientNotificationListener {
      */
     public void logout() {
         Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
+        Client.getInstance().setClientState(ClientStates.STARTUP);
+    }
+
+    public void logout(String message) {
+        view.stop(message);
+        logout();
     }
 
     /*

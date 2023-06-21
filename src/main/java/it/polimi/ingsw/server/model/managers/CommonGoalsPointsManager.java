@@ -34,7 +34,9 @@ public class CommonGoalsPointsManager extends PointsManager {
         Integer newPoints = this.patterns.stream().map(pattern -> pattern.getPatternFunction().apply(bookshelf)).reduce(0, Integer::sum);
         this.playersToPoints.put(player, newPoints);
     }
-
+    /**
+     * @return the patterns, the order is not important
+     */
     public Set<Pattern> getPatterns() {
         return new HashSet<>(this.patterns);
     }
