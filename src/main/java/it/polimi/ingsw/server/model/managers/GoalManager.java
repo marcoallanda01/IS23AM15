@@ -25,7 +25,7 @@ public class GoalManager{
     private final PersonalCardsPointsManager personalCardsPointsManager;
     private final CommonGoalsPointsManager commonGoalsPointsManager;
 
-    private int CommonCardsToDraw = 2;
+    private final int commonCardsToDraw;
     /**
      * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
      * if set to true only pointsManagers with updateRule set to END_GAME will NOT be updated every turn
@@ -81,8 +81,8 @@ public class GoalManager{
      * @throws RuntimeException if there is bad formatting in the file, but we must throw so the GoalManager can try to
      *                          read the other patterns
      */
-    private Pattern readPattern(JsonElement cardJson) throws RuntimeException, NullPointerException {
-        Pattern pattern = null;
+    private Pattern readPattern(JsonElement cardJson) throws RuntimeException {
+        Pattern pattern;
 
         JsonObject patternJ = cardJson.getAsJsonObject();
         JsonElement nameElement = patternJ.get("name");
@@ -185,9 +185,7 @@ public class GoalManager{
                     throw new RuntimeException(e.getMessage());
                 }
             }
-            default -> {
-                throw new RuntimeException("No card exists with type: "+type);
-            }
+            default -> throw new RuntimeException("No card exists with type: "+type);
         }
 
         return pattern;
@@ -200,7 +198,7 @@ public class GoalManager{
      * @throws ArrestGameException if occurred very bad errors in parsing or json stream
      */
     public GoalManager(List<Player> players, String setUpFile, boolean isFirstGame) throws ArrestGameException {
-        this.CommonCardsToDraw = isFirstGame ? 1 : 2;
+        this.commonCardsToDraw = isFirstGame ? 1 : 2;
 
         // I use list and not set because I could choose to have to same card so the probability increase
         Set<Pattern> patternsCommonGoals = new HashSet<>();
@@ -238,7 +236,7 @@ public class GoalManager{
             for(Pattern p : patternsCommonGoals){
                 System.out.println("Pattern: "+p.toString());
             }
-            if(patternsCommonGoals.size() < CommonCardsToDraw){
+            if(patternsCommonGoals.size() < commonCardsToDraw){
                 throw new ArrestGameException("Not enough common cards as game rules are set");
             }
 
@@ -269,7 +267,7 @@ public class GoalManager{
 
 
         // creating default managers, in future to add another manager add it here
-        this.commonCardsPointsManager = new CommonCardsPointsManager(players, new Deck(patternsCommonGoals), this.CommonCardsToDraw);
+        this.commonCardsPointsManager = new CommonCardsPointsManager(players, new Deck(patternsCommonGoals), this.commonCardsToDraw);
         this.personalCardsPointsManager = new PersonalCardsPointsManager(players, new Deck(patternsPersonalGoals));
         this.commonGoalsPointsManager = new CommonGoalsPointsManager(players, patternsEndGoals);
 
@@ -279,8 +277,8 @@ public class GoalManager{
     }
 
     public GoalManager(CommonCardsPointsManager commonCardsPointsManager, PersonalCardsPointsManager personalCardsPointsManager, CommonGoalsPointsManager commonGoalsPointsManager,
-                       Boolean frequentUpdates) {
-        //TODO: CommonCardsToDraw da aggiungere qui
+                       Boolean frequentUpdates, int CommonCardsToDraw) {
+        this.commonCardsToDraw = CommonCardsToDraw;
         this.commonCardsPointsManager = commonCardsPointsManager;
         this.personalCardsPointsManager = personalCardsPointsManager;
         this.commonGoalsPointsManager = commonGoalsPointsManager;
@@ -301,9 +299,7 @@ public class GoalManager{
             Predicate<PointsManager> toUpdate = frequentUpdates ? pointsManager -> !pointsManager.getUpdateRule().equals(UpdateRule.END_GAME) :
                     pointsManager -> pointsManager.getUpdateRule().equals(UpdateRule.END_TURN);
             pointsManagers.stream().filter(toUpdate)
-                    .forEach(pointsManager -> {
-                        pointsManager.updatePoints(player);
-                    });
+                    .forEach(pointsManager -> pointsManager.updatePoints(player));
             player.setPoints(this.getPoints(player));
             System.out.println(player.getUserName() + " points: " + this.getPoints(player));
             System.out.println(pointsManagers);
@@ -328,7 +324,7 @@ public class GoalManager{
     public int getPoints(Player player) {
 
         return pointsManagers.stream()
-                .map(pointsManager -> {System.out.println("Player: " + player);System.out.println("PlayerToPoints:"+pointsManager.getPlayersToPoints());System.out.println(pointsManager.getPlayersToPoints().get(player));System.out.println(pointsManager.getPoints(player)); return pointsManager.getPoints(player);}).reduce(0, (a,b) -> a+b)
+                .map(pointsManager -> {System.out.println("Player: " + player);System.out.println("PlayerToPoints:"+pointsManager.getPlayersToPoints());System.out.println(pointsManager.getPlayersToPoints().get(player));System.out.println(pointsManager.getPoints(player)); return pointsManager.getPoints(player);}).reduce(0, Integer::sum)
                 + (player.isFirstToFinish() ? 1 : 0);
     }
     // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
@@ -422,5 +418,12 @@ public class GoalManager{
      */
     public Boolean getFrequentUpdates() {
         return frequentUpdates;
+    }
+
+    /**
+     * Used for serialization
+     */
+    public int getCommonCardsToDraw() {
+        return commonCardsToDraw;
     }
 }
