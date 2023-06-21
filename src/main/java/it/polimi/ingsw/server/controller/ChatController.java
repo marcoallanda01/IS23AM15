@@ -10,6 +10,10 @@ import java.util.List;
 public class ChatController {
     private final Game game;
 
+    /**
+     * Chat controller constructor
+     * @param game game
+     */
     public ChatController(Game game) {
         this.game = game;
     }

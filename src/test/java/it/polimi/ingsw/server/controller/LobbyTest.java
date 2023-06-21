@@ -545,4 +545,44 @@ class LobbyTest {
         assertNull(lobby.getNameFromId(playerId));
         assertNull(lobby.getControllerProvider());
     }
+
+    @Test
+    void endGame() throws NicknameException, WaitLobbyException, NicknameTakenException, FirstPlayerAbsentException, FullGameException, EmptyLobbyException, InterruptedException, IllegalLobbyException, GameLoadException, GameNameException {
+        String playerId = lobby.join().get();
+        List<String> playersLoaded =  lobby.loadGame("1_to_finish", playerId);
+        lobby.joinLoadedGameFirstPlayer(playersLoaded.get(0), playerId);
+        playersLoaded.remove(playersLoaded.get(0));
+        for(String p : playersLoaded){
+            lobby.addPlayer(p);
+            System.out.println(p);
+        }
+        ServerCommunication s1 = new ServerCommunicationInstance();
+        ServerCommunication s2 = new ServerCommunicationInstance();
+        lobby.registerServer(s1);
+        lobby.registerServer(s2);
+
+        ControllerProvider cp = lobby.startGame();
+
+        PlayController pc = cp.getPlayController();
+        List<Tile> tiles = List.of(new Tile(5, 1, TileType.CAT));
+        pc.pickTiles(tiles, "player1");
+        pc.putTiles(tiles, 0, "player1");
+
+        tiles = List.of(new Tile(5, 2, TileType.GAME));
+        pc.pickTiles(tiles, "player2");
+        pc.putTiles(tiles, 0, "player2");
+
+        //Simulation s1
+        Thread t1 = new Thread(() -> lobby.reset());
+        //Simulation s2
+        Thread t2 = new Thread(() -> lobby.reset());
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+
+        assertEquals("player2", pc.getWinner());
+        assertNotNull(lobby.join());
+
+    }
 }
