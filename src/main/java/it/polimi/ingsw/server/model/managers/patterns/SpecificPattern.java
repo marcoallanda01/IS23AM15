@@ -263,7 +263,7 @@ public class SpecificPattern extends Pattern {
         return !sequenceChanged && isSequenceValid(startingGroups, minGroups, sgc);
     }
     /**
-     * @returna a bifunction that given the sequence of groups and a mainGroup:
+     * @return a bifunction that given the sequence of groups and a mainGroup:
      * removes all groups overlapping with mainGroup from the sequence
      * returns true if any have been removed
      */
