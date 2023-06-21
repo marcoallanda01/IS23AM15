@@ -60,13 +60,21 @@ public class PlayController {
      * Save the game
      * @param name future name of the save
      * @return true if it was successful
-     * @throws SaveException
-     * @throws IOException
+     * @throws SaveException when a save with the same name already exists and overwrite is false
+     * @throws IOException when the save folder cannot be created
      */
     public synchronized boolean saveGame(String name) throws SaveException, IOException {
-        return saveGame(name, false); //TODO: write  why exception are thrown
+        return saveGame(name, false);
     }
 
+    /**
+     * Save the game
+     * @param name future name of the save
+     * @param overwrite true if the save should overwrite an existing one
+     * @return true if it was successful
+     * @throws SaveException when a save with the same name already exists and overwrite is false
+     * @throws IOException when the save folder cannot be created
+     */
     public synchronized boolean saveGame(String name, boolean overwrite) throws IOException, SaveException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter())
                 .registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
