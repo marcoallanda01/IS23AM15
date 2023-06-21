@@ -9,11 +9,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GUIEndGame extends GUIState {
-    private List<String> players;
     private Map<String, Integer> playerPoints;
     private String winner;
 
@@ -21,13 +23,11 @@ public class GUIEndGame extends GUIState {
      * Constructs a new GUIEndGame instance.
      *
      * @param guiApplication The GUI application to associate with.
-     * @param players        The list of player names in the game.
      * @param playerPoints   The map of player names to their points.
      * @param winner         The name of the winner.
      */
-    public GUIEndGame(GUIApplication guiApplication, List<String> players, Map<String, Integer> playerPoints, String winner) {
+    public GUIEndGame(GUIApplication guiApplication, Map<String, Integer> playerPoints, String winner) {
         super(guiApplication);
-        this.players = players;
         this.playerPoints = playerPoints;
         this.winner = winner;
         createUI();
@@ -55,7 +55,14 @@ public class GUIEndGame extends GUIState {
         Label titleLabel = createTitleLabel();
         root.getChildren().add(titleLabel);
 
-        for (String player : players) {
+        LinkedHashMap<String, Integer> sortedPoints = playerPoints.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        for (String player : sortedPoints.keySet()) {
             if (playerPoints.containsKey(player)) {
                 Label playerLabel = createPlayerLabel(player, playerPoints.get(player));
                 root.getChildren().add(playerLabel);

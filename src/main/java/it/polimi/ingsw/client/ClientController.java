@@ -48,6 +48,8 @@ public class ClientController implements ClientNotificationListener {
         if (Client.getInstance().getClientState() == ClientStates.END_GAME) {
             view.render();
         }
+
+        close("There is a winner, game ended");
     }
 
     /*
@@ -342,13 +344,12 @@ public class ClientController implements ClientNotificationListener {
         * Sends a message to the server to logout.
      */
     public void logout() {
-        Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
         Client.getInstance().setClientState(ClientStates.STARTUP);
+        Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
     }
 
-    public void logout(String message) {
+    public void close(String message) {
         view.stop(message);
-        logout();
     }
 
     /*

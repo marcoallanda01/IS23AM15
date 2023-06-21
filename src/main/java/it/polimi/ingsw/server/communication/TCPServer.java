@@ -116,8 +116,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
             in.close();
             client.close();
         } catch (IOException b) {
-            System.out.println("Socket was already closed:");
-            b.printStackTrace();
+            System.out.println("Player TCP: " + client + " already closed.");
         }
     }
 
@@ -644,9 +643,10 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                 sendToClient(c, new Winner(playController.getWinner()).toJson());
             });
             // Close all playing clients
-            this.clientsInGame.forEach(this::closeClient);
-            // Reset lobby
+            List<Socket> copyClientsInGame = new ArrayList<>(this.clientsInGame);
+            copyClientsInGame.forEach(this.clientsInGame::remove);
         }
+        // reset lobby
         reset();
     }
 

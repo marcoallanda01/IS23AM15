@@ -9,7 +9,7 @@ import java.util.Set;
 
 
 public class Deck {
-    // using List of cards because of indexes (for random drawing), might want to use other structures
+    // using List of cards because of indexes (for random drawing)
     List<Pattern> cards = new ArrayList<>();
 
     /**
@@ -19,7 +19,11 @@ public class Deck {
     public Deck(Set<Pattern> patterns) {
         cards.addAll(patterns);
     }
-
+    /**
+     *
+     * draws a card from the deck
+     * @return the drawn card
+     */
     public Pattern draw() {
         int randomCardIndex = new Random().nextInt(cards.size());
         Pattern result = cards.get(randomCardIndex);

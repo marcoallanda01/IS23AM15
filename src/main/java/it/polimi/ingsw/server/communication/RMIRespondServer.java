@@ -50,7 +50,7 @@ public class RMIRespondServer extends ResponseServer{
         try {
             UnicastRemoteObject.unexportObject(client, true);
         } catch (IOException b) {
-            b.printStackTrace();
+            System.err.println("Player RMI: " + client + " already closed.");
         }
     }
 
