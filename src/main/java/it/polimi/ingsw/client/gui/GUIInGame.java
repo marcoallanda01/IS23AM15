@@ -45,8 +45,9 @@ public class GUIInGame extends GUIState {
         super(guiApplication);
         this.livingRoomBoard = livingRoomBoard;
         this.bookshelves = bookshelves;
-        Random random = new Random();
-        this.randomNum = random.nextInt(3) + 1;
+        //Random random = new Random();
+        //this.randomNum = random.nextInt(3) + 1;
+        this.randomNum = 1;
         createUI();
         chatState = new GUIChat(guiApplication, chat, players);
     }
