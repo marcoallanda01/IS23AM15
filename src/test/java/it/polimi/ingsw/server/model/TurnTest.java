@@ -33,6 +33,14 @@ class TurnTest {
         assertEquals(tiles, turn.getPickedTiles());
         List<Tile> retryTiles = List.of(board.getBoard().get(3).get(3), board.getBoard().get(3).get(4));
         assertFalse(turn.pickTiles(retryTiles));
+        turn.changeState(new PutTilesState(turn));
+        player.getBookShelf().insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
+        player.getBookShelf().insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
+        player.getBookShelf().insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
+        player.getBookShelf().insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
+        player.getBookShelf().insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
+        player.getBookShelf().insertTiles(List.of(new Tile(TileType.BOOK), new Tile(TileType.CAT), new Tile(TileType.TROPHY)), 0);
+        assertFalse(turn.putTiles(tiles, 0));
     }
 
     @Test
@@ -44,14 +52,14 @@ class TurnTest {
         List<Tile> tiles = List.of(board.getBoard().get(1).get(3), board.getBoard().get(1).get(4));
         assertTrue(turn.pickTiles(tiles));
         turn.changeState(new PutTilesState(turn));
+        assertFalse(turn.pickTiles(tiles));
         assertTrue(turn.putTiles(tiles, 0));
+        assertFalse(turn.putTiles(tiles, 0));
         assertEquals(tiles, List.of(player.getBookShelf().getTile(0,0), player.getBookShelf().getTile(0,1)));
         turn.changeState(new EndState(turn));
         assertEquals("EndState", turn.getState().toString());
         assertFalse(turn.pickTiles(tiles));
         assertFalse(turn.putTiles(tiles, 0));
-
-
     }
 
     @Test

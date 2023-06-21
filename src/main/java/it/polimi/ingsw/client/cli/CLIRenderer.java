@@ -285,7 +285,43 @@ public class CLIRenderer {
      * @param message the error message
      */
     public synchronized static void printError(String message) {
-        System.out.println(CliColor.RED_BOLD_BRIGHT + message + CliColor.RESET);
+        String description;
+        switch (message) {
+            case "NicknameTakenException":
+                description = "Nickname already taken";
+                break;
+            case "NicknameException":
+                description = "Nickname not valid";
+                break;
+            case "EmptyLobbyException":
+                description = "Lobby is not full, wait";
+                break;
+            case "FirstPlayerAbsentException":
+                description = "First player is absent";
+                break;
+            case "FullGameException":
+                description = "Game is full";
+                break;
+            case "GameLoadException":
+                description = "Could not load game";
+                break;
+            case "GameNameException":
+                description = "Game name not valid";
+                break;
+            case "IllegalLobbyException":
+                description = "You don't have the permissions";
+                break;
+            case "SaveException":
+                description = "Save not valid";
+                break;
+            case "WaitLobbyException":
+                description = "Wait lobby not valid";
+                break;
+            default:
+                description = message;
+                break;
+        }
+        System.out.println(CliColor.RED_BOLD_BRIGHT + description + CliColor.RESET);
     }
 
     /**
