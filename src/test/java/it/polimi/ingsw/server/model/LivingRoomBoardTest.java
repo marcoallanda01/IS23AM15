@@ -124,4 +124,52 @@ class LivingRoomBoardTest {
         assertTrue(board.checkPick(List.of(board.getBoard().get(0).get(3), board.getBoard().get(1).get(3))));
         assertTrue(board.checkPick(List.of(board.getBoard().get(5).get(0), board.getBoard().get(5).get(1))));
     }
+
+    @Test
+    void putBackInBag(){
+        mask.put(0, Map.of(0, TileRule.BLOCK, 1, TileRule.TWO, 2, TileRule.TWO, 3, TileRule.TWO, 4, TileRule.TWO, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(1, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(2, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(3, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(4,
+                Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(5,
+                Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(6, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(7, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        LivingRoomBoard board = new LivingRoomBoard(2, mask);
+        assertEquals(0, (long) board.getAllTiles().size());
+        List<Tile> tiles = new ArrayList<>();
+        tiles.add(new Tile(TileType.CAT));
+        tiles.add(new Tile(TileType.CAT));
+        tiles.add(new Tile(TileType.BOOK));
+        tiles.add(new Tile(TileType.TROPHY));
+
+        while(true){
+            board.removeFromBoard(board.getAllTiles().stream().toList());
+            try{
+                board.fillBoard();
+            }catch (ArrestGameException e){
+                break;
+            }
+
+        }
+        assertThrows(ArrestGameException.class, board::fillBoard);
+        board.putBackInBag(tiles);
+        assertEquals(0, (long) board.getAllTiles().size());
+        board.fillBoard();
+        assertEquals(tiles.size(), (long) board.getAllTiles().size());
+        board.removeFromBoard(board.getAllTiles().stream().toList());
+
+        assertThrows(ArrestGameException.class, board::fillBoard);
+
+    }
 }

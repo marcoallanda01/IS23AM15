@@ -90,4 +90,13 @@ class GameTest {
         assertTrue(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
         assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
     }
+
+    @Test
+    void lastPlayerDisconnection(){
+        Player p1 = new Player("p1");
+        Player p2 = new Player("p2");
+        List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
+        game.setGame(playersName,false);
+    }
 }

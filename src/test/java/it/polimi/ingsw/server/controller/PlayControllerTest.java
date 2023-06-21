@@ -259,6 +259,12 @@ class PlayControllerTest {
     }
 
     @Test
+    void isPlaying(){
+        assertTrue(playController.isPlaying("player2"));
+        assertFalse(playController.isPlaying("player33432"));
+    }
+
+    @Test
     void reconnect(){
         List<String> players = new ArrayList<>();
         players.add("player1");
@@ -266,9 +272,13 @@ class PlayControllerTest {
         players.add("player3");
         Game game = new Game(players, false);
         PlayController playController = new PlayController(game, "saves", pnc);
+        assertTrue(playController.isPlaying("player1"));
         assertFalse(playController.reconnect("player1"));
+        assertTrue(playController.isPlaying("player1"));
         assertTrue(playController.leave("player1"));
+        assertFalse(playController.isPlaying("player1"));
         assertTrue(playController.reconnect("player1"));
+        assertTrue(playController.isPlaying("player1"));
         assertEquals(0, game.getPlayersList().stream().filter(p -> !p.isPlaying()).count());
         assertFalse(playController.reconnect("player4"));
     }
@@ -353,5 +363,22 @@ class PlayControllerTest {
         assertTrue(playController.getPlayers().containsAll(players));
         assertTrue(players.containsAll(playController.getPlayers()));
         assertEquals(playController.getPlayers(), game.getPlayers());
+    }
+
+    @Test
+    void getBookShelf() throws PlayerNotFoundException {
+        assertThrows(PlayerNotFoundException.class, ()->playController.getBookshelf("NotExists"));
+        assertEquals(0,playController.getBookshelf("player1").size());
+        assertEquals(0,playController.getBookshelf("player3").size());
+    }
+
+    @Test
+    void getBoard(){
+        assertNotNull(playController.getBoard());
+    }
+
+    @Test
+    void getCurrentPlayer(){
+        assertTrue(players.contains(playController.getCurrentPlayer()));
     }
 }

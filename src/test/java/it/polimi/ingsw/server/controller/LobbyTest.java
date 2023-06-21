@@ -447,6 +447,8 @@ class LobbyTest {
         //Print 2 servers registered
         lobby.registerServer(s2);
         //No Print
+        lobby.registerServer(s2);
+        //No Print
         lobby.removeServer(s3);
         //Print 1 server registered
         lobby.removeServer(s1);

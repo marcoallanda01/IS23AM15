@@ -113,13 +113,7 @@ public class CommonCardsPointsManager extends CardsPointsManager implements Stan
                     pile.push(Integer.valueOf(6));
                     pile.push(Integer.valueOf(8));
                 }
-                case 4 -> {
-                    pile.push(Integer.valueOf(2));
-                    pile.push(Integer.valueOf(4));
-                    pile.push(Integer.valueOf(6));
-                    pile.push(Integer.valueOf(8));
-                }
-                default -> {
+                default -> { // so 4 as well
                     pile.push(Integer.valueOf(2));
                     pile.push(Integer.valueOf(4));
                     pile.push(Integer.valueOf(6));
