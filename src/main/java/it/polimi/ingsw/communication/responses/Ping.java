@@ -7,6 +7,9 @@ import java.util.Optional;
 
 public class Ping extends Msg {
 
+    /**
+     * Ping constructor
+     */
     public Ping(){
         super("Ping");
     }

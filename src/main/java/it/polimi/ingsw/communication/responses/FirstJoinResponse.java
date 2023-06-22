@@ -8,6 +8,10 @@ import java.util.Optional;
 public class FirstJoinResponse extends Msg {
     public boolean result;
 
+    /**
+     * FirstJoinResponse constructor
+     * @param result true if join was successful, false otherwise
+     */
     public FirstJoinResponse(boolean result) {
         super("FirstJoinResponse");
         this.result = result;

@@ -10,6 +10,10 @@ import java.util.Optional;
 public class Join extends Command{
     public String player;
 
+    /**
+     * Constructor
+     * @param name with which name player wants to join
+     */
     public Join(@NotNull String name){
         super("Join");
         this.player = new String(name);

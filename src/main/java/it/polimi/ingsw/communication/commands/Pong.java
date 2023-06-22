@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public class Pong extends GameCommand {
 
+    /**
+     * Pong constructor
+     * @param id player's id
+     */
     public Pong(String id){
         super("Pong", id);
     }

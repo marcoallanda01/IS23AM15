@@ -9,6 +9,10 @@ import java.util.Optional;
 public class TurnNotify extends Msg{
     public String player;
 
+    /**
+     * Turn change notification constructor
+     * @param name current player's name
+     */
     public TurnNotify(String name){
         super("TurnNotify");
         this.player = name;

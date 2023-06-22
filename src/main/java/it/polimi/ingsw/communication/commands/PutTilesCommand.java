@@ -15,6 +15,12 @@ public class PutTilesCommand extends GameCommand {
     public List<TileType> tiles;
     public int column;
 
+    /**
+     * Put tiles command constructor
+     * @param id player's id
+     * @param tiles list of tiles to put
+     * @param column bookshelf colum where to put the tiles
+     */
     public PutTilesCommand(@NotNull String id, @NotNull List<TileType> tiles, int column) {
         super("PutTilesCommand", id);
         this.tiles = new ArrayList<>();

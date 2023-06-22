@@ -22,6 +22,13 @@ public class GameSetUp extends Msg{
     public List<ChatMessage> oldChat;
 
 
+    /**
+     * GameSetUp constructor
+     * @param players player's names in order of turn
+     * @param goals goals during the game
+     * @param personal personal card of the player
+     * @param oldChat old messages
+     */
     public GameSetUp(@NotNull List<String> players, @NotNull List<String> goals, @NotNull String personal,
                      @NotNull List<Message> oldChat){
         super("GameSetUp");
@@ -32,7 +39,11 @@ public class GameSetUp extends Msg{
         oldChat.forEach((m) -> this.oldChat.add(new ChatMessage(m)));
     }
 
-
+    /**
+     * Generator of GameSetUp from a json string
+     * @param json json string from which generate Hello
+     * @return Optional of GameSetUp, empty if json string was not coherent
+     */
     public static Optional<GameSetUp> fromJson(String json) {
         GameSetUp gsu;
         try {

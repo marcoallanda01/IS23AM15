@@ -11,6 +11,11 @@ public class TilesPicked extends Msg{
     public String player;
     public List<TileType> tiles;
 
+    /**
+     * Tiles picked notification constructor
+     * @param player player's name
+     * @param tiles list of tiles picked by the player
+     */
     public TilesPicked(@NotNull String player, @NotNull List<TileType> tiles) {
         super("TilesPicked");
         this.player = player;

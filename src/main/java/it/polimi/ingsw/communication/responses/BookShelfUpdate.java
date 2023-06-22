@@ -11,6 +11,11 @@ public class BookShelfUpdate extends Msg{
     public String player;
     public Set<Tile> tiles;
 
+    /**
+     * BookShelfUpdate constructor
+     * @param player player name
+     * @param tiles tiles of de bookshelf
+     */
     public BookShelfUpdate(@NotNull String player, @NotNull Set<Tile> tiles) {
         super("BookShelfUpdate");
         this.player = player;

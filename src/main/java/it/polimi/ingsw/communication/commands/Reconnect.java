@@ -7,6 +7,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Reconnect extends GameCommand {
+
+    /**
+     * Reconnect command costructor
+     * @param id player's id
+     */
     public Reconnect(String id) {
         super("Reconnect", id);
     }

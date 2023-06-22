@@ -11,6 +11,10 @@ public class GameSaved extends Msg{
 
     public String game;
 
+    /**
+     * GameSaved notification constructor
+     * @param game save name
+     */
     public GameSaved(@NotNull String game){
         super("GameSaved");
         this.game = game;
