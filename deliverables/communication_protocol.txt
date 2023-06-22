@@ -148,11 +148,24 @@ Notes:
 
 RECONNECTION:
 
-A player can reconnect passing his id
+A player can reconnect passing his id. All player are notified and all the necessary notification are sent to the
+reconnected player in the shown order.
 
 HelloCommand                        -------------------------------------------------->
                                     <--------------------------------------------------                            Hello
 {"name":"Reconnect", "id":"***"}    -------------------------------------------------->
+                                                       To All Players
+                                    <--------------------------------------------------                      Reconnected
+                                    <--------------------------------------------------                  BookShelfUpdate
+                                                            ...
+                                    <--------------------------------------------------                  BookShelfUpdate
+                                    <--------------------------------------------------                     PlayerPoints
+                                                            ...
+                                    <--------------------------------------------------                     PlayerPoints
+                                    <--------------------------------------------------                      CommonCards
+                                    <--------------------------------------------------                      BoardUpdate
+                                    <--------------------------------------------------                       TurnNotify
+                                    <--------------------------------------------------                        GameSetUp
 
 
 PING PONG:
@@ -338,6 +351,5 @@ The connection is closed
 
 
 - General error message
-
 {"name":"ErrorMessage",
  "message":"***"}                      -------------------------------------------------->

@@ -6,7 +6,13 @@ import org.jetbrains.annotations.NotNull;
 public class JsonString {
     protected String json;
 
-    public JsonString(@NotNull String json) throws Exception{
+
+    /**
+     * Json string container used in tests
+     * @param json json string
+     * @throws Exception JsonSyntaxException
+     */
+    public @Deprecated JsonString(@NotNull String json) throws Exception{
         try {
             JsonParser.parseString(json);
         }catch (JsonSyntaxException e){
@@ -17,7 +23,10 @@ public class JsonString {
     }
 
 
-
+    /**
+     * Get json string
+     * @return json string
+     */
     public String getJson() {
         return json;
     }
