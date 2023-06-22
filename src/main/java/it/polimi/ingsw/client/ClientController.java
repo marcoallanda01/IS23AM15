@@ -273,7 +273,10 @@ public class ClientController implements ClientNotificationListener {
     public void notifySavedGames(Set<String> games) {
         List<String> savedGames = new ArrayList<>(games);
         view.setSavedGames(savedGames);
-
+        if (savedGames.size() == 0) {
+            view.showError("There are no saved games!");
+            Client.getInstance().setClientState(ClientStates.CREATE_LOBBY);
+        }
         view.render();
     }
     /**
