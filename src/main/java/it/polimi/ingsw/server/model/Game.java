@@ -204,9 +204,6 @@ public class Game{
 
     /**
      * Put tiles action performed
-     * Updates points
-     * Checks last round
-     * Checks winner and sets it
      * @param tiles tiles to put
      * @param column column in witch put the tiles
      * @return True if action was performed correctly, false otherwise
@@ -218,20 +215,6 @@ public class Game{
                     new Turn(oldTiles, currentTurn.getCurrentPlayer(), currentTurn.getBoard()),
                     new Turn(currentTurn.getPickedTiles(), currentTurn.getCurrentPlayer(), currentTurn.getBoard()));
             Player player = currentTurn.getCurrentPlayer();
-            // update points
-            goalManager.updatePointsTurn(player);
-            // check last round and winner
-            if (player.getBookShelf().getMaxColumnSpace() == 0) {
-                player.setFullBookShelf(true);
-                if (!isLastRound) {
-                    player.setFirstToFinish(true);
-                    isLastRound = true;
-                }
-            }
-            if (isLastRound && (this.players.indexOf(player) == (this.players.size() - 1))) {
-                this.winner = goalManager.getWinner(this.players);
-                System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
-            }
             currentTurn.changeState(new EndState(currentTurn));
             nextTurn(player);
             return true;
@@ -320,29 +303,48 @@ public class Game{
     }
 
     /**
-     * Advances the turn to the next player, also checking the winner
-     *
+     * Performs end turn actions and advances the turn to the next player
+     * Updates points
+     * Checks last round
+     * Checks winner
      * @param currentPlayer the player who just finished his turn
      * @return true if the turn has been advanced, false if not
      */
     private boolean nextTurn(Player currentPlayer) {
-        if(winner != null){
+        // update points
+        goalManager.updatePointsTurn(currentPlayer);
+        // check last round
+        if (currentPlayer.getBookShelf().getMaxColumnSpace() == 0) {
+            currentPlayer.setFullBookShelf(true);
+            if (!isLastRound) {
+                currentPlayer.setFirstToFinish(true);
+                isLastRound = true;
+            }
+        }
+        // check winner
+        if (isLastRound && (this.players.indexOf(currentPlayer) == (this.players.size() - 1))) {
+            this.winner = goalManager.getWinner(this.players);
             GameChangeSupport.firePropertyChange(WINNER_PROPRIETY_NAME, null, this.winner);
+            System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
             return false;
         }
+        // take next player
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
-        int playingPlayers = this.players.stream().mapToInt(player -> {return player.isPlaying() ? 1 : 0;}).sum();
-        if (playingPlayers >= 1){
-            if (!nextPlayer.isPlaying()) {
-                return nextTurn(nextPlayer);
-            }
-            if (this.currentTurn.getState() instanceof EndState || !currentPlayer.isPlaying()) {
-                this.currentTurn = new Turn(nextPlayer, this.board);
+        // check if there are any players playing
+        int playingPlayers = this.players.stream().mapToInt(player -> player.isPlaying() ? 1 : 0).sum();
+        if (playingPlayers < 1) {
+            return false;
+        }
+        // check if the next player is playing
+        if (!nextPlayer.isPlaying()) {
+            return nextTurn(nextPlayer);
+        }
+        // check if changing turn is allowed
+        if (this.currentTurn.getState() instanceof EndState || !currentPlayer.isPlaying()) {
+            this.currentTurn = new Turn(nextPlayer, this.board);
 
-                this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME ,
-                        null, this.currentTurn.getCurrentPlayer().getUserName());
-                return true;
-            }
+            this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME ,null, this.currentTurn.getCurrentPlayer().getUserName());
+            return true;
         }
         return false;
     }

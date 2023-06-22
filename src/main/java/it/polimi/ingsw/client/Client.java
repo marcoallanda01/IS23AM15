@@ -217,6 +217,7 @@ public class Client {
         synchronized (nickname) {
             this.nickname = nickname;
         }
+        saveClientInfo(getId(), getNickname());
     }
 
     /*
