@@ -162,7 +162,7 @@ public class RMIRespondServer extends ResponseServer{
                         try {
                             key.notifyGame(new GameSetUp(
                                     playController.getPlayers(),
-                                    new ArrayList<>(playController.getEndGameGoals()),
+                                    new ArrayList<>(playController.getCommonGoals()),
                                     playController.getPersonalGoalCard(playerName),
                                     chatController.getPlayerMessages(playerName)
                             ));
@@ -208,12 +208,12 @@ public class RMIRespondServer extends ResponseServer{
                         }
                 );
 
-                client.notifyCommonCards(playController.getCommonGoalCardsToTokens());
+                client.notifyCommonCards(playController.getCommonCardsToTokens());
                 client.notifyBoard(playController.getBoard());
                 client.notifyTurn(playController.getCurrentPlayer());
                 client.notifyGame(new GameSetUp(
                         playController.getPlayers(),
-                        new ArrayList<>(playController.getEndGameGoals()),
+                        new ArrayList<>(playController.getCommonGoals()),
                         playController.getPersonalGoalCard(name),
                         chatController.getPlayerMessages(name)
                 ));
