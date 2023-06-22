@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.stage.Screen;
 
 public class GUIApplication extends Application {
     private Stage primaryStage;
@@ -107,32 +109,7 @@ public class GUIApplication extends Application {
     }
 
     public void showPopup(String message) {
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.initOwner(primaryStage);
-        popupStage.setAlwaysOnTop(true);
-
-        Label messageLabel = new Label(message);
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(event -> popupStage.close());
-
-        VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(20));
-        layout.getChildren().addAll(messageLabel, closeButton);
-
-        Scene popupScene = new Scene(layout);
-        popupStage.setScene(popupScene);
-
-        // Get the position of the primary stage
-        double primaryStageX = primaryStage.getX();
-        double primaryStageY = primaryStage.getY();
-
-        // Set the position of the pop-up stage relative to the primary stage
-        popupStage.setX(primaryStageX + 50); // Adjust the X offset as needed
-        popupStage.setY(primaryStageY + 50); // Adjust the Y offset as needed
-
-        popupStage.showAndWait();
+        showPopup(message, () -> {});
     }
 
     public void showChat(Scene chatScene){
@@ -144,7 +121,7 @@ public class GUIApplication extends Application {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initOwner(primaryStage);
-        popupStage.setAlwaysOnTop(true);
+        popupStage.toFront();
 
         Label messageLabel = new Label(message);
         Button closeButton = new Button("Close");
@@ -161,8 +138,30 @@ public class GUIApplication extends Application {
         Scene popupScene = new Scene(layout);
         popupStage.setScene(popupScene);
 
+        // Get the primary screen
+        Screen screen = Screen.getPrimary();
+
+        // Retrieve the screen bounds
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        // Retrieve the screen width
+        double screenWidth = bounds.getWidth();
+        double screenHeight = bounds.getHeight();
+
         double primaryStageX = primaryStage.getX();
         double primaryStageY = primaryStage.getY();
+
+        if (primaryStageX > screenWidth) {
+            primaryStageX = screenWidth;
+        } else if (primaryStageX < 0)  {
+            primaryStageX = 0;
+        }
+
+        if (primaryStageY > screenHeight) {
+            primaryStageY = screenHeight;
+        } else if  (primaryStageY < 0)  {
+            primaryStageY = 0;
+        }
 
         popupStage.setX(primaryStageX + 50);
         popupStage.setY(primaryStageY + 50);
