@@ -4,9 +4,12 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("UnnecessaryUnicodeEscape")
 public class CLIRenderer {
 
     /**
@@ -226,16 +229,23 @@ public class CLIRenderer {
      * @param chat the chat to print
      */
     public synchronized static void printChat(Map<String, Map<String, String>> chat) {
-        List<String> dates = new ArrayList<>(chat.keySet());
-        Collections.sort(dates);
-        for (String date : dates) {
-            System.out.print(date + " - ");
-            Map<String, String> messages = chat.get(date);
-            List<String> names = new ArrayList<>(messages.keySet());
-            Collections.sort(names);
-            for (String name : names) {
-                System.out.println(name + ": " + messages.get(name));
-            }
+        if(chat.isEmpty()){
+            System.out.println("The chat is empty");
+            return;
+        }
+        LinkedHashMap<String, Map<String, String>> sortedChat = chat.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.comparing(key -> LocalDateTime.parse(key, DateTimeFormatter.ISO_LOCAL_DATE_TIME))))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        for (String dateTimeString : sortedChat.keySet()) {
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString);
+            DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            String time = dateTime.format(hourFormatter);
+            String nickname = chat.get(dateTimeString).get("nickname");
+            String message = chat.get(dateTimeString).get("message");
+            System.out.println(CliColor.WHITE_BOLD_BRIGHT + time + " " + nickname + ": " + CliColor.RESET + message);
         }
     }
 
