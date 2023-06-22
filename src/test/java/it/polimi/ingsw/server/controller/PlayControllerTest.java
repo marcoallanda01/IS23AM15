@@ -285,12 +285,12 @@ class PlayControllerTest {
 
     @Test
     void getCommonGoalCardsToTokens(){
-        assertEquals(playController.getCommonGoalCardsToTokens(), game.getCommonGoalCardsToTokens());
+        assertEquals(playController.getCommonGoalCardsToTokens(), game.getCommonCardsToTokens());
     }
 
     @Test
     void getEndGameGoals(){
-        assertEquals(playController.getEndGameGoals(), game.getEndGameGoals());
+        assertEquals(playController.getEndGameGoals(), game.getCommonGoals());
     }
 
     @Test
@@ -299,7 +299,7 @@ class PlayControllerTest {
         String noPlayer = "throw";
         assertFalse(player.contains(noPlayer));
         assertThrows(PlayerNotFoundException.class, () -> playController.getUnfulfilledCommonGoalCards(noPlayer));
-        assertEquals(playController.getUnfulfilledCommonGoalCards(player), game.getUnfulfilledCommonGoalCards(player));
+        assertEquals(playController.getUnfulfilledCommonGoalCards(player), game.getUnfulfilledCommonCards(player));
     }
 
     @Test
@@ -308,7 +308,7 @@ class PlayControllerTest {
         String noPlayer = "throw";
         assertFalse(player.contains(noPlayer));
         assertThrows(PlayerNotFoundException.class, () -> playController.getFulfilledCommonGoalCards(noPlayer));
-        assertEquals(playController.getFulfilledCommonGoalCards(player), game.getFulfilledCommonGoalCards(player));
+        assertEquals(playController.getFulfilledCommonGoalCards(player), game.getFulfilledCommonCards(player));
     }
 
     @Test

@@ -49,6 +49,7 @@ public class Game{
      * Setting up of the game, notification are sent to the clients
      * @param players list of players' names
      * @param isFirstGame easy rules game rule
+     * @throws ArrestGameException
      */
     public void setGame(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
@@ -113,6 +114,7 @@ public class Game{
      * Help constructor used in tests that not requires listeners
      * @param players players
      * @param isFirstGame game rule easy game
+     * @throws ArrestGameException
      */
     public @Deprecated Game(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
         this.GameChangeSupport = new PropertyChangeSupport(this);
@@ -179,6 +181,7 @@ public class Game{
 
     /**
      * Current player pick tiles
+     * Checks if the board needs refill and refills it if so
      * @param tiles tiles to pick
      * @return true if the pick was successful, false otherwise
      */
@@ -201,6 +204,9 @@ public class Game{
 
     /**
      * Put tiles action performed
+     * Updates points
+     * Checks last round
+     * Checks winner and sets it
      * @param tiles tiles to put
      * @param column column in witch put the tiles
      * @return True if action was performed correctly, false otherwise
@@ -234,39 +240,77 @@ public class Game{
         }
     }
 
+    /**
+     * Get the points of the player
+     * @param nickname
+     * @return the points
+     * @throws PlayerNotFoundException
+     */
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPoints(player);
     }
 
-    public Map<String, List<Integer>> getCommonGoalCardsToTokens() {
+    /**
+     * Get the common cards and their tokens
+     * @return the common cards and their tokens
+     */
+    public Map<String, List<Integer>> getCommonCardsToTokens() {
         return goalManager.getCommonCardsToTokens().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getName(), Map.Entry::getValue));
     }
 
-    public Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
+    /**
+     * @param nickname the nickname of the player
+     * Get the unfulfilled common cards
+     * @return the common cards unfulfilled by the player
+     */
+    public Set<String> getUnfulfilledCommonCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getUnfulfilledCommonCards(player).stream().map(Pattern::getName).collect(Collectors.toSet());
     }
 
-    public Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
+    /**
+     * @param nickname the nickname of the player
+     * Get the fulfilled common cards
+     * @return the common cards fulfilled by the player
+     */
+    public Set<String> getFulfilledCommonCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getFulfilledCommonCards(player).stream().map(Pattern::getName).collect(Collectors.toSet());
     }
 
+    /**
+     * Get the personal goal card of the player
+     * @return the personal goal card of the player
+     */
     public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPersonalCard(player).getName();
     }
 
+    /**
+     * Get the tokens of the player
+     * @return the tokens of the player
+     */
     public List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getTokens(player);
     }
 
-    public Set<String> getEndGameGoals() {
+    /**
+     * Get the common goals
+     * @return the common goals
+     */
+    public Set<String> getCommonGoals() {
         return goalManager.getCommonGoals().stream().map(Pattern::getName).collect(Collectors.toSet());
     }
 
+    /**
+     * given a nickname returns the player
+     * @param nickname the nickname of the player
+     * @return the player with that nickname
+     * @throws PlayerNotFoundException
+     */
     public Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
         try {
             return players.stream().filter(player -> player.getUserName().equals(nickname)).findAny().get();
@@ -276,7 +320,7 @@ public class Game{
     }
 
     /**
-     * Advances the turn to the next player
+     * Advances the turn to the next player, also checking the winner
      *
      * @param currentPlayer the player who just finished his turn
      * @return true if the turn has been advanced, false if not
@@ -309,21 +353,47 @@ public class Game{
     public List<String> getPlayers() {
         return players.stream().map(Player::getUserName).collect(Collectors.toList());
     }
-
+    /**
+     * Sends a message to player
+     * @param sender the sender of the message
+     * @param receiver the receiver of the message
+     * @param message the message
+     * @throws PlayerNotFoundException
+     */
     public void sendMessage(String sender, String receiver, String message) throws PlayerNotFoundException {
         Message m = new Message(this.getPlayerFromNickname(sender), this.getPlayerFromNickname(receiver), message);
         this.chat.addMessage(m);
     }
 
+    /**
+     * Sends a message to all
+     * @param sender the sender of the message
+     * @param message the message
+     * @throws PlayerNotFoundException
+     */
     public void sendMessage(String sender, String message) throws PlayerNotFoundException {
         Message m = new Message(this.getPlayerFromNickname(sender), message);
         this.chat.addMessage(m);
     }
-
+    /**
+     * Gets the messages of the player
+     * @param player the player
+     * @throws PlayerNotFoundException
+     */
+    public List<Message> getPlayerMessages(String player) throws PlayerNotFoundException  {
+        return this.chat.getMessages(this.getPlayerFromNickname(player));
+    }
+    /**
+     * Get the players in playing order
+     * @return the players as a list
+     */
     public List<Player> getPlayersList() {
         return this.players;
     }
-
+    /**
+     * Get the winner
+     * @return the winner
+     */
     public String getWinner() {
         return winner;
     }
@@ -331,19 +401,33 @@ public class Game{
     public boolean isFirstGame() {
         return isFirstGame;
     }
-
+    /**
+     * Get the board
+     * @return the board
+     */
     public LivingRoomBoard getBoard() {
         return board;
     }
-
+    /**
+     * Get the current turn
+     * @return the current turn
+     */
     public Turn getCurrentTurn() {
         return currentTurn;
     }
 
+    /**
+     * Get the chat
+     * @return the chat
+     */
     public Chat getChat() {
         return chat;
     }
 
+    /**
+     * Get the GoalManager
+     * @return the goalManager
+     */
     public GoalManager getGoalManager() {
         return goalManager;
     }

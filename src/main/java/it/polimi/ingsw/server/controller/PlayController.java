@@ -125,7 +125,7 @@ public class PlayController {
      * @return names of common goals carts with their tokens
      */
     public synchronized Map<String, List<Integer>> getCommonGoalCardsToTokens() {
-        return game.getCommonGoalCardsToTokens();
+        return game.getCommonCardsToTokens();
     }
 
     /**
@@ -133,7 +133,7 @@ public class PlayController {
      * @return end game goals names
      */
     public synchronized Set<String> getEndGameGoals() {
-        return game.getEndGameGoals();
+        return game.getCommonGoals();
     }
 
     /**
@@ -143,7 +143,7 @@ public class PlayController {
      * @throws PlayerNotFoundException if there is no player with such nickname
      */
     public synchronized Set<String> getUnfulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
-        return game.getUnfulfilledCommonGoalCards(nickname);
+        return game.getUnfulfilledCommonCards(nickname);
     }
 
     /**
@@ -153,7 +153,7 @@ public class PlayController {
      * @throws PlayerNotFoundException if there is no player with such nickname
      */
     public synchronized Set<String> getFulfilledCommonGoalCards(String nickname) throws PlayerNotFoundException {
-        return game.getFulfilledCommonGoalCards(nickname);
+        return game.getFulfilledCommonCards(nickname);
     }
 
     /**
