@@ -12,7 +12,7 @@ LEGEND:
 
 {"name":"HelloCommand"}            ----------------------------------------------->
 
-The server say hello to the client. Saying if the lobby is ready to accept players or not, so if the client can
+The server says hello to the client. Saying if the lobby is ready to accept players or not, if it is, then the client can
 try to join.
 If the lobby isn't ready and there is not a first player, the server sends back the  id of the first player, otherwise
 the id is set to "NoFirst".
@@ -42,9 +42,8 @@ First player must specify his name (player), the number of players, his id and t
 }
 
 The server respond with a  FirstJoinResponse set to true if the game was created or to false if the game was not.
-Note: if is chosen a numOfPlayer different the FirstJoinResponse will set to false. Because here is supposed a client
-who follow the protocol.
-If the result was true the first player must wait until all the players join and the game start.
+Note: if is chosen a numOfPlayer not allowed the FirstJoinResponse will be set to false.
+If the result is true the first player must wait until all the players join and the game starts.
 
           <--------------------------------------------------       {"name":"FirstJoinResponse", "result":(true, false)}
 
@@ -141,9 +140,9 @@ Player tries to disconnect sending his own id.
 
 Notes:
 - if the first player disconnect during lobby creation then the lobby is reset.
-- if a player disconnect during joining than he is just disconnected and his place is now available.
-- if a player disconnect during game he can join again during the same game
-- when a game is saved the player is saved as non-disconnected
+- if a player disconnects while in lobby, he is just disconnected and his place is now available.
+- if a player disconnects during a game he can join again during the same game
+- when a game is saved the player is saved as non-disconnected (to load and resume the game all the players must be connected anyway)
 
 
 RECONNECTION:
