@@ -12,6 +12,10 @@ import java.util.Set;
 public class LoadedGamePlayers extends Msg {
     public Set<String> names;
 
+    /**
+     * LoadedGamePlayers constructor
+     * @param names available players' names
+     */
     public LoadedGamePlayers(@NotNull Set<String> names) {
         super("LoadedGamePlayers");
         this.names = new HashSet<>(names);

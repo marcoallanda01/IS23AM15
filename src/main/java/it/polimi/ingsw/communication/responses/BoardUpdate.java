@@ -10,6 +10,10 @@ import java.util.*;
 public class BoardUpdate extends Msg {
     public Set<Tile> tiles;
 
+    /**
+     * BoardUpdate constructor
+     * @param tiles tiles of de board
+     */
     public BoardUpdate(@NotNull Set<Tile> tiles) {
         super("BoardUpdate");
         this.tiles = new HashSet<>();

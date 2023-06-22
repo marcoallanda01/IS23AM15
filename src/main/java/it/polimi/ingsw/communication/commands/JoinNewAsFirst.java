@@ -14,7 +14,13 @@ public class JoinNewAsFirst extends Command{
     public boolean easyRules;
 
 
-
+    /**
+     * JoinNewAsFirst constructor
+     * @param name player's name
+     * @param numPlayersGame size of the lobby
+     * @param idFirstPlayer first player's id
+     * @param easyRules true for easy rule game mode
+     */
     public JoinNewAsFirst(@NotNull String name, int numPlayersGame, @NotNull String idFirstPlayer, boolean easyRules){
         super("JoinNewAsFirst");
         this.player = new String(name);
@@ -23,6 +29,11 @@ public class JoinNewAsFirst extends Command{
         this.easyRules = easyRules;
     }
 
+    /**
+     * Create from json string JoinNewAsFirst object
+     * @param json json string
+     * @return Optional of the JoinNewAsFirst object, empty if there was a syntax error or parameters null
+     */
     public static Optional<JoinNewAsFirst> fromJson(String json) {
         JoinNewAsFirst jnfp;
         try{

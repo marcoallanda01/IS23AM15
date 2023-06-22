@@ -8,6 +8,11 @@ import java.util.*;
 
 public class CommonCards extends Msg{
     public Map<String, List<Integer>> cardsAndTokens;
+
+    /**
+     * CommonCards constructor
+     * @param cardsAndTokens all the cards with their tokens
+     */
     public CommonCards(@NotNull Map<String, List<Integer>> cardsAndTokens) {
         super("CommonCards");
         this.cardsAndTokens = new HashMap<>(cardsAndTokens);

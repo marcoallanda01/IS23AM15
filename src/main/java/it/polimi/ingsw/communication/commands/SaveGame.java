@@ -9,6 +9,12 @@ import java.util.Optional;
 public class SaveGame extends GameCommand{
 
     public String game;
+
+    /**
+     * SaveGame command constructor
+     * @param id player's id
+     * @param game save name
+     */
     public SaveGame(String id, String game){
     super("SaveGame", id);
     this.game = game;

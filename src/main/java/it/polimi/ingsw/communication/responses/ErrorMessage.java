@@ -10,6 +10,10 @@ import java.util.Optional;
 public class ErrorMessage extends Msg{
     public String message;
 
+    /**
+     * Error message constructor
+     * @param message message to send
+     */
     public ErrorMessage(@NotNull String message){
         super("ErrorMessage");
         this.message = message;

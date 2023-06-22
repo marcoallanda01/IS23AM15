@@ -10,11 +10,20 @@ import java.util.Set;
 public class SavedGames extends Msg {
     public Set<String> names;
 
+    /**
+     * SavedGames constructor
+     * @param names games saved names
+     */
     public SavedGames(Set<String> names) {
         super("SavedGames");
         this.names = new HashSet<>(names);
     }
 
+    /**
+     * Transform the SavedGames object in a json string
+     * @return json string representing the SavedGames object
+     */
+    @Override
     public String toJson() {
         StringBuilder sb = new StringBuilder();
         sb.append("{ \"name\": \"SavedGames\", ");
