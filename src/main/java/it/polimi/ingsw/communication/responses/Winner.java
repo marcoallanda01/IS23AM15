@@ -9,6 +9,10 @@ import java.util.Optional;
 public class Winner extends Msg{
     public String player; // player name
 
+    /**
+     * Winner notification constructor
+     * @param player winner name
+     */
     public Winner(String player) {
         super("Winner");
         this.player = player;

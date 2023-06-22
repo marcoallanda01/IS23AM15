@@ -16,6 +16,10 @@ public class JoinResponse extends Msg {
     public String id;
     public String error;
 
+    /**
+     * Unsuccessful JoinResponse constructor
+     * @param error error occurred
+     */
     public JoinResponse(@NotNull FullGameException error) {
         super("JoinResponse");
         this.result = false;
@@ -23,6 +27,10 @@ public class JoinResponse extends Msg {
         this.id = null;
     }
 
+    /**
+     * Unsuccessful JoinResponse constructor
+     * @param error error occurred
+     */
     public JoinResponse(@NotNull NicknameTakenException error) {
         super("JoinResponse");
         this.result = false;
@@ -30,6 +38,10 @@ public class JoinResponse extends Msg {
         this.id = null;
     }
 
+    /**
+     * Unsuccessful JoinResponse constructor
+     * @param error error occurred
+     */
     public JoinResponse(@NotNull NicknameException error) {
         super("JoinResponse");
         this.result = false;
@@ -37,6 +49,10 @@ public class JoinResponse extends Msg {
         this.id = null;
     }
 
+    /**
+     * Successful JoinResponse constructor
+     * @param id player's new id
+     */
     public JoinResponse(@NotNull String id) {
         super("JoinResponse");
         this.result = true;

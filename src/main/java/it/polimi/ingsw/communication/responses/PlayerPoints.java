@@ -10,6 +10,11 @@ public class PlayerPoints extends Msg{
     public String player;
     public int points;
 
+    /**
+     * Player points notification constructor
+     * @param player player's name
+     * @param points player's points
+     */
     public PlayerPoints(String player, int points) {
         super("PlayerPoints");
         this.player = player;

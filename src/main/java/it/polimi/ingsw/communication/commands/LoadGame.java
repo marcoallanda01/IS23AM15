@@ -11,6 +11,11 @@ public class LoadGame extends Command{
     public String idFirstPlayer;
     public String game;
 
+    /**
+     * LoadGame constructor
+     * @param idFistPlayer first player's id
+     * @param game game name to load
+     */
     public LoadGame(@NotNull String idFistPlayer, @NotNull String game){
         super("LoadGame");
         this.idFirstPlayer = new String(idFistPlayer);

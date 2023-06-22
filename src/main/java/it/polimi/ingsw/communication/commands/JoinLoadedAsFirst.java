@@ -10,12 +10,22 @@ public class JoinLoadedAsFirst extends Command{
     public String player;
     public String idFirstPlayer;
 
+    /**
+     * Constructor of JoinLoadedAsFirst
+     * @param player player's nickname
+     * @param idFirstPlayer id of the first player
+     */
     public JoinLoadedAsFirst(String player, String idFirstPlayer) {
         super("JoinLoadedAsFirst");
         this.player = new String(player);
         this.idFirstPlayer = new String(idFirstPlayer);
     }
 
+    /**
+     * Create from json string JoinLoadedAsFirst object
+     * @param json json string
+     * @return Optional of the JoinLoadedAsFirst object, empty if there was a syntax error or parameters null
+     */
     public static Optional<JoinLoadedAsFirst> fromJson(String json) {
         JoinLoadedAsFirst jlfp;
         try{

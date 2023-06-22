@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public class Disconnect extends GameCommand {
 
+    /**
+     * Constructor
+     * @param id player's id
+     */
     public Disconnect(String id) {
         super("Disconnect", id);
     }

@@ -14,6 +14,11 @@ public class PickTilesCommand extends GameCommand {
 
     public Set<Tile> tiles;
 
+    /**
+     * PickTilesCommand constructor
+     * @param id player's id
+     * @param tiles set of tiles picked
+     */
     public PickTilesCommand(@NotNull String id, @NotNull Set<Tile> tiles) {
         super("PickTilesCommand", id);
         this.tiles = new HashSet<>();

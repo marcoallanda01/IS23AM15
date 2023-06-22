@@ -14,27 +14,51 @@ public class LoadGameResponse extends Msg {
     public boolean result;
     public String error;
 
+    /**
+     * Unsuccessful LoadGameResponse constructor
+     * @param error error occurred
+     */
     public LoadGameResponse(@NotNull GameLoadException error) {
         super("LoadGameResponse");
         this.result = false;
         this.error = error.getClass().getSimpleName();
     }
+
+    /**
+     * Unsuccessful LoadGameResponse constructor
+     * @param error error occurred
+     */
     public LoadGameResponse(@NotNull GameNameException error) {
         super("LoadGameResponse");
         this.result = false;
         this.error = error.getClass().getSimpleName();
     }
+
+    /**
+     * Unsuccessful LoadGameResponse constructor
+     * @param error error occurred
+     */
     public LoadGameResponse(@NotNull IllegalLobbyException error) {
         super("LoadGameResponse");
         this.result = false;
         this.error = error.getClass().getSimpleName();
     }
+
+    /**
+     * Successful LoadGameResponse constructor
+     */
     public LoadGameResponse() {
         super("LoadGameResponse");
         this.result = true;
         this.error = null;
     }
 
+
+    /**
+     * Generator of LoadGameResponse from a json string
+     * @param json json string from which generate Hello
+     * @return Optional of LoadGameResponse, empty if json string was not coherent
+     */
     public static Optional<LoadGameResponse> fromJson(String json) {
         LoadGameResponse jgr;
         try {
