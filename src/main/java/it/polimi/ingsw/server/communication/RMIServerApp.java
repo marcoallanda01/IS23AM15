@@ -404,7 +404,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
             this.playersIds.forEach((key, value) -> {
                 executorService.submit(() -> {
                     try {
-                        key.notifyChatMessage(sender, date, message);
+                        key.notifyChatMessage(sender, message, date);
                     } catch (RemoteException | RuntimeException e) {
                         System.err.println("RMI notifyMessage: " + e.getClass() + " thrown with client " + value);
                     }
