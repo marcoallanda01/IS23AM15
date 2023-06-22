@@ -1,0 +1,61 @@
+## Persistence
+
+The game is saved in JSON format in the directory specified in the server setup file if none is provided it uses a default.
+
+The game is saved explicitly from the user and not periodically from the server, this is for a better user experience.
+
+The name of the saved game is chosen explicitly from the user and it must not match any existing saves:
+if it by any chance does, the user will receive an error and he can retry.
+
+The same game can be saved multiple times and resumed from any of the saves, as long as different names are used for the saves.
+
+## Chat
+
+The chat is quite simple.
+
+## Resilience to disconnections and reconnections
+
+If a player disconnects during a game, the following will happen:
+Every player is notified of the disconnection.
+The turn goes to the following player.
+The picked tiles of the player (if any) are lost.
+
+Upon game restart if a file client_info.txt is present the client will try reconnecting to a game.
+
+If a player reconnects during a game, the following will happen:
+Every player is notified of the reconnection.
+The game will continue normally but the turn of the reconnected player will no longer be skipped.
+
+## Goals, points system and patterns
+
+Points are managed from PointsManagers which are created from the GoalManager.
+
+PointsManagers are very general, their purpose is to assign points based on the characteristics of the player.
+
+The GoalManager will create 3 PointsManagers, the necessary settings to create PointsManagers and accessory objects are taken from a goals.json file:
+CommonGoalsPointsManager which handles a series of goals.
+CommonCardsPointsManager which handles a series of cards drawn from a deck, cards are common.
+PersonalCardsPointsManager which handles a series of cards drawn from a deck, cards are personal and there is only 1 for each player.
+
+According to the settings of the GoalManager points can be updated every turn or only at the end of the game.
+Some PointsManagers might need to be updated at specific times, in that case the GoalManager adapts to the specific rule of the PointManager.
+
+Patterns are the abstraction behind goals and cards, patterns under the shell return a function that given a bookshelf state returns the points.
+
+All 3 PointsManagers make use of patterns to assign points to players, potentially every PointsManager can use patterns of another.
+Which means that all the goals and cards in the game are interchangeable and can be used from any of the managers which will then interpret the result of the pattern.
+E.G.
+Using a personal pattern as common goal will result in the tokens being used as source of points instead of the points of the pattern,
+because it is the responsibility of the manager to choose how to interpret the points returned from the pattern.
+
+Patterns can also modify the given bookshelf state, it is responsibility of the manager to choose if the modifications should be taken into account or not.
+E.G.
+The CommonGoalsPointsManager will take these modifications into account, CommonCardsPointsManager and PersonalCardsPointsManager will not.
+
+Overall this system is very extensible at the expense of complexity.
+
+N.B. The first to finish point is not handled using PointsManagers because it would be overkill: the PM would only check a flag on the Player.
+
+## Turn system
+
+## Client in synthesis

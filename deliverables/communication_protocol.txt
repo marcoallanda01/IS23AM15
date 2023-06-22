@@ -173,7 +173,11 @@ The ping pong is necessary to keep a client alive and make sure he didn't discon
 The disconnection works as mentioned before.
 id is player's id or "NoId" if a player hasn't got an id yet.
 
-Every 3 seconds the server send a ping and the client must respond in 3 seconds with a pong.
+Every 3 seconds the server send a ping and the client must respond in 3 seconds with a pong, otherwise the client is disconnected.
+Upon connection establishment the server has 60 seconds to send the first ping to the client,
+otherwise the client will stop and prompt the user to restart.
+After the first ping is received the server has 10 seconds to send another ping,
+otherwise the client will stop and prompt the user to restart.
 
 ##############                                                                                            ##############
 #   Client   #                                                                                            #   Server   #
@@ -225,19 +229,19 @@ Client can do three actions:
                                                                                                   }
 
 
-3) Save Game and make all leave
+3) Save Game with name game
 game = name of the game
 
 {"name":"SaveGame",
 "game":"***",                        -------------------------------------------------->
 "id":***}
 
-No answer from the server. If the game is saved, it sends a notification to everybody and the game is stopped.
+No answer from the server. If the game is saved, it sends a notification to everybody.
 
 
 CHAT:
 
-Every message pass through the server, that then send them as push notification
+Every message passes through the server, which then sends them as push notification
 
 ##############                                                                                            ##############
 #   Client   #                                                                                            #   Server   #
@@ -272,8 +276,8 @@ players = list of strings of players' names ordered by turn
 goals = list of strings of common goals' name
 personal = list of personal cards
 oldChat = old messages (ChatMessage) from old game or if a player reconnected
-Other setting as boards, and considering loaded game settings as bookshelf and points, are sent using the others
-notifications
+Other setting as boards, and considering loaded game settings as bookshelf and points, are sent using other notifications
+The client is responsible for handling the stream of notifications correctly, knowing that GameSetUp is the LAST notification he will receive.
 
 {"name":"GameSetUp",
 "players":["***", ***],                 -------------------------------------------------->
@@ -283,7 +287,7 @@ notifications
 }
 
 
-- Changing in the board
+- Change in the board (usually after pick/refill)
 
 {"name":"BoardUpdate",
 "tiles":[                               -------------------------------------------------->
@@ -293,7 +297,7 @@ notifications
 }
 
 
-- Changing in a bookshelf
+- Change in a bookshelf (usually after put)
 player = player name of which the bookshelf is
 
 {"name":"BookShelfUpdate",
@@ -303,7 +307,7 @@ player = player name of which the bookshelf is
 ]}
 
 
-- Sending common goals cards
+- Sending common goals cards with the relative tokens
 cardsAndTokens = map<String, List<Integer>> , so map from name to ordered tokens.
 
 {"name":"CommonCards",
@@ -322,7 +326,7 @@ cardsAndTokens = map<String, List<Integer>> , so map from name to ordered tokens
 "player":"***"}
 
 
-- Changing in player points
+- Change in player points (of a single player)
 
 {"name":"PlayerPoints"
 "player":"***"                           -------------------------------------------------->
@@ -330,13 +334,13 @@ cardsAndTokens = map<String, List<Integer>> , so map from name to ordered tokens
 
 
 - Notification of player turn
-It's the client turn if he reads his name
+It's the client turn if the 'player' in TurnNotify matches his nickname
 
 {"name":"TurnNotify"                   -------------------------------------------------->
 "player":"***"}
 
 
-- Saved game notification
+- Saved game notification, the name of the save is also communicated to the client
 game = name of the save
 
 {"name":"GameSaved"
@@ -344,12 +348,12 @@ game = name of the save
 
 
 - Winner notification
-The connection is closed
+The client is also responsible for closing the connection after the winner notification
 
 {"name":"Winner"                       -------------------------------------------------->
 "player":"***"}
 
 
-- General error message
+- General error message, the client should know how to handle these
 {"name":"ErrorMessage",
  "message":"***"}                      -------------------------------------------------->
