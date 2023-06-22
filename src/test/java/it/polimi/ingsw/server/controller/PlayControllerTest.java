@@ -285,12 +285,12 @@ class PlayControllerTest {
 
     @Test
     void getCommonGoalCardsToTokens(){
-        assertEquals(playController.getCommonGoalCardsToTokens(), game.getCommonGoalCardsToTokens());
+        assertEquals(playController.getCommonCardsToTokens(), game.getCommonCardsToTokens());
     }
 
     @Test
     void getEndGameGoals(){
-        assertEquals(playController.getEndGameGoals(), game.getEndGameGoals());
+        assertEquals(playController.getCommonGoals(), game.getCommonGoals());
     }
 
     @Test
@@ -298,8 +298,8 @@ class PlayControllerTest {
         String player = players.get(1);
         String noPlayer = "throw";
         assertFalse(player.contains(noPlayer));
-        assertThrows(PlayerNotFoundException.class, () -> playController.getUnfulfilledCommonGoalCards(noPlayer));
-        assertEquals(playController.getUnfulfilledCommonGoalCards(player), game.getUnfulfilledCommonGoalCards(player));
+        assertThrows(PlayerNotFoundException.class, () -> playController.getUnfulfilledCommonCards(noPlayer));
+        assertEquals(playController.getUnfulfilledCommonCards(player), game.getUnfulfilledCommonCards(player));
     }
 
     @Test
@@ -307,8 +307,8 @@ class PlayControllerTest {
         String player = players.get(1);
         String noPlayer = "throw";
         assertFalse(player.contains(noPlayer));
-        assertThrows(PlayerNotFoundException.class, () -> playController.getFulfilledCommonGoalCards(noPlayer));
-        assertEquals(playController.getFulfilledCommonGoalCards(player), game.getFulfilledCommonGoalCards(player));
+        assertThrows(PlayerNotFoundException.class, () -> playController.getFulfilledCommonCards(noPlayer));
+        assertEquals(playController.getFulfilledCommonCards(player), game.getFulfilledCommonCards(player));
     }
 
     @Test
@@ -329,7 +329,7 @@ class PlayControllerTest {
         assertFalse(player.contains(noPlayer));
         assertThrows(PlayerNotFoundException.class, () -> playController.getTokens(noPlayer));
         assertEquals(playController.getTokens(player), game.getTokens(player));
-        assertEquals(playController.getTokens(player).size(), playController.getFulfilledCommonGoalCards(player).size());
+        assertEquals(playController.getTokens(player).size(), playController.getFulfilledCommonCards(player).size());
         LivingRoomBoard livingRoomBoard = game.getBoard();
         List<Tile> tileToPick = new ArrayList<>();
         tileToPick.add(
@@ -341,7 +341,7 @@ class PlayControllerTest {
                         }).findFirst().get()
         );
         playController.pickTiles(tileToPick, player);
-        assertEquals(playController.getTokens(player).size(), playController.getFulfilledCommonGoalCards(player).size());
+        assertEquals(playController.getTokens(player).size(), playController.getFulfilledCommonCards(player).size());
     }
 
     @Test

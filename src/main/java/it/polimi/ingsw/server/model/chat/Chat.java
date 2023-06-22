@@ -45,11 +45,11 @@ public class Chat implements PostProcessable, StandardListenable {
      * @throws PlayerNotFoundException if the receiver of the message is not in the game
      */
     public void addMessage(Message m) throws PlayerNotFoundException{
-        if(MessagesPerPlayer.containsKey(m.sender.getUserName())){
-            if (m.receiver.isPresent()) {
-                if (MessagesPerPlayer.containsKey(m.receiver.get().getUserName())) {
-                    MessagesPerPlayer.get(m.receiver.get().getUserName()).add(0,m);
-                    MessagesPerPlayer.get(m.sender.getUserName()).add(0,m);
+        if(MessagesPerPlayer.containsKey(m.getSenderName())){
+            if (m.getReceiverName().isPresent()) {
+                if (MessagesPerPlayer.containsKey(m.getReceiverName().get())) {
+                    MessagesPerPlayer.get(m.getReceiverName().get()).add(0,m);
+                    MessagesPerPlayer.get(m.getSenderName()).add(0,m);
                 } else {
                     throw new PlayerNotFoundException("The receiver of the message is not in the game");
                 }

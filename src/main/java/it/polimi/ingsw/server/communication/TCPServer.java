@@ -435,7 +435,7 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                         sendToClient(c,
                                 new GameSetUp(
                                         playController.getPlayers(),
-                                        new ArrayList<>(playController.getEndGameGoals()),
+                                        new ArrayList<>(playController.getCommonGoals()),
                                         playController.getPersonalGoalCard(getPlayerNameFromClient(c)),
                                         chatController.getPlayerMessages(getPlayerNameFromClient(c))
                                 ).toJson()
@@ -513,14 +513,14 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
                     }
             );
 
-            sendToClient(finalReconnectedPlayer, new CommonCards(playController.getCommonGoalCardsToTokens()).toJson());
+            sendToClient(finalReconnectedPlayer, new CommonCards(playController.getCommonCardsToTokens()).toJson());
             sendToClient(finalReconnectedPlayer, new BoardUpdate(playController.getBoard()).toJson());
             sendToClient(finalReconnectedPlayer, new TurnNotify(playController.getCurrentPlayer()).toJson());
             try {
                 sendToClient(finalReconnectedPlayer,
                         new GameSetUp(
                                 playController.getPlayers(),
-                                new ArrayList<>(playController.getEndGameGoals()),
+                                new ArrayList<>(playController.getCommonGoals()),
                                 playController.getPersonalGoalCard(playerName),
                                 chatController.getPlayerMessages(playerName)
                         ).toJson()

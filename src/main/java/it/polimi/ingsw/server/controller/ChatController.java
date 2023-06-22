@@ -45,11 +45,6 @@ public class ChatController {
      * @throws PlayerNotFoundException if no player wa found
      */
     public synchronized List<Message> getPlayerMessages(String player) throws PlayerNotFoundException {
-        for(Player p : game.getPlayersList()){
-            if(p.getUserName().equals(player)){
-                return new ArrayList<>(game.getChat().getMessages(p));
-            }
-        }
-        throw new PlayerNotFoundException("getBookshelf: no player "+player+" found");
+        return game.getPlayerMessages(player);
     }
 }

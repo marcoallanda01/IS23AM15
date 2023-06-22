@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class Message {
-    protected final Player sender;
-    protected Optional<Player> receiver;
-    protected LocalDateTime date;
-    protected final String content;
+    private final Player sender;
+    private Optional<Player> receiver;
+    private LocalDateTime date;
+    private final String content;
 
     /**
      * Create a new message
@@ -55,6 +55,13 @@ public class Message {
      */
     public Player getSender(){
         return this.sender;
+    }
+    /**
+     * Get the receiver
+     * @return receiver
+     */
+    public Optional<Player> getReceiver(){
+        return this.receiver;
     }
 
     /**
