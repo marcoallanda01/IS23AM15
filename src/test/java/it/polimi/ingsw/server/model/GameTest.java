@@ -1,12 +1,16 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.model.exceptions.ArrestGameException;
 import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.turn.PutTilesState;
+import it.polimi.ingsw.server.model.turn.Turn;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,6 +81,19 @@ class GameTest {
     }
 
     @Test
+    void nextTurnPlayerDisconnected(){
+        Player p1 = new Player("p1");
+        Player p2 = new Player("p2");
+        Player p3 = new Player("p3");
+        List<String> playersName = List.of(p1.getUserName(), p2.getUserName(), p3.getUserName());
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
+        game.setGame(playersName,false);
+        game.disconnectPlayer(game.getPlayers().get(1));
+        game.disconnectPlayer(game.getPlayers().get(0));
+        assertEquals(game.getPlayers().get(2), game.getCurrentPlayer());
+    }
+
+    @Test
     void reconnectPlayer() throws PlayerNotFoundException {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
@@ -92,11 +109,96 @@ class GameTest {
     }
 
     @Test
-    void lastPlayerDisconnection(){
-        Player p1 = new Player("p1");
-        Player p2 = new Player("p2");
-        List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
+    void automaticBoardRefill(){
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(playersName,false);
+        game.setGame(List.of("p1", "p2"), false);
+
+
+        Map<Integer, Map<Integer, TileRule>> mask = new HashMap<>();
+        mask.put(0, Map.of(0, TileRule.BLOCK, 1, TileRule.TWO, 2, TileRule.BLOCK,3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(1, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(2, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(3, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(4,
+                Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(5,
+                Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(6, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(7, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        LivingRoomBoard board = new LivingRoomBoard(2, mask);
+        board.fillBoard();
+
+        game.setGame(new Game(game.getPlayersList(),null, false, board, new Turn(game.getPlayersList().get(0), board),game.getChat(), game.getGoalManager()));
+
+        List<Tile> tiles = board.getAllTiles();
+        assertEquals(1, board.getAllTiles().size());
+        assertTrue(game.pickTiles(tiles));
+        assertEquals(1, board.getAllTiles().size());
+    }
+
+    @Test
+    void disconnectAfterPick(){
+        Game game = new Game(new PushNotificationController(new ArrayList<>()));
+        game.setGame(List.of("p1", "p2"), false);
+
+
+        Map<Integer, Map<Integer, TileRule>> mask = new HashMap<>();
+        mask.put(0, Map.of(0, TileRule.BLOCK, 1, TileRule.TWO, 2, TileRule.BLOCK,3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(1, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(2, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(3, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(4,
+                Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(5,
+                Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8, TileRule.BLOCK));
+        mask.put(6, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(7, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        mask.put(8, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.BLOCK, 4, TileRule.BLOCK, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
+                TileRule.BLOCK));
+        LivingRoomBoard board = new LivingRoomBoard(2, mask);
+        board.fillBoard();
+
+        game.setGame(new Game(game.getPlayersList(),null, false, board, new Turn(game.getPlayersList().get(0), board),game.getChat(), game.getGoalManager()));
+
+        while(true){
+            board.removeFromBoard(board.getAllTiles().stream().toList());
+            try{
+                board.fillBoard();
+            }catch (ArrestGameException e){
+                break;
+            }
+        }
+        assertThrows(ArrestGameException.class, board::fillBoard);
+
+        List<Tile> tiles = board.getAllTiles();
+        assertEquals(0, board.getAllTiles().size());
+
+        List<Tile> tilesToPick = List.of(new Tile(TileType.CAT), new Tile(TileType.CAT));
+        board.putBackInBag(tilesToPick);
+        assertEquals(0, board.getAllTiles().size());
+
+        board.fillBoard();
+        assertEquals(1, board.getAllTiles().size());
+
+
+        assertTrue(game.pickTiles(board.getAllTiles()));
+        assertEquals(1, board.getAllTiles().size());
+        board.removeFromBoard(board.getAllTiles());
+        game.disconnectPlayer(game.getCurrentPlayer());
+        assertEquals(1, board.getAllTiles().size());
     }
 }

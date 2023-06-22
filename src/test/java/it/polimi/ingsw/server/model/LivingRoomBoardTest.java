@@ -160,7 +160,6 @@ class LivingRoomBoardTest {
             }catch (ArrestGameException e){
                 break;
             }
-
         }
         assertThrows(ArrestGameException.class, board::fillBoard);
         board.putBackInBag(tiles);
@@ -170,6 +169,5 @@ class LivingRoomBoardTest {
         board.removeFromBoard(board.getAllTiles().stream().toList());
 
         assertThrows(ArrestGameException.class, board::fillBoard);
-
     }
 }

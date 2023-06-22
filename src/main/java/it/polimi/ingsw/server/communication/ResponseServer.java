@@ -267,7 +267,7 @@ public abstract class ResponseServer{
                 try {
                     playController.saveGame(sg.game);
                 } catch (Exception e) {
-                    sendErrorMessage(sg.getId(), "This tiles can't be picked!");
+                    sendErrorMessage(sg.getId(), "SERVER ERROR: Can not save game, please try again later!");
                 }
             }
         }

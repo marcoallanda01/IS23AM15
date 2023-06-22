@@ -97,12 +97,6 @@ public class GoalManager{
         String type = typeElement.getAsString();
         switch (type) {
             case "specific" -> {
-                /*
-                {"name":"DIAGONAL",
-                        "type":"specific", "masks": [{"matrix":[[1,0,0,0,1],[0,1,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,0,0,0,1]]}, {"matrix":[[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0]]}],
-                    "grup_num":1, "sgc":"N","max":1,"min":1
-                },
-                */
                 int groupNum = patternJ.get("group_num").getAsInt();
                 int maxC = patternJ.get("max").getAsInt();
                 int minC = patternJ.get("min").getAsInt();
@@ -138,11 +132,6 @@ public class GoalManager{
                 }
             }
             case "adjacent" -> {
-                /*
-                {"name":"3_ADJACENT",
-                        "type":"adjacent", "min_tiles":3, "min_groups":1, "points":"2"
-                },
-                 */
                 int minTiles = patternJ.get("min_tiles").getAsInt();
                 int maxTiles = patternJ.get("min_groups").getAsInt();
                 int points = patternJ.get("points").getAsInt();
@@ -153,9 +142,6 @@ public class GoalManager{
                 }
             }
             case "personal" -> {
-                /*
-                {"name":"pc_1", "tiles":[[0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]],"check_to_points" : [[1,1], [2,2], [3,4], [4,6], [5,9], [6,12]] },
-                */
                 JsonArray tilesJ = patternJ.get("tiles").getAsJsonArray();
                 Set<Tile> tiles = new HashSet<>();
                 for (int i = 0; i < tilesJ.size(); i++) {
@@ -276,6 +262,14 @@ public class GoalManager{
         this.pointsManagers.add(this.commonGoalsPointsManager);
     }
 
+    /**
+     * Constructor of GoalManager when game is loaded
+     * @param commonCardsPointsManager commonCardsPointsManager
+     * @param personalCardsPointsManager personalCardsPointsManager
+     * @param commonGoalsPointsManager commonGoalsPointsManager
+     * @param frequentUpdates frequentUpdates
+     * @param CommonCardsToDraw CommonCardsToDraw
+     */
     public GoalManager(CommonCardsPointsManager commonCardsPointsManager, PersonalCardsPointsManager personalCardsPointsManager, CommonGoalsPointsManager commonGoalsPointsManager,
                        Boolean frequentUpdates, int CommonCardsToDraw) {
         this.commonCardsToDraw = CommonCardsToDraw;
@@ -324,10 +318,9 @@ public class GoalManager{
     public int getPoints(Player player) {
 
         return pointsManagers.stream()
-                .map(pointsManager -> {System.out.println("Player: " + player);System.out.println("PlayerToPoints:"+pointsManager.getPlayersToPoints());System.out.println(pointsManager.getPlayersToPoints().get(player));System.out.println(pointsManager.getPoints(player)); return pointsManager.getPoints(player);}).reduce(0, Integer::sum)
+                .map(pointsManager -> pointsManager.getPoints(player)).reduce(0, Integer::sum)
                 + (player.isFirstToFinish() ? 1 : 0);
     }
-    // good for now, might want to clone or send a simplified version of these objects for security reasons (again)
 
     /**
      * Get player with most points

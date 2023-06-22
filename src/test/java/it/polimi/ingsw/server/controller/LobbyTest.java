@@ -230,6 +230,39 @@ class LobbyTest {
     }
 
     @Test
+    public void loadGame_IllegalLobbyException() throws WaitLobbyException{
+        lobby.join();
+        assertThrows(IllegalLobbyException.class, () ->lobby.loadGame("SaveGameTest", "wrongId"));
+        assertTrue(lobby.getIsCreating());
+        assertEquals(new ArrayList<>(), lobby.getLoadedPlayersNames());
+    }
+
+    @Test
+    public void loadGame_GameNameException() throws WaitLobbyException{
+        Optional<String> playerId = lobby.join();
+        assertThrows(GameNameException.class, () ->lobby.loadGame("SaveDoNotExists", playerId.get()));
+        assertTrue(lobby.getIsCreating());
+        assertEquals(new ArrayList<>(), lobby.getLoadedPlayersNames());
+    }
+
+    @Test
+    public void loadGame_GameLoadException() throws WaitLobbyException{
+        Optional<String> playerId = lobby.join();
+        assertThrows(GameLoadException.class, () ->lobby.loadGame("error_game", playerId.get()));
+        assertTrue(lobby.getIsCreating());
+        assertEquals(new ArrayList<>(), lobby.getLoadedPlayersNames());
+    }
+
+    @Test
+    public void testJoinLoadedGameFirstPlayer_IllegalLobbyException() throws WaitLobbyException, IllegalLobbyException, GameLoadException, GameNameException, NicknameException {
+        Optional<String> playerId = lobby.join();
+        assertThrows(IllegalLobbyException.class, () ->lobby.loadGame("SaveGameTest", "wrongId"));
+        assertTrue(lobby.getIsCreating());
+        assertEquals(new ArrayList<>(), lobby.getLoadedPlayersNames());
+    }
+
+
+    @Test
     public void testJoinLoadedGameFirstPlayer_NicknameException() throws NicknameException, WaitLobbyException, IllegalLobbyException, GameLoadException, GameNameException {
         String name = "aCaso";
 
@@ -580,6 +613,42 @@ class LobbyTest {
         t2.start();
         t1.join();
         t2.join();
-        assertNotNull(lobby.join());
+        assertNotEquals(Optional.empty(), lobby.join());
+    }
+
+    @Test
+    void endGame_allPlayersDisconnected() throws NicknameException, WaitLobbyException, NicknameTakenException, FirstPlayerAbsentException, FullGameException, EmptyLobbyException, InterruptedException, IllegalLobbyException, GameLoadException, GameNameException {
+        String playerId = lobby.join().get();
+        List<String> playersLoaded =  lobby.loadGame("1_to_finish", playerId);
+        lobby.joinLoadedGameFirstPlayer(playersLoaded.get(0), playerId);
+        playersLoaded.remove(playersLoaded.get(0));
+        for(String p : playersLoaded){
+            lobby.addPlayer(p);
+            System.out.println(p);
+        }
+        ServerCommunication s1 = new ServerCommunicationInstance();
+        ServerCommunication s2 = new ServerCommunicationInstance();
+        lobby.registerServer(s1);
+        lobby.registerServer(s2);
+
+        ControllerProvider cp = lobby.startGame();
+
+        PlayController pc = cp.getPlayController();
+        pc.leave("player1");
+        assertFalse(pc.isPlaying("player1"));
+        assertTrue(pc.isPlaying("player2"));
+        assertNull(pc.getWinner());
+        pc.leave("player2");
+        assertFalse(pc.isPlaying("player2"));
+        assertNull(pc.getWinner());
+        //Simulation s1
+        Thread t1 = new Thread(() -> lobby.reset());
+        //Simulation s2
+        Thread t2 = new Thread(() -> lobby.reset());
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+        assertNotEquals(Optional.empty(), lobby.join());
     }
 }

@@ -152,6 +152,7 @@ public class Game{
                     this);
             this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME, null,
                     this.currentTurn.getCurrentPlayer().getUserName());
+            // When a game is loaded in the middle of a turn
             if(this.currentTurn.getState().getClass() == PutTilesState.class && this.currentTurn.getPickedTiles() != null){
                 GameChangeSupport.firePropertyChange(PICKED_TILES_PROPRIETY_NAME,
                         null,
@@ -176,6 +177,11 @@ public class Game{
         GameChangeSupport.removePropertyChangeListener(listener);
     }
 
+    /**
+     * Current player pick tiles
+     * @param tiles tiles to pick
+     * @return true if the pick was successful, false otherwise
+     */
     public boolean pickTiles(List<Tile> tiles) {
         List<Tile> oldTiles = currentTurn.getPickedTiles();
         if (currentTurn.pickTiles(tiles)) {
@@ -216,20 +222,8 @@ public class Game{
                     isLastRound = true;
                 }
             }
-            System.out.println("GAME: BEFORE WINNER!: "+this.winner);
-            System.out.println("GAME: BEFORE WINNER isLastRound: "+this.isLastRound);
-            System.out.println("GAME: BEFORE WINNER players.indexOf(player): "+this.players.indexOf(player));
-            System.out.println("GAME: BEFORE WINNER players.indexOf(player): "+ (this.players.size() - 1));
             if (isLastRound && (this.players.indexOf(player) == (this.players.size() - 1))) {
-                System.out.println("GAME: DOVREBBE ESSERCI UN VINCITORE");
-            }
-            if (isLastRound && (this.players.indexOf(player) == (this.players.size() - 1))) {
-                try{
-                    this.winner = goalManager.getWinner(this.players);
-                }catch (Exception e){
-                    System.out.println("GAME: getWinner lancia una eccezzione!");
-                    e.printStackTrace();
-                }
+                this.winner = goalManager.getWinner(this.players);
                 System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
             }
             currentTurn.changeState(new EndState(currentTurn));
@@ -239,6 +233,7 @@ public class Game{
             return false;
         }
     }
+
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
         return goalManager.getPoints(player);
@@ -317,20 +312,12 @@ public class Game{
 
     public void sendMessage(String sender, String receiver, String message) throws PlayerNotFoundException {
         Message m = new Message(this.getPlayerFromNickname(sender), this.getPlayerFromNickname(receiver), message);
-        try {
-            this.chat.addMessage(m);
-        } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.chat.addMessage(m);
     }
 
     public void sendMessage(String sender, String message) throws PlayerNotFoundException {
         Message m = new Message(this.getPlayerFromNickname(sender), message);
-        try {
-            this.chat.addMessage(m);
-        } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.chat.addMessage(m);
     }
 
     public List<Player> getPlayersList() {
@@ -393,6 +380,9 @@ public class Game{
         if (this.getCurrentPlayer().equals(player)) {
             if(this.currentTurn.getState().getClass().equals(PutTilesState.class)){
                 this.board.putBackInBag(this.currentTurn.getPickedTiles());
+                if(this.board.isToFill()){
+                    this.board.fillBoard();
+                }
             }
             this.nextTurn(this.currentTurn.getCurrentPlayer());
         }
