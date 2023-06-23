@@ -42,7 +42,14 @@ public class GUI extends View {
      */
     @Override
     public void showChat() {
-        new GUIChat(guiApplication, this.getChat(), this.getPlayers());
+        new GUIChat(guiApplication, this.getChat(), this.getPlayers(), false);
+    }
+    /**
+     * Shows the chat notification
+     */
+    @Override
+    public void showChatNotification() {
+        new GUIChat(guiApplication, this.getChat(), this.getPlayers(), true);
     }
     /**
      * Does not do anything because help is not needed
@@ -118,6 +125,7 @@ public class GUI extends View {
     public void showGoals() {
         Platform.runLater(() -> guiApplication.printGoals(this.getCommonCards().keySet().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), this.getCommonGoals().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), goalsToDetails.get(this.getPersonalGoal())));
     }
+
     /**
      * Renders the view
      */

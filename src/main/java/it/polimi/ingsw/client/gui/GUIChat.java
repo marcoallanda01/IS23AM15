@@ -22,17 +22,17 @@ public class GUIChat extends GUIState {
     Map<String, Map<String, String>> chat;
     List<String> players;
 
-    public GUIChat(GUIApplication guiApplication, Map<String, Map<String, String>> chat, List<String> players) {
+    public GUIChat(GUIApplication guiApplication, Map<String, Map<String, String>> chat, List<String> players, boolean isNotification) {
         super(guiApplication);
         this.chat = chat;
         this.players = players;
-        createUI();
+        createUI(!isNotification);
     }
 
     /*
         * Create the chat UI
      */
-    public void createUI() {
+    public void createUI(boolean forceActive) {
         VBox root = new VBox(10);
         root.setPadding(new javafx.geometry.Insets(10));
         root.setAlignment(javafx.geometry.Pos.CENTER);
@@ -95,7 +95,7 @@ public class GUIChat extends GUIState {
         root.getChildren().addAll(chatList, messageBox);
 
         Scene scene = new Scene(root, 350, 300);
-        Platform.runLater(() -> guiApplication.showChat(scene));
+        Platform.runLater(() -> guiApplication.showChat(scene, forceActive));
     }
 
 }

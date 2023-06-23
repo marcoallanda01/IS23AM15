@@ -122,9 +122,13 @@ public class GUIApplication extends Application {
     /**
      * shows the chat
      */
-    public void showChat(Scene chatScene){
-        chatStage.setScene(chatScene);
-        chatStage.show();
+    public void showChat(Scene chatScene, boolean forceActive) {
+        if (forceActive || chatStage.isShowing()) {
+            chatStage.setScene(chatScene);
+            chatStage.show();
+        } else {
+            showPopup("There is a new message in the chat, open the chat to see it");
+        }
     }
 
     /**

@@ -154,4 +154,11 @@ public class CLI extends View {
     public void showGoals() {
         CLIRenderer.printGoals(this.getCommonCards().keySet().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), this.getCommonGoals().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), goalsToDetails.get(this.getPersonalGoal()));
     }
+    /**
+     * Shows the chat notification
+     */
+    @Override
+    public void showChatNotification() {
+        showError("There is a new message in the chat, open the chat with showchat to see it");
+    }
 }

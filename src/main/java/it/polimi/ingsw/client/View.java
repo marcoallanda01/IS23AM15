@@ -8,45 +8,58 @@ import java.util.*;
 public abstract class View {
     private List<String> players = new ArrayList<>();
     private List<String> lobbyPlayers = new ArrayList<>();
-    private Map<String,Set<Tile>> bookShelves = new HashMap<>();
+    private Map<String, Set<Tile>> bookShelves = new HashMap<>();
     private Set<Tile> livingRoomBoard = new HashSet<>();
     private List<TileType> pickedTiles = new ArrayList<>();
     private int numberOfPlayers;
     private boolean easyRules;
-    private Map<String,Map<String,String>> chat = new HashMap<>();
-    private Map<String,Integer> points = new HashMap<>();
+    private Map<String, Map<String, String>> chat = new HashMap<>();
+    private Map<String, Integer> points = new HashMap<>();
     private String currentTurnPlayer;
     private String personalGoal;
-    private Map<String,List<Integer>> commonCards = new HashMap<>();
+    private Map<String, List<Integer>> commonCards = new HashMap<>();
     private List<String> commonGoals = new ArrayList<>();
     private String game;
     private List<String> savedGames = new ArrayList<>();
     private String winner;
     protected Map<String, ClientGoalDetail> goalsToDetails;
+
     /**
      * Renders
      */
     public abstract void render();
+
     /**
      * Shows an error
      */
     public abstract void showError(String error);
+
     /**
      * Shows the chat
      */
     public abstract void showChat();
+
     /**
      * Shows help in terms of available actions
      */
     public abstract void showHelp();
+
     /**
      * Shows goal details
      */
     public abstract void showGoals();
+
+    /**
+     * Shows the chat notification
+     */
+    public abstract void showChatNotification();
+
     public abstract void stop(String message);
+
     public List<String> getPlayers() {
         return players;
     }
+
     public void setPlayers(List<String> players) {
         this.players = players;
     }
@@ -170,10 +183,13 @@ public abstract class View {
     public void setWinner(String winner) {
         this.winner = winner;
     }
+
     public Map<String, ClientGoalDetail> getGoalsToDetails() {
         return goalsToDetails;
     }
+
     public void setGoalsToDetail(Map<String, ClientGoalDetail> goalsToDetails) {
         this.goalsToDetails = goalsToDetails;
     }
 }
+

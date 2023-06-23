@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.TileType;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClientController implements ClientNotificationListener {
     private final View view;
@@ -32,6 +33,7 @@ public class ClientController implements ClientNotificationListener {
         view.setPlayers(gameSetUp.players);
         view.setCommonGoals(gameSetUp.goals);
         view.setPersonalGoal(gameSetUp.personal);
+        view.setChat(gameSetUp.oldChat.stream().collect(Collectors.toMap(message -> message.date, message -> Map.of("nickname", message.sender, "message", message.message))));
         view.render();
     }
 
@@ -162,11 +164,7 @@ public class ClientController implements ClientNotificationListener {
         Map<String, Map<String, String>> chat = view.getChat();
         chat.put(date, Map.of("nickname", nickname, "message", message));
         view.setChat(chat);
-        view.render();
-        view.showChat();
-        if(!nickname.equals(Client.getInstance().getNickname()) && Client.getInstance().getView() instanceof CLI) {
-            view.showError("The player " + nickname + " has sent a message, to open the chat type \"showChat\".");
-        }
+        view.showChatNotification();
     }
 
     /**
@@ -175,7 +173,6 @@ public class ClientController implements ClientNotificationListener {
      */
     @Override
     public void notifyDisconnection(String nickname) {
-        view.render();
         view.showError("The player " + nickname + " has disconnected.");
     }
 
@@ -185,8 +182,7 @@ public class ClientController implements ClientNotificationListener {
      */
     @Override
     public void notifyGameSaved(String game) {
-        view.render();
-        view.showError("The game has been saved successfully.");
+        view.showError("The game has been saved successfully. The name of the save is: " + game);
     }
 
     /**
@@ -204,7 +200,6 @@ public class ClientController implements ClientNotificationListener {
      */
     @Override
     public void notifyReconnection(String nickname) {
-        view.render();
         view.showError("The player " + nickname + " has reconnected.");
     }
 
@@ -219,7 +214,6 @@ public class ClientController implements ClientNotificationListener {
             Client.getInstance().setClientState(ClientStates.LOBBY);
             view.render();
         } else {
-            view.render();
             view.showError("There was an error while creating the lobby. Please try again.");
         }
     }
@@ -235,7 +229,6 @@ public class ClientController implements ClientNotificationListener {
         view.setNumberOfPlayers(players.size());
         Client.getInstance().setClientState(ClientStates.LOAD_NAMES);
         view.render();
-        //Client.getInstance().getClientCommunication().joinLoadedAsFirst(Client.getInstance().getNickname(), Client.getInstance().getId());
     }
 
     /**
