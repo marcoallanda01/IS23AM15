@@ -11,15 +11,12 @@ public abstract class View {
     private Map<String, Set<Tile>> bookShelves = new HashMap<>();
     private Set<Tile> livingRoomBoard = new HashSet<>();
     private List<TileType> pickedTiles = new ArrayList<>();
-    private int numberOfPlayers;
-    private boolean easyRules;
     private Map<String, Map<String, String>> chat = new HashMap<>();
     private Map<String, Integer> points = new HashMap<>();
     private String currentTurnPlayer;
     private String personalGoal;
     private Map<String, List<Integer>> commonCards = new HashMap<>();
     private List<String> commonGoals = new ArrayList<>();
-    private String game;
     private List<String> savedGames = new ArrayList<>();
     private String winner;
     protected Map<String, ClientGoalDetail> goalsToDetails;
@@ -96,22 +93,6 @@ public abstract class View {
         this.pickedTiles = pickedTiles;
     }
 
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
-
-    public void setNumberOfPlayers(int numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
-    }
-
-    public boolean isEasyRules() {
-        return easyRules;
-    }
-
-    public void setEasyRules(boolean easyRules) {
-        this.easyRules = easyRules;
-    }
-
     public Map<String, Map<String, String>> getChat() {
         return chat;
     }
@@ -158,14 +139,6 @@ public abstract class View {
 
     public void setCommonGoals(List<String> commonGoals) {
         this.commonGoals = commonGoals;
-    }
-
-    public String getGame() {
-        return game;
-    }
-
-    public void setGame(String game) {
-        this.game = game;
     }
 
     public List<String> getSavedGames() {

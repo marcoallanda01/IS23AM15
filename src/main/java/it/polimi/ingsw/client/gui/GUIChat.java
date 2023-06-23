@@ -22,6 +22,13 @@ public class GUIChat extends GUIState {
     Map<String, Map<String, String>> chat;
     List<String> players;
 
+    /**
+     * GUIChat constructor
+     * @param guiApplication the guiApplication
+     * @param chat the chat
+     * @param players the players
+     * @param isNotification if the new chat is being created due to a message notification
+     */
     public GUIChat(GUIApplication guiApplication, Map<String, Map<String, String>> chat, List<String> players, boolean isNotification) {
         super(guiApplication);
         this.chat = chat;
@@ -29,7 +36,7 @@ public class GUIChat extends GUIState {
         createUI(!isNotification);
     }
 
-    /*
+    /**
         * Create the chat UI
      */
     public void createUI(boolean forceActive) {

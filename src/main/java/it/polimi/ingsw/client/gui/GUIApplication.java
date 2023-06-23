@@ -33,6 +33,10 @@ public class GUIApplication extends Application {
     private final Stage chatStage = new Stage();
     private final Stage goalStage = new Stage();
 
+    /**
+     * Constructor of GUI application
+     * @param primaryStage the injected stage
+     */
     @Override
     public synchronized void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -68,12 +72,20 @@ public class GUIApplication extends Application {
         new GUI(this);
     }
 
+    /**
+     * closes the GUI application
+     * @throws Exception
+     */
     @Override
     public synchronized void stop() throws Exception {
         super.stop();
         Client.getInstance().getLogger().log("Application closed");
         Runtime.getRuntime().exit(0);
     }
+    /**
+     * creates a prompt that displays a message anda a button that when clicked closes the gui application
+     * @throws Exception
+     */
     public synchronized void stop(String message) throws Exception {
         showPopup(message, () -> {
             Platform.exit();
@@ -81,18 +93,17 @@ public class GUIApplication extends Application {
         });
     }
 
-    public synchronized void clearStage() {
-        // Get the root node of the stage
-        StackPane root = (StackPane) primaryStage.getScene().getRoot();
-
-        // Clear the content of the root node
-        root.getChildren().clear();
-    }
-
+    /**
+     * changes the scene without transition
+     * @param newScene the new scene
+     */
     public synchronized void changeScene(Scene newScene) {
         primaryStage.setScene(newScene);
     }
-
+    /**
+     * changes the scene with transition
+     * @param newScene the new scene
+     */
     public synchronized void transitionToScene(Scene newScene) {
         // Create a fade-out transition for the current scene
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.4), primaryStage.getScene().getRoot());
@@ -119,8 +130,11 @@ public class GUIApplication extends Application {
     public void showPopup(String message) {
         showPopup(message, () -> {});
     }
+
     /**
-     * shows the chat
+     * Shows the chat
+     * @param chatScene the new chat scene
+     * @param forceActive should the chat be shown even if it is not open?
      */
     public void showChat(Scene chatScene, boolean forceActive) {
         if (forceActive || chatStage.isShowing()) {
@@ -190,7 +204,7 @@ public class GUIApplication extends Application {
     }
 
     /**
-     * Creates a popup with the goals
+     * Creates a window with the goals and their info
      * @param commonCards the commonCards
      * @param commonGoals the commonGoals
      * @param personalGoal the personalGoal

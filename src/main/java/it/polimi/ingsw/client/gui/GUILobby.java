@@ -14,16 +14,13 @@ import javafx.scene.text.FontWeight;
 import java.util.List;
 
 public class GUILobby extends GUIState{
-    private final boolean isEasyRules;
 
     /**
      * Constructor for GUILobby
      * @param guiApplication is the GUIApplication
-     * @param isEasyRules is true if the game will use easy rules, false otherwise
      */
-    public GUILobby(GUIApplication guiApplication, boolean isEasyRules) {
+    public GUILobby(GUIApplication guiApplication) {
         super(guiApplication);
-        this.isEasyRules = isEasyRules;
         createUI();
     }
 
@@ -41,10 +38,7 @@ public class GUILobby extends GUIState{
         Label playersLabel = new Label("Waiting in lobby for other players to join...");
         playersLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        Label rulesLabel = new Label("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
-        rulesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-
-        root.getChildren().addAll(titleLabel, playersLabel, rulesLabel);
+        root.getChildren().addAll(titleLabel, playersLabel);
 
         Scene scene = new Scene(root, 800, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));

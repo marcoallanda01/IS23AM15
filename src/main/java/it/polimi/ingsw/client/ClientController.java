@@ -226,7 +226,6 @@ public class ClientController implements ClientNotificationListener {
     public void notifyLoadedGamePlayers(Set<String> nicknames) {
         List<String> players = new ArrayList<>(nicknames);
         view.setLobbyPlayers(players);
-        view.setNumberOfPlayers(players.size());
         Client.getInstance().setClientState(ClientStates.LOAD_NAMES);
         view.render();
     }
@@ -344,6 +343,10 @@ public class ClientController implements ClientNotificationListener {
         Client.getInstance().getClientCommunication().disconnect(Client.getInstance().getId());
     }
 
+    /**
+     * closes the view with a message
+     * @param message the message to show
+     */
     public void close(String message) {
         Client.getInstance().setClientState(ClientStates.END_GAME);
         view.stop(message);
@@ -370,8 +373,6 @@ public class ClientController implements ClientNotificationListener {
      */
     public void createGame(String nickname, int numOfPlayers, boolean easyRules) {
         Client.getInstance().setNickname(nickname);
-        view.setNumberOfPlayers(numOfPlayers);
-        view.setEasyRules(easyRules);
         Client.getInstance().getClientCommunication().joinNewAsFirst(Client.getInstance().getNickname(), numOfPlayers, Client.getInstance().getId(), easyRules);
     }
 

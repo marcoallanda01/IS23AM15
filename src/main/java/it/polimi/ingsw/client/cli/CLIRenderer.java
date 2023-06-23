@@ -91,11 +91,9 @@ public class CLIRenderer {
 
     /**
      * Prints the lobby screen
-     * @param isEasyRules true if the game uses easy rules
      */
-    public synchronized static void printLobby(boolean isEasyRules) {
+    public synchronized static void printLobby() {
         System.out.println("Waiting in lobby for other players to join...");
-        System.out.println("The game will use " + (isEasyRules ? "easy" : "standard") + " rules");
     }
 
     /**

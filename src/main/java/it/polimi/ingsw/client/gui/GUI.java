@@ -130,7 +130,7 @@ public class GUI extends View {
         switch (Client.getInstance().getClientState()) {
             case LOGIN -> this.guiState = new GUILogin(guiApplication);
             case CREATE_LOBBY -> this.guiState = new GUICreateLobby(guiApplication, Client.getInstance().getNickname());
-            case LOBBY -> this.guiState = new GUILobby(guiApplication, this.isEasyRules());
+            case LOBBY -> this.guiState = new GUILobby(guiApplication);
             case CREATE_GAME -> this.guiState = new GUICreateGame(guiApplication);
             case LOAD_GAME -> this.guiState = new GUILoadGame(guiApplication, this.getSavedGames());
             case LOAD_NAMES -> this.guiState = new GUILoadNames(guiApplication, this.getLobbyPlayers());
