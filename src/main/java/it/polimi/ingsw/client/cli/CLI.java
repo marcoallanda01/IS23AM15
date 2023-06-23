@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class CLI extends View {
     private final Thread inputThread;
@@ -21,6 +22,10 @@ public class CLI extends View {
         this.running = true;
         initializeViewAndConnection(5);
     }
+    /**
+     * initializes the view and the connection, if it fails it will retry after a countdown that is doubled each time
+     * @param countdown the countdown
+     */
     private void initializeViewAndConnection(int countdown) {
         try {
             Client.getInstance().init(this);
@@ -57,6 +62,7 @@ public class CLI extends View {
 
     /**
      * Stops the CLI
+     * @param message the message to show just before stopping
      */
     public void stop(String message) {
         showError(message);
@@ -136,7 +142,7 @@ public class CLI extends View {
     }
 
     /**
-     * Shows the help
+     * Shows the help in terms of available commands
      */
     public void showHelp() {
         CLIRenderer.printHelp();
@@ -146,6 +152,6 @@ public class CLI extends View {
      * Shows the goals
      */
     public void showGoals() {
-        CLIRenderer.printGoals(this.getCommonGoals(), this.getPersonalGoal());
+        CLIRenderer.printGoals(this.getCommonCards().keySet().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), this.getCommonGoals().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), goalsToDetails.get(this.getPersonalGoal()));
     }
 }

@@ -163,6 +163,7 @@ public class ClientController implements ClientNotificationListener {
         chat.put(date, Map.of("nickname", nickname, "message", message));
         view.setChat(chat);
         view.render();
+        view.showChat();
         if(!nickname.equals(Client.getInstance().getNickname()) && Client.getInstance().getView() instanceof CLI) {
             view.showError("The player " + nickname + " has sent a message, to open the chat type \"showChat\".");
         }

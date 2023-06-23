@@ -49,7 +49,6 @@ public class GUIInGame extends GUIState {
         //this.randomNum = random.nextInt(3) + 1;
         this.randomNum = 1;
         createUI();
-        chatState = new GUIChat(guiApplication, chat, players);
     }
 
     /**
@@ -67,6 +66,12 @@ public class GUIInGame extends GUIState {
         mainColumn.setPadding(new Insets(10, 10, 10, 10));
         mainColumn.setAlignment(Pos.CENTER);
         root.getChildren().add(mainColumn);
+
+        Button chatButton = new Button("Chat");
+        chatButton.setOnAction(event -> {
+            Client.getInstance().getView().showChat();
+        });
+        mainColumn.getChildren().add(chatButton);
 
         StackPane boardGrid = createBoardGrid();
         HBox bookshelvesBox = createBookshelves();
@@ -298,11 +303,12 @@ public class GUIInGame extends GUIState {
     }
 
     /**
-        * Creates the list of goals
+        * Creates the list of goals and the Goal info button
         * @param commonGoals the map containing the goals to be displayed
         * @return the VBox containing the list of goals
      */
     private VBox createGoals(Map<String, List<Integer>> commonGoals) {
+
         VBox goalsBox = new VBox(5);
         goalsBox.setAlignment(Pos.CENTER);
 
@@ -310,6 +316,14 @@ public class GUIInGame extends GUIState {
 
         VBox commonGoalsBox = new VBox(5);
         commonGoalsBox.setAlignment(Pos.CENTER);
+
+        Button button = new Button("Goal info");
+        button.setOnAction(e -> {
+            Client.getInstance().getView().showGoals();
+        });
+        HBox buttonContainer = new HBox(button);
+        buttonContainer.setAlignment(Pos.TOP_RIGHT);
+        commonGoalsBox.getChildren().add(button);
 
         for (String goal : commonGoals.keySet()) {
             String goalImage = goals.get(goal).getImage();

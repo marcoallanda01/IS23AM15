@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.ClientGoalDetail;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.application.Application;
@@ -12,9 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,10 +26,12 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.stage.Screen;
 
+import java.util.List;
+
 public class GUIApplication extends Application {
     private Stage primaryStage;
-
     private final Stage chatStage = new Stage();
+    private final Stage goalStage = new Stage();
 
     @Override
     public synchronized void start(Stage primaryStage) {
@@ -36,6 +42,10 @@ public class GUIApplication extends Application {
         this.chatStage.initModality(Modality.NONE);
         this.chatStage.initOwner(primaryStage);
         this.chatStage.setAlwaysOnTop(true);
+
+        this.goalStage.initModality(Modality.NONE);
+        this.goalStage.initOwner(primaryStage);
+        this.goalStage.setAlwaysOnTop(true);
 
         // Create the text node
         Text text = new Text("MyShelfie is loading");
@@ -79,11 +89,6 @@ public class GUIApplication extends Application {
         root.getChildren().clear();
     }
 
-    public synchronized Stage clearAndGetStage() {
-        clearStage();
-        return primaryStage;
-    }
-
     public synchronized void changeScene(Scene newScene) {
         primaryStage.setScene(newScene);
     }
@@ -107,21 +112,32 @@ public class GUIApplication extends Application {
         });
         transition.play();
     }
-
+    /**
+     * shows a popup that only closes upon interaction
+     * @param message the message to show in the popup
+     */
     public void showPopup(String message) {
         showPopup(message, () -> {});
     }
-
+    /**
+     * shows the chat
+     */
     public void showChat(Scene chatScene){
         chatStage.setScene(chatScene);
         chatStage.show();
     }
 
+    /**
+     * shows a popup
+     * @param message the message to show in the popup
+     * @param onCloseFunction the function to execute once the popup is closed
+     */
     public void showPopup(String message, Runnable onCloseFunction) {
         Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
+
+        popupStage.initModality(Modality.NONE);
         popupStage.initOwner(primaryStage);
-        popupStage.toFront();
+        popupStage.setAlwaysOnTop(true);
 
         Label messageLabel = new Label(message);
         Button closeButton = new Button("Close");
@@ -167,6 +183,67 @@ public class GUIApplication extends Application {
         popupStage.setY(primaryStageY + 50);
 
         popupStage.showAndWait();
+    }
+
+    /**
+     * Creates a popup with the goals
+     * @param commonCards the commonCards
+     * @param commonGoals the commonGoals
+     * @param personalGoal the personalGoal
+     */
+    public void printGoals(List<ClientGoalDetail> commonCards, List<ClientGoalDetail> commonGoals, ClientGoalDetail personalGoal) {
+        VBox contentBox = new VBox();
+        contentBox.setSpacing(10);
+        contentBox.setPadding(new Insets(20));
+        contentBox.setMaxWidth(550);
+
+        Text commonCardsTitle = new Text("Common cards:");
+        commonCardsTitle.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        contentBox.getChildren().add(commonCardsTitle);
+
+        for (ClientGoalDetail goal : commonCards) {
+            Text goalText = new Text(goal.getName() + ": " + goal.getDescription());
+            goalText.setWrappingWidth(contentBox.getMaxWidth());
+            contentBox.getChildren().add(goalText);
+        }
+
+        Text commonGoalsTitle = new Text("Common goals:");
+        commonGoalsTitle.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        contentBox.getChildren().add(commonGoalsTitle);
+
+        for (ClientGoalDetail goal : commonGoals) {
+            Text goalText = new Text(goal.getName() + ": " + goal.getDescription());
+            goalText.setWrappingWidth(contentBox.getMaxWidth());
+            contentBox.getChildren().add(goalText);
+        }
+
+        Text personalGoalTitle = new Text("Personal goal:");
+        personalGoalTitle.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        contentBox.getChildren().add(personalGoalTitle);
+
+        Text personalGoalText = new Text(personalGoal.getName() + ": " + personalGoal.getDescription());
+        personalGoalText.setWrappingWidth(contentBox.getMaxWidth());
+        contentBox.getChildren().add(personalGoalText);
+
+        ScrollPane scrollPane = new ScrollPane(contentBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(event -> {
+            goalStage.close();
+        });
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(20));
+        layout.getChildren().add(closeButton);
+
+        contentBox.getChildren().add(closeButton);
+
+        goalStage.setTitle("Goal details");
+        goalStage.setScene(new Scene(scrollPane, 600, 500));
+        goalStage.show();
     }
 }
 

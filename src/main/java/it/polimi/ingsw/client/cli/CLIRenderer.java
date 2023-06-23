@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.ClientGoal;
+import it.polimi.ingsw.client.ClientGoalDetail;
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.TileType;
 
@@ -320,7 +322,7 @@ public class CLIRenderer {
         System.out.println("You may put tiles with: " + "put COL INDEX1 INDEX2 ..., " + "where COL is the column of your bookshelf and INDEXi represents the i-th picked tile, the order of the indexes represents the order in which tiles will be put in your bookshelf (bottom to top)");
         System.out.println("You may send message to another player with: " + "sendmessage NICKNAME MESSAGE, " + "if NICKNAME is set to 'all' all players will receive the message");
         System.out.println("You may show the chat using: " + "showchat");
-        System.out.println("You may show goal details using: " + "showgoal GOAL_NAME, " + "where GOAL_NAME is the name of the goal");
+        System.out.println("You may show goals details using: " + "showgoals");
         System.out.println("You may show the current game using: " + "showgame");
         System.out.println("You may save the game using: " + "save SAVE_NAME, " + "where SAVE_NAME is the name of the game save, please note that you cannot override existing saves");
     }
@@ -349,21 +351,25 @@ public class CLIRenderer {
     }
 
     /**
-     * Prints the goals of the players
+     * Prints the goals of the player
      * @param commonGoals the list of the common goals
+     * @param commonCards the list of the common cards
      * @param personalGoal the personal goal
      */
-    public synchronized static void printGoals(List<String> commonGoals, String personalGoal){
+    public synchronized static void printGoals(List<ClientGoalDetail> commonCards, List<ClientGoalDetail> commonGoals, ClientGoalDetail personalGoal){
         System.out.println();
-        System.out.println(CliColor.BLACK_BOLD + "Common goals:" + CliColor.RESET);
-        for (String goal : commonGoals) {
-            String goalDescription = Client.getInstance().getView().getGoalsToDetails().get(goal).getDescription();
-            System.out.println(goalDescription);
+        System.out.println(CliColor.YELLOW_BOLD + "Common cards:" + CliColor.RESET);
+        for (ClientGoalDetail goal : commonCards) {
+            System.out.println(goal.getName() + ": " + goal.getDescription());
             System.out.println();
         }
-        System.out.println(CliColor.BLACK_BOLD + "Personal goal:" + CliColor.RESET);
-        String personalGoalDescription = Client.getInstance().getView().getGoalsToDetails().get(personalGoal).getDescription();
-        System.out.println(personalGoalDescription);
+        System.out.println(CliColor.YELLOW_BOLD + "Common goals:" + CliColor.RESET);
+        for (ClientGoalDetail goal : commonGoals) {
+            System.out.println(goal.getName() + ": " + goal.getDescription());
+            System.out.println();
+        }
+        System.out.println(CliColor.YELLOW_BOLD + "Personal card:" + CliColor.RESET);
+        System.out.println(personalGoal.getName() + ": " + personalGoal.getDescription());
         System.out.println();
     }
 }

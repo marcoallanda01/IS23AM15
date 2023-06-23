@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.client.cli.CLIRenderer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -15,18 +16,46 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class GUI extends View {
     private GUIApplication guiApplication;
     private GUIState guiState;
+
+    /**
+     * Constructor for GUI
+     * @param guiApplication the guiApplication to use
+     */
     public GUI(GUIApplication guiApplication) {
         this.guiApplication = guiApplication;
         initializeViewAndConnection(5);
     }
+    /**
+     * Shows an error
+     */
     @Override
     public void showError(String error) {
         Platform.runLater(() -> guiApplication.showPopup(error));
     }
+    /**
+     * Shows the chat
+     */
+    @Override
+    public void showChat() {
+        new GUIChat(guiApplication, this.getChat(), this.getPlayers());
+    }
+    /**
+     * Does not do anything because help is not needed
+     */
+    @Override
+    public void showHelp() {
+        // help in our GUI implementation is not needed as it is really intuitive
+    }
+
+    /**
+     * initializes the view and the connection, if it fails it will retry after a countdown that is doubled each time
+     * @param countdown the countdown
+     */
     private void initializeViewAndConnection(int countdown) {
         try {
             Client.getInstance().init(this);
@@ -63,9 +92,16 @@ public class GUI extends View {
             timeline.play();
         }
     }
+    /**
+     * Logs that the gui started
+     */
     public void start() {
         Client.getInstance().getLogger().log("GUI Started");
     }
+    /**
+     * Stops the guiApplication with a message
+     * @param message the message to be shown
+     */
     public void stop(String message) {
         Platform.runLater(() -> {
             try {
@@ -76,6 +112,15 @@ public class GUI extends View {
         });
         Client.getInstance().getLogger().log("GUI Stopped");
     }
+    /**
+     * Shows the goals
+     */
+    public void showGoals() {
+        Platform.runLater(() -> guiApplication.printGoals(this.getCommonCards().keySet().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), this.getCommonGoals().stream().map(goal -> goalsToDetails.get(goal)).collect(Collectors.toList()), goalsToDetails.get(this.getPersonalGoal())));
+    }
+    /**
+     * Renders the view
+     */
     public void render(){
         Client.getInstance().getLogger().log("Rendering: " + Client.getInstance().getClientState());
         switch (Client.getInstance().getClientState()) {

@@ -23,11 +23,26 @@ public abstract class View {
     private List<String> savedGames = new ArrayList<>();
     private String winner;
     protected Map<String, ClientGoalDetail> goalsToDetails;
-    public void render(){}
-    public void showError(String error){}
-    public void showChat(){}
-    public void showHelp() {}
-    public void showGoals() {}
+    /**
+     * Renders
+     */
+    public abstract void render();
+    /**
+     * Shows an error
+     */
+    public abstract void showError(String error);
+    /**
+     * Shows the chat
+     */
+    public abstract void showChat();
+    /**
+     * Shows help in terms of available actions
+     */
+    public abstract void showHelp();
+    /**
+     * Shows goal details
+     */
+    public abstract void showGoals();
     public abstract void stop(String message);
     public List<String> getPlayers() {
         return players;
