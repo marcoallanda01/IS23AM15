@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.client.cli.CLIRenderer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -12,14 +11,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GUI extends View {
-    private GUIApplication guiApplication;
+    private final GUIApplication guiApplication;
     private GUIState guiState;
 
     /**
@@ -130,7 +126,7 @@ public class GUI extends View {
             case CREATE_GAME -> this.guiState = new GUICreateGame(guiApplication);
             case LOAD_GAME -> this.guiState = new GUILoadGame(guiApplication, this.getSavedGames());
             case LOAD_NAMES -> this.guiState = new GUILoadNames(guiApplication, this.getLobbyPlayers());
-            case IN_GAME -> this.guiState = new GUIInGame(guiApplication, this.getLivingRoomBoard(), this.getBookShelves(), this.getChat(), this.getPlayers());
+            case IN_GAME -> this.guiState = new GUIInGame(guiApplication, this.getLivingRoomBoard(), this.getBookShelves());
             case END_GAME -> this.guiState = new GUIEndGame(guiApplication, this.getPoints(), this.getWinner());
             default -> Client.getInstance().getLogger().log("Invalid state");
         }
