@@ -29,6 +29,7 @@ import javafx.scene.text.FontWeight;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("DataFlowIssue")
 public class GUIInGame extends GUIState {
 
     Set<Tile> livingRoomBoard;
@@ -38,10 +39,8 @@ public class GUIInGame extends GUIState {
     int randomNum;
     private int draggedIndex = -1;
 
-    GUIState chatState;
 
-
-    public GUIInGame(GUIApplication guiApplication, Set<Tile> livingRoomBoard, Map<String, Set<Tile>> bookshelves, Map<String,Map<String,String>> chat, List<String> players) {
+    public GUIInGame(GUIApplication guiApplication, Set<Tile> livingRoomBoard, Map<String, Set<Tile>> bookshelves) {
         super(guiApplication);
         this.livingRoomBoard = livingRoomBoard;
         this.bookshelves = bookshelves;
@@ -68,9 +67,7 @@ public class GUIInGame extends GUIState {
         root.getChildren().add(mainColumn);
 
         Button chatButton = new Button("Chat");
-        chatButton.setOnAction(event -> {
-            Client.getInstance().getView().showChat();
-        });
+        chatButton.setOnAction(event -> Client.getInstance().getView().showChat());
         mainColumn.getChildren().add(chatButton);
 
         StackPane boardGrid = createBoardGrid();
@@ -318,9 +315,7 @@ public class GUIInGame extends GUIState {
         commonGoalsBox.setAlignment(Pos.CENTER);
 
         Button button = new Button("Goal info");
-        button.setOnAction(e -> {
-            Client.getInstance().getView().showGoals();
-        });
+        button.setOnAction(e -> Client.getInstance().getView().showGoals());
         HBox buttonContainer = new HBox(button);
         buttonContainer.setAlignment(Pos.TOP_RIGHT);
         commonGoalsBox.getChildren().add(button);
@@ -369,7 +364,7 @@ public class GUIInGame extends GUIState {
 
         for (String name : bookshelves.keySet()) {
             StackPane bookshelfGrid = createBookshelfGrid(bookshelves.get(name), name);
-            if (name.equals(Client.getInstance().getView().getPlayers().get(0))) {
+            if (name.equals(bookshelves.keySet().toArray()[0])) {
                 ImageView firstPlayerToken = new ImageView(new Image(getClass().getResource("/assets/firstplayertoken.png").toExternalForm()));
                 firstPlayerToken.setFitHeight(40);
                 firstPlayerToken.setFitWidth(40);
