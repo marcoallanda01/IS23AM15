@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.communication.ClientNotificationListener;
 import it.polimi.ingsw.communication.responses.GameSetUp;
 import it.polimi.ingsw.server.model.Tile;
@@ -426,6 +425,7 @@ public class ClientController implements ClientNotificationListener {
             return;
         }
         Client.getInstance().getClientCommunication().pickTiles(Client.getInstance().getId(), tiles);
+        Client.getInstance().getView().setHasPutTiles(false);
     }
 
     /**
@@ -440,6 +440,7 @@ public class ClientController implements ClientNotificationListener {
             orderedTiles.add(tiles.get(index));
         }
         Client.getInstance().getClientCommunication().putTiles(Client.getInstance().getId(), orderedTiles, column);
+        Client.getInstance().getView().setHasPutTiles(true);
     }
 
     /**

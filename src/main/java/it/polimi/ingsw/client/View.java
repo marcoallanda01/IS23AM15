@@ -20,6 +20,7 @@ public abstract class View {
     private List<String> savedGames = new ArrayList<>();
     private String winner;
     protected Map<String, ClientGoalDetail> goalsToDetails;
+    private boolean hasPutTiles = false;
 
     /**
      * Renders
@@ -163,6 +164,14 @@ public abstract class View {
 
     public void setGoalsToDetail(Map<String, ClientGoalDetail> goalsToDetails) {
         this.goalsToDetails = goalsToDetails;
+    }
+
+    public boolean getHasPutTiles() {
+        return hasPutTiles;
+    }
+
+    public void setHasPutTiles(boolean hasPutTiles) {
+        this.hasPutTiles = hasPutTiles;
     }
 }
 

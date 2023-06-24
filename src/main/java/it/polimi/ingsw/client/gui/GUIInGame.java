@@ -195,11 +195,18 @@ public class GUIInGame extends GUIState {
         if (Client.getInstance().getView().getCurrentTurnPlayer().equals(Client.getInstance().getNickname())) {
             turnBox.getChildren().clear();
             if (Client.getInstance().getView().getPickedTiles().isEmpty()) {
-                Label pickLabel = new Label("Pick 1, 2 or 3 tiles");
-                pickLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-                pickLabel.setTextFill(Color.BLACK);
-                turnBox.getChildren().add(pickLabel);
-                turnBox.getChildren().add(submitButton);
+                if (Client.getInstance().getView().getHasPutTiles()) {
+                    Label waitPutLabel = new Label("Inserting tiles...");
+                    waitPutLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                    waitPutLabel.setTextFill(Color.BLACK);
+                    turnBox.getChildren().add(waitPutLabel);
+                } else {
+                    Label pickLabel = new Label("Pick 1, 2 or 3 tiles");
+                    pickLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                    pickLabel.setTextFill(Color.BLACK);
+                    turnBox.getChildren().add(pickLabel);
+                    turnBox.getChildren().add(submitButton);
+                }
             } else {
                 Label putLabel = new Label("Reorder the picked tiles and select a column of your bookshelf");
                 putLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -220,6 +227,7 @@ public class GUIInGame extends GUIState {
 
     /**
      * Calculates the drop index based on the x-coordinate of the mouse pointer
+     *
      * @param x the x-coordinate of the mouse pointer
      * @return the drop index
      */
@@ -239,6 +247,7 @@ public class GUIInGame extends GUIState {
 
     /**
      * Creates the grid of the board
+     *
      * @return the StackPane containing the grid
      */
     private StackPane createBoardGrid() {
@@ -300,9 +309,10 @@ public class GUIInGame extends GUIState {
     }
 
     /**
-        * Creates the list of goals and the Goal info button
-        * @param commonGoals the map containing the goals to be displayed
-        * @return the VBox containing the list of goals
+     * Creates the list of goals and the Goal info button
+     *
+     * @param commonGoals the map containing the goals to be displayed
+     * @return the VBox containing the list of goals
      */
     private VBox createGoals(Map<String, List<Integer>> commonGoals) {
 
@@ -330,7 +340,7 @@ public class GUIInGame extends GUIState {
 
             List<Integer> tokens = commonGoals.get(goal);
             if (tokens.size() > 0) {
-                Integer topToken = tokens.get(tokens.size()-1);
+                Integer topToken = tokens.get(tokens.size() - 1);
                 ImageView tokenImageView = new ImageView(new Image(getClass().getResource("/assets/goals/common/tokens/" + topToken + ".jpg").toExternalForm()));
                 tokenImageView.setFitHeight(40);
                 tokenImageView.setFitWidth(40);
@@ -355,16 +365,17 @@ public class GUIInGame extends GUIState {
     }
 
     /**
-        * Creates the list of bookshelves
-        * @return the HBox containing the list of bookshelves
+     * Creates the list of bookshelves
+     *
+     * @return the HBox containing the list of bookshelves
      */
     private HBox createBookshelves() {
         HBox bookshelvesBox = new HBox(10);
         bookshelvesBox.setAlignment(Pos.CENTER);
 
-        for (String name : bookshelves.keySet()) {
+        for (String name : Client.getInstance().getView().getPlayers()) {
             StackPane bookshelfGrid = createBookshelfGrid(bookshelves.get(name), name);
-            if (name.equals(bookshelves.keySet().toArray()[0])) {
+            if (name.equals(Client.getInstance().getView().getPlayers().get(0))) {
                 ImageView firstPlayerToken = new ImageView(new Image(getClass().getResource("/assets/firstplayertoken.png").toExternalForm()));
                 firstPlayerToken.setFitHeight(40);
                 firstPlayerToken.setFitWidth(40);
@@ -378,10 +389,11 @@ public class GUIInGame extends GUIState {
     }
 
     /**
-        * Creates a single bookshelf
-        * @param bookshelfTiles the set of tiles to be displayed
-        * @param bookshelfName the name of the player owning the bookshelf
-        * @return the StackPane containing the bookshelf
+     * Creates a single bookshelf
+     *
+     * @param bookshelfTiles the set of tiles to be displayed
+     * @param bookshelfName  the name of the player owning the bookshelf
+     * @return the StackPane containing the bookshelf
      */
     private StackPane createBookshelfGrid(Set<Tile> bookshelfTiles, String bookshelfName) {
 
@@ -446,7 +458,7 @@ public class GUIInGame extends GUIState {
         bookshelfArrows.setTranslateX(25);
 
         bookshelfName = bookshelfName.substring(0, Math.min(bookshelfName.length(), 8));
-        Map<String,Integer> points = Client.getInstance().getView().getPoints();
+        Map<String, Integer> points = Client.getInstance().getView().getPoints();
         Label bookshelfNameLabel = new Label(bookshelfName + ": " + (points.get(bookshelfName) == null ? 0 : String.valueOf(points.get(bookshelfName))));
         bookshelfNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         if (bookshelfName.equals(Client.getInstance().getView().getCurrentTurnPlayer())) {
