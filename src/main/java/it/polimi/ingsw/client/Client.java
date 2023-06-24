@@ -112,8 +112,8 @@ public class Client {
      */
     private static Protocols parseProtocol(String[] args) {
         for (String s : args) {
-            if (s.contains("rmi")) return Protocols.RMI;
-            if (s.contains("tcp")) return Protocols.TCP;
+            if (s.equalsIgnoreCase("rmi")) return Protocols.RMI;
+            if (s.equalsIgnoreCase("tcp")) return Protocols.TCP;
         }
         return Protocols.RMI; // default
     }
@@ -125,8 +125,8 @@ public class Client {
      */
     private static Views parseView(String[] args) {
         for (String s : args) {
-            if (s.contains("cli")) return Views.CLI;
-            if (s.contains("gui")) return Views.GUI;
+            if (s.equalsIgnoreCase("cli")) return Views.CLI;
+            if (s.equalsIgnoreCase("gui")) return Views.GUI;
         }
         return Views.CLI; // default
     }

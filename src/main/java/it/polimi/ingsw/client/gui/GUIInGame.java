@@ -201,7 +201,7 @@ public class GUIInGame extends GUIState {
                 turnBox.getChildren().add(pickLabel);
                 turnBox.getChildren().add(submitButton);
             } else {
-                Label putLabel = new Label("Select an order and a column of your bookshelf");
+                Label putLabel = new Label("Reorder the picked tiles and select a column of your bookshelf");
                 putLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
                 putLabel.setTextFill(Color.BLACK);
                 turnBox.getChildren().add(putLabel);
