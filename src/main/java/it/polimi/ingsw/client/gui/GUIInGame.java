@@ -196,7 +196,7 @@ public class GUIInGame extends GUIState {
             turnBox.getChildren().clear();
             if (Client.getInstance().getView().getPickedTiles().isEmpty()) {
                 if (Client.getInstance().getView().getHasPutTiles()) {
-                    Label waitPutLabel = new Label("Inserting tiles...");
+                    Label waitPutLabel = new Label("Ending turn...");
                     waitPutLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
                     waitPutLabel.setTextFill(Color.BLACK);
                     turnBox.getChildren().add(waitPutLabel);
@@ -221,8 +221,7 @@ public class GUIInGame extends GUIState {
             turnBox.getChildren().add(waitingLabel);
         }
 
-        Scene scene = new Scene(root, 1000, 700);
-        Platform.runLater(() -> guiApplication.changeScene(scene));
+        Platform.runLater(() -> guiApplication.changeRoot(root));
     }
 
     /**

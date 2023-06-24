@@ -94,13 +94,6 @@ public class GUIApplication extends Application {
     }
 
     /**
-     * changes the scene without transition
-     * @param newScene the new scene
-     */
-    public synchronized void changeScene(Scene newScene) {
-        primaryStage.setScene(newScene);
-    }
-    /**
      * changes the scene with transition
      * @param newScene the new scene
      */
@@ -262,6 +255,14 @@ public class GUIApplication extends Application {
         goalStage.setTitle("Goal details");
         goalStage.setScene(new Scene(scrollPane, 600, 500));
         goalStage.show();
+    }
+
+    /**
+     * changes the root of the scene
+     * @param root the new root
+     */
+    public void changeRoot(HBox root) {
+        primaryStage.getScene().setRoot(root);
     }
 }
 

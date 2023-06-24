@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
@@ -195,7 +196,7 @@ public class GoalManager{
         FileReader in;
         try {
             in = new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile());
-        } catch (FileNotFoundException | NullPointerException | URISyntaxException e) {
+        } catch (FileNotFoundException | NullPointerException | URISyntaxException | FileSystemNotFoundException e) {
             System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
             System.err.println("More details: " + e);
             throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
