@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
@@ -90,7 +93,9 @@ class GameTest {
         game.setGame(playersName,false);
         game.disconnectPlayer(game.getPlayers().get(1));
         game.disconnectPlayer(game.getPlayers().get(0));
-        assertEquals(game.getPlayers().get(2), game.getCurrentPlayer());
+        assertEquals(game.getPlayers().get(0), game.getCurrentPlayer());
+        game.reconnectPlayer(game.getPlayers().get(1));
+        assertEquals(game.getPlayers().get(1), game.getCurrentPlayer());
     }
 
     @Test
@@ -200,5 +205,65 @@ class GameTest {
         board.removeFromBoard(board.getAllTiles());
         game.disconnectPlayer(game.getCurrentPlayer());
         assertEquals(1, board.getAllTiles().size());
+    }
+
+    @Test
+    void startWinnerTimeoutTest() throws PlayerNotFoundException, InterruptedException {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Player p1 = new Player("p1");
+        Player p2 = new Player("p2");
+        List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
+
+        executor.submit(() -> {
+            // if first player is disconnected timeout starts immediately
+            Game game = new Game(new PushNotificationController(new ArrayList<>()));
+            game.setGame(playersName,false);
+            List<String> players = game.getPlayers();
+            game.disconnectPlayer(players.get(0));
+            try {
+                sleep(21000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            assertEquals(players.get(1), game.getWinner());
+        });
+
+        // if second player is disconnected first player should first end his turn, then timeout starts
+        executor.submit(() -> {
+            // if first player is disconnected timeout starts immediately
+            Game game = new Game(new PushNotificationController(new ArrayList<>()));
+            game.setGame(playersName,false);
+            List<String> players = game.getPlayers();
+            game.disconnectPlayer(players.get(1));
+            try {
+                sleep(21000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            assertEquals(null, game.getWinner());
+        });
+
+        // if first player reconnects then timeout should be canceled
+        executor.submit(() -> {
+            // if first player is disconnected timeout starts immediately
+            Game game = new Game(new PushNotificationController(new ArrayList<>()));
+            game.setGame(playersName,false);
+            List<String> players = game.getPlayers();
+            game.disconnectPlayer(players.get(0));
+            try {
+                sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            game.reconnectPlayer(players.get(0));
+            try {
+                sleep(11000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            assertEquals(null, game.getWinner());
+        });
+
+        executor.close();
     }
 }

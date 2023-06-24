@@ -333,7 +333,8 @@ public class GoalManager{
         //Last update of player points
         players.forEach(this::updatePointsEnd);
         players.forEach((p) -> p.setPoints(this.getPoints(p)));
-        return players.stream().max(Comparator.comparingInt(this::getPoints)).get().getUserName();
+        // only currently playing players are considered
+        return players.stream().filter(Player::isPlaying).max(Comparator.comparingInt(this::getPoints)).get().getUserName();
     }
 
     /**

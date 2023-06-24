@@ -34,6 +34,7 @@ public class Game{
     private static final String GAME_PROPRIETY_NAME = "gameStarted";
     private static final String WINNER_PROPRIETY_NAME = "gameWon";
     private static final String goalPath= "data/goals.json";
+    private static final int WINNER_TIMEOUT = 20;
     private transient PushNotificationController pushNotificationController;
     private ScheduledFuture<?> winnerTimeout = null;
 
@@ -357,7 +358,7 @@ public class Game{
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         winnerTimeout = executor.schedule(() -> {
             retrieveWinnerFromGoalManager();
-        }, 60, TimeUnit.SECONDS);
+        }, WINNER_TIMEOUT, TimeUnit.SECONDS);
     }
 
     /**
