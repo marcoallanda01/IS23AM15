@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.managers.GoalManager;
 import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import it.polimi.ingsw.server.model.turn.EndState;
+import it.polimi.ingsw.server.model.turn.PickTilesState;
 import it.polimi.ingsw.server.model.turn.PutTilesState;
 import it.polimi.ingsw.server.model.turn.Turn;
 import org.jetbrains.annotations.NotNull;
@@ -470,6 +471,16 @@ public class Game{
      * @return true if the player is disconnected, false if the player is not found or is not playing
      */
     public boolean disconnectPlayer(String player){
+        if (this.getCurrentPlayer().equals(player)) {
+            if(this.currentTurn.getState().getClass().equals(PutTilesState.class)){
+                this.board.putBackInBag(this.currentTurn.getPickedTiles());
+                if(this.board.isToFill()){
+                    this.board.fillBoard();
+                }
+            }
+            currentTurn.changeState(new EndState(currentTurn));
+            this.nextTurn(this.currentTurn.getCurrentPlayer());
+        }
         try {
             if (this.getPlayerFromNickname(player).isPlaying()) {
                 this.getPlayerFromNickname(player).goToWc();
@@ -482,15 +493,6 @@ public class Game{
         }
         if(players.stream().filter(p -> !p.isPlaying()).count() == players.size()){
             this.GameChangeSupport.firePropertyChange("lastPlayerDisconnected", null, player);
-        }
-        if (this.getCurrentPlayer().equals(player)) {
-            if(this.currentTurn.getState().getClass().equals(PutTilesState.class)){
-                this.board.putBackInBag(this.currentTurn.getPickedTiles());
-                if(this.board.isToFill()){
-                    this.board.fillBoard();
-                }
-            }
-            this.nextTurn(this.currentTurn.getCurrentPlayer());
         }
         return true;
     }

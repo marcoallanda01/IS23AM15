@@ -93,7 +93,7 @@ class GameTest {
         game.setGame(playersName,false);
         game.disconnectPlayer(game.getPlayers().get(1));
         game.disconnectPlayer(game.getPlayers().get(0));
-        assertEquals(game.getPlayers().get(0), game.getCurrentPlayer());
+        assertEquals(game.getPlayers().get(2), game.getCurrentPlayer());
         game.reconnectPlayer(game.getPlayers().get(1));
         assertEquals(game.getPlayers().get(1), game.getCurrentPlayer());
     }
