@@ -179,6 +179,7 @@ public class GoalManager{
 
 
     /**
+     * Reads settings from json file and initializes the managers accordingly
      * @param players   players playing the game
      * @param setUpFile file json where there are the patterns associated with card type
      * @throws ArrestGameException if occurred very bad errors in parsing or json stream
@@ -186,11 +187,9 @@ public class GoalManager{
     public GoalManager(List<Player> players, String setUpFile, boolean isFirstGame) throws ArrestGameException {
         this.commonCardsToDraw = isFirstGame ? 1 : 2;
 
-        // I use list and not set because I could choose to have to same card so the probability increase
         Set<Pattern> patternsCommonGoals = new HashSet<>();
         Set<Pattern> patternsPersonalGoals = new HashSet<>();
 
-        // Just only one pattern for every goal that is in common and all are active at the same time
         LinkedHashSet<Pattern> patternsEndGoals = new LinkedHashSet<>();
 
         FileReader in;
@@ -252,7 +251,7 @@ public class GoalManager{
         }
 
 
-        // creating default managers, in future to add another manager add it here
+        // creating default managers
         this.commonCardsPointsManager = new CommonCardsPointsManager(players, new Deck(patternsCommonGoals), this.commonCardsToDraw);
         this.personalCardsPointsManager = new PersonalCardsPointsManager(players, new Deck(patternsPersonalGoals));
         this.commonGoalsPointsManager = new CommonGoalsPointsManager(players, patternsEndGoals);

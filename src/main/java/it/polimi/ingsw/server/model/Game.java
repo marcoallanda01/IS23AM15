@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class Game{
@@ -34,6 +35,7 @@ public class Game{
     private static final String WINNER_PROPRIETY_NAME = "gameWon";
     private static final String goalPath= "data/goals.json";
     private transient PushNotificationController pushNotificationController;
+    private ScheduledFuture<?> winnerTimeout = null;
 
     /**
      * Only method used for instantiation of the game
@@ -323,16 +325,15 @@ public class Game{
         }
         // check winner
         if (isLastRound && (this.players.indexOf(currentPlayer) == (this.players.size() - 1))) {
-            this.winner = goalManager.getWinner(this.players);
-            GameChangeSupport.firePropertyChange(WINNER_PROPRIETY_NAME, null, this.winner);
-            System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
+            retrieveWinnerFromGoalManager();
             return false;
         }
         // take next player
         Player nextPlayer = this.players.get((this.players.indexOf(currentPlayer) + 1) % this.players.size());
         // check if there are any players playing
         int playingPlayers = this.players.stream().mapToInt(player -> player.isPlaying() ? 1 : 0).sum();
-        if (playingPlayers < 1) {
+        if (playingPlayers < 2) {
+            startWinnerTimeout();
             return false;
         }
         // check if the next player is playing
@@ -349,6 +350,24 @@ public class Game{
         return false;
     }
 
+    /**
+     * Starts the winner timeout
+     */
+    private void startWinnerTimeout() {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        winnerTimeout = executor.schedule(() -> {
+            retrieveWinnerFromGoalManager();
+        }, 60, TimeUnit.SECONDS);
+    }
+
+    /**
+     * retrieves and notifies the winner
+     */
+    private void retrieveWinnerFromGoalManager () {
+        this.winner = goalManager.getWinner(this.players);
+        GameChangeSupport.firePropertyChange(WINNER_PROPRIETY_NAME, null, this.winner);
+        System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
+    }
     /**
      * @return list of the players
      */
@@ -488,7 +507,10 @@ public class Game{
 
                 // If there is just one player of if the player is in the end state then next turn is called
                 nextTurn(this.currentTurn.getCurrentPlayer());
-
+                if (winnerTimeout != null) {
+                    winnerTimeout.cancel(true);
+                    winnerTimeout = null;
+                }
             } else {
                 return false;
             }
