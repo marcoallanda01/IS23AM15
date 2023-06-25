@@ -18,6 +18,9 @@ public abstract class PointsManager {
 
     /**
      * Used for deserialization
+     * @param players the players
+     * @param playersToPoints players to points
+     * @param updateRule the update rule that MUST be followed (default ANY)
      */
     public PointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule) {
         this.players = players;
@@ -45,6 +48,7 @@ public abstract class PointsManager {
 
     /**
      * Used for serialization
+     * @return playersToPoints
      */
     public Map<Player, Integer> getPlayersToPoints() {
         return playersToPoints;

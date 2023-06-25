@@ -13,7 +13,7 @@ public abstract class Pattern {
     private final String name;
 
     /**
-     *
+     * Constructor for pattern
      * @param name name of the pattern
      */
     public Pattern(String name){
@@ -21,6 +21,7 @@ public abstract class Pattern {
     }
 
     /**
+     * Returns the pattern function
      * @return {@literal function to calculate points got from pattern checking on the bookshelf
      * this function is allowed to EDIT the given bookshelf (List<List<Optional<Tile>>>)}
      */

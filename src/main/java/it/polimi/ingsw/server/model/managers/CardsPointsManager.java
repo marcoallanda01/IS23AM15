@@ -6,10 +6,18 @@ import it.polimi.ingsw.server.model.Player;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A PointsManagers which also manages a deck of cards
+ */
 public  abstract class CardsPointsManager extends PointsManager {
 
     protected Deck deck;
 
+    /**
+     * Default constructor for CardsPointsManager
+     * @param players the players to manage
+     * @param deck the deck to manage
+     */
     public CardsPointsManager(List<Player> players, Deck deck) {
         super(players);
         this.deck = deck;
@@ -17,6 +25,10 @@ public  abstract class CardsPointsManager extends PointsManager {
 
     /**
      * Used for deserialization
+     * @param players the players
+     * @param playersToPoints players to points
+     * @param updateRule the update rule that MUST be followed (default ANY)
+     * @param deck the deck to manage
      */
     public CardsPointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, Deck deck) {
         super(players, playersToPoints, updateRule);
@@ -31,6 +43,7 @@ public  abstract class CardsPointsManager extends PointsManager {
 
     /**
      * Used for serialization
+     * @return the deck
      */
     public Deck getDeck() {
         return deck;

@@ -29,6 +29,7 @@ public abstract class View {
 
     /**
      * Shows an error
+     * @param error the error to show
      */
     public abstract void showError(String error);
 
@@ -52,6 +53,10 @@ public abstract class View {
      */
     public abstract void showChatNotification();
 
+    /**
+     * stops the view showing a message
+     * @param message the last message to show
+     */
     public abstract void stop(String message);
 
     public List<String> getPlayers() {

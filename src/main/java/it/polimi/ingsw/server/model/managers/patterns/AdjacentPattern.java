@@ -7,14 +7,19 @@ import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import java.util.*;
 import java.util.function.Function;
 
+/**
+ * A pattern describing one or more groups of adjacent tiles of the same type
+ */
 public class AdjacentPattern extends Pattern {
     private final Integer points;
     private final Integer minGroups;
     private final Integer minTiles;
     /**
+     * Constructor for adjacent pattern
      * @param name the name of the pattern
      * @param minTiles the minimum amount of tiles a group should have for it to be deleted
      * @param points the points to be given for each deleted group
+     * @throws InvalidPatternParameterException if any of the params are invalid
      */
     public AdjacentPattern(String name, int minTiles, int points) throws InvalidPatternParameterException {
         super(name);
@@ -24,10 +29,12 @@ public class AdjacentPattern extends Pattern {
         this.checkParameters();
     }
     /**
+     * Constructor for adjacent pattern
      * @param name the name of the pattern
      * @param minTiles the minimum amount of tiles a group should have for it to be deleted
      * @param minGroups the minimum number of groups to be found to return the points (and not 0)
      * @param points the points to be given for each deleted group
+     * @throws InvalidPatternParameterException  if any of the params are invalid
      */
     public AdjacentPattern(String name, int minTiles, int minGroups, int points) throws InvalidPatternParameterException {
         super(name);
@@ -50,6 +57,7 @@ public class AdjacentPattern extends Pattern {
     }
 
     /**
+     * Returns the pattern function
      * @return a function that given the bookshelf EDITS the bookshelf,
      * deleting all the tiles contained in the groups with at least minTiles tiles
      * if the number of deleted groups is more than or equal to minGroups it also returns the points
