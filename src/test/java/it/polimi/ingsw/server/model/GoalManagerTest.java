@@ -42,7 +42,7 @@ class GoalManagerTest {
 
     @Test
     void updatePointsEnd() {
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, null, true);
         goalManager.updatePointsEnd(null);
         // If I do the update points of a player that not exists managers do nothing
         goalManager.updatePointsEnd(new Player("altro"));
@@ -69,13 +69,13 @@ class GoalManagerTest {
 
     @Test
     void getPoints() {
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, null, true);
         assertEquals(0, goalManager.getPoints(players.get(1)));
     }
 
     @Test
     void getWinner(){
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, null, true);
         assertEquals(players.get(0).getUserName(), goalManager.getWinner(players));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -87,19 +87,19 @@ class GoalManagerTest {
 
     @Test
     void getCommonCardsToTokens() {
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, null, true);
         System.out.println(goalManager.getCommonCardsToTokens());
     }
 
     @Test
     void getTokens() {
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, null, true);
         System.out.println(goalManager.getTokens(players.get(1)));
     }
 
     @Test
     void getUnfulfilledCommonCards() {
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, null, true);
         System.out.println(goalManager.getTokens(players.get(1)));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));

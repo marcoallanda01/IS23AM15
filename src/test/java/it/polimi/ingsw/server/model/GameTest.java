@@ -24,7 +24,7 @@ class GameTest {
         Player p2 = new Player("p2");
         List<String> players = List.of(p1.getUserName(), p2.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(players,false);
+        game.setGame(players,false, null);
         game.getBoard().fillBoard();
         List<Tile> tiles = List.of(game.getBoard().getBoard().get(1).get(3), game.getBoard().getBoard().get(1).get(4));
         assertTrue(game.pickTiles(tiles));
@@ -39,7 +39,7 @@ class GameTest {
         Player p2 = new Player("p2");
         List<String> players = List.of(p1.getUserName(), p2.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(players,false);
+        game.setGame(players,false,null);
         game.getBoard().fillBoard();
         Player player = game.getCurrentTurn().getCurrentPlayer();
         List<Tile> tiles = List.of(game.getBoard().getBoard().get(1).get(3), game.getBoard().getBoard().get(1).get(4));
@@ -56,7 +56,7 @@ class GameTest {
         Player p3 = new Player("p3");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName(), p3.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(playersName,false);
+        game.setGame(playersName,false,null);
         game.sendMessage(p1.getUserName(), p2.getUserName(), "ciao p2");
         game.sendMessage(p2.getUserName(), p1.getUserName(), "ciao p1");
         game.sendMessage(p3.getUserName(), p1.getUserName(), "ciao p1");
@@ -77,7 +77,7 @@ class GameTest {
         Player p2 = new Player("p2");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(playersName,false);
+        game.setGame(playersName,false, null);
         assertTrue(game.disconnectPlayer(p1.getUserName()));
         assertFalse(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
         assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
@@ -90,7 +90,7 @@ class GameTest {
         Player p3 = new Player("p3");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName(), p3.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(playersName,false);
+        game.setGame(playersName,false, null);
         game.disconnectPlayer(game.getPlayers().get(1));
         game.disconnectPlayer(game.getPlayers().get(0));
         assertEquals(game.getPlayers().get(2), game.getCurrentPlayer());
@@ -104,7 +104,7 @@ class GameTest {
         Player p2 = new Player("p2");
         List<String> playersName = List.of(p1.getUserName(), p2.getUserName());
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(playersName,false);
+        game.setGame(playersName,false, null);
         assertTrue(game.disconnectPlayer(p1.getUserName()));
         assertFalse(game.getPlayerFromNickname(p1.getUserName()).isPlaying());
         assertTrue(game.getPlayerFromNickname(p2.getUserName()).isPlaying());
@@ -116,7 +116,7 @@ class GameTest {
     @Test
     void automaticBoardRefill(){
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(List.of("p1", "p2"), false);
+        game.setGame(List.of("p1", "p2"), false, null);
 
 
         Map<Integer, Map<Integer, TileRule>> mask = new HashMap<>();
@@ -152,7 +152,7 @@ class GameTest {
     @Test
     void disconnectAfterPick(){
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        game.setGame(List.of("p1", "p2"), false);
+        game.setGame(List.of("p1", "p2"), false, null);
 
 
         Map<Integer, Map<Integer, TileRule>> mask = new HashMap<>();
@@ -217,7 +217,7 @@ class GameTest {
         executor.submit(() -> {
             // if first player is disconnected timeout starts immediately
             Game game = new Game(new PushNotificationController(new ArrayList<>()));
-            game.setGame(playersName,false);
+            game.setGame(playersName,false, null);
             List<String> players = game.getPlayers();
             game.disconnectPlayer(players.get(0));
             try {
@@ -232,7 +232,7 @@ class GameTest {
         executor.submit(() -> {
             // if first player is disconnected timeout starts immediately
             Game game = new Game(new PushNotificationController(new ArrayList<>()));
-            game.setGame(playersName,false);
+            game.setGame(playersName,false, null);
             List<String> players = game.getPlayers();
             game.disconnectPlayer(players.get(1));
             try {
@@ -247,7 +247,7 @@ class GameTest {
         executor.submit(() -> {
             // if first player is disconnected timeout starts immediately
             Game game = new Game(new PushNotificationController(new ArrayList<>()));
-            game.setGame(playersName,false);
+            game.setGame(playersName,false, null);
             List<String> players = game.getPlayers();
             game.disconnectPlayer(players.get(0));
             try {

@@ -34,7 +34,6 @@ public class Game{
     private static final String PICKED_TILES_PROPRIETY_NAME = "pickedTiles";
     private static final String GAME_PROPRIETY_NAME = "gameStarted";
     private static final String WINNER_PROPRIETY_NAME = "gameWon";
-    private static final String goalPath= "data/goals.json";
     private static final int WINNER_TIMEOUT = 20;
     private transient PushNotificationController pushNotificationController;
     private ScheduledFuture<?> winnerTimeout = null;
@@ -53,9 +52,10 @@ public class Game{
      * Setting up of the game, notification are sent to the clients
      * @param players list of players' names
      * @param isFirstGame easy rules game rule
+     * @param players list of players' names
      * @throws ArrestGameException
      */
-    public void setGame(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
+    public void setGame(@NotNull List<String> players, boolean isFirstGame, String goalsDirectory) throws ArrestGameException {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
         int numberOfPlayers = players.size();
@@ -74,7 +74,7 @@ public class Game{
         notifyListeners();
         //FirstFill
         this.board.fillBoard();
-        this.goalManager = new GoalManager(this.players, goalPath, isFirstGame);
+        this.goalManager = new GoalManager(this.players, goalsDirectory, isFirstGame);
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
@@ -115,7 +115,7 @@ public class Game{
     }
 
     /**
-     * Help constructor used in tests that not requires listeners
+     * Help constructor used only in tests that not requires listeners or goal directory
      * @param players players
      * @param isFirstGame game rule easy game
      * @throws ArrestGameException
@@ -132,7 +132,7 @@ public class Game{
         this.currentTurn = new Turn(this.players.get(0), board);
 
         this.chat = new Chat(this.players);
-        this.goalManager = new GoalManager(this.players, goalPath, isFirstGame);
+        this.goalManager = new GoalManager(this.players, null, isFirstGame);
 
     }
 

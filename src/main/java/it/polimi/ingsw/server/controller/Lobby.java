@@ -34,7 +34,11 @@ public class Lobby {
     /**
      * The directory where the games are saved
      */
-    private String directory;
+    private String savesDirectory;
+    /**
+     * The directory where the goals are loaded from
+     */
+    private String goalsDirectory;
     /**
      * The game that is being loaded
      */
@@ -69,14 +73,17 @@ public class Lobby {
 
     /**
      * Create a lobby
-     * @param directory directory where game are saved
+     *
+     * @param savesDirectory directory where game are saved
+     * @param goalsDirectory where the goals are loaded from
      */
-    public Lobby(@NotNull String directory) {
+    public Lobby(@NotNull String savesDirectory, String goalsDirectory) {
         this.pushNotificationController = new PushNotificationController(new ArrayList<>());
         this.numServers = 0;
         this.resets = 0;
         this.currentGame = new Game(this.pushNotificationController);
-        this.directory = directory;
+        this.savesDirectory = savesDirectory;
+        this.goalsDirectory = goalsDirectory;
         this.firstPlayerId = null;
         this.numPlayersGame = -1;
         this.loadingGame = null;
@@ -87,7 +94,7 @@ public class Lobby {
         this.isPlaying = false;
 
         this. games = new HashSet<>();
-        File saves = new File(this.directory);
+        File saves = new File(this.savesDirectory);
         if (! (!saves.exists() || saves.isFile()) ) {
             // saves for sure is not a file
             File[] savesList = saves.listFiles();
@@ -195,7 +202,7 @@ public class Lobby {
             }
             try {
                 Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameTypeAdapter()).create();
-                BufferedReader reader = new BufferedReader(new FileReader(this.directory + "/" + name + ".json"));
+                BufferedReader reader = new BufferedReader(new FileReader(this.savesDirectory + "/" + name + ".json"));
                 Game game = gson.fromJson(reader, Game.class);
                 this.loadingGame = game;
                 this.numPlayersGame = game.getPlayers().size();
@@ -316,7 +323,7 @@ public class Lobby {
             System.out.println("Lobby startGame: starting new game");
             try {
                 this.isPlaying = true;
-                this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules);
+                this.currentGame.setGame(new ArrayList<>(this.players.values()), this.easyRules, goalsDirectory);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -326,7 +333,7 @@ public class Lobby {
             this.currentGame.setGame(this.loadingGame);
         }
         System.out.println("Lobby startGame: before return, controller provider created");
-        this.controllerProvider = new ControllerProvider(this.currentGame, this.directory, this.pushNotificationController);
+        this.controllerProvider = new ControllerProvider(this.currentGame, this.savesDirectory, this.pushNotificationController);
         return this.controllerProvider;
     }
 
@@ -379,7 +386,7 @@ public class Lobby {
         this.isPlaying = false;
 
         this.games = new HashSet<>();
-        File saves = new File(this.directory);
+        File saves = new File(this.savesDirectory);
         if (!(!saves.exists() || saves.isFile())) {
             // saves for sure is not a file
             File[] savesList = saves.listFiles();
@@ -401,7 +408,7 @@ public class Lobby {
         this.resets++;
         if(this.resets == this.numServers) {
             System.out.println("Lobby: All servers called reset!");
-            this.directory = directory;
+            this.savesDirectory = savesDirectory;
             this.firstPlayerId = null;
             this.numPlayersGame = -1;
             this.loadingGame = null;
@@ -412,7 +419,7 @@ public class Lobby {
             this.isPlaying = false;
 
             this.games = new HashSet<>();
-            File saves = new File(this.directory);
+            File saves = new File(this.savesDirectory);
             if (!(!saves.exists() || saves.isFile())) {
                 // saves for sure is not a file
                 File[] savesList = saves.listFiles();
@@ -458,7 +465,7 @@ public class Lobby {
                 "players=" + players +
                 ", firstPlayerId='" + firstPlayerId + '\'' +
                 ", numPlayersGame=" + numPlayersGame +
-                ", directory='" + directory + '\'' +
+                ", directory='" + savesDirectory + '\'' +
                 ", loadingGame=" + loadingGame +
                 ", easyRules=" + easyRules +
                 ", isCreating=" + isCreating +

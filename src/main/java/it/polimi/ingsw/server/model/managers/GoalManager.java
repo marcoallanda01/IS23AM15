@@ -1,12 +1,12 @@
 package it.polimi.ingsw.server.model.managers;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.google.gson.*;
@@ -25,7 +25,7 @@ public class GoalManager{
     private final CommonCardsPointsManager commonCardsPointsManager;
     private final PersonalCardsPointsManager personalCardsPointsManager;
     private final CommonGoalsPointsManager commonGoalsPointsManager;
-
+    private transient static final String DEFAULT_DIRECTORY = "data/goals.json";
     private final int commonCardsToDraw;
     /**
      * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
@@ -178,11 +178,24 @@ public class GoalManager{
         return pattern;
     }
 
+    /**
+     * gets the file reader given a directory, if the directory is null the file reader reads from the jar
+     * @param dir the directory
+     * @return the file reader
+     * @throws FileNotFoundException
+     * @throws URISyntaxException
+     */
+    private Reader getSetupFileReader (String dir) throws FileNotFoundException, URISyntaxException {
+        if (dir == null) {
+            return new InputStreamReader(getClass().getClassLoader().getResourceAsStream(DEFAULT_DIRECTORY),  StandardCharsets.UTF_8);
+        }
+        return new FileReader(dir);
+    };
 
     /**
      * Reads settings from json file and initializes the managers accordingly
      * @param players   players playing the game
-     * @param setUpFile file json where there are the patterns associated with card type
+     * @param setUpFile file json where there are the patterns associated with card type, if null default directory is used
      * @throws ArrestGameException if occurred very bad errors in parsing or json stream
      */
     public GoalManager(List<Player> players, String setUpFile, boolean isFirstGame) throws ArrestGameException {
@@ -193,9 +206,9 @@ public class GoalManager{
 
         LinkedHashSet<Pattern> patternsEndGoals = new LinkedHashSet<>();
 
-        FileReader in;
+        Reader in;
         try {
-            in = new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile());
+            in = getSetupFileReader(setUpFile);
         } catch (FileNotFoundException | NullPointerException | URISyntaxException | FileSystemNotFoundException e) {
             System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
             System.err.println("More details: " + e);
@@ -204,11 +217,11 @@ public class GoalManager{
 
         try {
 
-            JsonReader reader1 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
+            JsonReader reader1 = new JsonReader(getSetupFileReader(setUpFile));
             patternsCommonGoals.addAll(readCards(reader1, "common_cards"));
             reader1.close();
 
-            JsonReader reader2 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
+            JsonReader reader2 = new JsonReader(getSetupFileReader(setUpFile));
             patternsEndGoals.addAll(readCards(reader2, "end_game"));
             reader2.close();
 
@@ -226,7 +239,7 @@ public class GoalManager{
                 throw new ArrestGameException("Not enough common cards as game rules are set");
             }
 
-            JsonReader reader3 = new JsonReader(new FileReader(Paths.get(getClass().getClassLoader().getResource(setUpFile).toURI()).toFile()));
+            JsonReader reader3 = new JsonReader(getSetupFileReader(setUpFile));
             patternsPersonalGoals.addAll(readCards(reader3, "personal_cards"));
             if(patternsPersonalGoals.size() < players.size()){
                 throw new ArrestGameException("Not enough personal cards form all players");

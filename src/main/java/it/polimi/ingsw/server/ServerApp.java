@@ -24,6 +24,9 @@ public class ServerApp {
     private static int tcp_port = 6000;
     private static String saves = "saves";
 
+    private static String goals = null;
+
+
     /**
      * Parse json set up file
      */
@@ -64,6 +67,15 @@ public class ServerApp {
         }catch (RuntimeException e){
             System.err.println("Saves directory set to default: " + saves);
         }
+        try{
+            goals = (String) setUpMap.get("goals");
+            if(goals == null) {
+                throw new NullPointerException("Goals directory is null");
+            }
+            System.out.println("Goals directory set up to: " + goals);
+        }catch (RuntimeException e){
+            System.err.println("Goals will be taken from jar");
+        }
     }
 
     /**
@@ -88,6 +100,7 @@ public class ServerApp {
             System.out.println("Rmi default port: "+rmi_port);
             System.out.println("Tcp default port: "+tcp_port);
             System.out.println("Saves default directory: "+saves);
+            System.out.println("Goals will be taken from jar");
         }
 
         System.out.println("Starting server...");
@@ -95,7 +108,7 @@ public class ServerApp {
         String stringLock = "playLock";
         String sharedLock = stringLock.intern();
 
-        Lobby lobby = new Lobby(saves);
+        Lobby lobby = new Lobby(saves, goals);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
         try {

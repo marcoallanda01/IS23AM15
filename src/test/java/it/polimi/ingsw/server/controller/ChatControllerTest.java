@@ -19,7 +19,7 @@ class ChatControllerTest {
         PushNotificationController pnc;
         pnc = new PushNotificationController(new ArrayList<>());
         game = new Game(pnc);
-        game.setGame(playersNames, false);
+        game.setGame(playersNames, false, null);
         ChatController chatController = new ChatController(game);
         assertNotNull(chatController.getPlayerMessages("p3"));
         assertThrows(PlayerNotFoundException.class, ()->chatController.getPlayerMessages("ntExists"));
@@ -31,7 +31,7 @@ class ChatControllerTest {
         PushNotificationController pnc;
         pnc = new PushNotificationController(new ArrayList<>());
         game = new Game(pnc);
-        game.setGame(playersNames, false);
+        game.setGame(playersNames, false, null);
         ChatController chatController = new ChatController(game);
         chatController.sendMessage("p1", "p2", "ciao p2");
         chatController.sendMessage("p2", "p1", "ciao p1");

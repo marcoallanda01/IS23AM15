@@ -165,7 +165,7 @@ class LobbyTest {
     Lobby lobby;
     @BeforeEach
     void initialize(){
-        lobby = new Lobby("src/test/resources/saves");
+        lobby = new Lobby("src/test/resources/saves", null);
     }
 
     @Test
@@ -431,7 +431,7 @@ class LobbyTest {
 
     @Test
     void getSavedGames() {
-        Lobby lobby = new Lobby("/src/main/resources/saves");
+        Lobby lobby = new Lobby("/src/main/resources/saves", null);
         Set<String> savedGames = lobby.getSavedGames();
         File saves = new File("/src/main/resources/saves");
         File[] savesList = saves.listFiles();
@@ -447,7 +447,7 @@ class LobbyTest {
     @Test
     void loadGame() throws GameLoadException, GameNameException, IOException, IllegalLobbyException, WaitLobbyException {
         Game game = new Game(new PushNotificationController(new ArrayList<>()));
-        Lobby lobby = new Lobby("src/test/resources/saves");
+        Lobby lobby = new Lobby("src/test/resources/saves", null);
         Optional<String> uniqueID = lobby.join();
         if(uniqueID.isEmpty()){
             fail();
