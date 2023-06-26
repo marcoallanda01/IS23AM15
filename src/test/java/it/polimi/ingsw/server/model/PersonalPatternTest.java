@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PersonalPatternTest {
 
@@ -388,7 +389,7 @@ class PersonalPatternTest {
         String name = "P";
         Pattern pattern = new PersonalPattern(name, checks, list);
         Function<List<List<Optional<Tile>>>, Integer> pf = pattern.getPatternFunction();
-        new ObjectCleaner(pattern);
+        ObjectCleaner objectCleaner = new ObjectCleaner(pattern);
         pattern = null;
         System.gc();
         // | - | - | - | C | P |
@@ -411,6 +412,7 @@ class PersonalPatternTest {
         bookShelf.insertTiles(fifthRow, 4);
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
+        assertTrue(objectCleaner.isObjectGarbageCollected());
         assertEquals(12, pf.apply(bookshelfState));
     }
     @Test

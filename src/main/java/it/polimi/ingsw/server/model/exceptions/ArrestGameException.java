@@ -33,6 +33,6 @@ public class ArrestGameException extends RuntimeException{
 
     @Override
     public String toString() {
-        return "ArrestGameException{}";
+        return "ArrestGameException";
     }
 }

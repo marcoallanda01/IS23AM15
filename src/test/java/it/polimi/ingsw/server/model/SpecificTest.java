@@ -902,7 +902,7 @@ class SpecificTest {
         Function<List<List<Optional<Tile>>>, Integer> egpf = easilyAchievablePattern.getPatternFunction();
         Function<List<List<Optional<Tile>>>, Integer> agpf = achievablePattern.getPatternFunction();
         Function<List<List<Optional<Tile>>>, Integer> ugpf = unAchievablePattern.getPatternFunction();
-        new ObjectCleaner(easilyAchievablePattern);
+        ObjectCleaner objectCleaner = new ObjectCleaner(easilyAchievablePattern);
         easilyAchievablePattern = null;
         achievablePattern = null;
         unAchievablePattern = null;
@@ -953,6 +953,7 @@ class SpecificTest {
         bookshelfState = bookShelf.getState();
         assertEquals(1, egpf.apply(bookshelfState));
         assertEquals(0, agpf.apply(bookshelfState));
+        assertTrue(objectCleaner.isObjectGarbageCollected());
     }
     @Test
     void testNullMasks() {
