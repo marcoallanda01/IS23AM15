@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * InputCLI class is the class that handles the input from the user
+ */
 public class InputCLI {
     /**
      * Handles the input from the user based on the current state of the client
