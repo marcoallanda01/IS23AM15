@@ -1,21 +1,23 @@
 package it.polimi.ingsw.server.model.exceptions;
 
 /**
- * Pattern read was not consistent
+ * Class that represents an exception thrown while creating a pattern using invalid parameters
  */
 public class InvalidPatternParameterException extends Exception {
-    private final String message;
+    private String message;
+
     /**
-     * InvalidPatternParameterException constructor
+     * Default constructor
      */
     public InvalidPatternParameterException(){
+        super("InvalidPatternParameterException occurred");
         this.message = "InvalidPatternParameterException occurred";
-        System.err.println(message);
     }
 
     /**
-     * InvalidPatternParameterException constructor
-     * @param message exception message
+     * Creates a runtime exception with message as its detail message,
+     * it also sets the private attribute message to message
+     * @param message the message
      */
     public InvalidPatternParameterException(String message) {
         super(message);
@@ -23,22 +25,22 @@ public class InvalidPatternParameterException extends Exception {
     }
 
     /**
-     * InvalidPatternParameterException constructor
-     * @param message exception message
-     * @param cause exception cause
+     * Creates a runtime exception with message as its detail message and cause as the cause,
+     * it also sets the private attribute message to message
+     * @param message the message
+     * @param cause the cause
      */
     public InvalidPatternParameterException(String message, Throwable cause) {
         super(message, cause);
         this.message = message;
     }
 
+    /**
+     * Gets the message
+     * @return the message
+     */
     @Override
     public String getMessage() {
         return message;
-    }
-
-    @Override
-    public String toString() {
-        return "InvalidPatternParameterException{}";
     }
 }

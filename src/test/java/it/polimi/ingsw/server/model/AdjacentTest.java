@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AdjacentTest {
 
@@ -344,7 +345,7 @@ class AdjacentTest {
         String name = "6+";
         Pattern pattern = new AdjacentPattern(name,6, 8);
         Function<List<List<Optional<Tile>>>, Integer> pf = pattern.getPatternFunction();
-        new ObjectCleaner(pattern);
+        ObjectCleaner objectCleaner = new ObjectCleaner(pattern);
         pattern = null;
         System.gc();
 
@@ -366,6 +367,7 @@ class AdjacentTest {
         List<List<Optional<Tile>>> myBookshelf = bookShelf.getState();
 
         assertEquals(16, pf.apply(myBookshelf));
+        assertTrue(objectCleaner.isObjectGarbageCollected());
     }
     @Test
     void testMinTiles() {

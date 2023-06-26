@@ -88,13 +88,15 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
             executorService.close();
             notificationExecutor.close();
         } catch (SecurityException e) {
-            Client.getInstance().getLogger().log(new ClientConnectionException("Error while closing RMI related executors."));
+            Client.getInstance().getLogger().log(e);
+            throw new ClientConnectionException("Error while closing RMI related executors.");
         }
         try {
             UnicastRemoteObject.unexportObject(this, true);
             Client.getInstance().getLogger().log("RMI client connection closed.");
-        } catch (RemoteException e) {
-            Client.getInstance().getLogger().log(new ClientConnectionException("Error while closing RMI client connection."));
+        } catch (Exception e) {
+            Client.getInstance().getLogger().log(e);
+            throw new ClientConnectionException("Error while closing RMI client connection.");
         }
     }
 

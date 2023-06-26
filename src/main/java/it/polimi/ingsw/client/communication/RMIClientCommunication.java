@@ -201,7 +201,6 @@ public class RMIClientCommunication implements ClientCommunication {
         } catch (RemoteException e) {
             Client.getInstance().getLogger().log(e);
         } catch (Exception e) {
-            // no details about the server side error (no information disclosed)
             Client.getInstance().getLogger().log("Server encountered an error while logging you out");
         }
     }

@@ -65,6 +65,7 @@ public class TCPClientConnection implements ClientConnection {
             notificationExecutor.close();
             notificationListener.cancel(Boolean.TRUE);
         } catch (SecurityException e) {
+            Client.getInstance().getLogger().log(e);
             Client.getInstance().getLogger().log(new ClientConnectionException("Error while closing TCP related executors."));
         }
         try {

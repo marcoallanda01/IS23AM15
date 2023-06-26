@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * this class should be implemented from the client class that sends messages
- * to the server, being it through RMI or TCP or other
+ * to the server, being it through RMI or TCP or other,
  * this class can be used from the client (being it a controller, an
  * observer or directly the view) to send messages to the server
  */
