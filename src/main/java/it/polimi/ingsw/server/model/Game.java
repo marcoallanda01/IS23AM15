@@ -266,7 +266,8 @@ public class Game{
     /**
      * Get the unfulfilled common cards
      * @param nickname the nickname of the player
-     * @return the common cards unfulfilled by the player
+     * @return the common cards unfulfilled by the playerù
+     * @throws PlayerNotFoundException if the player do not exist
      */
     public Set<String> getUnfulfilledCommonCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
@@ -277,6 +278,7 @@ public class Game{
      * Get the fulfilled common cards
      * @param nickname the nickname of the player
      * @return the common cards fulfilled by the player
+     * @throws PlayerNotFoundException if the player do not exist
      */
     public Set<String> getFulfilledCommonCards(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
@@ -285,7 +287,9 @@ public class Game{
 
     /**
      * Get the personal goal card of the player
+     * @param nickname player
      * @return the personal goal card of the player
+     * @throws PlayerNotFoundException if the player do not exist
      */
     public String getPersonalGoalCard(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
@@ -294,7 +298,9 @@ public class Game{
 
     /**
      * Get the tokens of the player
+     * @param nickname player
      * @return the tokens of the player
+     * @throws PlayerNotFoundException if the player do not exist
      */
     public List<Integer> getTokens(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
@@ -416,9 +422,11 @@ public class Game{
         Message m = new Message(this.getPlayerFromNickname(sender), message);
         this.chat.addMessage(m);
     }
+
     /**
      * Gets the messages of the player
      * @param player the player
+     * @return list of the messages
      * @throws PlayerNotFoundException if a player doesn't exists
      */
     public List<Message> getPlayerMessages(String player) throws PlayerNotFoundException  {
@@ -431,6 +439,7 @@ public class Game{
     public List<Player> getPlayersList() {
         return this.players;
     }
+
     /**
      * Get the winner
      * @return the winner
@@ -439,6 +448,10 @@ public class Game{
         return winner;
     }
 
+    /**
+     * Check firstgame game mode
+     * @return true if game mode active
+     */
     public boolean isFirstGame() {
         return isFirstGame;
     }
