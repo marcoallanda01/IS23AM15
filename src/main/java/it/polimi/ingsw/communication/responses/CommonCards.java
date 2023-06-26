@@ -6,7 +6,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * Msg that identifies a change in the CommonCards
+ */
 public class CommonCards extends Msg{
+    /**
+     * cards with with their tokens
+     */
     public Map<String, List<Integer>> cardsAndTokens;
 
     /**

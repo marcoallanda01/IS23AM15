@@ -7,8 +7,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Msg that identifies a disconnection
+ */
 public class Disconnection extends Msg{
-    public String player; // player name
+    /**
+     * player name
+     */
+    public String player;
 
     /**
      * Constructor

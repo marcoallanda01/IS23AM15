@@ -7,9 +7,21 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.Optional;
 
+/**
+ * Message sent at the first connection of the client ot notify them of the current lobby situation
+ */
 public class Hello extends Msg {
+    /**
+     * true if the lobby can be logged in
+     */
     public boolean lobbyReady;
+    /**
+     * Not null, if now you are the first player
+     */
     public String firstPlayerId;
+    /**
+     * true if the game was loaded
+     */
     public boolean loadedGame;
 
     /**

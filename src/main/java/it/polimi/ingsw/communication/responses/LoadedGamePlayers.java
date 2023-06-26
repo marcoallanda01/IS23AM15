@@ -9,7 +9,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Response of a GetLoadedPlayers
+ */
 public class LoadedGamePlayers extends Msg {
+    /**
+     * players' names
+     */
     public Set<String> names;
 
     /**

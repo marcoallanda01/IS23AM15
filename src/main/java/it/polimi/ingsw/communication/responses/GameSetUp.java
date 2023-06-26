@@ -16,9 +16,21 @@ import java.util.Optional;
  * notifyChangeBookShelf, updatePlayerPoints, notifyYourTurn, ...
  */
 public class GameSetUp extends Msg{
+    /**
+     * player's name ordered by turn
+     */
     public List<String> players;
+    /**
+     * goals to reach
+     */
     public List<String> goals;
+    /**
+     * personal goal of the specific player
+     */
     public String personal;
+    /**
+     * old chat
+     */
     public List<ChatMessage> oldChat;
 
 

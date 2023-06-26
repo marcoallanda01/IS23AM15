@@ -25,7 +25,6 @@ public class GoalManager{
     private final CommonCardsPointsManager commonCardsPointsManager;
     private final PersonalCardsPointsManager personalCardsPointsManager;
     private final CommonGoalsPointsManager commonGoalsPointsManager;
-    private transient static final String DEFAULT_DIRECTORY = "data/goals.json";
     private final int commonCardsToDraw;
     /**
      * if set to false only pointsManagers with updateRule set to END_TURN will be updated every turn
@@ -179,58 +178,48 @@ public class GoalManager{
     }
 
     /**
-     * gets the file reader given a directory, if the directory is null the file reader reads from the jar
-     * @param dir the directory
+     * gets the file reader given a file
+     * @param path file path
+     * @param intern true if the file is from internal resources
      * @return the file reader
      * @throws FileNotFoundException
      * @throws URISyntaxException
      */
-    private Reader getSetupFileReader (String dir) throws FileNotFoundException, URISyntaxException {
-        if (dir == null) {
-            return new InputStreamReader(getClass().getClassLoader().getResourceAsStream(DEFAULT_DIRECTORY),  StandardCharsets.UTF_8);
+    private Reader getSetupFileReader (String path, boolean intern) throws FileNotFoundException, URISyntaxException {
+        if (intern) {
+            return new InputStreamReader(getClass().getClassLoader().getResourceAsStream(path),  StandardCharsets.UTF_8);
         }
-        return new FileReader(dir);
-    };
+        return new FileReader(path);
+    }
 
     /**
      * Reads settings from json file and initializes the managers accordingly
      * @param players   players playing the game
-     * @param setUpFile file json where there are the patterns associated with card type, if null default directory is used
+     * @param setUpFile file json where there are the patterns associated with card type
+     * @param isFirstGame true if is the first game of the players (game rule)
+     * @param fromInternResources true if setUpFile used is from internal resources
      * @throws ArrestGameException if occurred very bad errors in parsing or json stream
      */
-    public GoalManager(List<Player> players, String setUpFile, boolean isFirstGame) throws ArrestGameException {
+    public GoalManager(List<Player> players, String setUpFile, boolean isFirstGame, boolean fromInternResources) throws ArrestGameException {
         this.commonCardsToDraw = isFirstGame ? 1 : 2;
 
         Set<Pattern> patternsCommonGoals = new HashSet<>();
         Set<Pattern> patternsPersonalGoals = new HashSet<>();
-
         LinkedHashSet<Pattern> patternsEndGoals = new LinkedHashSet<>();
 
-        Reader in;
         try {
-            in = getSetupFileReader(setUpFile);
-        } catch (FileNotFoundException | NullPointerException | URISyntaxException | FileSystemNotFoundException e) {
-            System.err.println("Error occurred in Goal Manager: file " + setUpFile + " can not be found!");
-            System.err.println("More details: " + e);
-            throw new ArrestGameException("ArrestGameException: Error occurred in GoalManager", e);
-        }
-
-        try {
-
-            JsonReader reader1 = new JsonReader(getSetupFileReader(setUpFile));
+            JsonReader reader1 = new JsonReader(getSetupFileReader(setUpFile, fromInternResources));
             patternsCommonGoals.addAll(readCards(reader1, "common_cards"));
             reader1.close();
 
-            JsonReader reader2 = new JsonReader(getSetupFileReader(setUpFile));
+            JsonReader reader2 = new JsonReader(getSetupFileReader(setUpFile, fromInternResources));
             patternsEndGoals.addAll(readCards(reader2, "end_game"));
             reader2.close();
-
 
 
             for(Pattern p : patternsEndGoals){
                 System.out.println("Pattern: "+p.toString());
             }
-
 
             for(Pattern p : patternsCommonGoals){
                 System.out.println("Pattern: "+p.toString());
@@ -239,7 +228,7 @@ public class GoalManager{
                 throw new ArrestGameException("Not enough common cards as game rules are set");
             }
 
-            JsonReader reader3 = new JsonReader(getSetupFileReader(setUpFile));
+            JsonReader reader3 = new JsonReader(getSetupFileReader(setUpFile, fromInternResources));
             patternsPersonalGoals.addAll(readCards(reader3, "personal_cards"));
             if(patternsPersonalGoals.size() < players.size()){
                 throw new ArrestGameException("Not enough personal cards form all players");
@@ -262,6 +251,9 @@ public class GoalManager{
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new ArrestGameException("URISyntaxException occurred!");
+        }catch (NullPointerException e){
+            System.err.println("Error occurred in Goal Manager: NullPointerException occurred with file " + setUpFile + " at its opening");
+            throw new ArrestGameException("ArrestGameException:" + "Error occurred in GoalManager at the opening of the file", e);
         }
 
 

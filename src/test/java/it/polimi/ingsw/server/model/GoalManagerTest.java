@@ -1,7 +1,10 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.exceptions.ArrestGameException;
+import it.polimi.ingsw.server.model.managers.CommonCardsPointsManager;
+import it.polimi.ingsw.server.model.managers.CommonGoalsPointsManager;
 import it.polimi.ingsw.server.model.managers.GoalManager;
+import it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GoalManagerTest {
     GoalManager goalManager;
     List<Player> players;
+    String goalmangerFile = "data/goals.json";
     @BeforeEach
     void setPlayers(){
         players = new ArrayList<>();
@@ -24,7 +28,7 @@ class GoalManagerTest {
 
     @Test
     void updatePointsTurn() {
-        goalManager = new GoalManager(players, "data/goals.json", true);
+        goalManager = new GoalManager(players, "data/goals.json", true, true);
         goalManager.updatePointsTurn(null);
         assertThrows(NullPointerException.class, () -> goalManager.updatePointsTurn(new Player("altro")));
         List<Tile> tiles = new ArrayList<>();
@@ -42,7 +46,7 @@ class GoalManagerTest {
 
     @Test
     void updatePointsEnd() {
-        goalManager = new GoalManager(players, null, true);
+        goalManager = new GoalManager(players, goalmangerFile, true, true);
         goalManager.updatePointsEnd(null);
         // If I do the update points of a player that not exists managers do nothing
         goalManager.updatePointsEnd(new Player("altro"));
@@ -69,13 +73,13 @@ class GoalManagerTest {
 
     @Test
     void getPoints() {
-        goalManager = new GoalManager(players, null, true);
+        goalManager = new GoalManager(players, goalmangerFile, true, true);
         assertEquals(0, goalManager.getPoints(players.get(1)));
     }
 
     @Test
     void getWinner(){
-        goalManager = new GoalManager(players, null, true);
+        goalManager = new GoalManager(players, goalmangerFile, true, true);
         assertEquals(players.get(0).getUserName(), goalManager.getWinner(players));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -87,19 +91,19 @@ class GoalManagerTest {
 
     @Test
     void getCommonCardsToTokens() {
-        goalManager = new GoalManager(players, null, true);
+        goalManager = new GoalManager(players, goalmangerFile, true, true);
         System.out.println(goalManager.getCommonCardsToTokens());
     }
 
     @Test
     void getTokens() {
-        goalManager = new GoalManager(players, null, true);
+        goalManager = new GoalManager(players, goalmangerFile, true, true);
         System.out.println(goalManager.getTokens(players.get(1)));
     }
 
     @Test
     void getUnfulfilledCommonCards() {
-        goalManager = new GoalManager(players, null, true);
+        goalManager = new GoalManager(players, goalmangerFile, true, true);
         System.out.println(goalManager.getTokens(players.get(1)));
         List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(-1, -1, TileType.CAT));
@@ -111,7 +115,7 @@ class GoalManagerTest {
 
     @Test
     void personalCardsXY(){
-        goalManager = new GoalManager(players, "tests/test_personalCardsXYRight.json", true);
+        goalManager = new GoalManager(players, "tests/test_personalCardsXYRight.json", true, true);
         Player player = players.get(0);
         // [0,0,"PLANT"], [0,2,"FRAME"], [1,5,"CAT"], [2,4,"BOOK"], [3,1,"GAME"], [5,2,"TROPHIE"]
         List<Tile> personalCard = new ArrayList<>();
@@ -123,10 +127,10 @@ class GoalManagerTest {
         goalManager.updatePointsEnd(player);
         assertEquals(1, goalManager.getPoints(player));
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "tests/test_personalCardsXYWrong.json", true));
+                () -> new GoalManager(players, "tests/test_personalCardsXYWrong.json", true, true));
         // expected a sting as name
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "tests/test_personalCardsXYWrong.json", true));
+                () -> new GoalManager(players, "tests/test_personalCardsXYWrong.json", true, true));
 
     }
 
@@ -134,10 +138,10 @@ class GoalManagerTest {
     void noEnoughPersonalCards(){
         //0 cards
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "tests/test_personalCardsNoCards.json", true));
+                () -> new GoalManager(players, "tests/test_personalCardsNoCards.json", true, true));
         // 2 cards only with 3 players
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "tests/test_personalCards2Cards.json", true));
+                () -> new GoalManager(players, "tests/test_personalCards2Cards.json", true, true));
 
     }
 
@@ -146,41 +150,41 @@ class GoalManagerTest {
     void noEnoughCommonCards(){
         // there are three cards wrong
         //1 card needed
-        new GoalManager(players, "tests/test_commonCardsNotEnough.json", true);
+        new GoalManager(players, "tests/test_commonCardsNotEnough.json", true,true);
         //1 card needed 2
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "tests/test_commonCardsNotEnough.json", false));
+                () -> new GoalManager(players, "tests/test_commonCardsNotEnough.json", false, true));
 
     }
 
     @Test
     void noEndGoals(){
         //EndGoals are not mandatory
-        new GoalManager(players, "tests/test_noEndGoals.json", true);
+        new GoalManager(players, "tests/test_noEndGoals.json", true,true);
     }
 
     @Test
     void errorsInEndGoals(){
         //If and end goals is wrong no problems
         //Only 4_ADJACENT should be printed for endGoals
-        new GoalManager(players, "tests/test_errorsInEnd.json", true);
+        new GoalManager(players, "tests/test_errorsInEnd.json", true,true);
     }
 
     private GoalManager setGoalMangerForCommonCardsSafeTest(String file){
-        return new GoalManager(players, file, true);
+        return new GoalManager(players, file, true,true);
     }
 
 
     @Test
     void FailedToOpenException(){
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "fileNonEsistente", true));
+                () -> new GoalManager(players, "fileNonEsistente", true, true));
     }
 
     @Test
     void wrongFormatted(){
         assertThrows(ArrestGameException.class,
-                () -> new GoalManager(players, "tests/test_wrongFormatted.json", true));
+                () -> new GoalManager(players, "tests/test_wrongFormatted.json", true,true));
     }
 
 

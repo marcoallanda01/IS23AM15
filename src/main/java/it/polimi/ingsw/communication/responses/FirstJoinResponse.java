@@ -5,6 +5,9 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
+/**
+ * Response of a first join command
+ */
 public class FirstJoinResponse extends Msg {
     public boolean result;
 

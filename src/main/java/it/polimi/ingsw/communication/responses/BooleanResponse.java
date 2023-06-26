@@ -5,10 +5,20 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
-public class BooleanResponse extends Msg {
+/**
+ * Class message used as result message of a performed command
+ */
+public @Deprecated class BooleanResponse extends Msg {
+    /**
+     * true if command performed was successful
+     */
     public boolean result;
 
-    public @Deprecated BooleanResponse(boolean result) {
+    /**
+     * BooleanResponse constructor
+     * @param result true if command performed was successful, false otherwise
+     */
+    public BooleanResponse(boolean result) {
         super("BooleanResponse");
         this.result = result;
     }

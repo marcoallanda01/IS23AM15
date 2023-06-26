@@ -7,14 +7,26 @@ package it.polimi.ingsw.server.model.exceptions;
  */
 public class ArrestGameException extends RuntimeException{
 
+    /**
+     * ArrestGameException constructor
+     */
     public ArrestGameException(){
         System.err.println("ArrestGameException occurred");
     }
 
+    /**
+     * ArrestGameException constructor
+     * @param message exception message
+     */
     public ArrestGameException(String message) {
         super(message);
     }
 
+    /**
+     * ArrestGameException constructor
+     * @param message exception message
+     * @param cause exception cause
+     */
     public ArrestGameException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -9,10 +9,17 @@ import java.util.*;
 /**
  * Deprecated. Class not used. It's here to revaluate in the future
  */
-public class CommonGoals extends Msg{
+public @Deprecated class CommonGoals extends Msg{
+    /**
+     * current goals
+     */
     public Set<String> goals;
 
-    public @Deprecated CommonGoals(@NotNull Set<String> goals) {
+    /**
+     * CommonGoals message constructor
+     * @param goals goals names
+     */
+    public CommonGoals(@NotNull Set<String> goals) {
         super("CommonGoals");
         this.goals = new HashSet<>(goals);
     }

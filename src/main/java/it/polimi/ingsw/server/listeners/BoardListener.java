@@ -7,7 +7,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+/**
+ * Listener of the LivingRoomBoard
+ */
 public class BoardListener extends StandardListener implements PropertyChangeListener {
+
+    /**
+     * Constructor of BoardListener
+     * @param pushNotificationController pushNotificationController
+     */
     public BoardListener(PushNotificationController pushNotificationController) {
         super(pushNotificationController);
     }

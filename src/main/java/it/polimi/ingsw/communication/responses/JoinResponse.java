@@ -11,9 +11,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * response from a join
+ */
 public class JoinResponse extends Msg {
+    /**
+     * result of the join
+     */
     public boolean result;
+    /**
+     * id assigned
+     */
     public String id;
+    /**
+     * error occurred
+     */
     public String error;
 
     /**

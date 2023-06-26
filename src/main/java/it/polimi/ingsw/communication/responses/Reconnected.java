@@ -7,7 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Msg that identifies a change in the reconnection of a player
+ */
 public class Reconnected extends Msg{
+    /**
+     * player's name
+     */
     public String player; // player name
 
     /**

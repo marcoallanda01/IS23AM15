@@ -7,8 +7,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * Msg that identifies a change in a BookShelf
+ */
 public class BookShelfUpdate extends Msg{
+    /**
+     * player of who is the bookshelf
+     */
     public String player;
+    /**
+     * tiles in the bookshelf
+     */
     public Set<Tile> tiles;
 
     /**

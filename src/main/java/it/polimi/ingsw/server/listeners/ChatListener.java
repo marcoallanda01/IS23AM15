@@ -6,7 +6,15 @@ import it.polimi.ingsw.server.model.chat.Message;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Listener of the Chat
+ */
 public class ChatListener extends StandardListener implements PropertyChangeListener {
+
+    /**
+     * Constructor of ChatListener
+     * @param pushNotificationController pushNotificationController
+     */
     public ChatListener(PushNotificationController pushNotificationController) {
         super(pushNotificationController);
     }

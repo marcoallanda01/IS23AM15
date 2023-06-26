@@ -7,7 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Msg that identifies a general error message from the server
+ */
 public class ErrorMessage extends Msg{
+    /**
+     * content
+     */
     public String message;
 
     /**

@@ -7,7 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * Msg that identifies a change in the LivingRoomBoard
+ */
 public class BoardUpdate extends Msg {
+    /**
+     * LivingRoomBoard tiles
+     */
     public Set<Tile> tiles;
 
     /**

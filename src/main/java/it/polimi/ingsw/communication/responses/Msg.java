@@ -51,6 +51,7 @@ public abstract class Msg implements Serializable {
     }
 
     /**
+     * Get the name of the message
      * @return name type of the message
      */
     public String getName(){

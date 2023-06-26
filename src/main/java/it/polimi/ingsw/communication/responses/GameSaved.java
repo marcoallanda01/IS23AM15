@@ -7,8 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Msg that identifies the save of the current game
+ */
 public class GameSaved extends Msg{
-
+    /**
+     * game name
+     */
     public String game;
 
     /**

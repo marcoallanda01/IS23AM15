@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Response message of a LoadGame command
+ */
 public class LoadGameResponse extends Msg {
     public boolean result;
     public String error;

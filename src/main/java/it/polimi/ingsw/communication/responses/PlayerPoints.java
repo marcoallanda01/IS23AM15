@@ -6,8 +6,17 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Msg that identifies a change in the points of a player
+ */
 public class PlayerPoints extends Msg{
+    /**
+     * player's name
+     */
     public String player;
+    /**
+     * player's points
+     */
     public int points;
 
     /**

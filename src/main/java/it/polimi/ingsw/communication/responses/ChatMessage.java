@@ -10,12 +10,22 @@ import java.util.Optional;
 
 
 /**
+ *  Msg that identifies a new message sent/received
  *  The Chat message doesn't contain receiver because it's used buy the communication layer, there is no
  *  interest in saying: "This is message is for you, I send it only to you, you are the receiver"
  */
 public class ChatMessage extends Msg{
+    /**
+     * content of the message
+     */
     public String message;
+    /**
+     * sender of the message
+     */
     public String sender;
+    /**
+     * Date of the message
+     */
     public String date;
 
     /**

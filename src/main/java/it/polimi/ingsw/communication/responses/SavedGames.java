@@ -7,7 +7,13 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Message response of a GetSavedGames command
+ */
 public class SavedGames extends Msg {
+    /**
+     * saves names
+     */
     public Set<String> names;
 
     /**

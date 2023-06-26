@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.server.model.managers.GoalManager;
 import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 import it.polimi.ingsw.server.model.turn.EndState;
-import it.polimi.ingsw.server.model.turn.PickTilesState;
 import it.polimi.ingsw.server.model.turn.PutTilesState;
 import it.polimi.ingsw.server.model.turn.Turn;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +36,9 @@ public class Game{
     private static final int WINNER_TIMEOUT = 20;
     private transient PushNotificationController pushNotificationController;
     private ScheduledFuture<?> winnerTimeout = null;
+
+    /** GoalManager default file **/
+    private transient static final String DEFAULT_GOALMANAGER_FILE = "data/goals.json";
 
     /**
      * Only method used for instantiation of the game
@@ -74,7 +76,12 @@ public class Game{
         notifyListeners();
         //FirstFill
         this.board.fillBoard();
-        this.goalManager = new GoalManager(this.players, goalsDirectory, isFirstGame);
+        boolean fromRes = false;
+        if(goalsDirectory == null){
+            fromRes = true;
+            goalsDirectory = DEFAULT_GOALMANAGER_FILE;
+        }
+        this.goalManager = new GoalManager(this.players, goalsDirectory, isFirstGame, fromRes);
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
@@ -132,7 +139,7 @@ public class Game{
         this.currentTurn = new Turn(this.players.get(0), board);
 
         this.chat = new Chat(this.players);
-        this.goalManager = new GoalManager(this.players, null, isFirstGame);
+        this.goalManager = new GoalManager(this.players, DEFAULT_GOALMANAGER_FILE, isFirstGame, true);
 
     }
 

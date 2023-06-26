@@ -5,6 +5,9 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
+/**
+ * Ping message
+ */
 public class Ping extends Msg {
 
     /**
