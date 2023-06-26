@@ -5,11 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a PointsManager that assigns points based on the state of the player and its bookshelf
+ * PointsManagers can have additional parameters and the assigned points can depend on other things such as Patterns
+ */
 public abstract class PointsManager {
     protected List<Player> players;
     protected Map<Player, Integer> playersToPoints;
     protected UpdateRule updateRule = UpdateRule.ANY;
 
+    /**
+     * Constructor for PointsManager, just creates a map player to points and sets the starting points at 0
+     * @param players the players
+     */
     public PointsManager(List<Player> players) {
         this.players = players;
         playersToPoints = new HashMap<>();

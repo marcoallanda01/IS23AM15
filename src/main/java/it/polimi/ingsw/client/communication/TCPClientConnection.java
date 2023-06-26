@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 
 /**
  * Handles the TCP connection:
- * opens it, closes it, handles notifications
+ * opens it, closes it, handles notifications,
  * receives and sends messages from and to the server
  */
 public class TCPClientConnection implements ClientConnection {
@@ -23,6 +23,9 @@ public class TCPClientConnection implements ClientConnection {
     private Future<Void> notificationListener;
 
     /**
+     * Constructor for TCPClientConnection
+     * @param hostname the name of the host
+     * @param port the port to use
      * @param clientNotificationListener the clientNotificationListener
      */
     public TCPClientConnection(String hostname, int port, ClientNotificationListener clientNotificationListener) {
@@ -81,6 +84,7 @@ public class TCPClientConnection implements ClientConnection {
 
     /**
      * Calls sendStringToServer
+     * @param json the json string to send
      */
     public void sendToServer(String json) {
         sendStringToServer(json);
