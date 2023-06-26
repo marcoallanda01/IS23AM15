@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Generates the GUI for the chat.
+ */
 public class GUIChat extends GUIState {
     Map<String, Map<String, String>> chat;
     List<String> players;

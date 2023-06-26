@@ -13,6 +13,9 @@ import javafx.scene.text.FontWeight;
 
 import java.util.List;
 
+/**
+ * Generates the GUI for when players are in lobby.
+ */
 public class GUILobby extends GUIState{
 
     /**

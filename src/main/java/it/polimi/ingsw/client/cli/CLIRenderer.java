@@ -11,6 +11,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * CLI based renderer
+ */
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 public class CLIRenderer {
 

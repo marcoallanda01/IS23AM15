@@ -28,6 +28,9 @@ import javafx.stage.Screen;
 
 import java.util.List;
 
+/**
+ * GUIApplication that renders
+ */
 public class GUIApplication extends Application {
     private Stage primaryStage;
     private final Stage chatStage = new Stage();

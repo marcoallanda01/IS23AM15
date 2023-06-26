@@ -14,7 +14,8 @@ public class ClientController implements ClientNotificationListener {
     public ClientController(String goalsPath) {
         view = Client.getInstance().getView();
         try {
-            view.setGoalsToDetail(ClientGoalParser.parseGoalsFromJsonFile(getClass().getResource(goalsPath)));
+            view.setGoalsToDetail(ClientGoalParser.parseGoalsFromJsonFile(goalsPath));
+            Client.getInstance().getLogger().log("Goals to detail: " + view.getGoalsToDetails().toString());
         } catch (IOException e) {
             Client.getInstance().getLogger().log(e);
             throw new RuntimeException(e);

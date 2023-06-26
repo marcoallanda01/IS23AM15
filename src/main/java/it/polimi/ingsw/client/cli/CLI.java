@@ -8,6 +8,9 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * CLI based view
+ */
 public class CLI extends View {
     private final Thread inputThread;
     private final Scanner inputScanner;

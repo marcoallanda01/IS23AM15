@@ -14,6 +14,9 @@ import javafx.util.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * GUI based view
+ */
 public class GUI extends View {
     private final GUIApplication guiApplication;
     private GUIState guiState;

@@ -18,6 +18,9 @@ import javafx.scene.text.FontWeight;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Generates the GUI for the selection of the name.
+ */
 public class GUILoadNames extends GUIState{
     List<String> savedNames;
 

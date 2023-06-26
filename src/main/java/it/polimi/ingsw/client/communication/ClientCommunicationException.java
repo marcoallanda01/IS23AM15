@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.communication;
 
+
 public class ClientCommunicationException extends RuntimeException{
 
     public ClientCommunicationException(){

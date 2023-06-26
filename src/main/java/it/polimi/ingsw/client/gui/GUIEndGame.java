@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Generates the GUI for the end game.
+ */
 public class GUIEndGame extends GUIState {
     private Map<String, Integer> playerPoints;
     private String winner;

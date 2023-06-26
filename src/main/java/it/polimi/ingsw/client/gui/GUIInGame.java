@@ -29,6 +29,9 @@ import javafx.scene.text.FontWeight;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Generates the GUI for the in game.
+ */
 @SuppressWarnings("DataFlowIssue")
 public class GUIInGame extends GUIState {
 

@@ -13,6 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * Generates the GUI for the load game.
+ */
 public class GUILoadGame extends GUIState{
     private final List<String> savedGames;
 
