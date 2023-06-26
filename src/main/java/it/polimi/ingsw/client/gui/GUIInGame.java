@@ -407,7 +407,7 @@ public class GUIInGame extends GUIState {
                 ImageView firstPlayerToken = new ImageView(new Image(getClass().getResource("/assets/firstplayertoken.png").toExternalForm()));
                 firstPlayerToken.setFitHeight(40);
                 firstPlayerToken.setFitWidth(40);
-                firstPlayerToken.setTranslateY(-90);
+                firstPlayerToken.setTranslateY(125);
                 bookshelfGrid.getChildren().add(firstPlayerToken);
             }
             bookshelvesBox.getChildren().add(bookshelfGrid);

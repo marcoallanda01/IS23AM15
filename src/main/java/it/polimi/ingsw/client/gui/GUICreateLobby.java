@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.communication.ClientCommunication;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +15,6 @@ import javafx.scene.text.FontWeight;
  * Represents the GUI state for creating a lobby.
  */
 public class GUICreateLobby extends GUIState {
-    private String nickname;
 
     /**
      * Constructs a new GUICreateLobby instance.
@@ -26,7 +24,6 @@ public class GUICreateLobby extends GUIState {
      */
     public GUICreateLobby(GUIApplication guiApplication, String nickname) {
         super(guiApplication);
-        this.nickname = nickname;
         createUI();
     }
 
@@ -35,7 +32,7 @@ public class GUICreateLobby extends GUIState {
      */
     private void createUI() {
         VBox root = createRootPane();
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
