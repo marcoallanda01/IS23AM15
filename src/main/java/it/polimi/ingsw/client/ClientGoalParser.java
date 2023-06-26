@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Interface that parses the goals from a json internal to the jar
+ * Class that parses the goals from a json internal to the jar
  */
-public interface ClientGoalParser {
+public class ClientGoalParser {
     /**
      * Parses the goals from a json file
      * @param resourcePath the path to the json
