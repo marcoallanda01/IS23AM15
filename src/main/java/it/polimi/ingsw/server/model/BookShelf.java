@@ -1,17 +1,25 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.controller.PushNotificationController;
-import it.polimi.ingsw.server.listeners.StandardListenable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Class that represents the bookshelf of a player
+ */
 public class BookShelf{
     /**
      * The list of tiles in the bookshelf
      */
     private final List<List<Optional<Tile>>> currentTiles;
 
+    /**
+     * Default constructor
+     * @param numRows the number of rows in the bookshelf
+     * @param numColumns the number of columns in the bookshelf
+     */
     public BookShelf(int numRows, int numColumns) {
         currentTiles = new ArrayList<>();
         for (int i = 0; i < numColumns; i++) {
@@ -23,6 +31,9 @@ public class BookShelf{
         }
     }
 
+    /**
+     * Constructor with default values
+     */
     public BookShelf() {
         this(6, 5);
     }

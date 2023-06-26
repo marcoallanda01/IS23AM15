@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model.chat;
 
 import it.polimi.ingsw.server.controller.PushNotificationController;
+import it.polimi.ingsw.server.controller.serialization.PostProcessable;
 import it.polimi.ingsw.server.listeners.ChatListener;
 import it.polimi.ingsw.server.listeners.StandardListenable;
 import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.controller.serialization.PostProcessable;
 import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 
 import java.beans.PropertyChangeSupport;
@@ -13,43 +13,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that represents the chat
+ */
 public class Chat implements PostProcessable, StandardListenable {
-     private final Map<String, List<Message>> MessagesPerPlayer;
+    private final Map<String, List<Message>> MessagesPerPlayer;
     private transient PropertyChangeSupport propertyChangeSupport;
 
     /**
-     * Constructor
+     * Default constructor
+     *
      * @param players the players in the game
      */
-     public Chat(List<Player> players){
-         MessagesPerPlayer = new HashMap<>();
-         for (Player p : players){
-              MessagesPerPlayer.put(p.getUserName(), new ArrayList<>());
-         }
-         this.propertyChangeSupport = new PropertyChangeSupport(this);
-     }
+    public Chat(List<Player> players) {
+        MessagesPerPlayer = new HashMap<>();
+        for (Player p : players) {
+            MessagesPerPlayer.put(p.getUserName(), new ArrayList<>());
+        }
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
 
     /**
      * Get all the messages sent to the player p
+     *
      * @param p the player
      * @return a list of messages
      */
-     public List<Message> getMessages(Player p){
-         return MessagesPerPlayer.get(p.getUserName());
-     }
+    public List<Message> getMessages(Player p) {
+        return MessagesPerPlayer.get(p.getUserName());
+    }
 
     /**
      * Add a message to the chat
      * If the receiver of the message is not present, the message is sent to all the players
+     *
      * @param m the message to add
      * @throws PlayerNotFoundException if the receiver of the message is not in the game
      */
-    public void addMessage(Message m) throws PlayerNotFoundException{
-        if(MessagesPerPlayer.containsKey(m.getSenderName())){
+    public void addMessage(Message m) throws PlayerNotFoundException {
+        if (MessagesPerPlayer.containsKey(m.getSenderName())) {
             if (m.getReceiverName().isPresent()) {
                 if (MessagesPerPlayer.containsKey(m.getReceiverName().get())) {
-                    MessagesPerPlayer.get(m.getReceiverName().get()).add(0,m);
-                    MessagesPerPlayer.get(m.getSenderName()).add(0,m);
+                    MessagesPerPlayer.get(m.getReceiverName().get()).add(0, m);
+                    MessagesPerPlayer.get(m.getSenderName()).add(0, m);
                 } else {
                     throw new PlayerNotFoundException("The receiver of the message is not in the game");
                 }
@@ -72,7 +78,7 @@ public class Chat implements PostProcessable, StandardListenable {
     /**
      * Set standard player listener
      */
-    public void setStandardListener(PushNotificationController pnc){
+    public void setStandardListener(PushNotificationController pnc) {
         this.propertyChangeSupport.addPropertyChangeListener(new ChatListener(pnc));
     }
 }
