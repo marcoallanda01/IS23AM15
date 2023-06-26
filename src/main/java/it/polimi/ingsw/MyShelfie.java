@@ -8,7 +8,6 @@ import it.polimi.ingsw.server.ServerApp;
  */
 public class MyShelfie {
 
-
     /**
      * Public main method to launch client or server
      * @param args arguments necessary for launching client or server

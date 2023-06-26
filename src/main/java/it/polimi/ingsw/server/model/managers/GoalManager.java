@@ -3,10 +3,7 @@ package it.polimi.ingsw.server.model.managers;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.google.gson.*;
@@ -36,6 +33,7 @@ public class GoalManager{
     private Boolean frequentUpdates = Boolean.TRUE;
 
     /**
+     * Read a card from
      * @param reader    reader from witch read the json
      * @param cardsType type of cards in the file json
      * @return list of patterns of selected cardsType
@@ -79,6 +77,7 @@ public class GoalManager{
     }
 
     /**
+     * Read a pattern
      * @param cardJson JsonElement representing the card
      * @return pattern to be generated from parsing. Returns null if pattern is invalid
      * @throws RuntimeException if there is bad formatting in the file, but we must throw so the GoalManager can try to
@@ -185,8 +184,8 @@ public class GoalManager{
      * @param path file path
      * @param intern true if the file is from internal resources
      * @return the file reader
-     * @throws FileNotFoundException
-     * @throws URISyntaxException
+     * @throws FileNotFoundException if the file is not found
+     * @throws URISyntaxException if there were problems with the uri interface
      */
     private Reader getSetupFileReader (String path, boolean intern) throws FileNotFoundException, URISyntaxException {
         if (intern) {
@@ -291,6 +290,7 @@ public class GoalManager{
     }
 
     /**
+     * Update the points at the end of a turn
      * @param player the player
      *               updates the points of the player relative to every pointsManager that should be updated every turn
      * if frequent is set to true, unless the pm specifies end game updates, it will be updated
@@ -309,6 +309,7 @@ public class GoalManager{
     }
 
     /**
+     * Update the points at the end of the game
      * @param player the player
      *               updates the points of the player relative to every pointsManager
      */
@@ -347,6 +348,7 @@ public class GoalManager{
     }
 
     /**
+     * Get common cards with their associated tokens
      * @return a map associating cards to tokens
      */
     // this method does not take a card as input because cards are handled exclusively  by CardsManagers
@@ -355,6 +357,7 @@ public class GoalManager{
     }
 
     /**
+     * Get the tokens of a player
      * @param player the player
      * @return the tokens of the player:
      */
@@ -363,6 +366,7 @@ public class GoalManager{
     }
 
     /**
+     * Get common cards that a player didn't complete
      * @param player the player
      * @return the unfulfilled cards of the player
      */
@@ -371,6 +375,7 @@ public class GoalManager{
     }
 
     /**
+     * Get common cards that a player did complete
      * @param player the player
      * @return the fulfilled cards of the player
      */
@@ -379,6 +384,7 @@ public class GoalManager{
     }
 
     /**
+     * Get personal card of a player
      * @param player the player
      * @return the personal card of the player
      */
@@ -395,35 +401,45 @@ public class GoalManager{
     }
 
     /**
-     * Used for serialization
+     * Used for serialization.
+     * Get the CommonCardsPointsManager
+     * @return CommonCardsPointsManager object
      */
     public CommonCardsPointsManager getCommonCardsPointsManager() {
         return commonCardsPointsManager;
     }
 
     /**
-     * Used for serialization
+     * Used for serialization.
+     * Get the getPersonalGoalCardManager
+     * @return getPersonalGoalCardManager object
      */
     public PersonalCardsPointsManager getPersonalGoalCardManager() {
         return personalCardsPointsManager;
     }
 
     /**
-     * Used for serialization
+     * Used for serialization.
+     * Get the CommonGoalsPointsManager
+     * @return CommonGoalsPointsManager object
      */
     public CommonGoalsPointsManager getCommonGoalsPointsManager() {
         return commonGoalsPointsManager;
     }
 
     /**
-     * Used for serialization
+     * Used for serialization.
+     * Get FrequentUpdates mode
+     * @return true if FrequentUpdates mode is active
      */
-    public Boolean getFrequentUpdates() {
+    public Boolean isFrequentUpdates() {
         return frequentUpdates;
     }
 
     /**
-     * Used for serialization
+     * Used for serialization.
+     * Get the getCommonCardsToDraw
+     * @return getCommonCardsToDraw object
      */
     public int getCommonCardsToDraw() {
         return commonCardsToDraw;

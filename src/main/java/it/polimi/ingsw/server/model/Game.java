@@ -57,9 +57,10 @@ public class Game{
      * Setting up of the game, notification are sent to the clients
      * @param players list of players' names
      * @param isFirstGame easy rules game rule
-     * @throws ArrestGameException if there was an internal server error and the game couldn't be setted
+     * @param goalsFile set up file of the goals, if null will be set to default internal file
+     * @throws ArrestGameException if there was an internal server error and the game couldn't be set
      */
-    public void setGame(@NotNull List<String> players, boolean isFirstGame, String goalsDirectory) throws ArrestGameException {
+    public void setGame(@NotNull List<String> players, boolean isFirstGame, String goalsFile) throws ArrestGameException {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());
         this.players.forEach((p)->{p.setStandardListener(pushNotificationController);});
         int numberOfPlayers = players.size();
@@ -79,11 +80,11 @@ public class Game{
         //FirstFill
         this.board.fillBoard();
         boolean fromRes = false;
-        if(goalsDirectory == null){
+        if(goalsFile == null){
             fromRes = true;
-            goalsDirectory = DEFAULT_GOALMANAGER_FILE;
+            goalsFile = DEFAULT_GOALMANAGER_FILE;
         }
-        this.goalManager = new GoalManager(this.players, goalsDirectory, isFirstGame, fromRes);
+        this.goalManager = new GoalManager(this.players, goalsFile, isFirstGame, fromRes);
         this.goalManager.getCommonCardsPointsManager().setStandardListener(pushNotificationController);
         this.goalManager.getCommonCardsPointsManager().notifyListeners();
         //Necessary for first trigger of points notification and bookshelf
@@ -127,7 +128,7 @@ public class Game{
      * Help constructor used only in tests that not requires listeners or goal directory
      * @param players players
      * @param isFirstGame game rule easy game
-     * @throws ArrestGameException
+     * @throws ArrestGameException if there was an internal server error and the game couldn't be set
      */
     public @Deprecated Game(@NotNull List<String> players, boolean isFirstGame) throws ArrestGameException {
         this.GameChangeSupport = new PropertyChangeSupport(this);
@@ -147,6 +148,13 @@ public class Game{
 
     /**
      * Used for deserialization
+     * @param players players list
+     * @param winner winner
+     * @param isFirstGame game rule first game
+     * @param board living room board
+     * @param currentTurn current turn in the game
+     * @param chat chat of the game
+     * @param goalManager goal manager
      */
     public Game(List<Player> players, String winner, boolean isFirstGame, LivingRoomBoard board, Turn currentTurn, Chat chat, GoalManager goalManager) {
         this.players = players;
@@ -238,9 +246,9 @@ public class Game{
 
     /**
      * Get the points of the player
-     * @param nickname
+     * @param nickname player's name
      * @return the points
-     * @throws PlayerNotFoundException
+     * @throws PlayerNotFoundException if the player do not exist
      */
     public Integer getPoints(String nickname) throws PlayerNotFoundException {
         Player player = this.getPlayerFromNickname(nickname);
@@ -256,8 +264,8 @@ public class Game{
     }
 
     /**
-     * @param nickname the nickname of the player
      * Get the unfulfilled common cards
+     * @param nickname the nickname of the player
      * @return the common cards unfulfilled by the player
      */
     public Set<String> getUnfulfilledCommonCards(String nickname) throws PlayerNotFoundException {
@@ -266,8 +274,8 @@ public class Game{
     }
 
     /**
-     * @param nickname the nickname of the player
      * Get the fulfilled common cards
+     * @param nickname the nickname of the player
      * @return the common cards fulfilled by the player
      */
     public Set<String> getFulfilledCommonCards(String nickname) throws PlayerNotFoundException {
@@ -305,7 +313,7 @@ public class Game{
      * given a nickname returns the player
      * @param nickname the nickname of the player
      * @return the player with that nickname
-     * @throws PlayerNotFoundException
+     * @throws PlayerNotFoundException if a player doesn't exists
      */
     public Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
         try {
@@ -380,6 +388,7 @@ public class Game{
         System.out.println("GAME: THERE IS A WINNER!: "+this.winner);
     }
     /**
+     * Get the players of the game ordered by turn
      * @return list of the players
      */
     public List<String> getPlayers() {
@@ -390,7 +399,7 @@ public class Game{
      * @param sender the sender of the message
      * @param receiver the receiver of the message
      * @param message the message
-     * @throws PlayerNotFoundException
+     * @throws PlayerNotFoundException if a player doesn't exists
      */
     public void sendMessage(String sender, String receiver, String message) throws PlayerNotFoundException {
         Message m = new Message(this.getPlayerFromNickname(sender), this.getPlayerFromNickname(receiver), message);
@@ -401,7 +410,7 @@ public class Game{
      * Sends a message to all
      * @param sender the sender of the message
      * @param message the message
-     * @throws PlayerNotFoundException
+     * @throws PlayerNotFoundException if a player doesn't exists
      */
     public void sendMessage(String sender, String message) throws PlayerNotFoundException {
         Message m = new Message(this.getPlayerFromNickname(sender), message);
@@ -410,7 +419,7 @@ public class Game{
     /**
      * Gets the messages of the player
      * @param player the player
-     * @throws PlayerNotFoundException
+     * @throws PlayerNotFoundException if a player doesn't exists
      */
     public List<Message> getPlayerMessages(String player) throws PlayerNotFoundException  {
         return this.chat.getMessages(this.getPlayerFromNickname(player));
