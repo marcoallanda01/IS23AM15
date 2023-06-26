@@ -9,7 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * CLI based view
+ * CLI class is the class that handles the CLI
+ * It extends View
+ * It contains the inputThread and the inputScanner
+ * It contains the methods to start, stop, render, show error, show chat, show help, show goals and show chat notification
  */
 public class CLI extends View {
     private final Thread inputThread;

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * CLI based input handler
+ * InputCLI class is the class that handles the input from the user
  */
 public class InputCLI {
     /**

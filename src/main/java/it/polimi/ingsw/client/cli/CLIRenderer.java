@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
  * CLI based renderer
  */
 @SuppressWarnings("UnnecessaryUnicodeEscape")
+/**
+ * CLIRenderer class is the class that handles the CLI rendering
+ * It contains the methods to print the game, the board, the market, the leader cards, the dev cards, the players, the winner, the error, the chat, the help, the goals and the chat notification
+ */
 public class CLIRenderer {
 
     /**
