@@ -20,6 +20,9 @@ import it.polimi.ingsw.server.model.managers.patterns.PersonalPattern;
 import it.polimi.ingsw.server.model.managers.patterns.SpecificPattern;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class used to load the goals, handle all the managers and calculate total points
+ */
 public class GoalManager{
     private final List<PointsManager> pointsManagers = new ArrayList<>();
     private final CommonCardsPointsManager commonCardsPointsManager;
