@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -59,6 +58,7 @@ public class GUIInGame extends GUIState {
     private void createUI() {
         HBox root = new HBox(10);
         root.setAlignment(Pos.CENTER);
+
         Image background = new Image(getClass().getResource("/assets/background.jpg").toExternalForm());
         BackgroundSize backgroundSize = new BackgroundSize(300, 300, true, true, true, false);
         BackgroundImage backgroundImage = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
@@ -281,7 +281,7 @@ public class GUIInGame extends GUIState {
         }
         for (Tile tile : livingRoomBoard) {
             if (tile != null) {
-                ImageView tileImage = new ImageView(new Image(getClass().getResource("/assets/tiles/" + tile.getType() + randomNum + ".png").toExternalForm()));
+                ImageView tileImage = new ImageView(new Image(getClass().getResource("/assets/tiles/" + tile.getType().toString().toLowerCase() + randomNum + ".png").toExternalForm()));
                 tileImage.setFitHeight(29);
                 tileImage.setFitWidth(29);
                 GridPane.setConstraints(tileImage, tile.getY(), tile.getX());

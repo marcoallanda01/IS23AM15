@@ -13,6 +13,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ *  Class that represents the board of the game
+ */
 public class LivingRoomBoard implements StandardListenable, PostProcessable {
     /**
      * The number of players
@@ -37,11 +40,13 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
     private transient PropertyChangeSupport propertyChangeSupport;
 
+    /**
+     * Constructor with default values
+     */
     public LivingRoomBoard(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
         this.board = new HashMap<>();
         this.bag = Arrays.stream(TileType.values()).collect(Collectors.toMap(Function.identity(), TileType::getNumberOfTilesPerType));
-        //String maskJSON = Files.readString(Paths.get(getClass().getClassLoader().getResource("data/mask.json").toURI()));
         this.mask = new HashMap<>();
         mask.put(0, Map.of(0, TileRule.BLOCK, 1, TileRule.BLOCK, 2, TileRule.BLOCK, 3, TileRule.THREE, 4, TileRule.FOUR, 5, TileRule.BLOCK, 6, TileRule.BLOCK, 7, TileRule.BLOCK, 8,
                 TileRule.BLOCK));
@@ -65,6 +70,11 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
         this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Default constructor
+     * @param numberOfPlayers the number of players
+     * @param mask the mask of the board
+     */
     public LivingRoomBoard(int numberOfPlayers, Map<Integer, Map<Integer, TileRule>> mask) {
         this(numberOfPlayers);
         this.mask = mask;
@@ -157,9 +167,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
      * @param tiles list of tiles
      */
     protected void putBackInBag(List<Tile> tiles){
-        bag.forEach((tt, num) -> {
-            bag.put(tt, (int) (num + tiles.stream().filter(t -> tt.equals(t.getType())).count()));
-        });
+        bag.forEach((tt, num) -> bag.put(tt, (int) (num + tiles.stream().filter(t -> tt.equals(t.getType())).count())));
     }
 
     /**
@@ -282,13 +290,11 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
      */
     public List<Tile> getAllTiles(){
         List<Tile> tiles = new ArrayList<>();
-        board.forEach((x, row)->{
-            row.forEach((y,tile) -> {
-                if(tile != null) {
-                    tiles.add(new Tile(x, y, tile.getType()));
-                }
-            });
-        });
+        board.forEach((x, row)-> row.forEach((y, tile) -> {
+            if(tile != null) {
+                tiles.add(new Tile(x, y, tile.getType()));
+            }
+        }));
         return tiles;
     }
 

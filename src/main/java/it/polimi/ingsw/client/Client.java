@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Class that represents the client
+ */
 public class Client {
     private static Client singleton;
     private final String hostname;
@@ -30,6 +33,15 @@ public class Client {
     private Map<String, ClientGoal> clientGoals;
     private Timer disconnectTimer;
 
+    /**
+     * Default constructor
+     *
+     * @param hostname  the hostname
+     * @param port      the port
+     * @param goalsPath the path to the goals file
+     * @param protocol  the protocol
+     * @param view      the view
+     */
     public Client(String hostname, int port, String goalsPath, Protocols protocol, Views view) {
         this.hostname = hostname;
         this.port = port;
@@ -41,7 +53,9 @@ public class Client {
         disconnectTimer = new Timer();
     }
 
-    // used for testing
+    /**
+     * Constructor only used for testing
+     */
     public Client() {
         this.hostname = null;
         this.port = 0;
@@ -51,17 +65,28 @@ public class Client {
         this.state = null;
     }
 
-    // used for testing
+    /**
+     * Used only for testing
+     */
     public static void main() {
         singleton = new Client();
     }
 
+    /**
+     * Gets the instance of the client
+     *
+     * @return the instance of the client
+     */
     public static Client getInstance() {
         return singleton;
     }
 
-    public static void main(String[] args)  //static method
-    {
+    /**
+     * The main method of the client
+     *
+     * @param args the arguments passed to the program
+     */
+    public static void main(String[] args) {
         String hostname = parseArg(args, "-a", "--address");
         String port = parseArg(args, "-p", "--port");
         String goalsPath = parseArg(args, "-g", "--goals");
@@ -79,6 +104,11 @@ public class Client {
         initView(view);
     }
 
+    /**
+     * Initializes the view
+     *
+     * @param view the view to initialize
+     */
     private static void initView(Views view) {
         try {
             if (view.equals(Views.CLI)) {
@@ -90,10 +120,12 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
-    /*
+
+    /**
      * Parses the arguments passed to the program
-     * @param args the arguments
-     * @param option the short option
+     *
+     * @param args          the arguments
+     * @param option        the short option
      * @param optionVerbose the long option
      * @return the value of the option
      */
@@ -105,8 +137,9 @@ public class Client {
         return null;
     }
 
-    /*
+    /**
      * Parses the protocol from the arguments
+     *
      * @param args the arguments
      * @return the protocol
      */
@@ -118,8 +151,9 @@ public class Client {
         return Protocols.RMI; // default
     }
 
-    /*
+    /**
      * Parses the view from the arguments
+     *
      * @param args the arguments
      * @return the view
      */
@@ -142,16 +176,18 @@ public class Client {
         return isFirstPlayer;
     }
 
+
     public void setFirstPlayer(boolean firstPlayer) {
         isFirstPlayer = firstPlayer;
     }
 
-    /*
+    /**
      * Setups the RMI connection
      */
     public void setupNetworkRMI() throws RuntimeException {
         try {
             logger.log("RMI setup");
+            System.setProperty("java.rmi.server.hostname", hostname);
             RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
             singleton.clientConnection = rmiClientConnection;
             singleton.clientCommunication = new RMIClientCommunication(rmiClientConnection);
@@ -160,7 +196,7 @@ public class Client {
         }
     }
 
-    /*
+    /**
      * Setups the TCP connection
      */
     public void setupNetworkTCP() {
@@ -220,9 +256,10 @@ public class Client {
         saveClientInfo(getId(), getNickname());
     }
 
-    /*
+    /**
      * Saves the client ID to a file
-     * @param id the client ID
+     *
+     * @param id   the client ID
      * @param name the client name
      */
     private void saveClientInfo(String id, String name) {
@@ -241,7 +278,7 @@ public class Client {
         }
     }
 
-    /*
+    /**
      * Loads the client ID from a file
      */
     private void loadClientInfo() {
@@ -282,7 +319,7 @@ public class Client {
         return logger;
     }
 
-    /*
+    /**
      * Initializes the client
      */
     public void init(View view) {
@@ -334,14 +371,14 @@ public class Client {
         scheduleDisconnect(60);
     }
 
-    /*
+    /**
      * Schedule a disconnect after 10 seconds
      */
     public void scheduleDisconnect(int seconds) {
         disconnectTimer.schedule(new DisconnectTask(), seconds * 1000L);
     }
 
-    /*
+    /**
      * Reset the disconnect timer
      */
     public void resetDisconnectTimer(int seconds) {
@@ -360,7 +397,8 @@ public class Client {
 
     private static class DisconnectTask extends TimerTask {
 
-        public DisconnectTask() {}
+        public DisconnectTask() {
+        }
 
         @Override
         public void run() {
