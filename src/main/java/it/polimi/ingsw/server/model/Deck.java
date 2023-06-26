@@ -7,13 +7,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-
+/**
+ * Class representing a deck of cards
+ */
 public class Deck {
     // using List of cards because of indexes (for random drawing)
     List<Pattern> cards = new ArrayList<>();
 
     /**
-     *
+     * Constructor for deck
      * @param patterns create a card for every pattern passed
      */
     public Deck(Set<Pattern> patterns) {

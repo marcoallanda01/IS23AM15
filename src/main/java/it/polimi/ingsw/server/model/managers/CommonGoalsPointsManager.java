@@ -5,9 +5,18 @@ import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 
 import java.util.*;
 
+/**
+ * A PointsManager that handles all the common goals, which are goals that anyone can fulfill,
+ * this PointsManager takes into account both the points and the edited bookshelf state returned from the pattern
+ */
 public class CommonGoalsPointsManager extends PointsManager {
     private LinkedHashSet<Pattern> patterns;
 
+    /**
+     * Constructor for CommonGoalsPointsManager, calls super(players) and stores the patterns
+     * @param players the players
+     * @param patterns the patterns
+     */
     public CommonGoalsPointsManager(List<Player> players, LinkedHashSet<Pattern> patterns) {
         super(players);
         this.patterns = patterns;
@@ -15,6 +24,10 @@ public class CommonGoalsPointsManager extends PointsManager {
 
     /**
      * Used for deserialization
+     * @param players the players
+     * @param playersToPoints players to points
+     * @param updateRule the update rule
+     * @param patterns the patterns
      */
     public CommonGoalsPointsManager(List<Player> players, Map<Player, Integer> playersToPoints, UpdateRule updateRule, LinkedHashSet<Pattern> patterns) {
         super(players, playersToPoints, updateRule);
@@ -35,12 +48,14 @@ public class CommonGoalsPointsManager extends PointsManager {
         this.playersToPoints.put(player, newPoints);
     }
     /**
-     * @return the patterns, the order is not important
+     * Getter for patterns
+     * @return the patterns, when returned the order is not important
      */
     public Set<Pattern> getPatterns() {
         return new HashSet<>(this.patterns);
     }
     /**
+     * Checks if a player can be updated
      * @param player the player to check
      * @return true if the player can be updated
      */
