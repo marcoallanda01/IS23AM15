@@ -127,7 +127,7 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                 }
                 jsonWriter.endObject();
                 jsonWriter.name("frequentUpdates");
-                jsonWriter.value(goalManager.getFrequentUpdates());
+                jsonWriter.value(goalManager.isFrequentUpdates());
                 jsonWriter.name("commonCardsToDraw");
                 jsonWriter.value(goalManager.getCommonCardsToDraw());
             }
