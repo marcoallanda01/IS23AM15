@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller used to manage the game chat
+ */
 public class ChatController {
     private final Game game;
 

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used when a nickname was already taken
+ */
 public class NicknameTakenException extends Exception{
 
     /**
-     * NicknameException constructor. Use when game with a nickname was already taken.
+     * NicknameException constructor. Use when a nickname was already taken.
      */
     public NicknameTakenException(){
         super();

@@ -19,11 +19,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Controlled used to play the game independently of the model and manage saves
+ */
 public class PlayController {
     private final Game game;
     private final String directory;
     private final PushNotificationController pushNotificationController;
 
+    /**
+     * PlayController constructor
+     * @param game game object
+     * @param directory saves directory
+     * @param pushNotificationController push notification controller object
+     */
     public PlayController(Game game, String directory, PushNotificationController pushNotificationController) {
         this.game = game;
         this.directory = directory;

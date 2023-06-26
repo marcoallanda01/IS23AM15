@@ -7,7 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to join the lobby not as a first player
+ */
 public class Join extends Command{
+    /**
+     * player's new name
+     */
     public String player;
 
     /**

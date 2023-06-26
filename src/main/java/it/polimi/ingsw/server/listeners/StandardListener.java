@@ -3,6 +3,9 @@ package it.polimi.ingsw.server.listeners;
 import it.polimi.ingsw.server.controller.PushNotificationController;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Standard listener for the model
+ */
 public abstract class StandardListener {
     protected final PushNotificationController pnc;
 

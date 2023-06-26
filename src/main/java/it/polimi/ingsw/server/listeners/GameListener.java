@@ -9,8 +9,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.stream.Collectors;
 
+/**
+ * Listener of game changes as turn, picked tiles, last disconnection of a player, winner, and starting of the game
+ */
 public class GameListener extends StandardListener implements PropertyChangeListener {
 
+    /**
+     * Constructor of GameListener
+     * @param pnc pushNotificationController
+     */
     public GameListener(PushNotificationController pnc){
         super(pnc);
     }

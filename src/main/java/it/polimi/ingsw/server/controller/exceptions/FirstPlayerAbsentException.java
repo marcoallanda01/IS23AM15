@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used when the lobby has no first player
+ */
 public class FirstPlayerAbsentException extends Exception{
 
     /**

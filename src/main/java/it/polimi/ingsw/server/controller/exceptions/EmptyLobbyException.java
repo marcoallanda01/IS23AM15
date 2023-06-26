@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used when the lobby is not full
+ */
 public class EmptyLobbyException extends Exception {
 
     /**

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+
+/**
+ * Exception used when game with a specific name is not available
+ */
 public class GameNameException extends Exception {
 
     /**

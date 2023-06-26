@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used when there is a problem with the loading of the game
+ */
 public class GameLoadException extends Exception{
 
     /**

@@ -10,7 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Listener of the common goals cards and their tokens
+ */
 public class CommonGoalCardsListener extends StandardListener implements PropertyChangeListener {
+
+    /**
+     * Constructor of CommonGoalCardsListener
+     * @param pushNotificationController pushNotificationController
+     */
     public CommonGoalCardsListener(PushNotificationController pushNotificationController) {
         super(pushNotificationController);
     }

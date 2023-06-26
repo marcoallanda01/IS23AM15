@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used when game is full
+ */
 public class FullGameException extends Exception{
 
     /**

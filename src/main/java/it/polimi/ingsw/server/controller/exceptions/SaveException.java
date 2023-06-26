@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used when there is a problem while game is saving
+ */
 public class SaveException extends Exception{
 
     /**

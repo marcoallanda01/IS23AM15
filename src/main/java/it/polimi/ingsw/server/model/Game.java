@@ -19,6 +19,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class representing the game itself. This class contains all to methods necessary to play a game
+ */
 public class Game{
     private List<Player> players = null;
     private String winner;
@@ -54,8 +57,7 @@ public class Game{
      * Setting up of the game, notification are sent to the clients
      * @param players list of players' names
      * @param isFirstGame easy rules game rule
-     * @param players list of players' names
-     * @throws ArrestGameException
+     * @throws ArrestGameException if there was an internal server error and the game couldn't be setted
      */
     public void setGame(@NotNull List<String> players, boolean isFirstGame, String goalsDirectory) throws ArrestGameException {
         this.players = players.stream().map(Player::new).collect(Collectors.toList());

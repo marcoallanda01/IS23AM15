@@ -6,6 +6,9 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to disconnect
+ */
 public class Disconnect extends GameCommand {
 
     /**

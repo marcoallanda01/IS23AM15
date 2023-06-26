@@ -10,8 +10,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Command to pick tiles
+ */
 public class PickTilesCommand extends GameCommand {
-
+    /**
+     * tiles to pick
+     */
     public Set<Tile> tiles;
 
     /**

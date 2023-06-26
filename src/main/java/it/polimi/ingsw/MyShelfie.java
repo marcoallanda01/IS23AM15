@@ -3,6 +3,9 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.server.ServerApp;
 
+/**
+ * Main class to launch the application
+ */
 public class MyShelfie {
 
 
@@ -16,7 +19,11 @@ public class MyShelfie {
         LaunchMode mode = parseMode(args);
         switch (mode) {
             case Client -> Client.main(args);
-            case Server -> ServerApp.main(args);
+            case Server -> {
+                String[] argsS = new String[args.length - 1];
+                System.arraycopy(args, 1, argsS, 1, args.length - 1);
+                ServerApp.main(args);
+            }
         }
 
     }

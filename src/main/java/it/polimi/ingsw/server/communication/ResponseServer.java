@@ -12,7 +12,8 @@ import java.util.*;
 
 
 /**
- * Class that implements methods to answer a client request
+ * Class that implements methods to answer a client request and implements the ServerCommunication
+ * notifications interface
  */
 public abstract class ResponseServer{
 

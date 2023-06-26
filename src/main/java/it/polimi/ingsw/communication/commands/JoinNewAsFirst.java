@@ -7,10 +7,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to join a new game as first player
+ */
 public class JoinNewAsFirst extends Command{
+    /**
+     * player's new name
+     */
     public String player;
+    /**
+     * size of the lobby
+     */
     public int numOfPlayers;
+    /**
+     * id of the first player
+     */
     public String idFirstPlayer;
+    /**
+     * easy rule game mode selector
+     */
     public boolean easyRules;
 
 

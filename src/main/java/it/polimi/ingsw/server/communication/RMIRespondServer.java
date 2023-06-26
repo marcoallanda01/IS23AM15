@@ -21,6 +21,12 @@ public class RMIRespondServer extends ResponseServer{
     protected final Map<RMIClient, String> playersIds;
     private final ExecutorService executorService;
 
+    /**
+     * RMIRespondServer constructor
+     * @param lobby lobby object
+     * @param sharedLock shared lock between response servers
+     * @param playersIds players with their ids
+     */
     public RMIRespondServer(Lobby lobby, String sharedLock, Map<RMIClient, String> playersIds){
         super(lobby, sharedLock);
         this.playersIds = playersIds;

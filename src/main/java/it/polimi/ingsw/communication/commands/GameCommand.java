@@ -6,7 +6,13 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
+/**
+ * Command that requires client id to be performed
+ */
 public abstract class GameCommand extends Command{
+    /**
+     * client id
+     */
     protected String id;
 
     /**

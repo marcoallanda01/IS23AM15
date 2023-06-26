@@ -6,8 +6,17 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to join loaded game as first player
+ */
 public class JoinLoadedAsFirst extends Command{
+    /**
+     * player's new name
+     */
     public String player;
+    /**
+     * First Player id
+     */
     public String idFirstPlayer;
 
     /**

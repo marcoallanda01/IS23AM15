@@ -6,6 +6,9 @@ import it.polimi.ingsw.server.model.TileType;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface of the notification methods of the servers
+ */
 public interface ServerCommunication {
 
     /**

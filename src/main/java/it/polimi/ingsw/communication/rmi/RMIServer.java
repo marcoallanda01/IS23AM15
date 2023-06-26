@@ -11,6 +11,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
 
+/**
+ * The RMIServer interface defines the remote methods that can be called by the client in the server.
+ */
 public interface RMIServer extends Remote {
     /**
      * HelloCommand to server

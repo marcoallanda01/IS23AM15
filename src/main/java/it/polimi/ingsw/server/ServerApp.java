@@ -18,6 +18,9 @@ import java.util.concurrent.Executors;
 
 import static java.lang.System.exit;
 
+/**
+ * Main class to launch the server
+ */
 public class ServerApp {
     //default config
     private static int rmi_port  = 7001;
@@ -85,8 +88,11 @@ public class ServerApp {
      * {
      *     "rmi" : 7001,
      *     "tcp" : 6000,
-     *     "directory" : "saves"
+     *     "directory" : "saves",
+     *     "goals" : null
      * }
+     *
+     * null goals will get the goals file from internal resources.
      * @param args args passed
      */
     public static void main(String[] args) {

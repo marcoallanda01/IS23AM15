@@ -9,7 +9,14 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Listener of the player: points, playing state, bookshelf
+ */
 public class PlayerListener extends StandardListener implements PropertyChangeListener {
+    /**
+     * Constructor of PlayerListener
+     * @param pnc pushNotificationController
+     */
     public PlayerListener(PushNotificationController pnc){
         super(pnc);
     }

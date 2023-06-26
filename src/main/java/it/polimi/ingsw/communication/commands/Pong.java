@@ -6,6 +6,9 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Pong command, used in response to a Ping message
+ */
 public class Pong extends GameCommand {
 
     /**

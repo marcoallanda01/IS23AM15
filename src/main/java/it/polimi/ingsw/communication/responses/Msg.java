@@ -7,7 +7,13 @@ import com.google.gson.JsonSyntaxException;
 import java.io.Serializable;
 import java.util.Optional;
 
+/**
+ * General message from the server
+ */
 public abstract class Msg implements Serializable {
+    /**
+     * message name/type
+     */
     protected String name;
 
     /**

@@ -10,9 +10,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to perform a put tiles action
+ */
 public class PutTilesCommand extends GameCommand {
-
+    /**
+     * ordered tiles to put
+     */
     public List<TileType> tiles;
+    /**
+     * bookshelf column where to put them
+     */
     public int column;
 
     /**

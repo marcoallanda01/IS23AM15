@@ -7,9 +7,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to send a message to a player
+ */
 public class SendMessage extends GameCommand {
-
+    /**
+     * content of the message
+     */
     public String message;
+    /**
+     * receiver's name
+     */
     public String player;
 
     /**
@@ -34,6 +42,7 @@ public class SendMessage extends GameCommand {
         this.message = message;
         this.player = null;
     }
+
 
     /**
      * Generator of SendMessage from a json string

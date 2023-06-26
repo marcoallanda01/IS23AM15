@@ -6,7 +6,13 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Msg that identifies turn change
+ */
 public class TurnNotify extends Msg{
+    /**
+     * player's name
+     */
     public String player;
 
     /**

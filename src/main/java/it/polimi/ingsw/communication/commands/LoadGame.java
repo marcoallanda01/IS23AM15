@@ -7,8 +7,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to load a saved game
+ */
 public class LoadGame extends Command{
+    /**
+     * id of the first player
+     */
     public String idFirstPlayer;
+    /**
+     * save name
+     */
     public String game;
 
     /**

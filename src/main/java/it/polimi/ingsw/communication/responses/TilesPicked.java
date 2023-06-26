@@ -7,8 +7,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * Msg that identifies a change in the picked tiles
+ */
 public class TilesPicked extends Msg{
+    /**
+     * player who picked the tiles
+     */
     public String player;
+    /**
+     * tiles picked
+     */
     public List<TileType> tiles;
 
     /**

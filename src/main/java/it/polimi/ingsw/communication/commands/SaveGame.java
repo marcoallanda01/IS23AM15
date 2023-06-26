@@ -6,8 +6,14 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to save the game
+ */
 public class SaveGame extends GameCommand{
 
+    /**
+     * future save name
+     */
     public String game;
 
     /**

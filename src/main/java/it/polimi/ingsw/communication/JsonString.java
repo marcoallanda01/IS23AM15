@@ -3,7 +3,13 @@ package it.polimi.ingsw.communication;
 import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
 
-public class JsonString {
+/**
+ * Class that represents a json string
+ */
+public @Deprecated class JsonString {
+    /**
+     * json string
+     */
     protected String json;
 
 
@@ -12,7 +18,7 @@ public class JsonString {
      * @param json json string
      * @throws Exception JsonSyntaxException
      */
-    public @Deprecated JsonString(@NotNull String json) throws Exception{
+    public JsonString(@NotNull String json) throws Exception{
         try {
             JsonParser.parseString(json);
         }catch (JsonSyntaxException e){

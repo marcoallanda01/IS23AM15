@@ -11,6 +11,10 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * Class to redirect notifications from the model to the servers registered
+ */
 public class PushNotificationController{
 
     /**

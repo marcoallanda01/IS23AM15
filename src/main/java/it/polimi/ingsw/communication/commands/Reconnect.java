@@ -6,6 +6,9 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to reconnect to the game
+ */
 public class Reconnect extends GameCommand {
 
     /**

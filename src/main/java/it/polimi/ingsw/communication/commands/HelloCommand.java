@@ -5,7 +5,14 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
+/**
+ * Command performed to see the lobby status
+ */
 public class HelloCommand extends Command{
+
+    /**
+     * HelloCommand constructor
+     */
     public HelloCommand(){super("HelloCommand");}
 
     /**

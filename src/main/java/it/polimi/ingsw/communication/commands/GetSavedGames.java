@@ -7,7 +7,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Command to get the saves
+ */
 public class GetSavedGames extends Command{
+
+    /**
+     * GetSavedGames constructor
+     */
     public GetSavedGames(){
         super("GetSavedGames");
     }

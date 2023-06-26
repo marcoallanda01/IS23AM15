@@ -6,7 +6,13 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Winner message
+ */
 public class Winner extends Msg{
+    /**
+     * winner's name
+     */
     public String player; // player name
 
     /**

@@ -6,7 +6,13 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
+/**
+ * Command sent by the client to the server
+ */
 public abstract class Command {
+    /**
+     * command name/type
+     */
     protected String name;
 
     /**
@@ -50,6 +56,7 @@ public abstract class Command {
     }
 
     /**
+     * Get Command name
      * @return name type of the message
      */
     public String getName(){

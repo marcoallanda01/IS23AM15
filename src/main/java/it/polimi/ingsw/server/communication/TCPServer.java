@@ -17,6 +17,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This class is a ResponseServer used for TCP and implements the ServerCommunication notifications interface
+ */
 public class TCPServer extends ResponseServer implements ServerCommunication {
     private final List<Socket> clients;
     private final List<Socket> clientsInGame;
@@ -28,6 +31,12 @@ public class TCPServer extends ResponseServer implements ServerCommunication {
     private final ExecutorService executorService;
     private ServerSocket serverSocket;
 
+    /**
+     * TCPServer constructor
+     * @param port port of the tcp server
+     * @param lobby lobby object
+     * @param sharedLock shared lock between response servers
+     */
     public TCPServer(int port, Lobby lobby, String sharedLock) {
         super(lobby, sharedLock);
         this.port = port;

@@ -5,7 +5,14 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
 
+/**
+ * Command to get the players of a loaded game
+ */
 public class GetLoadedPlayers extends Command{
+
+    /**
+     * GetLoadedPlayers constructor
+     */
     public GetLoadedPlayers(){super("GetLoadedPlayers");}
 
     /**

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.controller.exceptions;
 
+/**
+ * Exception used  when a nickname is not available
+ */
 public class NicknameException extends Exception{
 
     /**
-     * NicknameException constructor. Use when game with a nickname is not available.
+     * NicknameException constructor. Use when a nickname is not available.
      */
     public NicknameException(){
         super();

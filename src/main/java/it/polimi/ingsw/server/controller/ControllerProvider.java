@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.controller;
 import it.polimi.ingsw.server.model.Game;
 
+/**
+ * Container of controllers used to play the game
+ */
 public class ControllerProvider {
     private final ChatController chatController;
     private final PlayController playController;
