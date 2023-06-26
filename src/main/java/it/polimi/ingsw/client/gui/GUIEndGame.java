@@ -11,7 +11,6 @@ import javafx.scene.text.FontWeight;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,8 +18,8 @@ import java.util.stream.Collectors;
  * Generates the GUI for the end game.
  */
 public class GUIEndGame extends GUIState {
-    private Map<String, Integer> playerPoints;
-    private String winner;
+    private final Map<String, Integer> playerPoints;
+    private final String winner;
 
     /**
      * Constructs a new GUIEndGame instance.
@@ -41,7 +40,7 @@ public class GUIEndGame extends GUIState {
      */
     private void createUI() {
         VBox root = createRootPane();
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
@@ -77,6 +76,7 @@ public class GUIEndGame extends GUIState {
 
         return root;
     }
+
     /**
      * Creates the winner label for the end game UI.
      *

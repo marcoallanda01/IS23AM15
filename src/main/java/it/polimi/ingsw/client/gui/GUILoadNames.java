@@ -1,33 +1,29 @@
 package it.polimi.ingsw.client.gui;
 
-import java.util.List;
 import it.polimi.ingsw.client.Client;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.awt.*;
 import java.util.List;
 
 /**
  * Generates the GUI for the selection of the name.
  */
-public class GUILoadNames extends GUIState{
+public class GUILoadNames extends GUIState {
     List<String> savedNames;
 
     /**
      * Constructor for GUILoadNames
+     *
      * @param guiApplication is the GUIApplication
-     * @param savedNames is the list of saved names
+     * @param savedNames     is the list of saved names
      */
     public GUILoadNames(GUIApplication guiApplication, List<String> savedNames) {
         super(guiApplication);
@@ -38,7 +34,7 @@ public class GUILoadNames extends GUIState{
     /**
      * Method to create the UI
      */
-    public void createUI(){
+    public void createUI() {
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
         root.setAlignment(Pos.CENTER);
@@ -53,12 +49,13 @@ public class GUILoadNames extends GUIState{
 
         root.getChildren().addAll(titleLabel, savedNamesLabel, savedNamesBox);
 
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
     /**
      * Method to create the VBox of saved names
+     *
      * @return the VBox of saved names
      */
     private VBox createSavedNamesBox() {
@@ -68,9 +65,7 @@ public class GUILoadNames extends GUIState{
 
         for (String savedName : savedNames) {
             Button savedNameButton = new Button(savedName);
-            savedNameButton.setOnAction(event -> {
-                Client.getInstance().getClientController().loginLoaded(savedName);
-            });
+            savedNameButton.setOnAction(event -> Client.getInstance().getClientController().loginLoaded(savedName));
             savedNamesBox.getChildren().add(savedNameButton);
         }
 

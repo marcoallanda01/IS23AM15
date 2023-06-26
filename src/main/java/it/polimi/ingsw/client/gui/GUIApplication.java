@@ -9,22 +9,21 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javafx.stage.Screen;
 
 import java.util.List;
 
@@ -32,12 +31,13 @@ import java.util.List;
  * GUIApplication that renders
  */
 public class GUIApplication extends Application {
-    private Stage primaryStage;
     private final Stage chatStage = new Stage();
     private final Stage goalStage = new Stage();
+    private Stage primaryStage;
 
     /**
      * Constructor of GUI application
+     *
      * @param primaryStage the injected stage
      */
     @Override
@@ -63,7 +63,7 @@ public class GUIApplication extends Application {
         root.getChildren().add(text);
 
         // Create the scene and set the root pane
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
 
         // Set CSS styling for the text
         text.getStyleClass().add("my-shelfie-text");
@@ -76,8 +76,9 @@ public class GUIApplication extends Application {
     }
 
     /**
-     * closes the GUI application
-     * @throws Exception
+     * Closes the GUI application
+     *
+     * @throws Exception if the application cannot be closed
      */
     @Override
     public synchronized void stop() throws Exception {
@@ -85,11 +86,11 @@ public class GUIApplication extends Application {
         Client.getInstance().getLogger().log("Application closed");
         Runtime.getRuntime().exit(0);
     }
+
     /**
-     * creates a prompt that displays a message anda a button that when clicked closes the gui application
-     * @throws Exception
+     * Creates a prompt that displays a message anda a button that when clicked closes the gui application
      */
-    public synchronized void stop(String message) throws Exception {
+    public synchronized void stop(String message) {
         showPopup(message, () -> {
             Platform.exit();
             Runtime.getRuntime().exit(0);
@@ -97,7 +98,8 @@ public class GUIApplication extends Application {
     }
 
     /**
-     * changes the scene with transition
+     * Changes the scene with transition
+     *
      * @param newScene the new scene
      */
     public synchronized void transitionToScene(Scene newScene) {
@@ -119,17 +121,21 @@ public class GUIApplication extends Application {
         });
         transition.play();
     }
+
     /**
      * shows a popup that only closes upon interaction
+     *
      * @param message the message to show in the popup
      */
     public void showPopup(String message) {
-        showPopup(message, () -> {});
+        showPopup(message, () -> {
+        });
     }
 
     /**
      * Shows the chat
-     * @param chatScene the new chat scene
+     *
+     * @param chatScene   the new chat scene
      * @param forceActive should the chat be shown even if it is not open?
      */
     public void showChat(Scene chatScene, boolean forceActive) {
@@ -143,7 +149,8 @@ public class GUIApplication extends Application {
 
     /**
      * shows a popup
-     * @param message the message to show in the popup
+     *
+     * @param message         the message to show in the popup
      * @param onCloseFunction the function to execute once the popup is closed
      */
     public void showPopup(String message, Runnable onCloseFunction) {
@@ -183,13 +190,13 @@ public class GUIApplication extends Application {
 
         if (primaryStageX > screenWidth) {
             primaryStageX = screenWidth;
-        } else if (primaryStageX < 0)  {
+        } else if (primaryStageX < 0) {
             primaryStageX = 0;
         }
 
         if (primaryStageY > screenHeight) {
             primaryStageY = screenHeight;
-        } else if  (primaryStageY < 0)  {
+        } else if (primaryStageY < 0) {
             primaryStageY = 0;
         }
 
@@ -201,8 +208,9 @@ public class GUIApplication extends Application {
 
     /**
      * Creates a window with the goals and their info
-     * @param commonCards the commonCards
-     * @param commonGoals the commonGoals
+     *
+     * @param commonCards  the commonCards
+     * @param commonGoals  the commonGoals
      * @param personalGoal the personalGoal
      */
     public void printGoals(List<ClientGoalDetail> commonCards, List<ClientGoalDetail> commonGoals, ClientGoalDetail personalGoal) {
@@ -244,9 +252,7 @@ public class GUIApplication extends Application {
         scrollPane.setFitToHeight(true);
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(event -> {
-            goalStage.close();
-        });
+        closeButton.setOnAction(event -> goalStage.close());
 
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
@@ -261,7 +267,8 @@ public class GUIApplication extends Application {
     }
 
     /**
-     * changes the root of the scene
+     * Changes the root of the scene
+     *
      * @param root the new root
      */
     public void changeRoot(HBox root) {

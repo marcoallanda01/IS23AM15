@@ -10,10 +10,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -69,9 +66,38 @@ public class GUIInGame extends GUIState {
         mainColumn.setAlignment(Pos.CENTER);
         root.getChildren().add(mainColumn);
 
-        Button chatButton = new Button("Chat");
-        chatButton.setOnAction(event -> Client.getInstance().getView().showChat());
-        mainColumn.getChildren().add(chatButton);
+        try {
+
+            HBox topBox = new HBox(10);
+            topBox.setAlignment(Pos.CENTER);
+            topBox.setPadding(new Insets(10, 10, 10, 10));
+
+            Button chatButton = new Button("Chat");
+            chatButton.setOnAction(event -> Client.getInstance().getView().showChat());
+            topBox.getChildren().add(chatButton);
+
+            Button saveButton = new Button("Save");
+            saveButton.setOnAction(event -> Platform.runLater(() -> {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Save game");
+                dialog.setHeaderText("Save game");
+                dialog.setContentText("Please enter a name for your save:");
+                dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+                dialog.setGraphic(null);
+
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(name -> Client.getInstance().getClientController().saveGame(name));
+            }));
+
+
+            topBox.getChildren().add(saveButton);
+
+            mainColumn.getChildren().add(topBox);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         StackPane boardGrid = createBoardGrid();
         HBox bookshelvesBox = createBookshelves();

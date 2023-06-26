@@ -31,7 +31,7 @@ public class GUICreateGame extends GUIState {
      */
     private void createUI() {
         VBox root = createRootPane();
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
