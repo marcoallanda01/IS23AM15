@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CommonGoalPointsManagerTest {
+class CommonGoalPointsManagerTest {
 
     @Test
     void constructorTest() throws InvalidPatternParameterException {

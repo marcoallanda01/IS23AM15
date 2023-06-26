@@ -14,7 +14,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ClientGoalParser {
+/**
+ * Interface that parses the goals from a json internal to the jar
+ */
+public interface ClientGoalParser {
+    /**
+     * Parses the goals from a json file
+     * @param resourcePath the path to the json
+     * @return the list of goals
+     * @throws IOException if a problem occurs while reading the goals
+     */
     public static Map<String, ClientGoalDetail> parseGoalsFromJsonFile(String resourcePath) throws IOException {
         InputStream inputStream = ClientGoalParser.class.getResourceAsStream(resourcePath);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
