@@ -8,6 +8,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * A class that generalizes the assignment of points based on a bookshelf state
+ */
 public abstract class Pattern {
 
     private final String name;
@@ -27,6 +30,10 @@ public abstract class Pattern {
      */
     public abstract Function<List<List<Optional<Tile>>>, Integer> getPatternFunction();
 
+    /**
+     * Getter for the name
+     * @return the name of the pattern
+     */
     public String getName() {
         return name;
     }

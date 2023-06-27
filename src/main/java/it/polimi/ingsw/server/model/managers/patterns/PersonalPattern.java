@@ -6,11 +6,15 @@ import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 
 import java.util.*;
 import java.util.function.Function;
+/**
+ * A pattern describing a personal card's objective
+ */
 public class PersonalPattern extends Pattern {
     private final Set<Tile> tiles;
     private final List<int[]> checkToPoints;
 
     /**
+     * Constructor of a personal pattern given the params
      * @param name name of the pattern
      * @param tiles tiles in the pattern, must be immutable
      * @param checkToPoints list of couple [num of corrects, points], must be immutable
@@ -52,6 +56,10 @@ public class PersonalPattern extends Pattern {
             throw new InvalidPatternParameterException("checkToPoints must have the same size or less than tiles");
         }
     }
+
+    /**
+     * Sorts CheckToPoints so that the most points are always given
+     */
     private void sortCheckToPoints() {
         Comparator<int[]> cmp = new Comparator<int[]>() {
             public int compare(int[] a, int[] b) {
@@ -62,7 +70,7 @@ public class PersonalPattern extends Pattern {
     }
 
     /**
-     *
+     * Returns the pattern function
      * @return function that returns points you get from number of tiles in right spots
      */
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {
