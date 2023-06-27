@@ -38,12 +38,7 @@ public class GUIInGame extends GUIState {
     int randomNum;
     private int draggedIndex = -1;
 
-    /**
-     * Gui state for when the player is in game
-     * @param guiApplication the guiApplication to use
-     * @param livingRoomBoard the living room board
-     * @param bookshelves the bookshelves
-     */
+
     public GUIInGame(GUIApplication guiApplication, Set<Tile> livingRoomBoard, Map<String, Set<Tile>> bookshelves) {
         super(guiApplication);
         this.livingRoomBoard = livingRoomBoard;

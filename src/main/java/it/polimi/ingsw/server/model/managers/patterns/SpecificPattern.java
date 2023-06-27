@@ -9,9 +9,6 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-/**
- * A specific pattern with multiple flags and variables allowing for customization
- */
 public class SpecificPattern extends Pattern {
     private final List<List<List<Boolean>>> masks;
     private final boolean sgc;
@@ -20,14 +17,12 @@ public class SpecificPattern extends Pattern {
     private final int groupNum;
     private final boolean forceEmpty;
     /**
-     * Creates a specific pattern with the given parameters
      * @param name the name of the pattern
      * @param masks a list of matrix representing the acceptable shapes of the groups, must be immutable
      * @param groupNum the minimum number of groups to be found to return the points (and not 0)
      * @param sgc should all the groups have the same color?
      * @param minC minimum number of colors in the same group
      * @param maxC maximum number of colors in the same group
-     * @throws InvalidPatternParameterException if parameters are invalid
      */
     public SpecificPattern(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC)  throws InvalidPatternParameterException {
         super(name);
@@ -40,7 +35,6 @@ public class SpecificPattern extends Pattern {
         this.checkParameters();
     }
     /**
-     * Creates a specific pattern with the given parameters
      * @param name the name of the pattern
      * @param masks a list of matrix representing the acceptable shapes of the groups, must be immutable
      * @param groupNum the minimum number of groups to be found to return the points (and not 0)
@@ -48,7 +42,6 @@ public class SpecificPattern extends Pattern {
      * @param minC minimum number of colors in the same group
      * @param maxC maximum number of colors in the same group
      * @param fe if set to true, cells set to false in any of the mask will require the corresponding slot in the bookshelf to be empty
-     * @throws InvalidPatternParameterException if parameters are invalid
      */
     public SpecificPattern(String name, List<List<List<Boolean>>> masks, int groupNum, boolean sgc, int minC, int maxC, boolean fe)  throws InvalidPatternParameterException{
         super(name);
@@ -119,7 +112,6 @@ public class SpecificPattern extends Pattern {
     }
     // all the accessed methods are static and all the parameters are internal variables
     /**
-     * Returns the pattern function
      * @return a function that given the bookshelf checks if it satisfies the pattern,
      * and if it does, then 1 is returned (that could be interpreted as the number of
      * points or just used to check if it satisfies the pattern), otherwise 0.
@@ -293,8 +285,6 @@ public class SpecificPattern extends Pattern {
     }
     /**
      * used for testing
-     * @param masks the original masks
-     * @return the transposed masks
      */
     public static List<List<List<Boolean>>> getTransposedMasks(List<List<List<Boolean>>> masks) {
         return transposeMasks(masks);

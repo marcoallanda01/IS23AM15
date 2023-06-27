@@ -83,13 +83,8 @@ public class GUIApplication extends Application {
      * @throws Exception
      */
     @Override
-    public synchronized void stop() {
-        try {
-            super.stop();
-        } catch (Exception e) {
-            Client.getInstance().getLogger().log(e);
-            throw new RuntimeException(e);
-        }
+    public synchronized void stop() throws Exception {
+        super.stop();
         Client.getInstance().getLogger().log("Application closed");
         Runtime.getRuntime().exit(0);
     }
@@ -97,7 +92,7 @@ public class GUIApplication extends Application {
      * creates a prompt that displays a message anda a button that when clicked closes the gui application
      * @throws Exception
      */
-    public synchronized void stop(String message) {
+    public synchronized void stop(String message) throws Exception {
         showPopup(message, () -> {
             Platform.exit();
             Runtime.getRuntime().exit(0);

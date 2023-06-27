@@ -23,7 +23,6 @@ public class RMIClientCommunication implements ClientCommunication {
     private ExecutorService executorService;
     private RMIClientConnection rmiClientConnection;
     /**
-     * Constructor for RMIClientCommunication
      * @param rmiClientConnection the implementation of the connection
      */
     public RMIClientCommunication(RMIClientConnection rmiClientConnection) {

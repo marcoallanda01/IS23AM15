@@ -40,8 +40,7 @@ public class GUIChat extends GUIState {
     }
 
     /**
-     * Create the chat UI
-     * @param forceActive true if the chat window should be opened even if it is not
+        * Create the chat UI
      */
     public void createUI(boolean forceActive) {
         VBox root = new VBox(10);
