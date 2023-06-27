@@ -14,11 +14,18 @@ import java.util.Optional;
  * Response message of a LoadGame command
  */
 public class LoadGameResponse extends Msg {
+    /**
+     * Whether the game was loaded or not
+     */
     public boolean result;
+    /**
+     * Error that occurred
+     */
     public String error;
 
     /**
      * Unsuccessful LoadGameResponse constructor
+     *
      * @param error error occurred
      */
     public LoadGameResponse(@NotNull GameLoadException error) {
@@ -29,6 +36,7 @@ public class LoadGameResponse extends Msg {
 
     /**
      * Unsuccessful LoadGameResponse constructor
+     *
      * @param error error occurred
      */
     public LoadGameResponse(@NotNull GameNameException error) {
@@ -39,6 +47,7 @@ public class LoadGameResponse extends Msg {
 
     /**
      * Unsuccessful LoadGameResponse constructor
+     *
      * @param error error occurred
      */
     public LoadGameResponse(@NotNull IllegalLobbyException error) {
@@ -59,6 +68,7 @@ public class LoadGameResponse extends Msg {
 
     /**
      * Generator of LoadGameResponse from a json string
+     *
      * @param json json string from which generate Hello
      * @return Optional of LoadGameResponse, empty if json string was not coherent
      */
@@ -67,11 +77,11 @@ public class LoadGameResponse extends Msg {
         try {
             Gson gson = new Gson();
             jgr = gson.fromJson(json, LoadGameResponse.class);
-        }catch (JsonSyntaxException e){
+        } catch (JsonSyntaxException e) {
             return Optional.empty();
         }
-        if(!"LoadGameResponse".equals(jgr.name) || (jgr.result && jgr.error != null)
-                || (!jgr.result && jgr.error == null)){
+        if (!"LoadGameResponse".equals(jgr.name) || (jgr.result && jgr.error != null)
+                || (!jgr.result && jgr.error == null)) {
             return Optional.empty();
         }
         return Optional.of(jgr);

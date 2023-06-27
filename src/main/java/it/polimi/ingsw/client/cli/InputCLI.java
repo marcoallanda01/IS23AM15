@@ -13,7 +13,14 @@ import java.util.Scanner;
  */
 public class InputCLI {
     /**
+     * Default constructor
+     */
+    public InputCLI() {
+    }
+
+    /**
      * Handles the input from the user based on the current state of the client
+     *
      * @param inputScanner the scanner that reads the input
      */
     public static void inputHandler(Scanner inputScanner) {
@@ -80,6 +87,7 @@ public class InputCLI {
 
     /**
      * Handles the choice of the nickname for a saved game
+     *
      * @param inputArray the input from the user (the nickname)
      */
     private static void loadNamesRequest(String[] inputArray) {
@@ -92,6 +100,7 @@ public class InputCLI {
 
     /**
      * Handles the request to show the goals (common and personal)
+     *
      * @param inputArray the input from the user
      */
     private static void showGoalsRequest(String[] inputArray) {
@@ -104,6 +113,7 @@ public class InputCLI {
 
     /**
      * Handles the request to show the help menu
+     *
      * @param inputArray the input from the user
      */
     private static void helpRequest(String[] inputArray) {
@@ -116,6 +126,7 @@ public class InputCLI {
 
     /**
      * Handles the request to show the current game
+     *
      * @param inputArray the input from the user
      */
     private static void showGameRequest(String[] inputArray) {
@@ -128,6 +139,7 @@ public class InputCLI {
 
     /**
      * Handles the request to show the chat window
+     *
      * @param inputArray the input from the user
      */
     private static void showChatRequest(String[] inputArray) {
@@ -140,6 +152,7 @@ public class InputCLI {
 
     /**
      * Handles the request to log in with a nickname
+     *
      * @param inputArray the input from the user (the nickname)
      */
     private static void loginRequest(String[] inputArray) {
@@ -152,6 +165,7 @@ public class InputCLI {
 
     /**
      * Handles the request to log out
+     *
      * @param inputArray the input from the user
      */
     private static void logoutRequest(String[] inputArray) {
@@ -164,6 +178,7 @@ public class InputCLI {
 
     /**
      * Handles the request to create a lobby
+     *
      * @param inputArray the input from the user
      */
     private static void createLobbyRequest(String[] inputArray) {
@@ -182,6 +197,7 @@ public class InputCLI {
 
     /**
      * Handles the request to load a game
+     *
      * @param inputArray the input from the user (the index of the game)
      */
     private static void loadGameRequest(String[] inputArray) {
@@ -206,6 +222,7 @@ public class InputCLI {
 
     /**
      * Handles the request to save a game
+     *
      * @param inputArray the input from the user
      */
     private static void saveGameRequest(String[] inputArray) {
@@ -218,6 +235,7 @@ public class InputCLI {
 
     /**
      * Handles the request to create a game
+     *
      * @param inputArray the input from the user
      */
     private static void createGameRequest(String[] inputArray) {
@@ -246,12 +264,13 @@ public class InputCLI {
                 Client.getInstance().getClientController().createGame(nickname, numPlayers, false);
             }
         } else {
-                Client.getInstance().getView().showError("Invalid input");
+            Client.getInstance().getView().showError("Invalid input");
         }
     }
 
     /**
      * Handles the request to pick a list of tiles
+     *
      * @param inputArray the input from the user (the coordinates of the tiles)
      */
     private static void pickTilesRequest(String[] inputArray) {
@@ -280,6 +299,7 @@ public class InputCLI {
 
     /**
      * Handles the request to put a list of tiles
+     *
      * @param inputArray the input from the user (the column and the order of the tiles)
      */
     private static void putTilesRequest(String[] inputArray) {
@@ -308,6 +328,7 @@ public class InputCLI {
 
     /**
      * Handles the request to send a chat message
+     *
      * @param inputArray the input from the user (the receiver/s and the message)
      */
     private static void sendChatMessageRequest(String[] inputArray) {
@@ -330,6 +351,7 @@ public class InputCLI {
 
     /**
      * Handles a global command (state independent)
+     *
      * @param command the command to handle
      */
     private static boolean globalCommand(String[] command) {

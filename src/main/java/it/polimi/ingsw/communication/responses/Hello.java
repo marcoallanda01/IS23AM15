@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -26,6 +25,7 @@ public class Hello extends Msg {
 
     /**
      * Message Used to answer the hello of the client
+     *
      * @param firstPlayerId fist player's id
      */
     public Hello(@NotNull String firstPlayerId) {
@@ -36,6 +36,8 @@ public class Hello extends Msg {
     }
 
     /**
+     * Message used to reply to the hello of the client
+     *
      * @param lobbyReady true other players can join the lobby
      * @param loadedGame true if the game is loaded from a save
      */
@@ -48,19 +50,19 @@ public class Hello extends Msg {
 
     /**
      * Generator of Hello from a json string
+     *
      * @param json json string from which generate Hello
      * @return Optional of Hello, empty if json string was not coherent
      */
     public static Optional<Hello> fromJson(String json) {
         Hello h;
-        try{
+        try {
             Gson gson = new Gson();
             h = gson.fromJson(json, Hello.class);
-        }
-        catch (JsonSyntaxException e){
+        } catch (JsonSyntaxException e) {
             return Optional.empty();
         }
-        if(!"Hello".equals(h.name) || h.firstPlayerId == null){
+        if (!"Hello".equals(h.name) || h.firstPlayerId == null) {
             return Optional.empty();
         }
         return Optional.of(h);
@@ -69,6 +71,7 @@ public class Hello extends Msg {
 
     /**
      * How described in the protocol first I check the firstPlayerId and only after the lobby
+     *
      * @param o Object to compare
      * @return true/false
      */

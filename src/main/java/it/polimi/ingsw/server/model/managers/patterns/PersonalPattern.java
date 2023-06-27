@@ -2,10 +2,10 @@ package it.polimi.ingsw.server.model.managers.patterns;
 
 import it.polimi.ingsw.server.model.Tile;
 import it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException;
-import it.polimi.ingsw.server.model.managers.patterns.Pattern;
 
 import java.util.*;
 import java.util.function.Function;
+
 /**
  * A pattern describing a personal card's objective
  */
@@ -15,9 +15,11 @@ public class PersonalPattern extends Pattern {
 
     /**
      * Constructor of a personal pattern given the params
-     * @param name name of the pattern
-     * @param tiles tiles in the pattern, must be immutable
+     *
+     * @param name          name of the pattern
+     * @param tiles         tiles in the pattern, must be immutable
      * @param checkToPoints list of couple [num of corrects, points], must be immutable
+     * @throws InvalidPatternParameterException if the parameters are invalid
      */
     public PersonalPattern(String name, Set<Tile> tiles, List<int[]> checkToPoints) throws InvalidPatternParameterException {
         super(name);
@@ -26,11 +28,13 @@ public class PersonalPattern extends Pattern {
         this.checkParameters();
         this.sortCheckToPoints();
     }
+
     /**
      * Checks the constructor parameters
+     *
      * @throws InvalidPatternParameterException if the parameters are invalid
      */
-    private void checkParameters()  throws InvalidPatternParameterException{
+    private void checkParameters() throws InvalidPatternParameterException {
         if (this.tiles == null) {
             throw new InvalidPatternParameterException("tiles cannot be null");
         }
@@ -42,12 +46,12 @@ public class PersonalPattern extends Pattern {
         if (this.checkToPoints == null) {
             throw new InvalidPatternParameterException("checkToPoints cannot be null");
         }
-        for (int i = 0; i< this.checkToPoints.size(); i++) {
+        for (int i = 0; i < this.checkToPoints.size(); i++) {
             if (this.checkToPoints.get(i) == null) {
                 throw new InvalidPatternParameterException("checkToPoints cannot contain a null element");
             }
         }
-        for (int i = 0; i< this.checkToPoints.size(); i++) {
+        for (int i = 0; i < this.checkToPoints.size(); i++) {
             if (this.checkToPoints.get(i)[0] <= 0) {
                 throw new InvalidPatternParameterException("checkToPoints must contain arrays with the first element (arr[0]) set to a strictly positive value");
             }
@@ -71,6 +75,7 @@ public class PersonalPattern extends Pattern {
 
     /**
      * Returns the pattern function
+     *
      * @return function that returns points you get from number of tiles in right spots
      */
     public Function<List<List<Optional<Tile>>>, Integer> getPatternFunction() {

@@ -5,6 +5,11 @@ package it.polimi.ingsw.client.cli;
  * It is used to color the CLI output.
  */
 public class CliColor {
+    /**
+     * Default constructor.
+     */
+    public CliColor() {
+    }
     // Reset
     /**
      * This ANSI escape code resets the color and style of the text.

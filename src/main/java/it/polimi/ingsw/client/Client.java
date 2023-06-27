@@ -214,6 +214,11 @@ public class Client {
         return view;
     }
 
+    /**
+     * Gets the client goals
+     *
+     * @return the client goals
+     */
     public Map<String, ClientGoal> getClientGoals() {
         return clientGoals;
     }
@@ -224,18 +229,33 @@ public class Client {
         }
     }
 
+    /**
+     * Sets the client state
+     *
+     * @param state the client state
+     */
     public void setClientState(ClientStates state) {
         synchronized (state) {
             this.state = state;
         }
     }
 
+    /**
+     * Gets the client ID
+     *
+     * @return the client ID
+     */
     public String getId() {
         synchronized (id) {
             return this.id;
         }
     }
 
+    /**
+     * Sets the client ID
+     *
+     * @param id the client ID
+     */
     public void setId(String id) {
         synchronized (id) {
             this.id = id;
@@ -243,12 +263,22 @@ public class Client {
         saveClientInfo(getId(), getNickname());
     }
 
+    /**
+     * Gets the client nickname
+     *
+     * @return the client nickname
+     */
     public String getNickname() {
         synchronized (nickname) {
             return nickname;
         }
     }
 
+    /**
+     * Sets the client nickname
+     *
+     * @param nickname the client nickname
+     */
     public void setNickname(String nickname) {
         synchronized (nickname) {
             this.nickname = nickname;
@@ -301,6 +331,11 @@ public class Client {
         this.nickname = name;
     }
 
+    /**
+     * Gets the client controller
+     *
+     * @return the client controller
+     */
     public ClientController getClientController() {
         if (clientController instanceof ClientController)
             return (ClientController) clientController;
@@ -311,16 +346,28 @@ public class Client {
         }
     }
 
+    /**
+     * Gets the client connection
+     *
+     * @return the client connection
+     */
     public ClientCommunication getClientCommunication() {
         return clientCommunication;
     }
 
+    /**
+     * Gets the logger
+     *
+     * @return the logger
+     */
     public Logger getLogger() {
         return logger;
     }
 
     /**
      * Initializes the client
+     *
+     * @param view the view
      */
     public void init(View view) {
         this.view = view;
@@ -373,6 +420,8 @@ public class Client {
 
     /**
      * Schedule a disconnect after 10 seconds
+     *
+     * @param seconds the seconds after which the disconnect should be scheduled
      */
     public void scheduleDisconnect(int seconds) {
         disconnectTimer.schedule(new DisconnectTask(), seconds * 1000L);
@@ -380,6 +429,8 @@ public class Client {
 
     /**
      * Reset the disconnect timer
+     *
+     * @param seconds the seconds after which the disconnect should be scheduled
      */
     public void resetDisconnectTimer(int seconds) {
         disconnectTimer.cancel();

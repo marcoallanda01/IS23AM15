@@ -3,15 +3,19 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.server.ServerApp;
 
-import java.util.Arrays;
-
 /**
  * Main class to launch the application
  */
 public class MyShelfie {
+    /**
+     * Default constructor
+     */
+    public MyShelfie() {
+    }
 
     /**
      * Public main method to launch client or server
+     *
      * @param args arguments necessary for launching client or server
      * @throws IllegalArgumentException if no launch modality were found
      */

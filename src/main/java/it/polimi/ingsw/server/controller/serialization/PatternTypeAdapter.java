@@ -14,10 +14,19 @@ import it.polimi.ingsw.server.model.managers.patterns.SpecificPattern;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/**
+ * TypeAdapter for Pattern class
+ */
 public class PatternTypeAdapter extends TypeAdapter<Pattern> {
 
     private final Gson gson =
             new GsonBuilder().registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY).registerTypeAdapter(LocalDateTime.class, new DateTimeTypeAdapter()).create();
+
+    /**
+     * Default constructor
+     */
+    public PatternTypeAdapter() {
+    }
 
     @Override
     public void write(JsonWriter jsonWriter, Pattern pattern) throws IOException {
@@ -27,11 +36,11 @@ public class PatternTypeAdapter extends TypeAdapter<Pattern> {
             jsonWriter.value("AdjacentPattern");
             jsonWriter.name("Pattern");
             gson.toJson(pattern, AdjacentPattern.class, jsonWriter);
-        } else if (pattern instanceof PersonalPattern){
+        } else if (pattern instanceof PersonalPattern) {
             jsonWriter.value("PersonalPattern");
             jsonWriter.name("Pattern");
             gson.toJson(pattern, PersonalPattern.class, jsonWriter);
-        } else if (pattern instanceof SpecificPattern){
+        } else if (pattern instanceof SpecificPattern) {
             jsonWriter.value("SpecificPattern");
             jsonWriter.name("Pattern");
             gson.toJson(pattern, SpecificPattern.class, jsonWriter);

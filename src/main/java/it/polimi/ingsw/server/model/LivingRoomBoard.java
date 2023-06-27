@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- *  Class that represents the board of the game
+ * Class that represents the board of the game
  */
 public class LivingRoomBoard implements StandardListenable, PostProcessable {
     /**
@@ -28,20 +28,21 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
      */
     private final Map<Integer, Map<Integer, Tile>> board;
     /**
+     * The bag is a map of tile types and the number of remaining tiles of that type
+     */
+    private final Map<TileType, Integer> bag;
+    /**
      * The mask is a list of lists of TileRules
      * <p>
      * The first list represents the rows, the second list represents the columns
      */
     private Map<Integer, Map<Integer, TileRule>> mask;
-    /**
-     * The bag is a map of tile types and the number of remaining tiles of that type
-     */
-    private final Map<TileType, Integer> bag;
-
     private transient PropertyChangeSupport propertyChangeSupport;
 
     /**
      * Constructor with default values
+     *
+     * @param numberOfPlayers the number of players
      */
     public LivingRoomBoard(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
@@ -72,8 +73,9 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
     /**
      * Default constructor
+     *
      * @param numberOfPlayers the number of players
-     * @param mask the mask of the board
+     * @param mask            the mask of the board
      */
     public LivingRoomBoard(int numberOfPlayers, Map<Integer, Map<Integer, TileRule>> mask) {
         this(numberOfPlayers);
@@ -83,6 +85,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
     /**
      * Returns a copy of the board
+     *
      * @return a copy of the board
      */
     public Map<Integer, Map<Integer, Tile>> getBoard() {
@@ -116,7 +119,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
         //DO NOT use remove from board here else notification not needed is sent
         board.forEach((row, map) -> map.forEach((col, tile) -> {
-            if(tile != null) {
+            if (tile != null) {
                 tilesR.add(new Tile(row, col, tile.getType()));
                 bag.merge(tile.getType(), 1, Integer::sum); // add the tile to the bag
             }
@@ -164,9 +167,10 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
     /**
      * Put tiles back in the bag
+     *
      * @param tiles list of tiles
      */
-    protected void putBackInBag(List<Tile> tiles){
+    protected void putBackInBag(List<Tile> tiles) {
         bag.forEach((tt, num) -> bag.put(tt, (int) (num + tiles.stream().filter(t -> tt.equals(t.getType())).count())));
     }
 
@@ -255,7 +259,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
         // print the board
         StringBuilder sb = new StringBuilder();
         sb.append("Board:\n");
-        if(board.isEmpty()) {
+        if (board.isEmpty()) {
             sb.append("Empty");
             return sb.toString();
         }
@@ -286,12 +290,13 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
 
     /**
      * Get the board as list of tiles
+     *
      * @return tiles in board
      */
-    public List<Tile> getAllTiles(){
+    public List<Tile> getAllTiles() {
         List<Tile> tiles = new ArrayList<>();
-        board.forEach((x, row)-> row.forEach((y, tile) -> {
-            if(tile != null) {
+        board.forEach((x, row) -> row.forEach((y, tile) -> {
+            if (tile != null) {
                 tiles.add(new Tile(x, y, tile.getType()));
             }
         }));
@@ -301,7 +306,7 @@ public class LivingRoomBoard implements StandardListenable, PostProcessable {
     /**
      * Force notify listeners. Example of use: when game is loaded from a file
      */
-    public void notifyListeners(){
+    public void notifyListeners() {
         this.propertyChangeSupport.firePropertyChange("addedTiles", null, getAllTiles());
     }
 

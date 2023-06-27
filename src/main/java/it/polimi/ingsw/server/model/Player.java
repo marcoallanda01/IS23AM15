@@ -9,6 +9,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class that represents a player
+ */
 public class Player implements StandardListenable, PostProcessable {
     private final String userName;
     private final BookShelf bookShelf;
@@ -20,6 +23,7 @@ public class Player implements StandardListenable, PostProcessable {
 
     /**
      * Create a new player
+     *
      * @param userName the username of the player
      */
     public Player(String userName) {
@@ -31,12 +35,15 @@ public class Player implements StandardListenable, PostProcessable {
 
     /**
      * Insert tiles in player bookshelf
+     *
+     * @param tiles  tiles to insert
+     * @param column column where to insert tiles
      * @return result from @code{ BookShelf.insertTiles() }
      */
-    public boolean insertTiles(List<Tile> tiles, int column){
+    public boolean insertTiles(List<Tile> tiles, int column) {
         boolean res = false;
         List<Tile> updatedTiles = this.bookShelf.insertTiles(tiles, column);
-        if(updatedTiles != null){
+        if (updatedTiles != null) {
             res = true;
             this.propertyChangeSupport.firePropertyChange("bookShelfChange", this, updatedTiles);
         }
@@ -45,13 +52,16 @@ public class Player implements StandardListenable, PostProcessable {
 
     /**
      * Get player's BookShelf
+     *
      * @return player's BookShelf
      */
     public BookShelf getBookShelf() {
         return this.bookShelf;
     }
+
     /**
      * Get the username of the player
+     *
      * @return the username of the player
      */
     public String getUserName() {
@@ -60,6 +70,7 @@ public class Player implements StandardListenable, PostProcessable {
 
     /**
      * Get the value of isPlaying
+     *
      * @return the value of isPlaying
      */
     public boolean isPlaying() {
@@ -68,6 +79,7 @@ public class Player implements StandardListenable, PostProcessable {
 
     /**
      * Set the value of isPlaying, used in deserialization
+     *
      * @param playing the new value of isPlaying
      */
     public void setPlaying(boolean playing) {
@@ -78,7 +90,7 @@ public class Player implements StandardListenable, PostProcessable {
     /**
      * call if from now on player turn is to skip
      */
-    public void goToWc(){
+    public void goToWc() {
         setPlaying(false);
         this.propertyChangeSupport.firePropertyChange("playingState", null, this.isPlaying);
     }
@@ -86,34 +98,41 @@ public class Player implements StandardListenable, PostProcessable {
     /**
      * call if from now on player turn is not to skip
      */
-    public void backFromWc(){
+    public void backFromWc() {
         setPlaying(true);
         this.propertyChangeSupport.firePropertyChange("playingState", null, this.isPlaying);
     }
 
     /**
      * Get the value of firstToFinish
+     *
      * @return the value of firstToFinish
      */
     public boolean isFirstToFinish() {
         return this.firstToFinish;
     }
+
     /**
      * Set the value of firstToFinish
+     *
      * @param firstToFinish the new value of firstToFinish
      */
     public void setFirstToFinish(boolean firstToFinish) {
         this.firstToFinish = firstToFinish;
     }
+
     /**
      * Get the value of fullBookShelf
+     *
      * @return the value of fullBookShelf
      */
     public boolean hasFinished() {
         return this.fullBookShelf;
     }
+
     /**
      * Set the value of fullBookShelf
+     *
      * @param fullBookShelf the new value of fullBookShelf
      */
     public void setFullBookShelf(boolean fullBookShelf) {
@@ -123,6 +142,7 @@ public class Player implements StandardListenable, PostProcessable {
 
     /**
      * Set point
+     *
      * @param points points to set
      */
     public void setPoints(int points) {
@@ -133,7 +153,7 @@ public class Player implements StandardListenable, PostProcessable {
     /**
      * Set standard player listener
      */
-    public void setStandardListener(PushNotificationController pnc){
+    public void setStandardListener(PushNotificationController pnc) {
         this.propertyChangeSupport.addPropertyChangeListener(new PlayerListener(pnc));
     }
 
@@ -170,7 +190,7 @@ public class Player implements StandardListenable, PostProcessable {
     /**
      * Force listeners notification
      */
-    public void notifyListeners(){
+    public void notifyListeners() {
         this.propertyChangeSupport.firePropertyChange("pointsUpdate", -1, points);
         this.propertyChangeSupport.firePropertyChange("bookShelfChange", null,
                 this.bookShelf.getAllTiles());

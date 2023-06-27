@@ -9,7 +9,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,17 +24,23 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javafx.stage.Screen;
 
 import java.util.List;
 
 /**
- * GUIApplication that renders
+ * GUIApplication that renders all the GUI
  */
 public class GUIApplication extends Application {
-    private Stage primaryStage;
     private final Stage chatStage = new Stage();
     private final Stage goalStage = new Stage();
+    private Stage primaryStage;
+
+    /**
+     * Constructor of GUI application
+     */
+    public GUIApplication() {
+        super();
+    }
 
     /**
      * Constructor of GUI application
@@ -78,8 +83,7 @@ public class GUIApplication extends Application {
     }
 
     /**
-     * closes the GUI application
-     * @throws Exception
+     * Closes the GUI application
      */
     @Override
     public synchronized void stop() {
@@ -92,9 +96,11 @@ public class GUIApplication extends Application {
         Client.getInstance().getLogger().log("Application closed");
         Runtime.getRuntime().exit(0);
     }
+
     /**
-     * creates a prompt that displays a message anda a button that when clicked closes the gui application
-     * @throws Exception
+     * Creates a prompt that displays a message anda a button that when clicked closes the gui application
+     *
+     * @param message the message to display
      */
     public synchronized void stop(String message) {
         showPopup(message, () -> {
@@ -127,8 +133,10 @@ public class GUIApplication extends Application {
         });
         transition.play();
     }
+
     /**
      * shows a popup that only closes upon interaction
+     *
      * @param message the message to show in the popup
      */
     public void showPopup(String message) {
@@ -194,7 +202,7 @@ public class GUIApplication extends Application {
 
         if (primaryStageX > screenWidth) {
             primaryStageX = screenWidth;
-        } else if (primaryStageX < 0)  {
+        } else if (primaryStageX < 0) {
             primaryStageX = 0;
         }
 
