@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.communication.ClientCommunication;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,12 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 /**
  * Generates the GUI for the login state.
@@ -36,7 +33,7 @@ public class GUILogin extends GUIState {
      */
     private void createUI() {
         StackPane root = createRootPane();
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1000, 700);
         Platform.runLater(() -> guiApplication.transitionToScene(scene));
     }
 
