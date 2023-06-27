@@ -89,6 +89,7 @@ public interface RMIServer extends Remote {
     public void disconnect(String playerId) throws RemoteException;
     /**
      * Reconnect to the game
+     * @param client client object
      * @param playerId player's id
      * @throws RemoteException if something about connection went bad
      */
