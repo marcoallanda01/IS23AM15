@@ -412,7 +412,7 @@ class PersonalPatternTest {
         bookShelf.insertTiles(fifthRow, 4);
         List<List<Optional<Tile>>> bookshelfState = bookShelf.getState();
 
-        assertTrue(objectCleaner.isObjectGarbageCollected());
+        assertEquals(12, pf.apply(bookshelfState));
         // Uncomment only if running test individually
         //assertTrue(objectCleaner.isObjectGarbageCollected());
     }
