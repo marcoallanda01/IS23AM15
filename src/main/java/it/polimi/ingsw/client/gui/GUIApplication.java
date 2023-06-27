@@ -36,7 +36,6 @@ public class GUIApplication extends Application {
     private Stage primaryStage;
     private final Stage chatStage = new Stage();
     private final Stage goalStage = new Stage();
-    private Stage primaryStage;
 
     /**
      * Constructor of GUI application
