@@ -30,7 +30,7 @@ import java.util.concurrent.Executors;
  * ping is called asynchronously, to prevent notification handler from causing excessive ping delay
  */
 public class RMIClientConnection extends UnicastRemoteObject implements RMIClient, ClientConnection {
-    private ClientNotificationListener clientNotificationListener;
+    private final ClientNotificationListener clientNotificationListener;
     private RMIServer rmiServer;
     private final String hostname;
     private final int port;
@@ -266,14 +266,7 @@ public class RMIClientConnection extends UnicastRemoteObject implements RMIClien
     @Override
     public synchronized void notifyPing() throws RemoteException {
         Client.getInstance().getLogger().log("Server called notifyPing()");
-        executorService.submit(() -> {
-            try{
-                clientNotificationListener.notifyPing();
-            }catch (Exception e){
-                Client.getInstance().getLogger().log(e.getMessage());
-                e.printStackTrace();
-            }
-        });
+        executorService.submit(() -> clientNotificationListener.notifyPing());
     }
 
     /**
