@@ -19,6 +19,12 @@ import java.util.stream.Collectors;
  */
 public class ClientGoalParser {
     /**
+     * Default constructor
+     */
+    public ClientGoalParser() {
+        super();
+    }
+    /**
      * Parses the goals from a json file
      * @param resourcePath the path to the json
      * @return the list of goals
