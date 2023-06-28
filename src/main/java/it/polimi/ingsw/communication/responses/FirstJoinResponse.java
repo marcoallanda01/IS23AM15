@@ -9,6 +9,9 @@ import java.util.Optional;
  * Response of a first join command
  */
 public class FirstJoinResponse extends Msg {
+    /**
+     * result of the first join
+     */
     public boolean result;
 
     /**

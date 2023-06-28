@@ -69,7 +69,7 @@ public class RMIServerApp extends UnicastRemoteObject implements ServerCommunica
     @Override
     public Hello hello(RMIClient client) throws RemoteException {
         if (client == null) {
-            throw new RemoteException("Client passed is null");
+            throw new RemoteException("Hello: Client passed is null");
         }
         Hello hello = respondServer.respondHello(new HelloCommand(), client);
         if (!hello.firstPlayerId.equals("NoFirst")) {

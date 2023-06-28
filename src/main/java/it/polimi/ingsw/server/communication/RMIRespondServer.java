@@ -108,6 +108,7 @@ public class RMIRespondServer extends ResponseServer{
             ((RMIClient)client).notifyPing();
         } catch (RemoteException | RuntimeException e) {
             synchronized (playersIds) {
+                e.printStackTrace();
                 System.err.println("RMI ping: Remote Exception thrown with client " + this.playersIds.get(client));
             }
         }

@@ -11,6 +11,7 @@ public class ArrestGameException extends RuntimeException{
      * ArrestGameException constructor
      */
     public ArrestGameException(){
+        super();
         System.err.println("ArrestGameException occurred");
     }
 

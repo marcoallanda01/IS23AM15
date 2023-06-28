@@ -9,6 +9,7 @@ public class PlayerNotFoundException extends Exception{
      * PlayerNotFoundException constructor
      */
     public PlayerNotFoundException(){
+        super();
         System.err.println("Player not found");
     }
 

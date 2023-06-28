@@ -404,7 +404,7 @@ public abstract class ResponseServer{
         TimerTask PingTask = new TimerTask() {
             public void run() {
                 Boolean responded = pingPongMap.get(client);
-                System.out.println("\u001B[94mping pong:"+pingPongMap+"\u001B[0m");
+                System.out.println("\u001B[94mping pong:" + pingPongMap + "\u001B[0m");
                 if (responded == null) {
                     //If res is null means that client disconnected
                     this.cancel();
@@ -417,7 +417,7 @@ public abstract class ResponseServer{
                 }
             }
         };
-        this.pingPongService.scheduleAtFixedRate(PingTask, 5000, 3000);
+        this.pingPongService.scheduleAtFixedRate(PingTask, 20000, 3000);
         this.pingPongTasks.put(client, PingTask);
     }
 

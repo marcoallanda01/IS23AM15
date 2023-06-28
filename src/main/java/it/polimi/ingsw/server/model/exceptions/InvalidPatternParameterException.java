@@ -4,7 +4,7 @@ package it.polimi.ingsw.server.model.exceptions;
  * Class that represents an exception thrown while creating a pattern using invalid parameters
  */
 public class InvalidPatternParameterException extends Exception {
-    private String message;
+    private final String message;
 
     /**
      * Default constructor

@@ -26,6 +26,7 @@ public abstract class GameCommand extends Command{
     }
 
     /**
+     * Get client id
      * @return id of the player that requested the command
      */
     public String getId(){
