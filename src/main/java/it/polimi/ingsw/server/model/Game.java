@@ -361,16 +361,16 @@ public class Game{
             startWinnerTimeout();
             return false;
         }
-        // check if the next player is playing
-        if (!nextPlayer.isPlaying()) {
-            return nextTurn(nextPlayer);
-        }
         // check if changing turn is allowed
         if (this.currentTurn.getState() instanceof EndState || !currentPlayer.isPlaying()) {
             this.currentTurn = new Turn(nextPlayer, this.board);
 
             this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME ,null, this.currentTurn.getCurrentPlayer().getUserName());
             return true;
+        }
+        // check if the next player is playing
+        if (!nextPlayer.isPlaying()) {
+            return nextTurn(nextPlayer);
         }
         return false;
     }

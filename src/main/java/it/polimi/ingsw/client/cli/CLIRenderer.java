@@ -109,7 +109,7 @@ public class CLIRenderer {
      */
     public synchronized static void printLivingRoomBoard(Set<Tile> board) {
         System.out.println(" ");
-        System.out.println("◻️0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣");
+        System.out.println("◻️0 1 2 3 4 5 6 7 8");
         for (int n = 0; n < 9; n++) {
             printLivingRoomBoardLine(board, n);
             System.out.println();
@@ -132,7 +132,7 @@ public class CLIRenderer {
                 line.set(tile.getY(), tile);
             }
         }
-        System.out.print(n + "\uFE0F⃣");
+        System.out.print(n + " ");
         for (Tile tile : line) {
             if (tile != null) {
                 System.out.print(tile.getType().getSymbol());
@@ -161,7 +161,7 @@ public class CLIRenderer {
         }
 
         for (int i = 0; i < bookshelves.values().size(); i++) {
-            System.out.print("0️⃣1️⃣2️⃣3️⃣4️⃣      ");
+            System.out.print("0 1 2 3 4       ");
         }
         System.out.println();
 
@@ -181,7 +181,7 @@ public class CLIRenderer {
                     System.out.print(CliColor.WHITE_BRIGHT + name + CliColor.RESET);
                 }
             }
-            for (int i = 0; i < 18 - name.length(); i++) {
+            for (int i = 0; i < 16 - name.length(); i++) {
                 System.out.print(" ");
             }
         }
@@ -220,7 +220,7 @@ public class CLIRenderer {
         if (!tiles.isEmpty()) {
             System.out.println("Picked tiles: ");
             for (int i = 0; i < tiles.size(); i++) {
-                System.out.print(i + "\uFE0F⃣ ");
+                System.out.print(i + " ");
             }
             System.out.println();
             for (TileType tile : tiles) {
