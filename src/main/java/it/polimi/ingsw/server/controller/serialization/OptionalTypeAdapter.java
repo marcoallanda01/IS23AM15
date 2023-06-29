@@ -43,6 +43,10 @@ public class OptionalTypeAdapter<E> extends TypeAdapter<Optional<E>> {
     };
     private final TypeAdapter<E> adapter;
 
+    /**
+     * Creates a new instance of the type adapter for {@code type}.
+     * @param adapter the type adapter
+     */
     public OptionalTypeAdapter(TypeAdapter<E> adapter) {
         this.adapter = adapter;
     }
