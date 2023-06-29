@@ -172,11 +172,19 @@ public class Client {
         return false; // default
     }
 
+    /**
+     * returns if the client is the first player
+     * @return true if the client is the first player
+     */
     public boolean isFirstPlayer() {
         return isFirstPlayer;
     }
 
 
+    /**
+     * Sets if the client is the first player
+     * @param firstPlayer true if the client is the first player
+     */
     public void setFirstPlayer(boolean firstPlayer) {
         isFirstPlayer = firstPlayer;
     }
@@ -210,6 +218,10 @@ public class Client {
         }
     }
 
+    /**
+     * get the view
+     * @return the view
+     */
     public View getView() {
         return view;
     }
@@ -223,6 +235,10 @@ public class Client {
         return clientGoals;
     }
 
+    /**
+     * get the client state
+     * @return the client state
+     */
     public ClientStates getClientState() {
         synchronized (state) {
             return state;

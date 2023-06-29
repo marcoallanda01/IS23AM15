@@ -9,8 +9,17 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class that represents the controller of the client
+ */
 public class ClientController implements ClientNotificationListener {
     private final View view;
+
+    /**
+     * Creates a new ClientController
+     *
+     * @param goalsPath the path of the file containing the goals to detail
+     */
     public ClientController(String goalsPath) {
         view = Client.getInstance().getView();
         try {
@@ -329,7 +338,8 @@ public class ClientController implements ClientNotificationListener {
     }
 
     /**
-        * Sends a message to the server to join a lobby.
+     * Sends a message to the server to join a lobby.
+     * @param nickname the nickname of the player
      */
     public void login(String nickname) {
         Client.getInstance().setNickname(nickname);
@@ -353,7 +363,8 @@ public class ClientController implements ClientNotificationListener {
     }
 
     /**
-        * Transitions either to the saved game selection or to the lobby creation.
+     * Transitions either to the saved game selection or to the lobby creation.
+     * @param loadGame true if the saved game selection is needed, false otherwise
      */
     public void createLobby(boolean loadGame) {
         if (loadGame) {
@@ -462,7 +473,8 @@ public class ClientController implements ClientNotificationListener {
     }
 
     /**
-        * Sends a message to the server to save the game.
+     * Sends a message to the server to save the game.
+     * @param gameName the name of the game
      */
     public void saveGame(String gameName) {
         Client.getInstance().getClientCommunication().saveGame(Client.getInstance().getId(), gameName);

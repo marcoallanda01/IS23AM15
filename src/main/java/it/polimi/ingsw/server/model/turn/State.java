@@ -22,7 +22,20 @@ public abstract class State {
         this.turn = turn;
     }
 
+    /**
+     * Picks the given tiles from the board
+     *
+     * @param tiles the tiles to pick
+     * @return true if the tiles were picked, false otherwise
+     */
     abstract public boolean pickTiles(List<Tile> tiles);
 
+    /**
+     * Puts the given tiles in the given column
+     *
+     * @param tiles  the tiles to put
+     * @param column the column where to put the tiles
+     * @return true if the tiles were put, false otherwise
+     */
     abstract public boolean putTiles(List<Tile> tiles, int column);
 }
