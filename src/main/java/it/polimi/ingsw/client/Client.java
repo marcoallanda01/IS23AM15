@@ -407,6 +407,9 @@ public class Client {
         }
     }
 
+    /**
+     * Method called upon successful connection establishment
+     */
     public void onConnectionReady() {
         try {
             Client.getInstance().getClientCommunication().hello();
