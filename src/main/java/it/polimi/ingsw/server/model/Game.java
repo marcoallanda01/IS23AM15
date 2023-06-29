@@ -363,15 +363,16 @@ public class Game{
         }
         // check if changing turn is allowed
         if (this.currentTurn.getState() instanceof EndState || !currentPlayer.isPlaying()) {
-            this.currentTurn = new Turn(nextPlayer, this.board);
+            // check if the next player is playing
+            if (!nextPlayer.isPlaying()) {
+                return nextTurn(nextPlayer);
+            }
 
+            this.currentTurn = new Turn(nextPlayer, this.board);
             this.GameChangeSupport.firePropertyChange(TURN_PROPRIETY_NAME ,null, this.currentTurn.getCurrentPlayer().getUserName());
             return true;
         }
-        // check if the next player is playing
-        if (!nextPlayer.isPlaying()) {
-            return nextTurn(nextPlayer);
-        }
+
         return false;
     }
 
@@ -519,7 +520,6 @@ public class Game{
                 return false;
             }
         } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
         if(players.stream().filter(p -> !p.isPlaying()).count() == players.size()){
@@ -549,7 +549,6 @@ public class Game{
                 return false;
             }
         } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
         return true;

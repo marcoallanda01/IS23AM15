@@ -95,7 +95,7 @@ class GameTest {
         game.disconnectPlayer(game.getPlayers().get(0));
         assertEquals(game.getPlayers().get(2), game.getCurrentPlayer());
         game.reconnectPlayer(game.getPlayers().get(1));
-        assertEquals(game.getPlayers().get(1), game.getCurrentPlayer());
+        assertEquals(game.getPlayers().get(2), game.getCurrentPlayer());
     }
 
     @Test
