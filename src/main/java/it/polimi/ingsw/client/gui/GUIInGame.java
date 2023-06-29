@@ -51,7 +51,7 @@ public class GUIInGame extends GUIState {
         this.bookshelves = bookshelves;
         //Random random = new Random();
         //this.randomNum = random.nextInt(3) + 1;
-        this.randomNum = 1;
+        this.randomNum = Client.getInstance().getNickname().length() % 3 + 1;
         createUI();
     }
 
