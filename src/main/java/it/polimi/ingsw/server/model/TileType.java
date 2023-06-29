@@ -41,6 +41,7 @@ public enum TileType implements Serializable {
     }
 
     /**
+     * Gets a tile type from its name
      * @param name name of the tile type you want to create
      * @return null if there is not a tile type with that name, else a tile type with that name
      */
