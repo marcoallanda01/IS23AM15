@@ -195,7 +195,6 @@ public class Client {
     public void setupNetworkRMI() throws RuntimeException {
         try {
             logger.log("RMI setup");
-            System.setProperty("java.rmi.server.hostname", hostname);
             RMIClientConnection rmiClientConnection = new RMIClientConnection(hostname, port, clientController);
             singleton.clientConnection = rmiClientConnection;
             singleton.clientCommunication = new RMIClientCommunication(rmiClientConnection);
