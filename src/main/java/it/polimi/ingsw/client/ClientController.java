@@ -116,6 +116,10 @@ public class ClientController implements ClientNotificationListener {
     public void notifyTurn(String nickname) {
         view.setCurrentTurnPlayer(nickname);
 
+        if(view.getCurrentTurnPlayer().equals(Client.getInstance().getNickname())) {
+            Client.getInstance().getView().setHasPutTiles(false);
+        }
+
         if (Client.getInstance().getClientState() == ClientStates.IN_GAME) {
             view.render();
         }

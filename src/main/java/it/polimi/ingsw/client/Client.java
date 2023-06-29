@@ -406,6 +406,9 @@ public class Client {
         }
     }
 
+    /**
+     * Method called upon successful connection establishment
+     */
     public void onConnectionReady() {
         try {
             Client.getInstance().getClientCommunication().hello();
@@ -430,7 +433,7 @@ public class Client {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
         }
-        scheduleDisconnect(300);
+        scheduleDisconnect(60);
     }
 
     /**
