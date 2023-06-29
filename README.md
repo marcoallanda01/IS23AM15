@@ -22,7 +22,7 @@
 ## Test coverage
 | Functionality | Class% | Method% | Line% |
 |---------------|:------:|:-------:|:-----:|
-| Controller    |  95%   |   92%   |  94%  |
-| Model         |  100%  |   97%   |  94%  |
+| Controller    |  95%   |   93%   |  95%  |
+| Model         |  100%  |   97%   |  96%  |
 
 ![Test Coverage - Image](https://github.com/marccoallanda/IS23AM15/blob/main/deliverables/coverage.png)
