@@ -417,7 +417,7 @@ public abstract class ResponseServer{
                 }
             }
         };
-        this.pingPongService.scheduleAtFixedRate(PingTask, 20000, 3000);
+        this.pingPongService.scheduleAtFixedRate(PingTask, 10000, 3000);
         this.pingPongTasks.put(client, PingTask);
     }
 

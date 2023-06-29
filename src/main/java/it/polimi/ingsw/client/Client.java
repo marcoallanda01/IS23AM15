@@ -434,7 +434,7 @@ public class Client {
             Client.getInstance().getLogger().log("Error while adding the shutdown hook: ");
             Client.getInstance().getLogger().log(e);
         }
-        scheduleDisconnect(300);
+        scheduleDisconnect(60);
     }
 
     /**

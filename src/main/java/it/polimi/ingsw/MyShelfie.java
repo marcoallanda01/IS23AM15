@@ -27,7 +27,7 @@ public class MyShelfie {
             case Server -> {
                 String[] argsS = new String[args.length - 1];
                 System.arraycopy(args, 1, argsS, 0, args.length - 1);
-                ServerApp.main(args);
+                ServerApp.main(argsS);
             }
         }
 
