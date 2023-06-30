@@ -67,7 +67,7 @@ public abstract class View {
      * @return the players
      */
     public List<String> getPlayers() {
-        return players;
+        return new ArrayList<>(players);
     }
 
     /**
