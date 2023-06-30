@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/Pietro Ammaturo/github/IS23AM15/src/main/java/it/polimi/ingsw/server/model</OriginalElement>
+  <nodes>
+    <node x="3466.290736607143" y="1028.0">it.polimi.ingsw.server.model.Deck</node>
+    <node x="2739.337425595238" y="1811.0">it.polimi.ingsw.server.model.managers.patterns.SpecificPattern</node>
+    <node x="1753.837425595238" y="1360.0">it.polimi.ingsw.server.model.exceptions.ArrestGameException</node>
+    <node x="3532.078311011905" y="2317.0">it.polimi.ingsw.server.model.managers.GoalManager</node>
+    <node x="780.8374255952381" y="2405.0">it.polimi.ingsw.server.model.turn.Turn</node>
+    <node x="3207.587425595238" y="-15.0">it.polimi.ingsw.server.model.BookShelf</node>
+    <node x="1561.837425595238" y="1281.0">it.polimi.ingsw.server.model.Tile</node>
+    <node x="3953.040736607143" y="1347.0">it.polimi.ingsw.server.model.managers.CardsPointsManager</node>
+    <node x="908.328311011905" y="2923.0">it.polimi.ingsw.server.model.Game</node>
+    <node x="-137.0" y="917.0">it.polimi.ingsw.server.model.chat.Message</node>
+    <node x="-17.5" y="1878.0">it.polimi.ingsw.server.model.turn.EndState</node>
+    <node x="2436.337425595238" y="1348.0">it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException</node>
+    <node x="464.5874255952381" y="1371.0">it.polimi.ingsw.server.model.turn.State</node>
+    <node x="2308.337425595238" y="1833.0">it.polimi.ingsw.server.model.managers.patterns.AdjacentPattern</node>
+    <node x="3486.087425595238" y="467.0">it.polimi.ingsw.server.model.managers.patterns.Pattern</node>
+    <node x="1075.837425595238" y="2516.0">it.polimi.ingsw.server.model.chat.Chat</node>
+    <node x="-137.0" y="3930.0">it.polimi.ingsw.server.model.TileRule</node>
+    <node x="3220.337425595238" y="1843.0">it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager</node>
+    <node x="1897.337425595238" y="1877.0">it.polimi.ingsw.server.model.managers.patterns.PersonalPattern</node>
+    <node x="218.5" y="1878.0">it.polimi.ingsw.server.model.turn.PutTilesState</node>
+    <node x="3185.087425595238" y="291.0">it.polimi.ingsw.server.model.Player</node>
+    <node x="3988.0874255952385" y="513.0">it.polimi.ingsw.server.model.managers.UpdateRule</node>
+    <node x="3523.040736607143" y="1336.0">it.polimi.ingsw.server.model.managers.CommonGoalsPointsManager</node>
+    <node x="3831.25" y="949.0">it.polimi.ingsw.server.model.managers.PointsManager</node>
+    <node x="1096.2500000000002" y="1744.0">it.polimi.ingsw.server.model.LivingRoomBoard</node>
+    <node x="454.5000000000002" y="1867.0">it.polimi.ingsw.server.model.turn.PickTilesState</node>
+    <node x="1527.837425595238" y="972.0">it.polimi.ingsw.server.model.TileType</node>
+    <node x="4076.790736607143" y="1645.0">it.polimi.ingsw.server.model.managers.CommonCardsPointsManager</node>
+    <node x="846.2500000000002" y="1901.0">it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.AdjacentPattern" target="it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException" relationship="CREATE">
+      <point x="102.75" y="-106.0" />
+      <point x="2616.587425595238" y="1623.0" />
+      <point x="2601.837425595238" y="1623.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.Deck" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="3209.837425595238" y="2285.0" />
+      <point x="3209.837425595238" y="1613.0" />
+      <point x="3505.290736607143" y="1613.0" />
+      <point x="-39.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.Tile" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="1674.0000000000002" y="2285.0" />
+      <point x="1674.0000000000002" y="1593.0" />
+      <point x="1614.4637276785716" y="1593.0" />
+      <point x="1614.4637276785716" y="1583.0" />
+      <point x="1604.837425595238" y="1583.0" />
+      <point x="-43.0" y="140.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.CommonCardsPointsManager" relationship="TO_ONE">
+      <point x="98.5" y="-272.0" />
+      <point x="3827.578311011905" y="2295.0" />
+      <point x="4353.25" y="2295.0" />
+      <point x="4353.25" y="2275.0" />
+      <point x="4430.790736607143" y="2275.0" />
+      <point x="118.0" y="294.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.PutTilesState" target="it.polimi.ingsw.server.model.turn.State" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="326.5" y="1623.0" />
+      <point x="344.57700892857156" y="1623.0" />
+      <point x="344.57700892857156" y="1613.0" />
+      <point x="518.5874255952381" y="1613.0" />
+      <point x="-54.0" y="50.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="438.83872767857156" y="2892.0" />
+      <point x="438.83872767857156" y="2295.0" />
+      <point x="960.7500000000002" y="2295.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CardsPointsManager" target="it.polimi.ingsw.server.model.Deck" relationship="TO_ONE">
+      <point x="95.0" y="-74.0" />
+      <point x="4238.040736607143" y="1249.0" />
+      <point x="3583.290736607143" y="1249.0" />
+      <point x="39.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.EndState" target="it.polimi.ingsw.server.model.turn.State" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="90.5" y="1623.0" />
+      <point x="344.57700892857156" y="1623.0" />
+      <point x="344.57700892857156" y="1613.0" />
+      <point x="518.5874255952381" y="1613.0" />
+      <point x="-54.0" y="50.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.SpecificPattern" target="it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException" relationship="CREATE">
+      <point x="-115.0" y="-128.0" />
+      <point x="2854.337425595238" y="1623.0" />
+      <point x="2601.837425595238" y="1623.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.PointsManager" relationship="TO_MANY">
+      <point x="98.5" y="-272.0" />
+      <point x="3827.578311011905" y="2295.0" />
+      <point x="4353.25" y="2295.0" />
+      <point x="4353.25" y="2275.0" />
+      <point x="4569.790736607143" y="2275.0" />
+      <point x="4569.790736607143" y="1239.0" />
+      <point x="4122.25" y="1239.0" />
+      <point x="97.0" y="118.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.LivingRoomBoard" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="438.83872767857156" y="2892.0" />
+      <point x="438.83872767857156" y="2275.0" />
+      <point x="1191.7500000000002" y="2275.0" />
+      <point x="-95.5" y="195.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.CommonGoalsPointsManager" relationship="TO_ONE">
+      <point x="98.5" y="-272.0" />
+      <point x="3827.578311011905" y="2295.0" />
+      <point x="4353.25" y="2295.0" />
+      <point x="4353.25" y="2275.0" />
+      <point x="4559.290736607143" y="2275.0" />
+      <point x="4559.290736607143" y="1613.0" />
+      <point x="3830.540736607143" y="1613.0" />
+      <point x="102.5" y="85.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.CommonGoalsPointsManager" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="3726.087425595238" y="2285.0" />
+      <point x="3726.087425595238" y="1613.0" />
+      <point x="3625.540736607143" y="1613.0" />
+      <point x="-102.5" y="85.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager" relationship="TO_ONE">
+      <point x="98.5" y="-272.0" />
+      <point x="3827.578311011905" y="2295.0" />
+      <point x="4353.25" y="2295.0" />
+      <point x="4353.25" y="2275.0" />
+      <point x="3495.587425595238" y="2275.0" />
+      <point x="91.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="TO_MANY">
+      <point x="-91.75" y="-96.0" />
+      <point x="3312.087425595238" y="1623.0" />
+      <point x="3380.9637276785716" y="1623.0" />
+      <point x="3380.9637276785716" y="896.0" />
+      <point x="3779.337425595238" y="896.0" />
+      <point x="97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.PickTilesState" target="it.polimi.ingsw.server.model.turn.State" relationship="GENERALIZATION">
+      <point x="0.0" y="-72.0" />
+      <point x="594.0000000000002" y="1623.0" />
+      <point x="344.57700892857156" y="1623.0" />
+      <point x="344.57700892857156" y="1613.0" />
+      <point x="518.5874255952381" y="1613.0" />
+      <point x="-54.0" y="50.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager" target="it.polimi.ingsw.server.model.managers.CardsPointsManager" relationship="GENERALIZATION">
+      <point x="91.75" y="-96.0" />
+      <point x="3495.587425595238" y="1623.0" />
+      <point x="4143.040736607143" y="1623.0" />
+      <point x="0.0" y="74.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager" target="it.polimi.ingsw.server.model.Player" relationship="TO_MANY">
+      <point x="-91.75" y="-96.0" />
+      <point x="3312.087425595238" y="1623.0" />
+      <point x="3380.9637276785716" y="1623.0" />
+      <point x="3380.9637276785716" y="1603.0" />
+      <point x="3332.8387276785716" y="1603.0" />
+      <point x="3332.8387276785716" y="886.0" />
+      <point x="3325.587425595238" y="886.0" />
+      <point x="0.0" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.Player" relationship="TO_MANY">
+      <point x="94.25" y="-481.0" />
+      <point x="1191.078311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2882.0" />
+      <point x="4629.790736607143" y="2882.0" />
+      <point x="4629.790736607143" y="886.0" />
+      <point x="3325.587425595238" y="886.0" />
+      <point x="0.0" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.Turn" target="it.polimi.ingsw.server.model.turn.State" relationship="TO_ONE">
+      <point x="68.75" y="-184.0" />
+      <point x="987.0874255952381" y="2285.0" />
+      <point x="1408.5887276785716" y="2285.0" />
+      <point x="1408.5887276785716" y="2265.0" />
+      <point x="1085.7500000000002" y="2265.0" />
+      <point x="1085.7500000000002" y="1623.0" />
+      <point x="626.5874255952381" y="1623.0" />
+      <point x="54.0" y="50.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.State" target="it.polimi.ingsw.server.model.turn.Turn" relationship="TO_ONE">
+      <point x="54.0" y="50.0" />
+      <point x="626.5874255952381" y="1623.0" />
+      <point x="1085.7500000000002" y="1623.0" />
+      <point x="1085.7500000000002" y="2265.0" />
+      <point x="1408.5887276785716" y="2265.0" />
+      <point x="1408.5887276785716" y="2285.0" />
+      <point x="987.0874255952381" y="2285.0" />
+      <point x="68.75" y="-184.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Player" target="it.polimi.ingsw.server.model.BookShelf" relationship="TO_ONE">
+      <point x="70.25" y="-272.0" />
+      <point x="3395.837425595238" y="266.0" />
+      <point x="3384.587425595238" y="266.0" />
+      <point x="59.0" y="128.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CommonGoalsPointsManager" target="it.polimi.ingsw.server.model.managers.PointsManager" relationship="GENERALIZATION">
+      <point x="102.5" y="-85.0" />
+      <point x="3830.540736607143" y="1259.0" />
+      <point x="3928.25" y="1259.0" />
+      <point x="-97.0" y="118.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.chat.Chat" target="it.polimi.ingsw.server.model.exceptions.PlayerNotFoundException" relationship="CREATE">
+      <point x="0.0" y="-73.0" />
+      <point x="1216.337425595238" y="2295.0" />
+      <point x="960.7500000000002" y="2295.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.LivingRoomBoard" relationship="TO_ONE">
+      <point x="94.25" y="-481.0" />
+      <point x="1191.078311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2882.0" />
+      <point x="1614.2500000000002" y="2882.0" />
+      <point x="1614.2500000000002" y="2255.0" />
+      <point x="1382.7500000000002" y="2255.0" />
+      <point x="95.5" y="195.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.chat.Chat" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="1146.087425595238" y="2892.0" />
+      <point x="-70.25" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.Turn" target="it.polimi.ingsw.server.model.turn.PickTilesState" relationship="CREATE">
+      <point x="-68.75" y="-184.0" />
+      <point x="849.5874255952381" y="2265.0" />
+      <point x="594.0000000000002" y="2265.0" />
+      <point x="0.0" y="72.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.exceptions.ArrestGameException" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="1886.837425595238" y="2285.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.chat.Chat" relationship="TO_ONE">
+      <point x="94.25" y="-481.0" />
+      <point x="1191.078311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2882.0" />
+      <point x="1286.587425595238" y="2882.0" />
+      <point x="70.25" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.PersonalPattern" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="2092.837425595238" y="1623.0" />
+      <point x="2121.754092261905" y="1623.0" />
+      <point x="2121.754092261905" y="896.0" />
+      <point x="2425.837425595238" y="896.0" />
+      <point x="2425.837425595238" y="856.0" />
+      <point x="3583.837425595238" y="856.0" />
+      <point x="-97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.PersonalPattern" target="it.polimi.ingsw.server.model.Tile" relationship="TO_MANY">
+      <point x="-130.33333333333348" y="-62.0" />
+      <point x="1962.5040922619046" y="1623.0" />
+      <point x="1990.785342261905" y="1623.0" />
+      <point x="1990.785342261905" y="1603.0" />
+      <point x="1690.837425595238" y="1603.0" />
+      <point x="43.0" y="140.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Player" target="it.polimi.ingsw.server.model.BookShelf" relationship="CREATE">
+      <point x="-70.25" y="-272.0" />
+      <point x="3255.337425595238" y="266.0" />
+      <point x="3266.587425595238" y="266.0" />
+      <point x="-59.0" y="128.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Tile" target="it.polimi.ingsw.server.model.TileType" relationship="TO_ONE">
+      <point x="0.0" y="-140.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.chat.Message" target="it.polimi.ingsw.server.model.Player" relationship="TO_ONE">
+      <point x="0.0" y="-150.0" />
+      <point x="-28.0" y="886.0" />
+      <point x="3325.587425595238" y="886.0" />
+      <point x="0.0" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.managers.GoalManager" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="3630.578311011905" y="2892.0" />
+      <point x="-98.5" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.turn.Turn" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="849.5874255952381" y="2892.0" />
+      <point x="-68.75" y="184.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.SpecificPattern" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="GENERALIZATION">
+      <point x="115.0" y="-128.0" />
+      <point x="3084.337425595238" y="1623.0" />
+      <point x="2996.578311011905" y="1623.0" />
+      <point x="2996.578311011905" y="896.0" />
+      <point x="2425.837425595238" y="896.0" />
+      <point x="2425.837425595238" y="856.0" />
+      <point x="3583.837425595238" y="856.0" />
+      <point x="-97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.LivingRoomBoard" target="it.polimi.ingsw.server.model.Tile" relationship="CREATE">
+      <point x="95.5" y="-195.0" />
+      <point x="1382.7500000000002" y="1623.0" />
+      <point x="1593.2500000000002" y="1623.0" />
+      <point x="1593.2500000000002" y="1603.0" />
+      <point x="1614.4637276785716" y="1603.0" />
+      <point x="1614.4637276785716" y="1583.0" />
+      <point x="1604.837425595238" y="1583.0" />
+      <point x="-43.0" y="140.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Deck" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="TO_MANY">
+      <point x="0.0" y="-39.0" />
+      <point x="3544.290736607143" y="896.0" />
+      <point x="3779.337425595238" y="896.0" />
+      <point x="97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.PersonalCardsPointsManager" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="3312.087425595238" y="2285.0" />
+      <point x="-91.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.patterns.PersonalPattern" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="2092.837425595238" y="2285.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.turn.EndState" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="90.5" y="2892.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.PersonalPattern" target="it.polimi.ingsw.server.model.exceptions.InvalidPatternParameterException" relationship="CREATE">
+      <point x="130.33333333333348" y="-62.0" />
+      <point x="2223.1707589285716" y="1623.0" />
+      <point x="2601.837425595238" y="1623.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.patterns.AdjacentPattern" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="GENERALIZATION">
+      <point x="-102.75" y="-106.0" />
+      <point x="2411.087425595238" y="1613.0" />
+      <point x="2425.837425595238" y="1613.0" />
+      <point x="2425.837425595238" y="856.0" />
+      <point x="3583.837425595238" y="856.0" />
+      <point x="-97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CommonGoalsPointsManager" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="TO_MANY">
+      <point x="-102.5" y="-85.0" />
+      <point x="3625.540736607143" y="1259.0" />
+      <point x="3738.4637276785716" y="1259.0" />
+      <point x="3738.4637276785716" y="896.0" />
+      <point x="3779.337425595238" y="896.0" />
+      <point x="97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CommonCardsPointsManager" target="it.polimi.ingsw.server.model.managers.patterns.Pattern" relationship="TO_MANY">
+      <point x="118.0" y="-294.0" />
+      <point x="4430.790736607143" y="1623.0" />
+      <point x="4343.540736607143" y="1623.0" />
+      <point x="4343.540736607143" y="896.0" />
+      <point x="3779.337425595238" y="896.0" />
+      <point x="97.75" y="96.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.chat.Message" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="-28.0" y="2892.0" />
+      <point x="0.0" y="150.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.Turn" target="it.polimi.ingsw.server.model.Tile" relationship="TO_MANY">
+      <point x="68.75" y="-184.0" />
+      <point x="987.0874255952381" y="2285.0" />
+      <point x="1408.5887276785716" y="2285.0" />
+      <point x="1408.5887276785716" y="2265.0" />
+      <point x="1603.7500000000002" y="2265.0" />
+      <point x="1603.7500000000002" y="1623.0" />
+      <point x="1990.785342261905" y="1623.0" />
+      <point x="1990.785342261905" y="1603.0" />
+      <point x="1690.837425595238" y="1603.0" />
+      <point x="43.0" y="140.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.patterns.SpecificPattern" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="2969.337425595238" y="2285.0" />
+      <point x="0.0" y="128.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.Turn" target="it.polimi.ingsw.server.model.Player" relationship="TO_ONE">
+      <point x="68.75" y="-184.0" />
+      <point x="987.0874255952381" y="2285.0" />
+      <point x="1408.5887276785716" y="2285.0" />
+      <point x="1408.5887276785716" y="2265.0" />
+      <point x="1488.7500000000002" y="2265.0" />
+      <point x="1488.7500000000002" y="886.0" />
+      <point x="3325.5874255952385" y="886.0" />
+      <point x="0.0" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.turn.Turn" relationship="TO_ONE">
+      <point x="94.25" y="-481.0" />
+      <point x="1191.078311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2882.0" />
+      <point x="987.0874255952381" y="2882.0" />
+      <point x="68.75" y="184.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.PointsManager" target="it.polimi.ingsw.server.model.Player" relationship="TO_MANY">
+      <point x="0.0" y="-118.0" />
+      <point x="4025.25" y="866.0" />
+      <point x="3325.587425595238" y="866.0" />
+      <point x="0.0" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.LivingRoomBoard" target="it.polimi.ingsw.server.model.exceptions.ArrestGameException" relationship="CREATE">
+      <point x="95.5" y="-195.0" />
+      <point x="1382.7500000000002" y="1623.0" />
+      <point x="1593.2500000000002" y="1623.0" />
+      <point x="1593.2500000000002" y="1613.0" />
+      <point x="1886.837425595238" y="1613.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.patterns.AdjacentPattern" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="2513.837425595238" y="2285.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.GoalManager" target="it.polimi.ingsw.server.model.managers.CommonCardsPointsManager" relationship="CREATE">
+      <point x="-98.5" y="-272.0" />
+      <point x="3630.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2295.0" />
+      <point x="2991.578311011905" y="2285.0" />
+      <point x="4194.790736607143" y="2285.0" />
+      <point x="-118.0" y="294.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.turn.Turn" target="it.polimi.ingsw.server.model.LivingRoomBoard" relationship="TO_ONE">
+      <point x="68.75" y="-184.0" />
+      <point x="987.0874255952381" y="2285.0" />
+      <point x="1408.5887276785716" y="2285.0" />
+      <point x="1408.5887276785716" y="2275.0" />
+      <point x="1614.2500000000002" y="2275.0" />
+      <point x="1614.2500000000002" y="2255.0" />
+      <point x="1382.7500000000002" y="2255.0" />
+      <point x="95.5" y="195.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.turn.PutTilesState" relationship="CREATE">
+      <point x="-94.25" y="-481.0" />
+      <point x="1002.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2902.0" />
+      <point x="538.578311011905" y="2892.0" />
+      <point x="326.5" y="2892.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CommonCardsPointsManager" target="it.polimi.ingsw.server.model.managers.CardsPointsManager" relationship="GENERALIZATION">
+      <point x="-118.0" y="-294.0" />
+      <point x="4194.790736607143" y="1623.0" />
+      <point x="4143.040736607143" y="1623.0" />
+      <point x="0.0" y="74.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.PointsManager" target="it.polimi.ingsw.server.model.managers.UpdateRule" relationship="TO_ONE">
+      <point x="0.0" y="-118.0" />
+      <point x="4025.25" y="876.0" />
+      <point x="4085.0874255952385" y="876.0" />
+      <point x="0.0" y="50.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.Game" target="it.polimi.ingsw.server.model.managers.GoalManager" relationship="TO_ONE">
+      <point x="94.25" y="-481.0" />
+      <point x="1191.078311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2902.0" />
+      <point x="1821.578311011905" y="2882.0" />
+      <point x="3827.578311011905" y="2882.0" />
+      <point x="98.5" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CardsPointsManager" target="it.polimi.ingsw.server.model.managers.PointsManager" relationship="GENERALIZATION">
+      <point x="-95.0" y="-74.0" />
+      <point x="4048.040736607143" y="1259.0" />
+      <point x="3928.25" y="1259.0" />
+      <point x="-97.0" y="118.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.managers.CommonCardsPointsManager" target="it.polimi.ingsw.server.model.Player" relationship="TO_MANY">
+      <point x="118.0" y="-294.0" />
+      <point x="4430.790736607143" y="1623.0" />
+      <point x="4343.540736607143" y="1623.0" />
+      <point x="4343.540736607143" y="886.0" />
+      <point x="3325.587425595238" y="886.0" />
+      <point x="0.0" y="272.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.LivingRoomBoard" target="it.polimi.ingsw.server.model.TileType" relationship="TO_MANY">
+      <point x="-95.5" y="-195.0" />
+      <point x="1191.7500000000002" y="1259.0" />
+      <point x="1647.837425595238" y="1259.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.20451222059745144" showDependencies="true" x="2256.5" y="2017.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,4152 @@
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:demostyle2="http://www.yworks.com/yFilesHTML/demos/FlatDemoStyle/2.0" xmlns:demostyle="http://www.yworks.com/yFilesHTML/demos/FlatDemoStyle/1.0" xmlns:icon-style="http://www.yworks.com/yed-live/icon-style/1.0" xmlns:bpmn="http://www.yworks.com/xml/yfiles-bpmn/2.0" xmlns:demotablestyle="http://www.yworks.com/yFilesHTML/demos/FlatDemoTableStyle/1.0" xmlns:uml="http://www.yworks.com/yFilesHTML/demos/UMLDemoStyle/1.0" xmlns:GraphvizNodeStyle="http://www.yworks.com/yFilesHTML/graphviz-node-style/1.0" xmlns:VuejsNodeStyle="http://www.yworks.com/demos/yfiles-vuejs-node-style/1.0" xmlns:explorer-style="http://www.yworks.com/data-explorer/1.0" xmlns:y="http://www.yworks.com/xml/yfiles-common/3.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/3.0" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:yjs="http://www.yworks.com/xml/yfiles-for-html/2.0/xaml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml.html/2.0/ygraphml.xsd ">
+  <key id="d0" for="node" attr.type="int" attr.name="zOrder" y:attr.uri="http://www.yworks.com/xml/yfiles-z-order/1.0/zOrder" />
+  <key id="d1" for="node" attr.type="boolean" attr.name="Expanded" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/Expanded">
+    <default>true</default>
+  </key>
+  <key id="d2" for="node" attr.type="string" attr.name="url" />
+  <key id="d3" for="node" attr.type="string" attr.name="description" />
+  <key id="d4" for="node" attr.name="NodeLabels" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeLabels" />
+  <key id="d5" for="node" attr.name="NodeGeometry" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeGeometry" />
+  <key id="d6" for="all" attr.name="UserTags" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/UserTags" />
+  <key id="d7" for="node" attr.name="NodeStyle" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeStyle" />
+  <key id="d8" for="node" attr.name="NodeViewState" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/1.1/NodeViewState" />
+  <key id="d9" for="edge" attr.type="string" attr.name="url" />
+  <key id="d10" for="edge" attr.type="string" attr.name="description" />
+  <key id="d11" for="edge" attr.name="EdgeLabels" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeLabels" />
+  <key id="d12" for="edge" attr.name="EdgeGeometry" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeGeometry" />
+  <key id="d13" for="edge" attr.name="EdgeStyle" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeStyle" />
+  <key id="d14" for="edge" attr.name="EdgeViewState" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/1.1/EdgeViewState" />
+  <key id="d15" for="port" attr.name="PortLabels" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortLabels" />
+  <key id="d16" for="port" attr.name="PortLocationParameter" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortLocationParameter">
+    <default>
+      <x:Static Member="y:FreeNodePortLocationModel.NodeCenterAnchored" />
+    </default>
+  </key>
+  <key id="d17" for="port" attr.name="PortStyle" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortStyle">
+    <default>
+      <x:Static Member="y:VoidPortStyle.Instance" />
+    </default>
+  </key>
+  <key id="d18" for="port" attr.name="PortViewState" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/1.1/PortViewState" />
+  <key id="d19" attr.name="SharedData" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/SharedData" />
+  <data key="d19">
+    <y:SharedData>
+      <y:InteriorLabelModel x:Key="1" />
+      <y:CompositeLabelModelParameter x:Key="2">
+        <y:CompositeLabelModelParameter.Parameter>
+          <y:InteriorLabelModelParameter Position="Center" Model="{y:GraphMLReference 1}" />
+        </y:CompositeLabelModelParameter.Parameter>
+        <y:CompositeLabelModelParameter.Model>
+          <y:CompositeLabelModel>
+            <y:CompositeLabelModel.LabelModels>
+              <y:ExteriorLabelModel Insets="5" />
+              <y:GraphMLReference ResourceKey="1" />
+              <y:FreeNodeLabelModel />
+            </y:CompositeLabelModel.LabelModels>
+          </y:CompositeLabelModel>
+        </y:CompositeLabelModelParameter.Model>
+      </y:CompositeLabelModelParameter>
+      <y:SmartEdgeLabelModel x:Key="3" />
+    </y:SharedData>
+  </data>
+  <graph id="G" edgedefault="directed">
+    <data key="d6">
+      <y:Json>{&quot;version&quot;:&quot;2.0.0&quot;,&quot;theme&quot;:{&quot;name&quot;:&quot;light&quot;,&quot;version&quot;:&quot;1.0.0&quot;},&quot;bridge-style&quot;:&quot;ARC_SCALED&quot;}</y:Json>
+    </data>
+    <node id="node13">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="2308" Y="1833" Width="411" Height="180" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="AdjacentPattern" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>patternFunction: Function&lt;List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, Integer&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ AdjacentPattern(String, int, int, int):</sys:String>
+                  <sys:String>+ AdjacentPattern(String, int, int):</sys:String>
+                  <sys:String>- removeTiles(List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, List&lt;List&lt;Boolean&gt;&gt; ...): void</sys:String>
+                  <sys:String>- findAndDeleteGroup(List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, Integer): boolean</sys:String>
+                  <sys:String>- markAdjacentTiles(List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, Tile, List&lt; ...): void</sys:String>
+                  <sys:String>- checkParameters(): void</sys:String>
+                  <sys:String>- countAdjacentTiles(List&lt;List&lt;Boolean&gt;&gt;): Integer</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999989644884718,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node2">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="1754" Y="1360" Width="266" Height="122" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="ArrestGameException" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ ArrestGameException():</sys:String>
+                  <sys:String>+ ArrestGameException(String, Throwable):</sys:String>
+                  <sys:String>+ ArrestGameException(String):</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4172916331006087,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4172916331006087,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node5">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3208" Y="-15" Width="236" Height="192" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="BookShelf" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>maxColumnSpace: int</sys:String>
+                  <sys:String>state: List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;</sys:String>
+                  <sys:String>allTiles: List&lt;Tile&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ BookShelf():</sys:String>
+                  <sys:String>+ BookShelf(int, int):</sys:String>
+                  <sys:String>- insertTile(Tile, int): boolean</sys:String>
+                  <sys:String>+ clearBookShelf(): void</sys:String>
+                  <sys:String>+ insertTiles(List&lt;Tile&gt;, int): List&lt;Tile&gt;</sys:String>
+                  <sys:String>+ getTile(int, int): Tile</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4364406779661017,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node7">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3953" Y="1347" Width="380" Height="126" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="CardsPointsManager" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String># deck: Deck</sys:String>
+                  <sys:String>deck: Deck</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ CardsPointsManager(List&lt;Player&gt;, Map&lt;Player, Integer&gt;,  ...):</sys:String>
+                  <sys:String>+ CardsPointsManager(List&lt;Player&gt;, Deck):</sys:String>
+                  <sys:String>+ updatePoints(Player): void</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node15">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="1076" Y="2516" Width="281" Height="124" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Chat" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>standardListener: PushNotificationController</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Chat(List&lt;Player&gt;):</sys:String>
+                  <sys:String>+ addMessage(Message): void</sys:String>
+                  <sys:String>+ gsonPostProcess(): void</sys:String>
+                  <sys:String>+ getMessages(Player): List&lt;Message&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5533792683443485,1.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4466177025080495,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node27">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="4077" Y="1645" Width="472" Height="441" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="CommonCardsPointsManager" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- playersToUnfulfilledCards: Map&lt;Player, Set&lt;Pattern&gt;&gt;</sys:String>
+                  <sys:String>- cardsToTokens: Map&lt;Pattern, Stack&lt;Integer&gt;&gt;</sys:String>
+                  <sys:String>- playersToTokens: Map&lt;Player, List&lt;Integer&gt;&gt;</sys:String>
+                  <sys:String>playersToTokens: Map&lt;Player, List&lt;Integer&gt;&gt;</sys:String>
+                  <sys:String>standardListener: PushNotificationController</sys:String>
+                  <sys:String>cardsToTokens: Map&lt;Pattern, Stack&lt;Integer&gt;&gt;</sys:String>
+                  <sys:String>playersToUnfulfilledCards: Map&lt;Player, Set&lt;Pattern&gt;&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ CommonCardsPointsManager(List&lt;Player&gt;, Deck):</sys:String>
+                  <sys:String>+ CommonCardsPointsManager(List&lt;Player&gt;, Map&lt;Player, Integer&gt; ...):</sys:String>
+                  <sys:String>+ CommonCardsPointsManager(List&lt;Player&gt;, Deck, Integer,  ...):</sys:String>
+                  <sys:String>+ CommonCardsPointsManager(List&lt;Player&gt;, Deck, Integer):</sys:String>
+                  <sys:String>- generatePlayersToUnfulfilledCards(): void</sys:String>
+                  <sys:String>- update(Player): void</sys:String>
+                  <sys:String>+ getFulfilledCards(Player): Set&lt;Pattern&gt;</sys:String>
+                  <sys:String>+ notifyListeners(): void</sys:String>
+                  <sys:String>+ getTokens(Player): List&lt;Integer&gt;</sys:String>
+                  <sys:String># canBeUpdated(Player): boolean</sys:String>
+                  <sys:String>- generateCardsToTokens(Integer): void</sys:String>
+                  <sys:String>+ updatePoints(Player): void</sys:String>
+                  <sys:String>+ getUnfulfilledCards(Player): Set&lt;Pattern&gt;</sys:String>
+                  <sys:String>- generatePlayersToTokens(): void</sys:String>
+                  <sys:String>- partitionCardsByFulfillment(Player, Set&lt;Pattern&gt;): Map&lt;Boolean, Set&lt;Pattern&gt;&gt;</sys:String>
+                  <sys:String>- hasPlayerFulfilledCard(Player): Predicate&lt;Pattern&gt;</sys:String>
+                  <sys:String>- moveTokenFromCardToPlayer(Player): Consumer&lt;Pattern&gt;</sys:String>
+                  <sys:String>- defaultGenerateCardTokens(): Function&lt;Integer, Stack&lt;Integer&gt;&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5317802190526633,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5000005580357141,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,0.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node22">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3523" Y="1336" Width="410" Height="145" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="CommonGoalsPointsManager" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- patterns: LinkedHashSet&lt;Pattern&gt;</sys:String>
+                  <sys:String>patterns: Set&lt;Pattern&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ CommonGoalsPointsManager(List&lt;Player&gt;, Map&lt;Player, Integer&gt; ...):</sys:String>
+                  <sys:String>+ CommonGoalsPointsManager(List&lt;Player&gt;, LinkedHashSet&lt; ...):</sys:String>
+                  <sys:String>+ updatePoints(Player): void</sys:String>
+                  <sys:String># canBeUpdated(Player): boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5000006424216026,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.75,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.463415276567944,1.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5757006424216021,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node0">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3466" Y="1028" Width="156" Height="78" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Deck" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Deck(Set&lt;Pattern&gt;):</sys:String>
+                  <sys:String>+ draw(): Pattern</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.688415750322747E-6,0.5" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5" />
+        </data>
+      </port>
+    </node>
+    <node id="node10">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="-17" Y="1878" Width="216" Height="122" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="EndState" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ EndState(Turn):</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                  <sys:String>+ pickTiles(List&lt;Tile&gt;): boolean</sys:String>
+                  <sys:String>+ putTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node8">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="908" Y="2923" Width="377" Height="722" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Game" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- winner: String</sys:String>
+                  <sys:String>- chat: Chat</sys:String>
+                  <sys:String>- currentTurn: Turn</sys:String>
+                  <sys:String>- goalManager: GoalManager</sys:String>
+                  <sys:String>- isFirstGame: boolean</sys:String>
+                  <sys:String>- players: List&lt;Player&gt;</sys:String>
+                  <sys:String>- board: LivingRoomBoard</sys:String>
+                  <sys:String>commonCardsToTokens: Map&lt;String, List&lt;Integer&gt;&gt;</sys:String>
+                  <sys:String>playersList: List&lt;Player&gt;</sys:String>
+                  <sys:String>chat: Chat</sys:String>
+                  <sys:String>commonGoals: Set&lt;String&gt;</sys:String>
+                  <sys:String>board: LivingRoomBoard</sys:String>
+                  <sys:String>game: Game</sys:String>
+                  <sys:String>players: List&lt;String&gt;</sys:String>
+                  <sys:String>currentTurn: Turn</sys:String>
+                  <sys:String>winner: String</sys:String>
+                  <sys:String>currentPlayer: String</sys:String>
+                  <sys:String>goalManager: GoalManager</sys:String>
+                  <sys:String>isFirstGame: boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Game(List&lt;Player&gt;, String, boolean, LivingRoomBoard, Turn,  ...):</sys:String>
+                  <sys:String>+ Game(PushNotificationController):</sys:String>
+                  <sys:String>+ Game(List&lt;String&gt;, boolean):</sys:String>
+                  <sys:String>+ reconnectPlayer(String): boolean</sys:String>
+                  <sys:String>+ sendMessage(String, String, String): void</sys:String>
+                  <sys:String>+ getPersonalGoalCard(String): String</sys:String>
+                  <sys:String>- notifyListeners(): void</sys:String>
+                  <sys:String>+ getFulfilledCommonCards(String): Set&lt;String&gt;</sys:String>
+                  <sys:String>- nextTurn(Player): boolean</sys:String>
+                  <sys:String>+ sendMessage(String, String): void</sys:String>
+                  <sys:String>+ putTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                  <sys:String>+ addPropertyChangeListener(PropertyChangeListener): void</sys:String>
+                  <sys:String>- retrieveWinnerFromGoalManager(): void</sys:String>
+                  <sys:String>+ pickTiles(List&lt;Tile&gt;): boolean</sys:String>
+                  <sys:String>+ getPlayerMessages(String): List&lt;Message&gt;</sys:String>
+                  <sys:String>- startWinnerTimeout(): void</sys:String>
+                  <sys:String>+ disconnectPlayer(String): boolean</sys:String>
+                  <sys:String>+ getPlayerFromNickname(String): Player</sys:String>
+                  <sys:String>+ getTokens(String): List&lt;Integer&gt;</sys:String>
+                  <sys:String>+ getUnfulfilledCommonCards(String): Set&lt;String&gt;</sys:String>
+                  <sys:String>+ setGame(List&lt;String&gt;, boolean, String): void</sys:String>
+                  <sys:String>+ removePropertyChangeListener(PropertyChangeListener): void</sys:String>
+                  <sys:String>+ getPoints(String): Integer</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.4688149688149688" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5311850311850311" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5155925155925156" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0663360450612598,0.0" />
+        </data>
+      </port>
+      <port name="port5">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5155925155925156" />
+        </data>
+      </port>
+      <port name="port6">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9999991750347346,0.48440748440748443" />
+        </data>
+      </port>
+      <port name="port7">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5311850311850311" />
+        </data>
+      </port>
+      <port name="port8">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9999991750347346,0.5" />
+        </data>
+      </port>
+      <port name="port9">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.8567869734432226,0.0" />
+        </data>
+      </port>
+      <port name="port10">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.7772113766262465,0.0" />
+        </data>
+      </port>
+      <port name="port11">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999917503473457,0.0" />
+        </data>
+      </port>
+      <port name="port12">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5397869734432227,0.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node3">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3532" Y="2317" Width="394" Height="408" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="GoalManager" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- commonGoalsPointsManager: CommonGoalsPointsManager</sys:String>
+                  <sys:String>- commonCardsPointsManager: CommonCardsPointsManager</sys:String>
+                  <sys:String>- commonCardsToDraw: int</sys:String>
+                  <sys:String>commonCardsToTokens: Map&lt;Pattern, Stack&lt;Integer&gt;&gt;</sys:String>
+                  <sys:String>commonCardsPointsManager: CommonCardsPointsManager</sys:String>
+                  <sys:String>commonGoalsPointsManager: CommonGoalsPointsManager</sys:String>
+                  <sys:String>commonCardsToDraw: int</sys:String>
+                  <sys:String>commonGoals: Set&lt;Pattern&gt;</sys:String>
+                  <sys:String>personalGoalCardManager: PersonalCardsPointsManager</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ GoalManager(CommonCardsPointsManager,  ...):</sys:String>
+                  <sys:String>+ GoalManager(List&lt;Player&gt;, String, boolean, boolean):</sys:String>
+                  <sys:String>- readPattern(JsonElement): Pattern</sys:String>
+                  <sys:String>+ updatePointsTurn(Player): void</sys:String>
+                  <sys:String>+ getTokens(Player): List&lt;Integer&gt;</sys:String>
+                  <sys:String>+ getUnfulfilledCommonCards(Player): Set&lt;Pattern&gt;</sys:String>
+                  <sys:String>+ isFrequentUpdates(): Boolean</sys:String>
+                  <sys:String>+ getPersonalCard(Player): Pattern</sys:String>
+                  <sys:String>- getSetupFileReader(String, boolean): Reader</sys:String>
+                  <sys:String>+ getWinner(List&lt;Player&gt;): String</sys:String>
+                  <sys:String>+ updatePointsEnd(Player): void</sys:String>
+                  <sys:String>+ getFulfilledCommonCards(Player): Set&lt;Pattern&gt;</sys:String>
+                  <sys:String>- readCards(JsonReader, String): List&lt;Pattern&gt;</sys:String>
+                  <sys:String>+ getPoints(Player): int</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.6142124085992258,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4592961649444039,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.01903553299492386,0.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.576141342609378,0.0" />
+        </data>
+      </port>
+      <port name="port5">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5275735294117647" />
+        </data>
+      </port>
+      <port name="port6">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.12121602686125135,0.0" />
+        </data>
+      </port>
+      <port name="port7">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5551470588235294" />
+        </data>
+      </port>
+      <port name="port8">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5275735294117647" />
+        </data>
+      </port>
+      <port name="port9">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999921062968256,0.0" />
+        </data>
+      </port>
+      <port name="port10">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.4724264705882353" />
+        </data>
+      </port>
+      <port name="port11">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5551470588235294" />
+        </data>
+      </port>
+      <port name="port12">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-7.893703174337078E-7,0.5" />
+        </data>
+      </port>
+      <port name="port13">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5380710659898477,1.0" />
+        </data>
+      </port>
+      <port name="port14">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node11">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="2436" Y="1348" Width="331" Height="124" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="InvalidPatternParameterException" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- message: String</sys:String>
+                  <sys:String>message: String</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ InvalidPatternParameterException(String, Throwable):</sys:String>
+                  <sys:String>+ InvalidPatternParameterException():</sys:String>
+                  <sys:String>+ InvalidPatternParameterException(String):</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999987142137822,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999987142137822,1.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999987142137822,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node24">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="1096" Y="1744" Width="382" Height="293" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="LivingRoomBoard" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- board: Map&lt;Integer, Map&lt;Integer, Tile&gt;&gt;</sys:String>
+                  <sys:String>board: Map&lt;Integer, Map&lt;Integer, Tile&gt;&gt;</sys:String>
+                  <sys:String>allTiles: List&lt;Tile&gt;</sys:String>
+                  <sys:String>standardListener: PushNotificationController</sys:String>
+                  <sys:String>toFill: boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ LivingRoomBoard(int, Map&lt;Integer, Map&lt;Integer, TileRule&gt;&gt;):</sys:String>
+                  <sys:String>+ LivingRoomBoard(int):</sys:String>
+                  <sys:String>- getAdjacentTiles(Tile): List&lt;Tile&gt;</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                  <sys:String>+ removeFromBoard(List&lt;Tile&gt;): void</sys:String>
+                  <sys:String>+ checkPick(List&lt;Tile&gt;): boolean</sys:String>
+                  <sys:String>+ notifyListeners(): void</sys:String>
+                  <sys:String>+ fillBoard(): void</sys:String>
+                  <sys:String>+ gsonPostProcess(): void</sys:String>
+                  <sys:String># putBackInBag(List&lt;Tile&gt;): void</sys:String>
+                  <sys:String>- pickTileTypeFromBag(): TileType?</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999999999999994,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9999999999999994,0.5384615384615384" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9999999999999994,0.5" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.7672434554973816,1.0" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-5.952190456629112E-16,0.6551282051282051" />
+        </data>
+      </port>
+      <port name="port5">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-5.952190456629112E-16,0.6551282051282051" />
+        </data>
+      </port>
+    </node>
+    <node id="node9">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="-137" Y="917" Width="218" Height="225" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Message" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- content: String</sys:String>
+                  <sys:String>- date: LocalDateTime</sys:String>
+                  <sys:String>- receiver: Optional&lt;Player&gt;</sys:String>
+                  <sys:String>- sender: Player</sys:String>
+                  <sys:String>content: String</sys:String>
+                  <sys:String>date: String</sys:String>
+                  <sys:String>sender: Player</sys:String>
+                  <sys:String>senderName: String</sys:String>
+                  <sys:String>receiver: Optional&lt;Player&gt;</sys:String>
+                  <sys:String>receiverName: Optional&lt;String&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Message(Player, Player, String):</sys:String>
+                  <sys:String>+ Message(Player, String):</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.3623853211009174,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node14">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3486" Y="467" Width="391" Height="163" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Pattern" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- name: String</sys:String>
+                  <sys:String>name: String</sys:String>
+                  <sys:String>patternFunction: Function&lt;List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, Integer&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Pattern(String):</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                  <sys:String>+ hashCode(): int</sys:String>
+                  <sys:String>+ equals(Object): boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999891152113024,1.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999891152113024,1.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999891152113024,1.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999891152113024,1.0" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+      <port name="port5">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+      <port name="port6">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node17">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3220" Y="1843" Width="367" Height="163" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="PersonalCardsPointsManager" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- playersToCards: Map&lt;Player, Pattern&gt;</sys:String>
+                  <sys:String>playersToCards: Map&lt;Player, Pattern&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ PersonalCardsPointsManager(List&lt;Player&gt;, Deck):</sys:String>
+                  <sys:String>+ PersonalCardsPointsManager(List&lt;Player&gt;, Map&lt;Player,  ...):</sys:String>
+                  <sys:String>+ updatePoints(Player): void</sys:String>
+                  <sys:String># canBeUpdated(Player): boolean</sys:String>
+                  <sys:String>+ getCard(Player): Pattern</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.49999884033995073,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5408707749448554,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.75,0.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.8698661727974577,1.0" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9795640326975477,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node18">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="1897" Y="1877" Width="391" Height="124" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="PersonalPattern" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>patternFunction: Function&lt;List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, Integer&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ PersonalPattern(String, Set&lt;Tile&gt;, List&lt;int[]&gt;):</sys:String>
+                  <sys:String>- checkParameters(): void</sys:String>
+                  <sys:String>- sortCheckToPoints(): void</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-1.0884788697813232E-6,0.5" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9808173258433809,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,0.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node25">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="455" Y="1867" Width="279" Height="122" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="PickTilesState" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ PickTilesState(Turn):</sys:String>
+                  <sys:String>- checkPick(List&lt;Tile&gt;): Optional&lt;List&lt;Tile&gt;&gt;</sys:String>
+                  <sys:String>+ pickTiles(List&lt;Tile&gt;): boolean</sys:String>
+                  <sys:String>+ putTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node20">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3185" Y="291" Width="281" Height="408" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Player" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- firstToFinish: boolean</sys:String>
+                  <sys:String>- bookShelf: BookShelf</sys:String>
+                  <sys:String>- isPlaying: boolean</sys:String>
+                  <sys:String>- userName: String</sys:String>
+                  <sys:String>- points: int</sys:String>
+                  <sys:String>- fullBookShelf: boolean</sys:String>
+                  <sys:String>firstToFinish: boolean</sys:String>
+                  <sys:String>isPlaying: boolean</sys:String>
+                  <sys:String>points: int</sys:String>
+                  <sys:String>fullBookShelf: boolean</sys:String>
+                  <sys:String>bookShelf: BookShelf</sys:String>
+                  <sys:String>userName: String</sys:String>
+                  <sys:String>standardListener: PushNotificationController</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Player(String):</sys:String>
+                  <sys:String>+ backFromWc(): void</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                  <sys:String>+ gsonPostProcess(): void</sys:String>
+                  <sys:String>+ insertTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                  <sys:String>+ hashCode(): int</sys:String>
+                  <sys:String>+ notifyListeners(): void</sys:String>
+                  <sys:String>+ equals(Object): boolean</sys:String>
+                  <sys:String>+ hasFinished(): boolean</sys:String>
+                  <sys:String>+ goToWc(): void</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.44661921708185054,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+      <port name="port5">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+      <port name="port6">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+      <port name="port7">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.499998485426199,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node28">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="846" Y="1901" Width="229" Height="76" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="PlayerNotFoundException" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ PlayerNotFoundException():</sys:String>
+                  <sys:String>+ PlayerNotFoundException(String):</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-9.928981460403146E-16,0.5" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-9.928981460403146E-16,0.5" />
+        </data>
+      </port>
+    </node>
+    <node id="node23">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3831" Y="949" Width="388" Height="201" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="PointsManager" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String># updateRule: UpdateRule</sys:String>
+                  <sys:String># playersToPoints: Map&lt;Player, Integer&gt;</sys:String>
+                  <sys:String>playersToPoints: Map&lt;Player, Integer&gt;</sys:String>
+                  <sys:String>updateRule: UpdateRule</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ PointsManager(List&lt;Player&gt;):</sys:String>
+                  <sys:String>+ PointsManager(List&lt;Player&gt;, Map&lt;Player, Integer&gt;,  ...):</sys:String>
+                  <sys:String># canBeUpdated(Player): boolean</sys:String>
+                  <sys:String>+ updatePoints(Player): void</sys:String>
+                  <sys:String>+ getPoints(Player): Integer</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.6542201690598931,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node19">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="219" Y="1878" Width="216" Height="122" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="PutTilesState" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ PutTilesState(Turn):</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                  <sys:String>+ putTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                  <sys:String>+ pickTiles(List&lt;Tile&gt;): boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node1">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="2739" Y="1811" Width="460" Height="192" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="SpecificPattern" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>patternFunction: Function&lt;List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, Integer&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ SpecificPattern(String, List&lt;List&lt;List&lt;Boolean&gt;&gt;&gt;, int,  ...):</sys:String>
+                  <sys:String>+ SpecificPattern(String, List&lt;List&lt;List&lt;Boolean&gt;&gt;&gt;, int,  ...):</sys:String>
+                  <sys:String>- checkParameters(): void</sys:String>
+                  <sys:String>- getAllGroups(List&lt;List&lt;Optional&lt;Tile&gt;&gt;&gt;, List&lt;List&lt;List&lt; ...): List&lt;List&lt;Tile&gt;&gt;</sys:String>
+                  <sys:String>- findGoodSequence(List&lt;Set&lt;Tile&gt;&gt;, int, boolean): Boolean</sys:String>
+                  <sys:String>- transposeMasks(List&lt;List&lt;List&lt;Boolean&gt;&gt;&gt;): List&lt;List&lt;List&lt;Boolean&gt;&gt;&gt;</sys:String>
+                  <sys:String>- isSequenceValid(List&lt;Set&lt;Tile&gt;&gt;, int, boolean): Boolean</sys:String>
+                  <sys:String>+ getTransposedMasks(List&lt;List&lt;List&lt;Boolean&gt;&gt;&gt;): List&lt;List&lt;List&lt;Boolean&gt;&gt;&gt;</sys:String>
+                  <sys:String>- removeOverlapping(): BiFunction&lt;List&lt;Set&lt;Tile&gt;&gt;, Set&lt;Tile&gt;, Boolean&gt;</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999990747929607,0.0" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.75,0.0" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node12">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="465" Y="1371" Width="216" Height="100" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="State" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ State(Turn):</sys:String>
+                  <sys:String>+ pickTiles(List&lt;Tile&gt;): boolean</sys:String>
+                  <sys:String>+ putTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-1.970348324465266E-6,0.5" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="1.0,0.5" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.25,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node6">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="1562" Y="1281" Width="172" Height="210" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Tile" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- y: int</sys:String>
+                  <sys:String>- type: TileType</sys:String>
+                  <sys:String>- x: int</sys:String>
+                  <sys:String>x: int</sys:String>
+                  <sys:String>type: TileType</sys:String>
+                  <sys:String>y: int</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Tile(TileType):</sys:String>
+                  <sys:String>+ Tile(int, int, TileType):</sys:String>
+                  <sys:String>+ toString(): String</sys:String>
+                  <sys:String>+ equals(Object): boolean</sys:String>
+                  <sys:String>+ hashCode(): int</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-2.4743909190959152E-6,0.44642857142857145" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.999997525609081,0.7982142857142858" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.999997525609081,0.7982142857142858" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-2.4743909190959152E-6,0.5" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-2.4743909190959152E-6,0.5" />
+        </data>
+      </port>
+    </node>
+    <node id="node16">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="-137" Y="3930" Width="174" Height="100" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="TileRule" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ TileRule():</sys:String>
+                  <sys:String>+ valueOf(String): TileRule</sys:String>
+                  <sys:String>+ values(): TileRule[]</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+    </node>
+    <node id="node26">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="1528" Y="972" Width="240" Height="162" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="TileType" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>randomTileType: TileType</sys:String>
+                  <sys:String>symbol: String</sys:String>
+                  <sys:String>numberOfTilesPerType: int</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ TileType():</sys:String>
+                  <sys:String>+ valueOf(String): TileType</sys:String>
+                  <sys:String>+ tileTypeFromName(String): TileType?</sys:String>
+                  <sys:String>+ values(): TileType[]</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-1.7733134920187392E-6,0.5" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="-1.7733134920187392E-6,0.5" />
+        </data>
+      </port>
+    </node>
+    <node id="node4">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="781" Y="2405" Width="275" Height="276" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="Turn" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object">
+                  <sys:String>- currentPlayer: Player</sys:String>
+                  <sys:String>- pickedTiles: List&lt;Tile&gt;</sys:String>
+                  <sys:String>- board: LivingRoomBoard</sys:String>
+                  <sys:String>- state: State</sys:String>
+                  <sys:String>currentPlayer: Player</sys:String>
+                  <sys:String>pickedTiles: List&lt;Tile&gt;</sys:String>
+                  <sys:String>state: State</sys:String>
+                  <sys:String>board: LivingRoomBoard</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ Turn(Player, LivingRoomBoard):</sys:String>
+                  <sys:String>+ Turn(List&lt;Tile&gt;, Player, LivingRoomBoard):</sys:String>
+                  <sys:String>+ putTiles(List&lt;Tile&gt;, int): boolean</sys:String>
+                  <sys:String>+ checkBoardRefill(): boolean</sys:String>
+                  <sys:String>+ changeState(State): void</sys:String>
+                  <sys:String>+ refillBoard(): void</sys:String>
+                  <sys:String>+ pickTiles(List&lt;Tile&gt;): boolean</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9999984523809524,0.24048913043478262" />
+        </data>
+      </port>
+      <port name="port1">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.0,0.5" />
+        </data>
+      </port>
+      <port name="port2">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.11968208874458883,0.0" />
+        </data>
+      </port>
+      <port name="port3">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.9999984523809524,0.9293478260869565" />
+        </data>
+      </port>
+      <port name="port4">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.17422754329004336,0.0" />
+        </data>
+      </port>
+      <port name="port5">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999984523809524,1.0" />
+        </data>
+      </port>
+      <port name="port6">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.554543906926407,1.0" />
+        </data>
+      </port>
+      <port name="port7">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.4999984523809524,1.0" />
+        </data>
+      </port>
+    </node>
+    <node id="node21">
+      <data key="d0">0</data>
+      <data key="d5">
+        <y:RectD X="3988" Y="513" Width="194" Height="100" />
+      </data>
+      <data key="d7">
+        <uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
+          <uml:UMLNodeStyle.model>
+            <uml:UMLClassModel stereotype="" constraint="" className="UpdateRule" attributesOpen="true" operationsOpen="true">
+              <uml:UMLClassModel.attributes>
+                <x:Array Type="sys:Object" />
+              </uml:UMLClassModel.attributes>
+              <uml:UMLClassModel.operations>
+                <x:Array Type="sys:Object">
+                  <sys:String>+ UpdateRule():</sys:String>
+                  <sys:String>+ valueOf(String): UpdateRule</sys:String>
+                  <sys:String>+ values(): UpdateRule[]</sys:String>
+                </x:Array>
+              </uml:UMLClassModel.operations>
+            </uml:UMLClassModel>
+          </uml:UMLNodeStyle.model>
+        </uml:UMLNodeStyle>
+      </data>
+      <port name="port0">
+        <data key="d16">
+          <y:FreeNodePortLocationModelParameter Ratio="0.5,1.0" />
+        </data>
+      </port>
+    </node>
+    <edge id="edge34" source="node13" target="node11" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2513.837,1807.0" />
+          <y:Bend Location="2601.837,1807.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge9" source="node13" target="node14" sourceport="port1" targetport="port4">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2411.087425595238,1613.0" />
+          <y:Bend Location="2425.837425595238,1613.0" />
+          <y:Bend Location="2425.837425595238,856.0" />
+          <y:Bend Location="3583.837425595238,856.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge48" source="node7" target="node0" sourceport="port0" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>deck</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4143.040736607143,1244.0" />
+          <y:Bend Location="3544.290736607143,1244.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge7" source="node7" target="node23" sourceport="port1" targetport="port3">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4048.040736607143,1259.0" />
+          <y:Bend Location="3928.25,1259.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge32" source="node15" target="node28" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1216.337,2732.0" />
+          <y:Bend Location="1081.828,2732.0" />
+          <y:Bend Location="1081.828,2790.5" />
+          <y:Bend Location="763.337,2790.5" />
+          <y:Bend Location="763.337,1939.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge1" source="node27" target="node7" sourceport="port2" targetport="port2">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4194.790736607143,1623.0" />
+          <y:Bend Location="4143.040736607143,1623.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge33" source="node27" target="node14" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>cardsToTokens</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4327.791,1546.0" />
+          <y:Bend Location="3435.0,1546.0" />
+          <y:Bend Location="3435.0,931.5" />
+          <y:Bend Location="3681.587,931.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge14" source="node27" target="node20" sourceport="port1" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>playersToTokens</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4312.791,1587.0" />
+          <y:Bend Location="2337.5,1587.0" />
+          <y:Bend Location="2337.5,1216.0" />
+          <y:Bend Location="3325.587,1216.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge15" source="node22" target="node14" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>patterns</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3728.041,1546.0" />
+          <y:Bend Location="3435.0,1546.0" />
+          <y:Bend Location="3435.0,931.5" />
+          <y:Bend Location="3681.587,931.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge6" source="node22" target="node23" sourceport="port1" targetport="port3">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3830.540736607143,1259.0" />
+          <y:Bend Location="3928.25,1259.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge17" source="node0" target="node14" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>cards</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3435.0,1067.0" />
+          <y:Bend Location="3435.0,931.5" />
+          <y:Bend Location="3681.587,931.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge4" source="node10" target="node12" sourceport="port0" targetport="port2">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="90.5,1623.0" />
+          <y:Bend Location="344.57700892857156,1623.0" />
+          <y:Bend Location="344.57700892857156,1613.0" />
+          <y:Bend Location="518.5874255952381,1613.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge16" source="node8" target="node15" sourceport="port10" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>chat</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge23" source="node8" target="node15" sourceport="port9" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge47" source="node8" target="node10" sourceport="port3" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="90.5,3419.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge39" source="node8" target="node3" sourceport="port5" targetport="port14">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3729.078311011905,3419.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge55" source="node8" target="node3" sourceport="port2" targetport="port13">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>goalManager</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3744.078311011905,3434.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge29" source="node8" target="node24" sourceport="port6" targetport="port4">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>board</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1374.337,3389.0" />
+          <y:Bend Location="1374.337,2250.5" />
+          <y:Bend Location="1076.0,2250.5" />
+          <y:Bend Location="1076.0,1999.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge56" source="node8" target="node24" sourceport="port1" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1389.337,3374.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge25" source="node8" target="node9" sourceport="port7" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="-58.0,3434.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge24" source="node8" target="node20" sourceport="port8" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>players</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1879.837,3404.0" />
+          <y:Bend Location="1879.837,1683.0" />
+          <y:Bend Location="2205.5,1683.0" />
+          <y:Bend Location="2205.5,1587.0" />
+          <y:Bend Location="2337.5,1587.0" />
+          <y:Bend Location="2337.5,1216.0" />
+          <y:Bend Location="3325.587,1216.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge12" source="node8" target="node28" sourceport="port11" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1096.828,2732.0" />
+          <y:Bend Location="1081.828,2732.0" />
+          <y:Bend Location="1081.828,2790.5" />
+          <y:Bend Location="763.337,2790.5" />
+          <y:Bend Location="763.337,1939.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge59" source="node8" target="node19" sourceport="port0" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="326.5,3404.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge10" source="node8" target="node4" sourceport="port12" targetport="port5">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>currentTurn</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1111.828,2856.0" />
+          <y:Bend Location="918.337,2856.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge44" source="node8" target="node4" sourceport="port4" targetport="port6">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge37" source="node3" target="node13" sourceport="port8" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2513.837425595238,2604.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge35" source="node3" target="node2" sourceport="port9" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3729.078,2225.0" />
+          <y:Bend Location="1864.837,2225.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge54" source="node3" target="node27" sourceport="port3" targetport="port4">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>commonCardsPointsManager</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4312.790736607143,2589.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge62" source="node3" target="node27" sourceport="port0" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3774.078,1939.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge52" source="node3" target="node22" sourceport="port4" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>commonGoalsPointsManager</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge61" source="node3" target="node22" sourceport="port1" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge22" source="node3" target="node0" sourceport="port11" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4581.290736607143,2619.0" />
+          <y:Bend Location="4581.290736607143,827.5" />
+          <y:Bend Location="3753.75,827.5" />
+          <y:Bend Location="3753.75,1067.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge45" source="node3" target="node17" sourceport="port6" targetport="port4">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>personalCardsPointsManager</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge58" source="node3" target="node17" sourceport="port2" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge43" source="node3" target="node18" sourceport="port7" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2092.837425595238,2619.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge51" source="node3" target="node23" sourceport="port5" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>pointsManagers</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4566.290736607143,2604.0" />
+          <y:Bend Location="4566.290736607143,1067.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge28" source="node3" target="node1" sourceport="port10" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2969.337425595238,2574.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge21" source="node3" target="node6" sourceport="port12" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1520.0,2589.0" />
+          <y:Bend Location="1520.0,1421.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge60" source="node24" target="node2" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1287.25,2225.0" />
+          <y:Bend Location="1864.837,2225.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge13" source="node24" target="node6" sourceport="port2" targetport="port3">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1520.0,1939.0" />
+          <y:Bend Location="1520.0,1421.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge31" source="node24" target="node26" sourceport="port1" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>bag</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1499.0,1954.0" />
+          <y:Bend Location="1499.0,1067.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge53" source="node9" target="node20" sourceport="port0" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>sender</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="-28.0,1587.0" />
+          <y:Bend Location="2337.5,1587.0" />
+          <y:Bend Location="2337.5,1216.0" />
+          <y:Bend Location="3325.587,1216.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge2" source="node17" target="node7" sourceport="port2" targetport="port2">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3495.587425595238,1623.0" />
+          <y:Bend Location="4143.040736607143,1623.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge18" source="node17" target="node14" sourceport="port1" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>playersToCards</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3418.837,1546.0" />
+          <y:Bend Location="3435.0,1546.0" />
+          <y:Bend Location="3435.0,931.5" />
+          <y:Bend Location="3681.587,931.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge19" source="node17" target="node20" sourceport="port0" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>playersToCards</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3403.837,1683.0" />
+          <y:Bend Location="2205.5,1683.0" />
+          <y:Bend Location="2205.5,1587.0" />
+          <y:Bend Location="2337.5,1587.0" />
+          <y:Bend Location="2337.5,1216.0" />
+          <y:Bend Location="3325.587,1216.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge38" source="node18" target="node11" sourceport="port1" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2280.837,1807.0" />
+          <y:Bend Location="2601.837,1807.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge5" source="node18" target="node14" sourceport="port2" targetport="port4">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2092.837425595238,1623.0" />
+          <y:Bend Location="2121.754092261905,1623.0" />
+          <y:Bend Location="2121.754092261905,896.0" />
+          <y:Bend Location="2425.837425595238,896.0" />
+          <y:Bend Location="2425.837425595238,856.0" />
+          <y:Bend Location="3583.837425595238,856.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge41" source="node18" target="node6" sourceport="port0" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>tiles</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1799.0,1939.0" />
+          <y:Bend Location="1799.0,1504.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge0" source="node25" target="node12" sourceport="port0" targetport="port2">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="594.0000000000002,1623.0" />
+          <y:Bend Location="344.57700892857156,1623.0" />
+          <y:Bend Location="344.57700892857156,1613.0" />
+          <y:Bend Location="518.5874255952381,1613.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge40" source="node20" target="node5" sourceport="port1" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge42" source="node20" target="node5" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>bookShelf</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge49" source="node23" target="node20" sourceport="port1" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>players</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="4025.25,1216.0" />
+          <y:Bend Location="3325.587,1216.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge50" source="node23" target="node21" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>updateRule</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List />
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge8" source="node19" target="node12" sourceport="port0" targetport="port2">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="326.5,1623.0" />
+          <y:Bend Location="344.57700892857156,1623.0" />
+          <y:Bend Location="344.57700892857156,1613.0" />
+          <y:Bend Location="518.5874255952381,1613.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge20" source="node1" target="node11" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="2969.337,1787.5" />
+          <y:Bend Location="2601.837,1787.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge3" source="node1" target="node14" sourceport="port1" targetport="port4">
+      <data key="d11">
+        <x:List />
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="3084.337425595238,1623.0" />
+          <y:Bend Location="2996.578311011905,1623.0" />
+          <y:Bend Location="2996.578311011905,896.0" />
+          <y:Bend Location="2425.837425595238,896.0" />
+          <y:Bend Location="2425.837425595238,856.0" />
+          <y:Bend Location="3583.837425595238,856.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#000082" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="TRIANGLE" stroke="#000082" fill="#000082" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge57" source="node12" target="node4" sourceport="port0" targetport="port5">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>turn</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="-43.0,1421.0" />
+          <y:Bend Location="-43.0,2821.5" />
+          <y:Bend Location="875.0,2821.5" />
+          <y:Bend Location="875.0,2856.0" />
+          <y:Bend Location="918.337,2856.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge36" source="node6" target="node26" sourceport="port0" targetport="port0">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>type</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1499.0,1406.0" />
+          <y:Bend Location="1499.0,1067.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge46" source="node4" target="node24" sourceport="port0" targetport="port4">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>board</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1076.0,2493.5" />
+          <y:Bend Location="1076.0,1999.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge30" source="node4" target="node25" sourceport="port1" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>«create»</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="CENTER" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="594.0000000000002,2589.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" dashStyle="Dash" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="NONE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge11" source="node4" target="node20" sourceport="port4" targetport="port2">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>currentPlayer</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="828.75,1683.0" />
+          <y:Bend Location="2205.5,1683.0" />
+          <y:Bend Location="2205.5,1587.0" />
+          <y:Bend Location="2337.5,1587.0" />
+          <y:Bend Location="2337.5,1216.0" />
+          <y:Bend Location="3325.587,1216.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge27" source="node4" target="node12" sourceport="port2" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>state</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="813.75,1421.0" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+    <edge id="edge26" source="node4" target="node6" sourceport="port3" targetport="port1">
+      <data key="d11">
+        <x:List>
+          <y:Label>
+            <y:Label.Text>1</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="0" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="LEFT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>*</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="-6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+          <y:Label>
+            <y:Label.Text>pickedTiles</y:Label.Text>
+            <y:Label.LayoutParameter>
+              <y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 3}" SegmentRatio="1" Distance="6" />
+            </y:Label.LayoutParameter>
+            <y:Label.Style>
+              <yjs:DefaultLabelStyle backgroundFill="WHITE" horizontalTextAlignment="RIGHT" wrapping="WORD" clipText="false" backgroundStroke="WHITE" font="'Arial'" autoFlip="false" textFill="BLACK" textSize="8" />
+            </y:Label.Style>
+          </y:Label>
+        </x:List>
+      </data>
+      <data key="d12">
+        <x:List>
+          <y:Bend Location="1799.0,2747.0" />
+          <y:Bend Location="1799.0,1504.5" />
+        </x:List>
+      </data>
+      <data key="d13">
+        <yjs:PolylineEdgeStyle smoothingLength="20">
+          <yjs:PolylineEdgeStyle.stroke>
+            <yjs:Stroke fill="#595959" />
+          </yjs:PolylineEdgeStyle.stroke>
+          <yjs:PolylineEdgeStyle.sourceArrow>
+            <yjs:Arrow type="DIAMOND" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.sourceArrow>
+          <yjs:PolylineEdgeStyle.targetArrow>
+            <yjs:Arrow type="SIMPLE" stroke="#595959" fill="#595959" />
+          </yjs:PolylineEdgeStyle.targetArrow>
+        </yjs:PolylineEdgeStyle>
+      </data>
+    </edge>
+  </graph>
+</graphml>
